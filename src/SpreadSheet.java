@@ -3,5 +3,6 @@ public class SpreadSheet {
 		System.out.println("Voeg je naam toe om te testen.");
 		System.out.println("Gerlof");
 		System.out.println("Jente");
+		System.out.println("Skip (eindelijk)");
 	}
 }
