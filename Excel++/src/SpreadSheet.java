@@ -6,5 +6,6 @@ public class SpreadSheet {
 		System.out.println("Gerlof Fokkema");
 		System.out.println("Demo");
 		System.out.println("Joris");
+		System.out.println("Voor skip");
 	}
 }
