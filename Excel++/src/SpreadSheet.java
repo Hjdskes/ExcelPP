@@ -8,6 +8,6 @@ public class SpreadSheet {
 		System.out.println("Joris");
 		System.out.println("Voor skip");
 		System.out.println("Bernd");
-		System.out.println("Nog een test voor Joris en Dave");
+		System.out.println("Nog een test voor Joris");
 	}
 }
