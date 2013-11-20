@@ -1,7 +1,7 @@
 # Excel++
 
 ##Werkwijze, om alles ordelijk te laten:
-* Voordat je nieuwe dingen gaat implementeren, eerst `git pull` (via CLI) uitvoeren (of via je GUI, maar ik weet niet hoe dat werkt). Als je dit niet doet, kan je waarschijnlijk niet pushen maar je kan ook andere wijzigingen ongedaan maken.
+* Voordat je nieuwe dingen gaat pushen, eerst `git pull` (via CLI) uitvoeren (of via je GUI, maar ik weet niet hoe dat werkt). Als je dit niet doet, kan je waarschijnlijk niet pushen maar je kan ook andere wijzigingen ongedaan maken.
 * Nadat je je wijzigingen gepusht hebt, voeg dan even in de ChangeLog in de Google Drive toe wat je precies gedaan hebt en als dit nodig is, ook waarom. Zo kan de rest volgen waarom je iets op een bepaalde manier hebt gedaan en dit zal ook helpen bij het maken van het eindverslag.
 * Als er iets is dat niet helemaal lekker werkt, maak dan een Issue aan via de webinterface van GitHub. De anderen kunnen dan hier reageren en zo houden we alles overzichtelijk. Deze issues kunnen ook gesloten worden via een commit.
 
