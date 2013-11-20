@@ -5,5 +5,6 @@ public class SpreadSheet {
 		System.out.println("Jente Hidskes");
 		System.out.println("Gerlof Fokkema");
 		System.out.println("Demo");
+		System.out.println("Joris");
 	}
 }
