@@ -4,5 +4,6 @@ public class SpreadSheet {
 		System.out.println("Als iedereen zijn eigen naam toevoegd kunnen we kijken of Git voor iedereen juist is ingesteld.");
 		System.out.println("Jente Hidskes");
 		System.out.println("Gerlof Fokkema");
+		System.out.println("Demo");
 	}
 }
