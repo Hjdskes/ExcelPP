@@ -7,7 +7,5 @@ public class SpreadSheet {
 		System.out.println("Demo");
 		System.out.println("Joris");
 		System.out.println("Voor skip");
-		System.out.println("Bernd");
 	}
-	
 }
