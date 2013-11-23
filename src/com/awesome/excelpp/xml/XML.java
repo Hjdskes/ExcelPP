@@ -7,7 +7,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -16,11 +15,19 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/*
- * Deze klasse parset van en write naar XML files.
+/**Deze klasse parset van en write naar XML files.
+ * 
  */
 public class XML {
 	
+	/**Parset een XML bestand naar een Document object.
+	 * 
+	 * @param file - Het XML bestand.
+	 * @return doc - Document object met data van het XML bestand.
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
 	public static Document parse(File file) throws SAXException, IOException, ParserConfigurationException{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
@@ -29,6 +36,12 @@ public class XML {
 		return doc;
 	}
 	
+	/**Schrijft een Document object weg naar een File.
+	 * 
+	 * @param doc - Document object met data voor het XML bestand.
+	 * @param file - Het XML bestand.
+	 * @throws TransformerException
+	 */
 	public static void write(Document doc, File file) throws TransformerException{
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
@@ -37,4 +50,5 @@ public class XML {
 		//StreamResult result = new StreamResult(System.out);
 		transformer.transform(source, result);
 	}
+
 }
