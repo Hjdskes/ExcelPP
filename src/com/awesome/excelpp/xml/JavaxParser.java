@@ -1,7 +1,7 @@
 package com.awesome.excelpp.xml;
 /*
  * Skip & Gerlof
- * Uitproberen van parsers en GUI 
+ * Uitproberen van javax parser.
  */
 public class JavaxParser {
 	
