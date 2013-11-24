@@ -11,7 +11,7 @@ import com.awesome.excelpp.xml.XML;
 public class SpreadSheet {
 	public static void main(String[] args) {
 		new MainScreen();
-		Document doc = XML.parse(new File("XML/test.xml"));
+		Document doc = XML.parse(new File("data/test.xml"));
 		XML.print(doc);
 	}
 }
