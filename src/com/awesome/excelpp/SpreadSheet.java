@@ -10,7 +10,7 @@ public class SpreadSheet {
 	}
 
 	private static void xmlParser() {
-		xmlParser.parse();
+		com.awesome.excelpp.xml.xmlParser.parse();
 		
 	}
 }
