@@ -11,21 +11,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.awesome.excelpp.SpreadSheet;
-
-
 public class XMLSAX extends DefaultHandler
 {
-	SpreadSheet sheet;
-	
-	String path = "";
-	int row;
-	int col;
-	String value = "";
+	private String path = "";
+	private int row;
+	private int col;
+	private String value = "";
 	
     public XMLSAX(File file) throws IOException, SAXException {
     	super();
-    	this.sheet = new SpreadSheet();
     	
     	XMLReader xr = XMLReaderFactory.createXMLReader();
 		xr.setContentHandler(this);
@@ -55,9 +49,7 @@ public class XMLSAX extends DefaultHandler
 	
 	public void characters (char ch[], int start, int length) {
 		if (path.equals("/SPREADSHEET/CELL")) {
-			for (int i = start; i < start + length; i++) {
-				value += ch[i];
-			}
+			value += new String(ch, start, length);
 		}
 	 }
     
