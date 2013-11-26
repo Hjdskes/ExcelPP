@@ -11,8 +11,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XMLSAX extends DefaultHandler
-{
+public class XMLSAX extends DefaultHandler {
+	private int numRows = 50;
+	private int numCols = 50;
+	private String sheet[][] = new String[numRows][numCols];
+	
 	private String path = "";
 	private int row;
 	private int col;
@@ -40,7 +43,7 @@ public class XMLSAX extends DefaultHandler
 
 	public void endElement (String uri, String name, String qName) {
 		if (path.equals("/SPREADSHEET/CELL")) {
-			System.out.println("row: " + row + " col: " + col + " value: " + value.trim());
+			sheet[row - 1][col - 1] = value.trim();
 		}
 		
 		path = path.substring(0, path.length() - name.length() - 1);
@@ -53,8 +56,16 @@ public class XMLSAX extends DefaultHandler
 		}
 	 }
     
-	public void read() {
-		
+	public void print() {
+		for (int i = 0; i < numRows; i++) {
+			String res = "|\t";
+			String res2 = "+";
+			for (int j = 0; j < numCols; j++) {
+				res += sheet[i][j] + "\t|\t";
+				res2 += "---------------+";
+			}
+			System.out.println(res + '\n' + res2);
+		}
 	}
 
 	public void write()	{
