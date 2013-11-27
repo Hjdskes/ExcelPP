@@ -1,6 +1,9 @@
 package com.awesome.excelpp;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 import org.w3c.dom.Document;
 
@@ -10,34 +13,46 @@ import com.awesome.excelpp.xml.XMLSAX;
 
 
 public class SpreadSheet {
+	static Scanner sc;
 	public static void main(String[] args) {
 		new SpreadSheetViewer();
 		
+		System.out.println("Bestandsnaam");
+		sc = new Scanner(System.in);
+		String path = sc.next();
+		
 		long startXML, endXML;
 		startXML = System.currentTimeMillis();
-		loadXML();
+		loadXML(path);
 		endXML = System.currentTimeMillis();
 		
 		long startSAX, endSAX;
 		startSAX = System.currentTimeMillis();
-		loadXMLSAX();
+		loadXMLSAX(path);
 		endSAX = System.currentTimeMillis();
 		
 		System.out.println("XML execution time: " + (endXML - startXML) + " ms. File has 10073 lines.");
 		System.out.println("XMLSAX execution time: " + (endSAX - startSAX) + " ms. File has 10082 lines.");
 	}
 	
-	public static void loadXML() {
-		Document doc = XML.parse(new File("data/test.xml"));
-		XML.print(doc);
+	public static void loadXML(String path) {
+		File file = new File(path);
+		try {
+			Document doc = XML.parse(file);
+			XML.print(doc);
+		} catch (Exception e) {
+			loadXML(path);
+		}
 	}
 	
-	public static void loadXMLSAX() {
+	public static void loadXMLSAX(String path) {
+		File file = new File(path);
 		try {
-			XMLSAX xmlSAX = new XMLSAX(new File("data/testSAX.xml"));
+			XMLSAX xmlSAX = new XMLSAX(file);
 			xmlSAX.print();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Try again");
+			loadXMLSAX(path);
 		}
 	}
 }
