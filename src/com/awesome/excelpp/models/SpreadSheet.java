@@ -8,18 +8,9 @@ public class SpreadSheet extends Observable {
 	private short numberOfCols;
 	
 	public SpreadSheet(){
-<<<<<<< HEAD
-		cells = new HashMap<Integer, Cel>();
-	}
-	
-	public void addCol() {
-		numberOfCols--
-		numberOfCols+=2;
-=======
 		numberOfRows = 1000;
 		numberOfCols = 1000;
 		cells = new Cel[numberOfRows][numberOfCols];
->>>>>>> add300c4299c69a61db453107a9c28a38cb25528
 	}
 	
 	public void setCel(int row, int col, Cel c){
