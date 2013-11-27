@@ -30,7 +30,9 @@ public class GUI extends JFrame implements ActionListener {
 	private File file = null;
 	private static JPopupMenu functions;
 	private static JButton functionsButton;
-
+	private static JMenuItem maximumMenu;
+	private static JMenuItem minimumMenu;
+	
 	public GUI () {
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
@@ -70,18 +72,11 @@ public class GUI extends JFrame implements ActionListener {
 		buttonAbout = new JButton("Over");
 		functions = new JPopupMenu();
 		functionsButton = new JButton("Functies");
+		maximumMenu = new JMenuItem("Maximum");
+		minimumMenu = new JMenuItem("Minimum");
 		
-		 functions.add(new JMenuItem(new AbstractAction("Maximum") {
-	            public void actionPerformed(ActionEvent e) {
-	                JOptionPane.showMessageDialog(mainFrame, "gemiddelde geselecteerd");
-	            }
-	        }));
-		 
-		 functions.add(new JMenuItem(new AbstractAction("Minimum") {
-	            public void actionPerformed(ActionEvent e) {
-	                JOptionPane.showMessageDialog(mainFrame, "Minimum geselecteerd");
-	            }
-	        }));
+		functions.add(maximumMenu);
+		functions.add(minimumMenu); 
 		 
 		 
 
@@ -98,6 +93,8 @@ public class GUI extends JFrame implements ActionListener {
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
+		maximumMenu.addActionListener(this);
+		minimumMenu.addActionListener(this);
 		functionsButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 functions.show(e.getComponent(), e.getX(), e.getY());
@@ -131,6 +128,10 @@ public class GUI extends JFrame implements ActionListener {
 			String enteredText;
 			enteredText = functionField.getText();
 			functionField.setText("Je typte " + "\"" + enteredText + "\"");
+		} else if(e.getSource().equals(maximumMenu)){
+			JOptionPane.showMessageDialog(mainFrame, "Maximum geselecteerd");
+		} else if(e.getSource().equals(minimumMenu)){
+			JOptionPane.showMessageDialog(mainFrame, "Minimum geselecteerd");
 		}
 	}
 }
