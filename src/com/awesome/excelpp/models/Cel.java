@@ -1,17 +1,25 @@
 package com.awesome.excelpp.models;
 
 public class Cel {
-	String contents; // =2+2
+	private String content; // =2+2
 	
-	public Cel() {
-		this.contents = "";
+	public Cel(String content) {
+		this.content = content;
 	}
 	
-	public String getFormula() {
-		return contents;
+	public Cel() {
+		this("");
+	}
+	
+	public String getFormule() {
+		return content;
 	}
 	
 	public String getValue() {
-		return contents; // 4
+		return content; // 4
+	}
+	
+	public void setFormule(String content) {
+		this.content = content;
 	}
 }
