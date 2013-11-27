@@ -7,16 +7,13 @@ package com.awesome.excelpp.gui;
  * Ook moeten we uitzoeken hoe we images ipv text in de knoppen kunnen krijgen
  */
 
-import java.io.File;
-
-import org.w3c.dom.Document;
-
 import com.awesome.excelpp.xml.XML;
 
+import java.io.File;
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
+import org.w3c.dom.Document;
 
 public class GUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
