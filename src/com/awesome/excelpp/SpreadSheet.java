@@ -1,8 +1,6 @@
 package com.awesome.excelpp;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 import org.w3c.dom.Document;
@@ -10,7 +8,6 @@ import org.w3c.dom.Document;
 import com.awesome.excelpp.gui.SpreadSheetViewer;
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.xml.XMLSAX;
-
 
 public class SpreadSheet {
 	static Scanner sc;

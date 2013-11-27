@@ -7,7 +7,14 @@ package com.awesome.excelpp.gui;
  * Ook moeten we uitzoeken hoe we images ipv text in de knoppen kunnen krijgen
  */
 
+import java.io.File;
+
 import javax.swing.*;
+
+import org.w3c.dom.Document;
+
+import com.awesome.excelpp.xml.XML;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,22 +23,26 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 	private static int screenWidth;
 	private static int screenHeight;
 	private static JButton buttonAbout;
+	private static JButton buttonSave;
+	private static JButton buttonOpen;
 	private static JFrame mainFrame;
+	private static JTextField functionField;
+	private File file = null;
 
 	public SpreadSheetViewer () {
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
 
-		mainFrame = new JFrame("Excel++");
+		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
-		setLocation ((screenWidth / 2) - (800 / 2), (screenHeight / 2) - (400 / 2)); //center in het midden
-		setSize (800, 400);
-		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE); //applicatie stopt als je het venster sluit
+		mainFrame.setLocation ((screenWidth / 2) - (800 / 2), (screenHeight / 2) - (400 / 2)); //center in het midden
+		mainFrame.setSize (800, 400);
+		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 
 		//zie: http://docs.oracle.com/javase/tutorial/uiswing/layout/border.html
-		mainFrame.add(createButtonPanel(), BorderLayout.PAGE_START);
-		mainFrame.add(createTable(), BorderLayout.CENTER);
-		mainFrame.setVisible(true);
+		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
+		//mainFrame.add (new SpreadSheetTable (), BorderLayout.CENTER);
+		mainFrame.setVisible (true);
 	}
 
 	private static double getScreenWidth() {
@@ -50,61 +61,42 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 
 	private JPanel createButtonPanel() {
 		final JPanel buttonPanel = new JPanel();
-		final JButton buttonOpen;
-		final JButton buttonSave;
-		final JButton buttonFunctions;
-		final JButton buttonUnk1;
-		final JButton buttonUnk2;
-		final JTextField functionField;
 
 		buttonPanel.setLayout(new FlowLayout());
 		buttonOpen = new JButton("Openen");
 		buttonSave = new JButton("Opslaan");
-		buttonFunctions = new JButton("Functies");
-		functionField = new JTextField(60);
-		buttonUnk1 = new JButton("Placeholder");
-		buttonUnk2 = new JButton("Placeholder");
+		functionField = new JTextField(30);
 		buttonAbout = new JButton("Over");
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
-		buttonPanel.add(buttonFunctions);
 		buttonPanel.add(functionField);
-		buttonPanel.add(buttonUnk1);
-		buttonPanel.add(buttonUnk2);
 		buttonPanel.add(buttonAbout);
 		buttonOpen.addActionListener(this);
 		buttonSave.addActionListener(this);
-		buttonFunctions.addActionListener(this);
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
 		return buttonPanel;
 	}
 
-	// zie: http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#simple
-	private JScrollPane createTable() {
-		String[] columnNames = { "1", "2", "3", "4", "5" };
-		Object[][] data = {
-			    { "1.1", "1.2", "1.3", "1.4", "1.5" },
-			    { "2.1", "2.2", "2.3", "2.4", "2.5" },
-			    { "3.1", "3.2", "3.3", "3.4", "3.5" },
-			    { "4.1", "4.2", "4.3", "4.4", "4.5" },
-			    { "5.1", "5.2", "5.3", "5.4", "5.5" }
-			};
-
-		final JTable cellTable = new JTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(cellTable);
-		cellTable.setFillsViewportHeight(true);
-
-		return scrollPane;
-	}
-
 	public void actionPerformed(ActionEvent e) {
-		/*String demoAction;
-		demoAction = demoTextField.getText();
-		demoLabel.setText("Je typte " + "\"" + demoAction + "\"");*/
-		if (e.getSource().equals(buttonAbout)) {
+		if (e.getSource().equals(buttonOpen)) {
+			final JFileChooser fc = new JFileChooser();
+
+			int returnVal = fc.showOpenDialog(mainFrame);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				file = fc.getSelectedFile();
+				Document doc = XML.parse(file); //gebruikt de DOM parser
+				XML.print(doc);
+			}
+		} else if (e.getSource().equals(buttonSave)) {
+			//save XML file
+		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
+		} else if (e.getSource().equals(functionField)) {
+			String enteredText;
+			enteredText = functionField.getText();
+			functionField.setText("Je typte " + "\"" + enteredText + "\"");
 		}
 	}
 }
