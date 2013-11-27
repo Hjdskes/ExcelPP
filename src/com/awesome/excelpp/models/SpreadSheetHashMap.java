@@ -4,14 +4,12 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class SpreadSheetHashMap extends SpreadSheet {
+	private final short numberOfRows = 1000;
+	private final short numberOfCols = 676;
 	private HashMap<Integer, Cel> cells;
-	private short numberOfRows;
-	private short numberOfCols;
 	
 	public SpreadSheetHashMap() {
 		super();
-		numberOfRows = 1000;
-		numberOfCols = 676;
 		cells = new HashMap<Integer, Cel>();
 	}
 	
@@ -21,16 +19,17 @@ public class SpreadSheetHashMap extends SpreadSheet {
 	}
 	
 	public void setCel(int row, int col, Cel c){
-		if(row < numberOfRows - 1 && col < numberOfCols - 1){
-			cells[row][col] = c;
-		}
+		int key = row * numberOfCols + col;
+		cells.put(key, c);
 	}
 	
 	public Cel getCel(int row, int col){
-		return cells[row][col];
+		int key = row * numberOfCols + col;
+		return cells.get(key);
 	}
 	
 	public String getValue(int row, int col){
-		return cells[row][col].getValue();
+		int key = row * numberOfCols + col;
+		return cells.get(key).getValue();
 	}
 }
