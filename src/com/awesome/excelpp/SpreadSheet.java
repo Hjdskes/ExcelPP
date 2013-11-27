@@ -4,14 +4,14 @@ import java.io.File;
 
 import org.w3c.dom.Document;
 
-import com.awesome.excelpp.gui.MainScreen;
+import com.awesome.excelpp.gui.SpreadSheetViewer;
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.xml.XMLSAX;
 
 
 public class SpreadSheet {
 	public static void main(String[] args) {
-		new MainScreen();
+		new SpreadSheetViewer();
 		
 		long startXML, endXML;
 		startXML = System.currentTimeMillis();

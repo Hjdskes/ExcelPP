@@ -10,7 +10,6 @@ package com.awesome.excelpp.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.Toolkit;
 
 public class SpreadSheetViewer extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -65,7 +64,7 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 		functionField = new JTextField(60);
 		buttonUnk1 = new JButton("Placeholder");
 		buttonUnk2 = new JButton("Placeholder");
-		buttonUnk3 = new JButton("Placeholder");
+		buttonUnk3 = new JButton("OVer");
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
 		buttonPanel.add(buttonFunctions);
