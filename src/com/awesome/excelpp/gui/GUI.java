@@ -37,7 +37,7 @@ public class GUI extends JFrame implements ActionListener {
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 
 		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
-		//mainFrame.add (new SpreadSheetTable (), BorderLayout.CENTER);
+		mainFrame.add (new SpreadSheetTable (), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
 	}
 
@@ -63,10 +63,12 @@ public class GUI extends JFrame implements ActionListener {
 		buttonSave = new JButton("Opslaan");
 		functionField = new JTextField(30);
 		buttonAbout = new JButton("Over");
+
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
 		buttonPanel.add(functionField);
 		buttonPanel.add(buttonAbout);
+
 		buttonOpen.addActionListener(this);
 		buttonSave.addActionListener(this);
 		functionField.addActionListener(this);
@@ -78,12 +80,10 @@ public class GUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
 			final JFileChooser fc = new JFileChooser();
-
-			int returnVal = fc.showOpenDialog(mainFrame);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
+			if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
 				file = fc.getSelectedFile();
 				try {
-					Document doc = XML.parse(file); //gebruikt de DOM parser
+					Document doc = XML.parse(file);
 					XML.print(doc);
 				} catch (Exception ex) {
 					System.err.println (ex.getMessage());
