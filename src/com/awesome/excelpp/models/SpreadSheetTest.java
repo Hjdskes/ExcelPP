@@ -33,7 +33,7 @@ public class SpreadSheetTest {
 		long insertEnd = System.currentTimeMillis();
 		System.out.println(sheet);
 		
-		return "Time to insert: " + (insertEnd - insertStart) + " ms";
+		return "Time to insert: " + (insertEnd - insertStart) + " ms\n";
 	}
 	
 	public static String test(SpreadSheet sheet) {
@@ -49,7 +49,7 @@ public class SpreadSheetTest {
 		long printEnd = System.currentTimeMillis();
 		
 		return "Time to fill: " + (fillEnd - fillStart) + " ms\n" +
-						"Time to print: " + (printEnd - printStart) + " ms";
+		       "Time to print: " + (printEnd - printStart) + " ms\n";
 	}
 
 }
