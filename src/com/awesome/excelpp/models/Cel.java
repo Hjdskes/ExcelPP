@@ -1,14 +1,12 @@
 package com.awesome.excelpp.models;
 
-public class Cel {
+import java.util.Observable;
+
+public abstract class Cel extends Observable {
 	private String content; // =2+2
 	
-	public Cel(String content) {
+	public Cel(int row, int column, String content) {
 		this.content = content;
-	}
-	
-	public Cel() {
-		this("");
 	}
 	
 	public String getFormule() {
