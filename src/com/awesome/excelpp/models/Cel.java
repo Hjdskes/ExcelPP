@@ -3,11 +3,21 @@ package com.awesome.excelpp.models;
 import java.util.Observable;
 
 public abstract class Cel extends Observable {
-	private int column;
-	private int row;
+	private String content; // =2+2
 	
-	public Cel(int rw, int col) {
-		this.column = col;
-		this.row = rw;
+	public Cel(int row, int column, String content) {
+		this.content = content;
+	}
+	
+	public String getFormule() {
+		return content;
+	}
+	
+	public String getValue() {
+		return content; // 4
+	}
+	
+	public void setFormule(String content) {
+		this.content = content;
 	}
 }
