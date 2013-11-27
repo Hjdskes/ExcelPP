@@ -1,6 +1,7 @@
 package com.awesome.excelpp.models;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class SpreadSheetHashMap extends SpreadSheet {
 	private HashMap<Integer, Cel> cells;
@@ -12,6 +13,11 @@ public class SpreadSheetHashMap extends SpreadSheet {
 		numberOfRows = 1000;
 		numberOfCols = 676;
 		cells = new HashMap<Integer, Cel>();
+	}
+	
+	public void insertCol(int col){
+		Set s = cells.keySet();
+		
 	}
 	
 	public void setCel(int row, int col, Cel c){
