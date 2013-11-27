@@ -8,11 +8,14 @@ package com.awesome.excelpp.gui;
  */
 
 import java.io.File;
+
 import org.w3c.dom.Document;
+
 import com.awesome.excelpp.xml.XML;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 public class GUI extends JFrame implements ActionListener {
@@ -70,25 +73,31 @@ public class GUI extends JFrame implements ActionListener {
 		buttonPanel.add(buttonAbout);
 
 		buttonOpen.addActionListener(this);
+		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSave.addActionListener(this);
+		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
 		return buttonPanel;
 	}
 
+	private final void openFileDialog() {
+		final JFileChooser fc = new JFileChooser();
+		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
+			file = fc.getSelectedFile();
+			try {
+				Document doc = XML.parse(file);
+				XML.print(doc);
+			} catch (Exception ex) {
+				System.err.println (ex.getMessage());
+			}
+		}
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
-			final JFileChooser fc = new JFileChooser();
-			if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-				file = fc.getSelectedFile();
-				try {
-					Document doc = XML.parse(file);
-					XML.print(doc);
-				} catch (Exception ex) {
-					System.err.println (ex.getMessage());
-				}
-			}
+			openFileDialog();
 		} else if (e.getSource().equals(buttonSave)) {
 			//save XML file
 		} else if (e.getSource().equals(buttonAbout)) {
