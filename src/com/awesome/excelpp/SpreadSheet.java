@@ -26,13 +26,13 @@ public class SpreadSheet {
 		loadXML(path);
 		endXML = System.currentTimeMillis();
 		
-		long startSAX, endSAX;
+		/*long startSAX, endSAX;
 		startSAX = System.currentTimeMillis();
 		loadXMLSAX(path);
-		endSAX = System.currentTimeMillis();
+		endSAX = System.currentTimeMillis();*/
 		
 		System.out.println("XML execution time: " + (endXML - startXML) + " ms. File has 10073 lines.");
-		System.out.println("XMLSAX execution time: " + (endSAX - startSAX) + " ms. File has 10082 lines.");
+		//System.out.println("XMLSAX execution time: " + (endSAX - startSAX) + " ms. File has 10082 lines.");
 	}
 	
 	public static void loadXML(String path) {
@@ -41,8 +41,8 @@ public class SpreadSheet {
 			Document doc = XML.parse(file);
 			XML.print(doc);
 		} catch (Exception e) {
-			System.out.println("Try again, the dom parser can't read it");
-			main(null);
+			e.printStackTrace();
+			System.out.println("\nTry again, the dom parser can't read it");
 		}
 	}
 	
@@ -52,8 +52,8 @@ public class SpreadSheet {
 			XMLSAX xmlSAX = new XMLSAX(file);
 			xmlSAX.print();
 		} catch (Exception e) {
-			System.out.println("Try again, the sax parser can't read it");
-			main(null);
+			System.out.println("\nTry again, the sax parser can't read it");
+			e.printStackTrace();
 		}
 	}
 }
