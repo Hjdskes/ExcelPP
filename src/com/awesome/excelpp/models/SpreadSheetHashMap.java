@@ -19,17 +19,18 @@ public class SpreadSheetHashMap extends SpreadSheet {
 	}
 	
 	public void setCel(int row, int col, Cel c){
-		int key = row * numberOfCols + col;
-		cells.put(key, c);
+		cells.put(getNumCell(row, col), c);
 	}
 	
 	public Cel getCel(int row, int col){
-		int key = row * numberOfCols + col;
-		return cells.get(key);
+		return cells.get(getNumCell(row, col));
 	}
 	
 	public String getValue(int row, int col){
-		int key = row * numberOfCols + col;
-		return cells.get(key).getValue();
+		return cells.get(getNumCell(row, col)).getValue();
+	}
+	
+	private int getNumCell(int row, int col) {
+		return row * numberOfCols + col;
 	}
 }
