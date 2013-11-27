@@ -23,7 +23,7 @@ public class SpreadSheetHashMap extends SpreadSheet {
 	}
 	
 	public void setCel(int row, int col, String contents) {
-		cells.put(getNumCell(row, col), new Cell(contents));
+		setCell(row, col, new Cell(contents));
 	}
 	
 	public Cell getCel(int row, int col){
@@ -31,7 +31,7 @@ public class SpreadSheetHashMap extends SpreadSheet {
 	}
 	
 	public String getValue(int row, int col){
-		return cells.get(getNumCell(row, col)).getValue();
+		return getCel(row, col).getValue();
 	}
 	
 	private int getNumCell(int row, int col) {

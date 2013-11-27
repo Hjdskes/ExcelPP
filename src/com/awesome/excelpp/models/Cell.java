@@ -5,32 +5,39 @@ import java.util.Observable;
 public class Cell extends Observable {
 	private String content; // =2+2
 	
+	/**
+	 * Constructs a new Cell
+	 * @param content	String with an unevaluated expression
+	 */
 	public Cell(String content) {
 		this.content = content;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the unevaluated content of this Cell
+	 * 	Suppose the content of this Cell is "=4+4"
+	 * 	This function will then return "=4+4"
+	 * @return			String with an unevaluated expression
 	 */
-	public String getFormule() {
+	public String getContent() {
 		return content;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Sets the unevaluated content of this Cell
+	 * @param content	String with an unevaluated expression
 	 */
-	public String getValue() {
-		return content; // 4
-	}
-	
-	/**
-	 * 
-	 * @param content
-	 */
-	public void setValue(String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 	
+	/**
+	 * Gets the evaluated content of this Cell
+	 * 	Suppose the content of this Cell is "=4+4"
+	 * 	This function will then return "8"
+	 * @return			String with an evaluated expression
+	 */
+	public String getValue() {
+		return content;
+	}
 }

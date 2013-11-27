@@ -17,6 +17,7 @@ public class SpreadSheet extends Observable {
 		if(row < numberOfRows - 1 && col < numberOfCols - 1){
 			cells[row][col] = c;
 		}
+		setChanged();
 	}
 	
 	public void setCell(int row, int col, String contents) {
@@ -31,4 +32,3 @@ public class SpreadSheet extends Observable {
 		return cells[row][col].getValue();
 	}
 }
-
