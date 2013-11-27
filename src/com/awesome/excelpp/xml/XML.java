@@ -46,26 +46,9 @@ public class XML {
 		/* The master tag to identify the file */
 		System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 		
-		NodeList list = doc.getElementsByTagName("row");
+		NodeList list = doc.getElementsByTagName("cell");
 		System.out.println("----------------------------");
 		
-		for(int i = 0; i < list.getLength(); i++) {
-			Element el = (Element) list.item(i);
-			String col = "|";
-			NodeList columnList = el.getElementsByTagName("column");
-			
-			for(int j = 0; j < columnList.getLength(); j++) {
-				if(j != 0){					
-					System.out.print("---+");
-				}else{
-					System.out.print("+---+");
-				}
-				col += el.getElementsByTagName("column").item(j).getTextContent() + "|";
-			}
-		
-			System.out.println();
-			System.out.println(col);
-		}
 	}
 	
 	/**Schrijft een Document object weg naar een File.
