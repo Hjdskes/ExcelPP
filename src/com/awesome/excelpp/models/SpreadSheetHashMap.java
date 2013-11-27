@@ -6,11 +6,11 @@ import java.util.Set;
 public class SpreadSheetHashMap extends SpreadSheet {
 	private final short numberOfRows = 1000;
 	private final short numberOfCols = 676;
-	private HashMap<Integer, Cel> cells;
+	private HashMap<Integer, Cell> cells;
 	
 	public SpreadSheetHashMap() {
 		super();
-		cells = new HashMap<Integer, Cel>();
+		cells = new HashMap<Integer, Cell>();
 	}
 	
 	public void insertCol(int col){
@@ -18,11 +18,15 @@ public class SpreadSheetHashMap extends SpreadSheet {
 		
 	}
 	
-	public void setCel(int row, int col, Cel c){
+	public void setCel(int row, int col, Cell c){
 		cells.put(getNumCell(row, col), c);
 	}
 	
-	public Cel getCel(int row, int col){
+	public void setCel(int row, int col, String contents) {
+		cells.put(getNumCell(row, col), new Cell(contents));
+	}
+	
+	public Cell getCel(int row, int col){
 		return cells.get(getNumCell(row, col));
 	}
 	

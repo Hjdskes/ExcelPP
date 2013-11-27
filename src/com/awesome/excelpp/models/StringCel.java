@@ -1,5 +1,5 @@
 package com.awesome.excelpp.models;
 
-public class StringCel extends Cel {
+public class StringCel extends Cell {
 
 }
