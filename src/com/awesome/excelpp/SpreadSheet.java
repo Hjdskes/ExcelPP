@@ -1,20 +1,10 @@
 package com.awesome.excelpp;
 
-import java.io.File;
-import java.util.Scanner;
-
-import org.w3c.dom.Document;
-
-import com.awesome.excelpp.gui.SpreadSheetViewer;
-import com.awesome.excelpp.xml.XML;
-import com.awesome.excelpp.xml.XMLSAX;
-
+import com.awesome.excelpp.gui.GUI;
 
 public class SpreadSheet {
-	static Scanner sc;
-	private static String path;
-	
 	public static void main(String[] args) {
+<<<<<<< HEAD
 		new SpreadSheetViewer();
 		
 		System.out.println("Bestand pad:");
@@ -55,5 +45,8 @@ public class SpreadSheet {
 			System.out.println("\nTry again, the sax parser can't read it");
 			e.printStackTrace();
 		}
+=======
+		new GUI();
+>>>>>>> 246ab21f440525bf1c6e080fcc20b68b7384c8fd
 	}
 }
