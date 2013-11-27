@@ -15,7 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SpreadSheetViewer extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
@@ -26,7 +26,7 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 	private static JTextField functionField;
 	private File file = null;
 
-	public SpreadSheetViewer () {
+	public GUI () {
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
 
@@ -36,7 +36,6 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 		mainFrame.setSize (800, 400);
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 
-		//zie: http://docs.oracle.com/javase/tutorial/uiswing/layout/border.html
 		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
 		//mainFrame.add (new SpreadSheetTable (), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
