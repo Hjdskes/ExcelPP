@@ -11,7 +11,7 @@ public class SpreadSheet extends Observable {
 		cells = new HashMap<Integer, Cel>();
 	}
 	
-	public void addCol(){
+	public void addCol() {
 		numberOfCols--
 		numberOfCols+=2;
 	}
