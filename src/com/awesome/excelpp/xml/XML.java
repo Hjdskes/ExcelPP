@@ -15,6 +15,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -46,10 +48,23 @@ public class XML {
 		/* The master tag to identify the file */
 		System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 		
-		NodeList list = doc.getElementsByTagName("cell");
+		NodeList list = doc.getElementsByTagName("CELL");
 		System.out.println("----------------------------");
 		
-	}
+
+		    for (int i = 0; i < list.getLength(); i++) {
+		    	
+		      Node node = list.item(i);
+		      System.out.println(node.getFirstChild().getNodeValue());
+
+		      NamedNodeMap attributes = node.getAttributes();
+
+		      for (int a = 0; a < attributes.getLength(); a++) {
+		        Node theAttribute = attributes.item(a);
+		        System.out.println(theAttribute.getNodeName() + "=" + theAttribute.getNodeValue());
+		      }
+		    }
+		  }
 	
 	/**Schrijft een Document object weg naar een File.
 	 * 
