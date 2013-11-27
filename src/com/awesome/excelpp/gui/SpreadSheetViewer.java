@@ -2,25 +2,29 @@ package com.awesome.excelpp.gui;
 
 /*
  * Jente & Bernd
- * Uitproberen van GUI (NB: dit is een voorbeeld klasse).
  * We moeten o.a. uitzoeken hoe we kunnen voorkomen dat je een venster zodanig verkleint zodat de componenten
- *   verdwijnen. Misschien kan je een minimale grootte instellen, of anders is de WrapLayout misschien een optie:
- *   http://tips4java.wordpress.com/2008/11/06/wrap-layout/
+ *   verdwijnen.
  * Ook moeten we uitzoeken hoe we images ipv text in de knoppen kunnen krijgen
  */
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Toolkit;
 
-public class MainScreen extends JFrame implements ActionListener {
+public class SpreadSheetViewer extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
+	private static int screenWidth;
+	private static int screenHeight;
 
-	public MainScreen () {
+	public SpreadSheetViewer () {
+		screenWidth = (int)getScreenWidth();
+		screenHeight = (int)getScreenHeight();
+
 		setTitle ("ExcelPP");
-		setLayout(new BorderLayout());
-		//setLocation (200, 200); Laat de plaatsing van het venster over aan de Window Manager van het OS
-		//setSize (300, 200); Laat ook dit over aan Java zelf en het OS
+		setLayout (new BorderLayout());
+		setLocation ((screenWidth / 2) - (800 / 2), (screenHeight / 2) - (400 / 2)); //center in het midden
+		setSize (800, 400);
 		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE); //applicatie stopt als je het venster sluit
 
 		//zie: http://docs.oracle.com/javase/tutorial/uiswing/layout/border.html
@@ -28,6 +32,20 @@ public class MainScreen extends JFrame implements ActionListener {
 		add(createTable(), BorderLayout.CENTER);
 		
 		setVisible(true);
+	}
+
+	private static double getScreenWidth() {
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+
+		return gd.getDefaultConfiguration().getBounds().getWidth();
+	}
+
+	private static double getScreenHeight() {
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+
+		return gd.getDefaultConfiguration().getBounds().getHeight();
 	}
 
 	private JPanel createButtonPanel() {
