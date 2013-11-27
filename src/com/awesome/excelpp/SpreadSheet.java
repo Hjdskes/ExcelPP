@@ -1,8 +1,6 @@
 package com.awesome.excelpp;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 import org.w3c.dom.Document;
