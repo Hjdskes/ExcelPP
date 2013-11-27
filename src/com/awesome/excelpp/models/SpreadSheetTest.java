@@ -7,9 +7,21 @@ public class SpreadSheetTest {
 		
 		System.out.println(res1);
 		
-		String res2 = testInsertRow();
+		String res2 = testInsertCol();
 		
 		System.out.println(res2);
+	}
+	
+	public static String testInsertCol(){
+		SpreadSheet sheet = new SpreadSheet();
+		sheet.fillSheet();
+		System.out.println(sheet);
+		long insertStart = System.currentTimeMillis();
+		sheet.insertCol(2);
+		long insertEnd = System.currentTimeMillis();
+		System.out.println(sheet);
+		
+		return "Time to insert: " + (insertEnd - insertStart) + " ms";
 	}
 	
 	public static String testInsertRow(){

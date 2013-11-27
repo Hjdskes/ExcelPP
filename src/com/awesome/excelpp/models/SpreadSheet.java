@@ -9,7 +9,6 @@ public class SpreadSheet {
 	protected final short numberOfCols = 10;
 	
 	public SpreadSheet() {
-		super();
 		cells = new HashMap<Integer, Cell>();
 	}
 	
@@ -25,11 +24,16 @@ public class SpreadSheet {
 		Set<Integer> s = this.cells.keySet();
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
-			if(key.intValue()%numberOfCols >= col){					//key mod numberOfCols gives us the correct column value.
+			if(key.intValue()%numberOfCols - col >= 0){					//key mod numberOfCols gives us the correct column value.
 				temp.put(key + 1, this.cells.get(key));
+			}else{
+				temp.put(key, this.cells.get(key));
 			}
 		}
 		this.cells = temp;
+		for(int i = 0; i < numberOfRows; i++){
+			this.setCell(i, col, new Cell("werkt"));
+		}
 	}
 	
 	/**Inserts a row at the specified row value, and moves each row with
