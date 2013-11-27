@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class SpreadSheetHashMap extends SpreadSheet {
-	private final short numberOfRows = 1000;
-	private final short numberOfCols = 676;
 	private HashMap<Integer, Cell> cells;
 	
 	public SpreadSheetHashMap() {
@@ -51,20 +49,12 @@ public class SpreadSheetHashMap extends SpreadSheet {
 		this.cells = temp;
 	}
 	
-	public void setCel(int row, int col, Cell c){
+	public void setCell(int row, int col, Cell c){
 		cells.put(getNumCell(row, col), c);
 	}
 	
-	public void setCel(int row, int col, String contents) {
-		setCell(row, col, new Cell(contents));
-	}
-	
-	public Cell getCel(int row, int col){
+	public Cell getCell(int row, int col){
 		return cells.get(getNumCell(row, col));
-	}
-	
-	public String getValue(int row, int col){
-		return getCel(row, col).getValue();
 	}
 	
 	private int getNumCell(int row, int col) {
