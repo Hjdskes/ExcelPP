@@ -42,6 +42,7 @@ public class SpreadSheet {
 			XML.print(doc);
 		} catch (Exception e) {
 			loadXML(path);
+			System.out.println("Try again, the dom parser can't read it");
 		}
 	}
 	
@@ -51,7 +52,7 @@ public class SpreadSheet {
 			XMLSAX xmlSAX = new XMLSAX(file);
 			xmlSAX.print();
 		} catch (Exception e) {
-			System.out.println("Try again");
+			System.out.println("Try again, the sax parser can't read it");
 			loadXMLSAX(path);
 		}
 	}
