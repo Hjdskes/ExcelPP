@@ -11,12 +11,14 @@ import com.awesome.excelpp.xml.XMLSAX;
 
 public class SpreadSheet {
 	static Scanner sc;
+	private static String path;
+	
 	public static void main(String[] args) {
 		new SpreadSheetViewer();
 		
 		System.out.println("Bestand pad:");
 		sc = new Scanner(System.in);
-		String path = sc.next();
+		path = sc.next();
 		
 		long startXML, endXML;
 		startXML = System.currentTimeMillis();
@@ -38,8 +40,8 @@ public class SpreadSheet {
 			Document doc = XML.parse(file);
 			XML.print(doc);
 		} catch (Exception e) {
-			loadXML(path);
 			System.out.println("Try again, the dom parser can't read it");
+			main(null);
 		}
 	}
 	
@@ -50,7 +52,7 @@ public class SpreadSheet {
 			xmlSAX.print();
 		} catch (Exception e) {
 			System.out.println("Try again, the sax parser can't read it");
-			loadXMLSAX(path);
+			main(null);
 		}
 	}
 }

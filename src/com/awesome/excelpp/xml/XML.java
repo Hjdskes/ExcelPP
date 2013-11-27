@@ -25,18 +25,12 @@ public class XML {
 	 * @param file - Het XML bestand.
 	 * @return doc - Document object met data van het XML bestand.
 	 */
-	public static Document parse(File file){
-		try {
+	public static Document parse(File file) throws FileNotFoundException, Exception {
+		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		Document doc = db.parse(file);
 		return doc;
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
-		} catch (Exception e) {
-			System.out.println("Something went wrong");
-		}
-		return null;
 	}
 	
 	/**Print een Document in tabelformaat.

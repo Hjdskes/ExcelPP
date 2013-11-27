@@ -1,8 +1,8 @@
 package com.awesome.excelpp;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.junit.Test;
 
 public class SpreadSheetTest {
 
@@ -13,7 +13,12 @@ public class SpreadSheetTest {
 
 	@Test
 	public void testLoadXML() {
-		fail("Not yet implemented"); // TODO
+		assertTrue("test" == "test");
+	}
+	
+	@Test(expected = Exception.class)
+	public void testLoadXMLError() {
+		SpreadSheet.loadXML("hallo.xml");
 	}
 
 	@Test

@@ -8,15 +8,12 @@ package com.awesome.excelpp.gui;
  */
 
 import java.io.File;
-
-import javax.swing.*;
-
 import org.w3c.dom.Document;
-
 import com.awesome.excelpp.xml.XML;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 public class SpreadSheetViewer extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -86,8 +83,12 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 			int returnVal = fc.showOpenDialog(mainFrame);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				file = fc.getSelectedFile();
-				Document doc = XML.parse(file); //gebruikt de DOM parser
-				XML.print(doc);
+				try {
+					Document doc = XML.parse(file); //gebruikt de DOM parser
+					XML.print(doc);
+				} catch (Exception ex) {
+					System.err.println (ex.getMessage());
+				}
 			}
 		} else if (e.getSource().equals(buttonSave)) {
 			//save XML file
