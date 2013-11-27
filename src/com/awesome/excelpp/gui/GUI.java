@@ -25,6 +25,8 @@ public class GUI extends JFrame implements ActionListener {
 	private static JFrame mainFrame;
 	private static JTextField functionField;
 	private File file = null;
+	private static JPopupMenu functions;
+	private static JButton functionsButton;
 
 	public GUI () {
 		screenWidth = (int)getScreenWidth();
@@ -63,16 +65,39 @@ public class GUI extends JFrame implements ActionListener {
 		buttonSave = new JButton("Opslaan");
 		functionField = new JTextField(30);
 		buttonAbout = new JButton("Over");
+		functions = new JPopupMenu();
+		functionsButton = new JButton("Functies");
+		
+		 functions.add(new JMenuItem(new AbstractAction("Maximum") {
+	            public void actionPerformed(ActionEvent e) {
+	                JOptionPane.showMessageDialog(mainFrame, "gemiddelde geselecteerd");
+	            }
+	        }));
+		 
+		 functions.add(new JMenuItem(new AbstractAction("Minimum") {
+	            public void actionPerformed(ActionEvent e) {
+	                JOptionPane.showMessageDialog(mainFrame, "Minimum geselecteerd");
+	            }
+	        }));
+		 
+		 
 
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
+		buttonPanel.add(functionsButton);
 		buttonPanel.add(functionField);
 		buttonPanel.add(buttonAbout);
+		
 
 		buttonOpen.addActionListener(this);
 		buttonSave.addActionListener(this);
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
+		functionsButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                functions.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
 
 		return buttonPanel;
 	}
