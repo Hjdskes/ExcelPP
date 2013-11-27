@@ -24,9 +24,11 @@ public class SpreadSheet {
 		Set<Integer> s = this.cells.keySet();
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
-			if(key.intValue()%numberOfCols - col >= 0 && key % numberOfCols + 1 < numberOfCols){					//key mod numberOfCols gives us the correct column value.
+			int sourceCol = key % numberOfCols;
+			if(sourceCol > col){					//key mod numberOfCols gives us the correct column value.
+			if (sourceCol + 1 < numberOfCols)
 				temp.put(key + 1, this.cells.get(key));
-			}else{
+			} else {
 				temp.put(key, this.cells.get(key));
 			}
 		}
