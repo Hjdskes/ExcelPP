@@ -15,22 +15,23 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
+	private static JButton buttonAbout;
+	private static JFrame mainFrame;
 
 	public SpreadSheetViewer () {
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
 
-		setTitle ("ExcelPP");
-		setLayout (new BorderLayout());
+		mainFrame = new JFrame("Excel++");
+		mainFrame.setLayout (new BorderLayout());
 		setLocation ((screenWidth / 2) - (800 / 2), (screenHeight / 2) - (400 / 2)); //center in het midden
 		setSize (800, 400);
 		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE); //applicatie stopt als je het venster sluit
 
 		//zie: http://docs.oracle.com/javase/tutorial/uiswing/layout/border.html
-		add(createButtonPanel(), BorderLayout.PAGE_START);
-		add(createTable(), BorderLayout.CENTER);
-		
-		setVisible(true);
+		mainFrame.add(createButtonPanel(), BorderLayout.PAGE_START);
+		mainFrame.add(createTable(), BorderLayout.CENTER);
+		mainFrame.setVisible(true);
 	}
 
 	private static double getScreenWidth() {
@@ -54,7 +55,6 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 		final JButton buttonFunctions;
 		final JButton buttonUnk1;
 		final JButton buttonUnk2;
-		final JButton buttonUnk3;
 		final JTextField functionField;
 
 		buttonPanel.setLayout(new FlowLayout());
@@ -64,18 +64,19 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 		functionField = new JTextField(60);
 		buttonUnk1 = new JButton("Placeholder");
 		buttonUnk2 = new JButton("Placeholder");
-		buttonUnk3 = new JButton("OVer");
+		buttonAbout = new JButton("Over");
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
 		buttonPanel.add(buttonFunctions);
 		buttonPanel.add(functionField);
 		buttonPanel.add(buttonUnk1);
 		buttonPanel.add(buttonUnk2);
-		buttonPanel.add(buttonUnk3);
+		buttonPanel.add(buttonAbout);
 		buttonOpen.addActionListener(this);
 		buttonSave.addActionListener(this);
 		buttonFunctions.addActionListener(this);
 		functionField.addActionListener(this);
+		buttonAbout.addActionListener(this);
 
 		return buttonPanel;
 	}
@@ -102,5 +103,8 @@ public class SpreadSheetViewer extends JFrame implements ActionListener {
 		/*String demoAction;
 		demoAction = demoTextField.getText();
 		demoLabel.setText("Je typte " + "\"" + demoAction + "\"");*/
+		if (e.getSource().equals(buttonAbout)) {
+			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
+		}
 	}
 }
