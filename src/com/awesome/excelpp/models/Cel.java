@@ -9,15 +9,27 @@ public abstract class Cel extends Observable {
 		this.content = content;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getFormule() {
 		return content;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getValue() {
 		return content; // 4
 	}
 	
-	public void setFormule(String content) {
+	/**
+	 * 
+	 * @param content
+	 */
+	public void setValue(String content) {
 		this.content = content;
 	}
 	
