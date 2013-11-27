@@ -17,7 +17,7 @@ public class SpreadSheet {
 	public static void main(String[] args) {
 		new SpreadSheetViewer();
 		
-		System.out.println("Bestandsnaam");
+		System.out.println("Bestand pad:");
 		sc = new Scanner(System.in);
 		String path = sc.next();
 		
