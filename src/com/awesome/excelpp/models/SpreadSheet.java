@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SpreadSheet {
 	private HashMap<Integer, Cell> cells;
-	protected final short numberOfRows = 10;
+	protected final short numberOfRows = 14;
 	protected final short numberOfCols = 10;
 	
 	public SpreadSheet() {
@@ -25,7 +25,7 @@ public class SpreadSheet {
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
 			int j = key.intValue()%numberOfCols;
-			if(j >= col){					//key mod numberOfCols gives us the correct column value.
+			if(j >= col){										//key mod numberOfCols gives us the correct column value.
 				if(j + 1 < numberOfCols){					
 					temp.put(key + 1, this.cells.get(key));
 				}
@@ -51,7 +51,8 @@ public class SpreadSheet {
 		Set<Integer> s = this.cells.keySet();
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
-			if(key.intValue()/numberOfCols >= row){					//key divided by numberOfCols gives us the correct column value, because the
+			int j = key.intValue()/numberOfCols;
+			if(j >= row){											//key divided by numberOfCols gives us the correct column value, because the
 				temp.put(key + numberOfCols, this.cells.get(key));	//result will always be rounded down, since it's not a floating point type.
 			}else{
 				temp.put(key, this.cells.get(key));
