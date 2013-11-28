@@ -25,10 +25,7 @@ public class GUI extends JFrame implements ActionListener {
 	private static JFrame mainFrame;
 	private static JTextField functionField;
 	private File file = null;
-	private static JPopupMenu functions;
-	private static JButton functionsButton;
-	private static JMenuItem maximumMenu;
-	private static JMenuItem minimumMenu;
+	private static JComboBox functions;
 	
 	public GUI () {
 		screenWidth = (int)getScreenWidth();
@@ -67,19 +64,14 @@ public class GUI extends JFrame implements ActionListener {
 		buttonSave = new JButton("Opslaan");
 		functionField = new JTextField(30);
 		buttonAbout = new JButton("Over");
-		functions = new JPopupMenu();
-		functionsButton = new JButton("Functies");
-		maximumMenu = new JMenuItem("Maximum");
-		minimumMenu = new JMenuItem("Minimum");
-		
-		functions.add(maximumMenu);
-		functions.add(minimumMenu); 
-		 
+		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
+		functions = new JComboBox(functionList);
+		functions.setSelectedIndex(0);
 		 
 
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
-		buttonPanel.add(functionsButton);
+		buttonPanel.add(functions);
 		buttonPanel.add(functionField);
 		buttonPanel.add(buttonAbout);
 		
@@ -90,13 +82,9 @@ public class GUI extends JFrame implements ActionListener {
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
-		maximumMenu.addActionListener(this);
-		minimumMenu.addActionListener(this);
-		functionsButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                functions.show(e.getComponent(), e.getX(), e.getY());
-            }
-        });
+		functions.addActionListener(this);
+		
+		
 
 		return buttonPanel;
 	}
@@ -125,10 +113,11 @@ public class GUI extends JFrame implements ActionListener {
 			String enteredText;
 			enteredText = functionField.getText();
 			functionField.setText("Je typte " + "\"" + enteredText + "\"");
-		} else if(e.getSource().equals(maximumMenu)){
-			JOptionPane.showMessageDialog(mainFrame, "Maximum geselecteerd");
-		} else if(e.getSource().equals(minimumMenu)){
-			JOptionPane.showMessageDialog(mainFrame, "Minimum geselecteerd");
-		}
+		} 
+	}
+	
+	//Tijdelijk zodat de GUI nog steeds getest kan worden
+	public static void main(String[] args){
+		new GUI();
 	}
 }
