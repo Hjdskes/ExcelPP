@@ -49,17 +49,13 @@ public class Cell extends Observable {
 	}
 	
 	private String parseOperation(String operation) {
-		if (content.indexOf('(') == -1)
-			return "#ERROR";
-		
-		String value;
-		
 		Scanner cellParser = new Scanner(operation);
 		cellParser.useDelimiter("[\\(\\)]");
 		
 		String packageName = "com.awesome.excelpp.math";
 		String opName = packageName + '.' + cellParser.next();
 		
+		String value;
 		try {
 			Class<?> opClass = Class.forName(opName);
 			Constructor<?> opConstructor = opClass.getConstructor();
@@ -67,7 +63,11 @@ public class Cell extends Observable {
 			
 			Scanner opArgs = new Scanner(cellParser.next());
 			opArgs.useDelimiter(",");
-			value = Integer.toString(op.getValue(opArgs.nextInt(), opArgs.nextInt()));
+			int opArg1 = opArgs.nextInt();
+			int opArg2 = opArgs.nextInt();
+			
+			value = "" + op.getValue(opArg1, opArg2);
+			
 			opArgs.close();
 		} catch (Exception e) {
 			value = "#OPINV";
