@@ -3,13 +3,14 @@ package com.awesome.excelpp.models;
 public class SpreadSheetTest {
 	
 	public static void main(String[] args) {
-		String res1 = test(new SpreadSheet());
+		//String res1 = test();
+		//System.out.println(res1);
 		
-		System.out.println(res1);
+		//String res2 = testInsertCol();
+		//System.out.println(res2);
 		
-		String res2 = testInsertCol();
-		
-		System.out.println(res2);
+		String res3 = testFormules();
+		System.out.println(res3);
 	}
 	
 	public static String testInsertCol(){
@@ -36,7 +37,8 @@ public class SpreadSheetTest {
 		return "Time to insert: " + (insertEnd - insertStart) + " ms\n";
 	}
 	
-	public static String test(SpreadSheet sheet) {
+	public static String test() {
+		SpreadSheet sheet = new SpreadSheet();
 		System.out.println("Filling sheet...");
 		long fillStart = System.currentTimeMillis();
 		sheet.fillSheet();
@@ -52,4 +54,20 @@ public class SpreadSheetTest {
 		       "Time to print: " + (printEnd - printStart) + " ms\n";
 	}
 
+	public static String testFormules(){
+		SpreadSheet sheet = new SpreadSheet();
+		System.out.println("Filling sheet...");
+		long fillStart = System.currentTimeMillis();
+		sheet.fillSheetFormula();
+		long fillEnd = System.currentTimeMillis();
+		
+		
+		System.out.println("Printing sheet...");
+		long printStart = System.currentTimeMillis();
+		System.out.println(sheet.toString());
+		long printEnd = System.currentTimeMillis();
+		
+		return "Time to fill: " + (fillEnd - fillStart) + " ms\n" +
+		       "Time to print: " + (printEnd - printStart) + " ms\n";
+	}
 }

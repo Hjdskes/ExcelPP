@@ -123,6 +123,17 @@ public class SpreadSheet {
 	/**
 	 * -=TEST=-
 	 */
+	public void fillSheetFormula() {
+		for (int row = 0; row < numberOfRows; row++) {
+			for (int col = 0; col < numberOfCols; col++) {
+				setCell(row, col, "=Add(1,2)");
+			}
+		}
+	}
+	
+	/**
+	 * -=TEST=-
+	 */
 	public String toString() {
 		String res = "";
 		for (int row = 0; row < numberOfRows; row++) {
