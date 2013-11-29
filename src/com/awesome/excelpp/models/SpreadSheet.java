@@ -64,8 +64,24 @@ public class SpreadSheet {
 		}
 	}
 	
+	/**
+	 * Sets a Cell with coordinates row, col in this SpreadSheet
+	 * @param row		int representing x-coordinate
+	 * @param col		int representing y-coordinate
+	 * @param c			Cell object
+	 */
 	public void setCell(int row, int col, Cell c){
 		cells.put(getNumCell(row, col), c);
+	}
+	
+	/**
+	 * Gets a Cell with coordinates row, col from this SpreadSheet
+	 * @param row		int representing x-coordinate
+	 * @param col		int representing y-coordinate
+	 * @return			Cell object at row, col
+	 */
+	public Cell getCell(int row, int col){
+		return cells.get(getNumCell(row, col));
 	}
 	
 	/**HELPER FUNCTION
@@ -78,15 +94,6 @@ public class SpreadSheet {
 		setCell(row, col, new Cell(contents));
 	}
 	
-	public Cell getCell(int row, int col){
-		return cells.get(getNumCell(row, col));
-	}
-	
-	private int getNumCell(int row, int col) {
-		return row * numberOfCols + col;
-	}
-	
-	
 	/**HELPER FUNCTION
 	 * Gets the String value of the Cell with coordinates row, col from this SpreadSheet
 	 * @param row		int representing x-coordinate
@@ -96,6 +103,10 @@ public class SpreadSheet {
 	public String getValue(int row, int col){
 		Cell c = getCell(row, col);
 		return c == null ? "" : c.getValue();
+	}
+	
+	private int getNumCell(int row, int col) {
+		return row * numberOfCols + col;
 	}
 	
 	/**
