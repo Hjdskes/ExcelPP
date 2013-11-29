@@ -50,12 +50,12 @@ public class Cell extends Observable {
 	
 	/**
 	 * Parses the operation stored in this Cells content
-	 * @param operation		String representing an operation, for example =ADD(1,2)
+	 * @param operation		String representing an operation, for example ADD(1,2)
 	 * @return				the result of the stored operation, as a String
 	 */
 	private String parseOperation(String operation) {
 		Scanner cellParser = new Scanner(operation);
-		cellParser.useDelimiter("[\\(\\)]");
+		cellParser.useDelimiter("[\\(\\) ]");			// regexp: [ \(\)], matches: (, ) and <space>
 		
 		String packageName = "com.awesome.excelpp.math";
 		String opName = packageName + '.' + cellParser.next();
