@@ -4,7 +4,6 @@ package com.awesome.excelpp.gui;
  * Jente & Bernd
  * We moeten o.a. uitzoeken hoe we kunnen voorkomen dat je een venster zodanig verkleint zodat de componenten
  *   verdwijnen.
- * Ook moeten we uitzoeken hoe we images ipv text in de knoppen kunnen krijgen
  */
 
 import java.io.File;
@@ -82,6 +81,10 @@ public class GUI extends JFrame implements ActionListener {
 		buttonOpen.setIcon(openIcon);
 		buttonSave.setIcon(saveIcon);
 		buttonAbout.setIcon(aboutIcon);
+		
+		buttonOpen.setToolTipText("Open file");
+		buttonSave.setToolTipText("Save file");
+		buttonAbout.setToolTipText("About");
 
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
