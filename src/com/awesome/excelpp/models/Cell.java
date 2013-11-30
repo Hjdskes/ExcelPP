@@ -2,7 +2,6 @@ package com.awesome.excelpp.models;
 
 import java.lang.reflect.Constructor;
 import java.util.Observable;
-import java.util.Scanner;
 
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.scanner.CellScanner;
@@ -44,7 +43,7 @@ public class Cell extends Observable {
 	 */
 	public String getValue() {
 		if (content != null && content.charAt(0) == '=')
-			return parseOperation(content.substring(1));
+			return parseFormula(content.substring(1));
 		
 		return content;
 	}
@@ -54,30 +53,40 @@ public class Cell extends Observable {
 	 * @param operation		String representing an operation, for example ADD(1,2)
 	 * @return				the result of the stored operation, as a String
 	 */
-	private String parseOperation(String operation) {
-		new CellScanner(operation);
+	private String parseFormula(String formula) {
+		CellScanner scanner = new CellScanner(formula);
 		
-		Scanner cellParser = new Scanner(operation);
-		cellParser.useDelimiter("[\\(\\)\\s,]+");			// regexp: [\(\)\s]+, matches: (, ) and <whitespace>
-		
-		String packageName = "com.awesome.excelpp.math";
-		String opName = packageName + '.' + cellParser.next();
-		
-		String value;
-		try {
-			Class<?> opClass = Class.forName(opName);
-			Constructor<?> opConstructor = opClass.getConstructor();
-			Formula op = (Formula)opConstructor.newInstance();
-
-			int arg1 = cellParser.nextInt();
-			int arg2 = cellParser.nextInt();
+		String value = "";
+		if (scanner.hasNextWord()) {
+			String formName = "com.awesome.excelpp.math." + scanner.next();
+			String formLBracket = scanner.next();
+			String arg1 = scanner.next();
+			String arg2 = scanner.next();
+			String formRBracket = scanner.next();
 			
-			value = "" + op.getValue(arg1, arg2);
+			if (formLBracket != null && formLBracket.equals("(") &&
+				formRBracket != null && formRBracket.equals(")")) {
+				value = getFormulaValue(formName, arg1, arg2);
+			} else {
+				value = "#ARGINV";
+			}
+		}
+		return value;
+	}
+	
+	private String getFormulaValue(String formName, String arg1, String arg2) {
+		String value = "";
+		try {
+			Class<?> formClass = Class.forName(formName); 
+			Constructor<?> formConstructor = formClass.getConstructor();
+			Formula form = (Formula)formConstructor.newInstance();
+			
+			value = "" + form.getValue(arg1, arg2);
+		} catch (NumberFormatException e) {
+			value = "#NUMINV";
 		} catch (Exception e) {
 			value = "#OPINV";
 		}
-		
-		cellParser.close();
 		return value;
 	}
 }

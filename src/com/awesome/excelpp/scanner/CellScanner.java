@@ -13,6 +13,18 @@ public class CellScanner {
 		lexer(input);
 	}
 	
+	public boolean hasNext() {
+		return (tokens.size() - index) > 0;
+	}
+	
+	public boolean hasNextWord() {
+		return hasNext() && tokens.get(index).type == TokenType.WORD;
+	}
+	
+	public String next() {
+		return hasNext() ? tokens.get(index++).data : null;
+	}
+	
 	private void lexer(String input) {
 		String patterns = "";
 		for (TokenType tokenType : TokenType.values())
@@ -27,10 +39,6 @@ public class CellScanner {
 	    		tokens.add(new Token(TokenType.WORD, matcher.group(TokenType.WORD.name())));
 	    	if (matcher.group(TokenType.BRACKET.name()) != null)
 	    		tokens.add(new Token(TokenType.BRACKET, matcher.group(TokenType.BRACKET.name())));
-	    }
-	    
-	    for (int i = 0; i < tokens.size(); i++) {
-	    	System.out.println(tokens.get(i));
 	    }
 	}
 }

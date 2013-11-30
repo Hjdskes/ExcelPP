@@ -6,70 +6,70 @@ import org.junit.Test;
 
 public class CellTest {
 	@Test
-	public void testConstructor_String() {
+	public void test_Constructor_String() {
 		Cell cell = new Cell("stringCell");
 		assertTrue(cell.getContent().equals("stringCell"));
 		assertTrue(cell.getValue().equals("stringCell"));
 	}
 	
 	@Test
-	public void testConstructor_Null() {
+	public void test_Constructor_Null() {
 		Cell cell = new Cell(null);
 		assertNull(cell.getContent());
 		assertNull(cell.getValue());
 	}
 	
 	@Test
-	public void testConstructor_Formule() {
+	public void test_Constructor_Formule() {
 		Cell cell = new Cell("=Add(2,4)");
 		assertTrue(cell.getContent().equals("=Add(2,4)"));
 		assertTrue(cell.getValue().equals("6"));
 	}
 	
 	@Test
-	public void testConstructor_FormuleSpace() {
+	public void test_Constructor_FormuleSpace() {
 		Cell cell = new Cell("=Add(32, 56)");
 		assertTrue(cell.getContent().equals("=Add(32, 56)"));
 		assertTrue(cell.getValue().equals("88"));
 	}
 	
 	@Test
-	public void testConstructor_FormuleSpaces() {
+	public void test_Constructor_FormuleSpaces() {
 		Cell cell = new Cell("= Add ( 12 , 46 ) ");
 		assertTrue(cell.getContent().equals("= Add ( 12 , 46 ) "));
-		assertTrue(cell.getValue().equals("88"));
+		assertTrue(cell.getValue().equals("58"));
 	}
 	
 	@Test
-	public void testConstructor_FormuleInvalid1() {
+	public void test_Constructor_FormuleInvalid1() {
 		Cell cell = new Cell("=Add");
 		assertTrue(cell.getContent().equals("=Add"));
-		assertTrue(cell.getValue().equals("#OPINV"));
+		assertTrue(cell.getValue().equals("#ARGINV"));
 	}
 	
 	@Test
-	public void testConstructor_FormuleInvalid2() {
+	public void test_Constructor_FormuleInvalid2() {
 		Cell cell = new Cell("=Add(");
 		assertTrue(cell.getContent().equals("=Add("));
-		assertTrue(cell.getValue().equals("#OPINV"));
+		assertTrue(cell.getValue().equals("#ARGINV"));
 	}
 	
 	@Test
-	public void testConstructor_FormuleInvalid3() {
+	public void test_Constructor_FormuleInvalid3() {
 		Cell cell = new Cell("=Add()");
 		assertTrue(cell.getContent().equals("=Add()"));
-		assertTrue(cell.getValue().equals("#OPINV"));
+		assertTrue(cell.getValue().equals("#ARGINV"));
 	}
 	
 	@Test
-	public void testConstructor_FormuleInvalid4() {
+	public void test_Constructor_FormuleInvalid4() {
 		Cell cell = new Cell("=Invalid(2,4)");
 		assertTrue(cell.getContent().equals("=Invalid(2,4)"));
 		assertTrue(cell.getValue().equals("#OPINV"));
 	}
 	
 	@Test
-	public void testSetContent() {
+	public void test_SetContent() {
 		Cell cell = new Cell("stringCell");
 		cell.setContent("stringCellModified");
 		assertTrue(cell.getContent().equals("stringCellModified"));
