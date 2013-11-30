@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SpreadSheet {
 	private HashMap<Integer, Cell> cells;
-	protected final short numberOfRows = 14;
+	protected final short numberOfRows = 10;
 	protected final short numberOfCols = 10;
 	
 	public SpreadSheet() {
