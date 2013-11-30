@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Scanner;
 
 import com.awesome.excelpp.math.Formula;
+import com.awesome.excelpp.scanner.CellScanner;
 
 public class Cell extends Observable {
 	private String content; // =2+2
@@ -54,6 +55,8 @@ public class Cell extends Observable {
 	 * @return				the result of the stored operation, as a String
 	 */
 	private String parseOperation(String operation) {
+		new CellScanner(operation);
+		
 		Scanner cellParser = new Scanner(operation);
 		cellParser.useDelimiter("[\\(\\)\\s,]+");			// regexp: [\(\)\s]+, matches: (, ) and <whitespace>
 		
