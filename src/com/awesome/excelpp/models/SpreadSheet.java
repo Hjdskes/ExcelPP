@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SpreadSheet {
 	private HashMap<Integer, Cell> cells;
-	protected final short numberOfRows = 10;
+	protected final short numberOfRows = 14;
 	protected final short numberOfCols = 10;
 	
 	public SpreadSheet() {
@@ -25,7 +25,7 @@ public class SpreadSheet {
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
 			int j = key.intValue()%numberOfCols;
-			if(j >= col){					//key mod numberOfCols gives us the correct column value.
+			if(j >= col){										//key mod numberOfCols gives us the correct column value.
 				if(j + 1 < numberOfCols){					
 					temp.put(key + 1, this.cells.get(key));
 				}
@@ -51,7 +51,8 @@ public class SpreadSheet {
 		Set<Integer> s = this.cells.keySet();
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
-			if(key.intValue()/numberOfCols >= row){					//key divided by numberOfCols gives us the correct column value, because the
+			int j = key.intValue()/numberOfCols;
+			if(j >= row){											//key divided by numberOfCols gives us the correct column value, because the
 				temp.put(key + numberOfCols, this.cells.get(key));	//result will always be rounded down, since it's not a floating point type.
 			}else{
 				temp.put(key, this.cells.get(key));
@@ -63,8 +64,24 @@ public class SpreadSheet {
 		}
 	}
 	
+	/**
+	 * Sets a Cell with coordinates row, col in this SpreadSheet
+	 * @param row		int representing x-coordinate
+	 * @param col		int representing y-coordinate
+	 * @param c			Cell object
+	 */
 	public void setCell(int row, int col, Cell c){
 		cells.put(getNumCell(row, col), c);
+	}
+	
+	/**
+	 * Gets a Cell with coordinates row, col from this SpreadSheet
+	 * @param row		int representing x-coordinate
+	 * @param col		int representing y-coordinate
+	 * @return			Cell object at row, col
+	 */
+	public Cell getCell(int row, int col){
+		return cells.get(getNumCell(row, col));
 	}
 	
 	/**HELPER FUNCTION
@@ -77,15 +94,6 @@ public class SpreadSheet {
 		setCell(row, col, new Cell(contents));
 	}
 	
-	public Cell getCell(int row, int col){
-		return cells.get(getNumCell(row, col));
-	}
-	
-	private int getNumCell(int row, int col) {
-		return row * numberOfCols + col;
-	}
-	
-	
 	/**HELPER FUNCTION
 	 * Gets the String value of the Cell with coordinates row, col from this SpreadSheet
 	 * @param row		int representing x-coordinate
@@ -97,6 +105,10 @@ public class SpreadSheet {
 		return c == null ? "" : c.getValue();
 	}
 	
+	private int getNumCell(int row, int col) {
+		return row * numberOfCols + col;
+	}
+	
 	/**
 	 * -=TEST=-
 	 */
@@ -104,6 +116,17 @@ public class SpreadSheet {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
 				setCell(row, col, row + "," + col);
+			}
+		}
+	}
+	
+	/**
+	 * -=TEST=-
+	 */
+	public void fillSheetFormula() {
+		for (int row = 0; row < numberOfRows; row++) {
+			for (int col = 0; col < numberOfCols; col++) {
+				setCell(row, col, "=Add(1,2)");
 			}
 		}
 	}

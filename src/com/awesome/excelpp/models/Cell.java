@@ -1,6 +1,10 @@
 package com.awesome.excelpp.models;
 
+import java.lang.reflect.Constructor;
 import java.util.Observable;
+import java.util.Scanner;
+
+import com.awesome.excelpp.math.*;
 
 public class Cell extends Observable {
 	private String content; // =2+2
@@ -38,6 +42,38 @@ public class Cell extends Observable {
 	 * @return			String with an evaluated expression
 	 */
 	public String getValue() {
+		if (content != null && content.charAt(0) == '=')
+			return parseOperation(content.substring(1));
+		
 		return content;
+	}
+	
+	private String parseOperation(String operation) {
+		Scanner cellParser = new Scanner(operation);
+		cellParser.useDelimiter("[\\(\\)]");
+		
+		String packageName = "com.awesome.excelpp.math";
+		String opName = packageName + '.' + cellParser.next();
+		
+		String value;
+		try {
+			Class<?> opClass = Class.forName(opName);
+			Constructor<?> opConstructor = opClass.getConstructor();
+			Formula op = (Formula)opConstructor.newInstance();
+			
+			Scanner opArgs = new Scanner(cellParser.next());
+			opArgs.useDelimiter(",");
+			int opArg1 = opArgs.nextInt();
+			int opArg2 = opArgs.nextInt();
+			
+			value = "" + op.getValue(opArg1, opArg2);
+			
+			opArgs.close();
+		} catch (Exception e) {
+			value = "#OPINV";
+		}
+		
+		cellParser.close();
+		return value;
 	}
 }

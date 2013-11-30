@@ -4,7 +4,6 @@ package com.awesome.excelpp.gui;
  * Jente & Bernd
  * We moeten o.a. uitzoeken hoe we kunnen voorkomen dat je een venster zodanig verkleint zodat de componenten
  *   verdwijnen.
- * Ook moeten we uitzoeken hoe we images ipv text in de knoppen kunnen krijgen
  */
 
 import com.awesome.excelpp.xml.XML;
@@ -26,6 +25,10 @@ public class GUI extends JFrame implements ActionListener {
 	private static JTextField functionField;
 	private File file = null;
 	private static JComboBox functions;
+	private static ImageIcon openIcon;
+	private static ImageIcon saveIcon;
+	private static ImageIcon aboutIcon;
+	
 	
 	public GUI () {
 		screenWidth = (int)getScreenWidth();
@@ -60,14 +63,25 @@ public class GUI extends JFrame implements ActionListener {
 		final JPanel buttonPanel = new JPanel();
 
 		buttonPanel.setLayout(new FlowLayout());
-		buttonOpen = new JButton("Openen");
-		buttonSave = new JButton("Opslaan");
+		buttonOpen = new JButton();
+		buttonSave = new JButton();
 		functionField = new JTextField(30);
-		buttonAbout = new JButton("Over");
+		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox(functionList);
 		functions.setSelectedIndex(0);
 		 
+		openIcon = new ImageIcon("data/icons/PNG_32x32_black/folder-icon_32x32px.png");
+		saveIcon = new ImageIcon("data/icons/PNG_32x32_black/save-disk-icon_32x32px.png");
+		aboutIcon = new ImageIcon("data/icons/PNG_32x32_black/question-mark-icon_32x32px.png");
+		
+		buttonOpen.setIcon(openIcon);
+		buttonSave.setIcon(saveIcon);
+		buttonAbout.setIcon(aboutIcon);
+		
+		buttonOpen.setToolTipText("Open file");
+		buttonSave.setToolTipText("Save file");
+		buttonAbout.setToolTipText("About");
 
 		buttonPanel.add(buttonOpen);
 		buttonPanel.add(buttonSave);
