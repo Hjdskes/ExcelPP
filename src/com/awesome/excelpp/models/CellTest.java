@@ -69,6 +69,34 @@ public class CellTest {
 	}
 	
 	@Test
+	public void test_Constructor_FormuleInvalid5() {
+		Cell cell = new Cell("=Add(INV,INV)");
+		assertTrue(cell.getContent().equals("=Add(INV,INV)"));
+		assertTrue(cell.getValue().equals("#NUMINV"));
+	}
+	
+	@Test
+	public void test_Constructor_FormuleInvalid6() {
+		Cell cell = new Cell("=6(2,4)");
+		assertTrue(cell.getContent().equals("=6(2,4)"));
+		assertTrue(cell.getValue().equals("OPINV"));
+	}
+	
+	@Test
+	public void test_Constructor_FormuleInvalid7() {
+		Cell cell = new Cell("=Add)2,4)");
+		assertTrue(cell.getContent().equals("=Add)2,4)"));
+		assertTrue(cell.getValue().equals("#ARGINV"));
+	}
+	
+	@Test
+	public void test_Constructor_FormuleInvalid8() {
+		Cell cell = new Cell("=Add(2,4(");
+		assertTrue(cell.getContent().equals("=Add(2,4("));
+		assertTrue(cell.getValue().equals("#ARGINV"));
+	}
+	
+	@Test
 	public void test_SetContent() {
 		Cell cell = new Cell("stringCell");
 		cell.setContent("stringCellModified");
