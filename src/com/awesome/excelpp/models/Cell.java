@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.Observable;
 import java.util.Scanner;
 
-import com.awesome.excelpp.math.*;
+import com.awesome.excelpp.math.Formula;
 
 public class Cell extends Observable {
 	private String content; // =2+2
@@ -48,9 +48,14 @@ public class Cell extends Observable {
 		return content;
 	}
 	
+	/**
+	 * Parses the operation stored in this Cells content
+	 * @param operation		String representing an operation, for example ADD(1,2)
+	 * @return				the result of the stored operation, as a String
+	 */
 	private String parseOperation(String operation) {
 		Scanner cellParser = new Scanner(operation);
-		cellParser.useDelimiter("[\\(\\)]");
+		cellParser.useDelimiter("[\\(\\)\\s,]+");			// regexp: [\(\)\s]+, matches: (, ) and <whitespace>
 		
 		String packageName = "com.awesome.excelpp.math";
 		String opName = packageName + '.' + cellParser.next();
@@ -60,15 +65,11 @@ public class Cell extends Observable {
 			Class<?> opClass = Class.forName(opName);
 			Constructor<?> opConstructor = opClass.getConstructor();
 			Formula op = (Formula)opConstructor.newInstance();
+
+			int arg1 = cellParser.nextInt();
+			int arg2 = cellParser.nextInt();
 			
-			Scanner opArgs = new Scanner(cellParser.next());
-			opArgs.useDelimiter(",");
-			int opArg1 = opArgs.nextInt();
-			int opArg2 = opArgs.nextInt();
-			
-			value = "" + op.getValue(opArg1, opArg2);
-			
-			opArgs.close();
+			value = "" + op.getValue(arg1, arg2);
 		} catch (Exception e) {
 			value = "#OPINV";
 		}

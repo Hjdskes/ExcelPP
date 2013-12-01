@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
 
 public class SpreadSheet implements TableModel {
 	private HashMap<Integer, Cell> cells;
-	protected final short numberOfRows = 14;
+	protected final short numberOfRows = 10;
 	protected final short numberOfCols = 10;
 	
 	public SpreadSheet() {
