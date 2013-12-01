@@ -18,19 +18,11 @@ public class SpreadSheetTable extends JTable {
 
 		setFillsViewportHeight (true);
 		setSelectionBackground (backgroundColor);
+		setAutoResizeMode(AUTO_RESIZE_OFF);
 		//setOpaque(true); //MUST do this for background to show up. even verifiëren
-		new JScrollPane (this);
 		
-		test();
-	}
-	
-	public void test() {
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheetFormula();
-		for (int row = 0; row < 10; row++) {
-			for (int col = 0; col < 10; col++) {
-				this.setValueAt(sheet.getValue(row, col), row, col);
-			}
-		}
+		this.setModel(sheet);
 	}
 }

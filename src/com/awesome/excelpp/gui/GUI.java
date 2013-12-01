@@ -11,7 +11,9 @@ import com.awesome.excelpp.xml.XML;
 import java.io.File;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import org.w3c.dom.Document;
 
 public class GUI extends JFrame implements ActionListener {
@@ -41,7 +43,7 @@ public class GUI extends JFrame implements ActionListener {
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 
 		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
-		mainFrame.add (new SpreadSheetTable (), BorderLayout.CENTER);
+		mainFrame.add (new JScrollPane (new SpreadSheetTable ()), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
 	}
 

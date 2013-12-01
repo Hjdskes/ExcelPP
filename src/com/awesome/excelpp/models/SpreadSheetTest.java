@@ -13,6 +13,7 @@ public class SpreadSheetTest {
 		System.out.println(res3);
 	}
 	
+	/*
 	public static String testInsertCol(){
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheet();
@@ -23,8 +24,9 @@ public class SpreadSheetTest {
 		System.out.println(sheet);
 		
 		return "Time to insert: " + (insertEnd - insertStart) + " ms";
-	}
+	}*/
 	
+	/*
 	public static String testInsertRow(){
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheet();
@@ -35,8 +37,9 @@ public class SpreadSheetTest {
 		System.out.println(sheet);
 		
 		return "Time to insert: " + (insertEnd - insertStart) + " ms\n";
-	}
+	}*/
 	
+	/*
 	public static String test() {
 		SpreadSheet sheet = new SpreadSheet();
 		System.out.println("Filling sheet...");
@@ -52,7 +55,7 @@ public class SpreadSheetTest {
 		
 		return "Time to fill: " + (fillEnd - fillStart) + " ms\n" +
 		       "Time to print: " + (printEnd - printStart) + " ms\n";
-	}
+	}*/
 
 	public static String testFormules(){
 		SpreadSheet sheet = new SpreadSheet();
