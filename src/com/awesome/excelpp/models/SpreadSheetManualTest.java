@@ -3,8 +3,8 @@ package com.awesome.excelpp.models;
 public class SpreadSheetManualTest {
 	
 	public static void main(String[] args) {
-		//String res1 = test();
-		//System.out.println(res1);
+		String res1 = test();
+		System.out.println(res1);
 		
 		//String res2 = testInsertCol();
 		//System.out.println(res2);
@@ -13,6 +13,7 @@ public class SpreadSheetManualTest {
 		System.out.println(res3);
 	}
 	
+	/*
 	public static String testInsertCol(){
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheet();
@@ -23,8 +24,9 @@ public class SpreadSheetManualTest {
 		System.out.println(sheet);
 		
 		return "Time to insert: " + (insertEnd - insertStart) + " ms";
-	}
+	}*/
 	
+	/*
 	public static String testInsertRow(){
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheet();
@@ -35,7 +37,7 @@ public class SpreadSheetManualTest {
 		System.out.println(sheet);
 		
 		return "Time to insert: " + (insertEnd - insertStart) + " ms\n";
-	}
+	}*/
 	
 	public static String test() {
 		SpreadSheet sheet = new SpreadSheet();

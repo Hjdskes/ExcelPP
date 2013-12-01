@@ -3,9 +3,12 @@ package com.awesome.excelpp.models;
 import java.util.HashMap;
 import java.util.Set;
 
-public class SpreadSheet {
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
+public class SpreadSheet implements TableModel {
 	private HashMap<Integer, Cell> cells;
-	protected final short numberOfRows = 14;
+	protected final short numberOfRows = 10;
 	protected final short numberOfCols = 10;
 	
 	public SpreadSheet() {
@@ -16,7 +19,7 @@ public class SpreadSheet {
 	 * column value greater than or equal to the specified column value to the right.
 	 * 
 	 * @param col - the column value at which a column will be inserted.
-	 */
+	 *
 	public void insertCol(int col){
 		if(col >= this.numberOfCols){
 			return;
@@ -43,7 +46,7 @@ public class SpreadSheet {
 	 * row value greater than or equal to the specified row value downwards.
 	 * 
 	 * @param row - the row value at which a row will be inserted.
-	 */
+	 *
 	public void insertRow(int row){
 		if(row >= this.numberOfRows){
 			return;
@@ -62,47 +65,61 @@ public class SpreadSheet {
 		for(int i = 0; i < numberOfCols; i++){
 			this.setCell(row, i, new Cell("werkt"));
 		}
+	}*/
+
+	@Override
+	public void addTableModelListener(TableModelListener l) {
+		// TODO Auto-generated method stub
+		
 	}
-	
+
+	public Class<?> getColumnClass(int columnIndex) {
+		return String.class;
+	}
+
+	public int getColumnCount() {
+		return numberOfCols;
+	}
+
+	@Override
+	public String getColumnName(int col) {
+		// TODO Auto-generated method stub
+		return "Test";
+	}
+
+	public int getRowCount() {
+		return numberOfRows;
+	}
+
 	/**
-	 * Sets a Cell with coordinates row, col in this SpreadSheet
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @param c			Cell object
-	 */
-	public void setCell(int row, int col, Cell c){
-		cells.put(getNumCell(row, col), c);
-	}
-	
-	/**
-	 * Gets a Cell with coordinates row, col from this SpreadSheet
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @return			Cell object at row, col
-	 */
-	public Cell getCell(int row, int col){
-		return cells.get(getNumCell(row, col));
-	}
-	
-	/**HELPER FUNCTION
-	 * Sets a Cell with coordinates row, col in this SpreadSheet
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @param contentes	String object to store in the Cell object
-	 */
-	public void setCell(int row, int col, String contents) {
-		setCell(row, col, new Cell(contents));
-	}
-	
-	/**HELPER FUNCTION
 	 * Gets the String value of the Cell with coordinates row, col from this SpreadSheet
 	 * @param row		int representing x-coordinate
 	 * @param col		int representing y-coordinate
 	 * @return			String value of the Cell object at row, col
 	 */
-	public String getValue(int row, int col){
-		Cell c = getCell(row, col);
+	public Object getValueAt(int row, int col) {
+		Cell c = cells.get(getNumCell(row, col));
 		return c == null ? "" : c.getValue();
+	}
+
+	public boolean isCellEditable(int row, int col) {
+		return true;
+	}
+
+	@Override
+	public void removeTableModelListener(TableModelListener l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Sets a Cell with coordinates row, col in this SpreadSheet
+	 * @param aValue	String object to store in the Cell object
+	 * @param row		int representing x-coordinate
+	 * @param col		int representing y-coordinate
+	 */
+	public void setValueAt(Object aValue, int row, int col) {
+		cells.put(getNumCell(row, col), new Cell((String)aValue));
 	}
 	
 	private int getNumCell(int row, int col) {
@@ -115,7 +132,7 @@ public class SpreadSheet {
 	public void fillSheet() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				setCell(row, col, row + "," + col);
+				setValueAt("=Add(1,2)", row, col);
 			}
 		}
 	}
@@ -126,7 +143,7 @@ public class SpreadSheet {
 	public void fillSheetFormula() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				setCell(row, col, "=Add(1,2)");
+				setValueAt("=Add(1,2)", row, col);
 			}
 		}
 	}
@@ -138,7 +155,7 @@ public class SpreadSheet {
 		String res = "";
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				res += getValue(row, col) + "\t";
+				res += (String)getValueAt(row, col) + "\t";
 			}
 			res += "\n";
 		}
