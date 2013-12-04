@@ -43,8 +43,20 @@ public class GUI extends JFrame implements ActionListener {
 		mainFrame.setLocation ((screenWidth / 2) - (800 / 2), (screenHeight / 2) - (400 / 2)); //center in het midden
 		mainFrame.setSize (800, 400);
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-
 		tabel = new SpreadSheetTable ();
+		
+		tabel.addMouseListener(new MouseAdapter(){
+			  public void mouseClicked(MouseEvent e) {
+				   if (e.getSource().equals(tabel)){
+				    	if(tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1){
+							String cellContent = (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
+							functionField.setText(cellContent);
+									}
+				    }
+				  }
+				});
+
+		
 		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
