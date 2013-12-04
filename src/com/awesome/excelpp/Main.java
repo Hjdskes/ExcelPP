@@ -24,6 +24,6 @@ public class Main {
 		//XML.write(doc, "data/write.xml");
 		
 		SpreadSheet test = XML.print(doc);
-		System.out.println(test.toXML());
+		test.toXML("data/output.xml");
 	}
 }

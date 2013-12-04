@@ -11,11 +11,14 @@ import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.models.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import org.w3c.dom.Document;
+
 import java.util.Scanner;
 
 public class GUI extends JFrame implements ActionListener, MouseListener {
@@ -128,7 +131,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonSave)) {
 			//XML.write(sheet.toXML(), file.toString());
-			System.out.println(sheet.toXML());
+			try {
+				sheet.toXML("data/output.xml");
+			} catch (FileNotFoundException e1) {
+				System.out.println("Er is iets mis gegaan");
+				e1.printStackTrace();
+			}
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
 		} else if (e.getSource().equals(functions)) {
