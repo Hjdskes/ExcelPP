@@ -1,4 +1,5 @@
 bin
+data/write.xml
 .classpath
 .metadata
 .project
