@@ -71,17 +71,19 @@ public class XML {
 		        String data_temp = theAttribute.getNodeValue();
 		      
 		        if(temp.equals("row")) {
-		        	column = data_temp;
+		        	row = data_temp;
 		        }
 		        else if(temp.equals("column")) {
-		        	row = data_temp;
+		        	column = data_temp;
 		        }
 		        else {
 		        	System.out.println("Row not found");
 		        }
 		        theAttribute.getNodeValue();
 		      }
-		      System.out.println("row: " + row  + " Column: " + column + " Data: " + data);
+		      System.out.println("Row: " + row);
+		      System.out.println("Column: " + column);
+		      System.out.println("Data: " + data);
 		    }
 		  }
 	
