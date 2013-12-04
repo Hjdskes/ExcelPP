@@ -126,7 +126,7 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(functions)) {
 			String formule = (String)functions.getSelectedItem();
 			formule = "=" + formule;
-			functionField.setText(formule.toUpperCase());
+			functionField.setText(formule);
 			//nu nog de geselecteerde cellen erbij
 		} else if (e.getSource().equals(functionField)) {
 			String enteredText = functionField.getText();
@@ -134,8 +134,8 @@ public class GUI extends JFrame implements ActionListener {
 				Scanner sc; //we moeten hier ook nog de cellen invoeren en scannen
 				sc = new Scanner(enteredText);
 				String formule = sc.next();
-				if (formule.equals("=SUM")) {
-					System.out.println("De formule is: SUM");
+				if (formule.equals("=Sum")) {
+					System.out.println("De formule is: Sum");
 				} else {
 					System.err.println("De formule wordt niet herkend");
 				}
