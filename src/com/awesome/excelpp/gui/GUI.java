@@ -4,6 +4,7 @@ package com.awesome.excelpp.gui;
  * Jente & Bernd
  * We moeten o.a. uitzoeken hoe we kunnen voorkomen dat je een venster zodanig verkleint zodat de componenten
  *   verdwijnen.
+ * Misschien een help dialog invoeren als een soort handleiding?
  */
 
 import com.awesome.excelpp.xml.XML;
@@ -122,10 +123,15 @@ public class GUI extends JFrame implements ActionListener {
 			//save XML file
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
+		} else if (e.getSource().equals(functions)) {
+			String formule = (String)functions.getSelectedItem();
+			formule = "=" + formule;
+			functionField.setText(formule.toUpperCase());
+			//nu nog de geselecteerde cellen erbij
 		} else if (e.getSource().equals(functionField)) {
 			String enteredText = functionField.getText();
 			if (enteredText.charAt(0) == '=') {
-				Scanner sc;
+				Scanner sc; //we moeten hier ook nog de cellen invoeren en scannen
 				sc = new Scanner(enteredText);
 				String formule = sc.next();
 				if (formule.equals("=SUM")) {
