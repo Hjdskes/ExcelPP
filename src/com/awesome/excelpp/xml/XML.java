@@ -3,13 +3,12 @@ package com.awesome.excelpp.xml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -51,10 +50,10 @@ public class XML {
 		doc.getDocumentElement().normalize();
 		
 		/* The master tag to identify the file */
-		System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+		//System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 		
 		NodeList list = doc.getElementsByTagName("CELL");
-		System.out.println("----------------------------");
+		//System.out.println("----------------------------");
 		
 			String row = "";
 		    String column = "";
@@ -103,7 +102,7 @@ public class XML {
 	 * @throws IOException 
 	 */
 	public static void write(Document doc, String dest) throws TransformerException, IOException{
-		PrintWriter pw = new PrintWriter(dest);
+/*		PrintWriter pw = new PrintWriter(dest);
 		
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer = tf.newTransformer();
@@ -111,12 +110,17 @@ public class XML {
 		StringWriter writer = new StringWriter();
 		transformer.transform(new DOMSource(doc), new StreamResult(writer));
 		String output = writer.getBuffer().toString();
-		System.out.println(output);
-		
+				
 		pw.print("<?xml version=\"1.0\"?>\n");
 		pw.print(output);
 		pw.flush();
-		pw.close();
+		pw.close();*/
+		
+		Transformer transformer = TransformerFactory.newInstance().newTransformer();  
+		Source source = new DOMSource(doc);  
+		File file = new File("data/new.xml");  
+		Result result = new StreamResult(file);  
+		transformer.transform(source,result);  
 	}
 
 }
