@@ -26,7 +26,7 @@ public class GUI extends JFrame implements ActionListener {
 	private static JFrame mainFrame;
 	private static JTextField functionField;
 	private File file = null;
-	private static JComboBox functions;
+	private static JComboBox<String> functions;
 	private static ImageIcon openIcon;
 	private static ImageIcon saveIcon;
 	private static ImageIcon aboutIcon;
@@ -70,17 +70,17 @@ public class GUI extends JFrame implements ActionListener {
 		functionField = new JTextField(30);
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
-		functions = new JComboBox(functionList);
+		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
-		 
+
 		openIcon = new ImageIcon("data/icons/PNG_32x32_black/folder-icon_32x32px.png");
 		saveIcon = new ImageIcon("data/icons/PNG_32x32_black/save-disk-icon_32x32px.png");
 		aboutIcon = new ImageIcon("data/icons/PNG_32x32_black/question-mark-icon_32x32px.png");
-		
+
 		buttonOpen.setIcon(openIcon);
 		buttonSave.setIcon(saveIcon);
 		buttonAbout.setIcon(aboutIcon);
-		
+
 		buttonOpen.setToolTipText("Open file");
 		buttonSave.setToolTipText("Save file");
 		buttonAbout.setToolTipText("About");
@@ -90,7 +90,6 @@ public class GUI extends JFrame implements ActionListener {
 		buttonPanel.add(functions);
 		buttonPanel.add(functionField);
 		buttonPanel.add(buttonAbout);
-		
 
 		buttonOpen.addActionListener(this);
 		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -99,8 +98,6 @@ public class GUI extends JFrame implements ActionListener {
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
-		
-		
 
 		return buttonPanel;
 	}

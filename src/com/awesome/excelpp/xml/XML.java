@@ -51,14 +51,15 @@ public class XML {
 		NodeList list = doc.getElementsByTagName("CELL");
 		System.out.println("----------------------------");
 		
-			String row = null;
-		    String column = null;	
+			String row = "";
+		    String column = "";
+		    String data = "";
 
 		    for (int i = 0; i < list.getLength(); i++) {
 
 		      Node node = list.item(i);
-		      System.out.println(node.getFirstChild().getNodeValue());
-
+		      
+		      data = node.getFirstChild().getNodeValue();
 		      NamedNodeMap attributes = node.getAttributes();
 
 		      for (int a = 0; a < attributes.getLength(); a++) {
@@ -66,24 +67,23 @@ public class XML {
 		        Node theAttribute = attributes.item(a);
 		        
 		        String temp = theAttribute.getNodeName();
-		        System.out.println(temp);
 		        
+		        String data_temp = theAttribute.getNodeValue();
+		      
 		        if(temp.equals("row")) {
-		        	column = temp;
+		        	row = data_temp;
 		        }
-		        
 		        else if(temp.equals("column")) {
-		        	row = temp;
+		        	column = data_temp;
 		        }
-		        
 		        else {
 		        	System.out.println("Row not found");
 		        }
-
 		        theAttribute.getNodeValue();
-		        
-		        //System.out.println(theAttribute.getNodeName() + "=" + theAttribute.getNodeValue());
 		      }
+		      System.out.println("Row: " + row);
+		      System.out.println("Column: " + column);
+		      System.out.println("Data: " + data);
 		    }
 		  }
 	
