@@ -163,6 +163,11 @@ public class SpreadSheet implements TableModel {
 		return res;
 	}
 	
+	/**
+	 * Outputs the assignd spreadsheet map to an normalized XML file
+	 * @param dest
+	 * @throws FileNotFoundException
+	 */
 	public void toXML(String dest) throws FileNotFoundException {
 		PrintWriter pw = new PrintWriter(dest);
 		String res = "<?xml version=\"1.0\"?>\n";
