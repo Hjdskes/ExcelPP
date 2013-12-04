@@ -11,10 +11,10 @@ import com.awesome.excelpp.xml.XML;
 import java.io.File;
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 import org.w3c.dom.Document;
+import java.util.Scanner;
 
 public class GUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -123,10 +123,21 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
 		} else if (e.getSource().equals(functionField)) {
-			String enteredText;
-			enteredText = functionField.getText();
-			functionField.setText("Je typte " + "\"" + enteredText + "\"");
-		} 
+			String enteredText = functionField.getText();
+			if (enteredText.charAt(0) == '=') {
+				Scanner sc;
+				sc = new Scanner(enteredText);
+				String formule = sc.next();
+				if (formule.equals("=SUM")) {
+					System.out.println("De formule is: SUM");
+				} else {
+					System.err.println("De formule wordt niet herkend");
+				}
+				sc.close();
+			} else {
+				JOptionPane.showMessageDialog(mainFrame, "De ingevoerde functie is ongeldig.");
+			}
+		}
 	}
 	
 	//Tijdelijk zodat de GUI nog steeds getest kan worden
