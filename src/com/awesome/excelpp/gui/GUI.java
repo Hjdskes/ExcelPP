@@ -130,12 +130,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonSave)) {
-			//XML.write(sheet.toXML(), file.toString());
 			try {
-				sheet.toXML("data/output.xml");
-			} catch (FileNotFoundException e1) {
-				System.out.println("Er is iets mis gegaan");
-				e1.printStackTrace();
+				sheet.toXML(file.toString());
+			} catch (FileNotFoundException ex) {
+				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+				ex.printStackTrace();
 			}
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
