@@ -84,7 +84,11 @@ public class XML {
 		        }
 		        theAttribute.getNodeValue();
 		      }
-		      sheet.setValueAt(data, Integer.parseInt(row), Integer.parseInt(column));
+		      
+		      int row_out = Integer.parseInt(row) - 1;
+		      int col_out = Integer.parseInt(column) -1;
+		      
+		      sheet.setValueAt(data, row_out, col_out);
 		    }
 		    return sheet;
 		  }
