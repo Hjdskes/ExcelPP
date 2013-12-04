@@ -18,7 +18,7 @@ import javax.swing.*;
 import org.w3c.dom.Document;
 import java.util.Scanner;
 
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
@@ -44,19 +44,9 @@ public class GUI extends JFrame implements ActionListener {
 		mainFrame.setSize (800, 400);
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		tabel = new SpreadSheetTable ();
-		
-		tabel.addMouseListener(new MouseAdapter(){
-			  public void mouseClicked(MouseEvent e) {
-				   if (e.getSource().equals(tabel)){
-				    	if(tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1){
-							String cellContent = (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
-							functionField.setText(cellContent);
-									}
-				    }
-				  }
-				});
 
-		
+		tabel.addMouseListener(this);
+
 		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
@@ -136,7 +126,8 @@ public class GUI extends JFrame implements ActionListener {
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonSave)) {
-			//save XML file
+			//we moeten of een SpreadSheet kunnen writen, of een SpreadSheet omzetten naar Document
+			//XML.write(doc, file.toString());
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
 		} else if (e.getSource().equals(functions)) {
@@ -161,7 +152,21 @@ public class GUI extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
+
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource().equals(tabel)) {
+			if(tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
+				String cellContent = functionField.getText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
+				functionField.setText(cellContent);
+			}
+		}
+	}
+
 	//Tijdelijk zodat de GUI nog steeds getest kan worden
 	public static void main(String[] args){
 		new GUI();
