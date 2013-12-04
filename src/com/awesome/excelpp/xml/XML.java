@@ -3,10 +3,13 @@ package com.awesome.excelpp.xml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -14,7 +17,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -98,14 +100,23 @@ public class XML {
 	 * @param doc - Document object met data voor het XML bestand.
 	 * @param file - Het XML bestand.
 	 * @throws TransformerException
+	 * @throws IOException 
 	 */
-	public static void write(Document doc, File file) throws TransformerException{
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(file);
-		//StreamResult result = new StreamResult(System.out);
-		transformer.transform(source, result);
+	public static void write(Document doc, String dest) throws TransformerException, IOException{
+		PrintWriter pw = new PrintWriter(dest);
+		
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer = tf.newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		StringWriter writer = new StringWriter();
+		transformer.transform(new DOMSource(doc), new StreamResult(writer));
+		String output = writer.getBuffer().toString();
+		System.out.println(output);
+		
+		pw.print("<?xml version=\"1.0\"?>\n");
+		pw.print(output);
+		pw.flush();
+		pw.close();
 	}
 
 }
