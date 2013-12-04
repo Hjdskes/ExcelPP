@@ -23,6 +23,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	private static int screenWidth;
 	private static int screenHeight;
 	private static SpreadSheetTable tabel;
+	private static SpreadSheet sheet;
 	private static JButton buttonAbout;
 	private static JButton buttonSave;
 	private static JButton buttonOpen;
@@ -40,8 +41,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
-		mainFrame.setLocation ((screenWidth / 2) - (800 / 2), (screenHeight / 2) - (400 / 2)); //center in het midden
 		mainFrame.setSize (800, 400);
+		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		tabel = new SpreadSheetTable ();
 
@@ -113,8 +114,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			file = fc.getSelectedFile();
 			try {
 				Document doc = XML.parse(file);
-				SpreadSheet test = XML.print(doc);
-				tabel.setModel(test);
+				sheet = XML.print(doc);
+				tabel.setModel(sheet);
 				tabel.updateUI();
 			} catch (Exception ex) {
 				System.err.println (ex.getMessage());
@@ -126,8 +127,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonSave)) {
-			//we moeten of een SpreadSheet kunnen writen, of een SpreadSheet omzetten naar Document
-			//XML.write(doc, file.toString());
+			//XML.write(sheet.toXML(), file.toString());
+			System.out.println(sheet.toXML());
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
 		} else if (e.getSource().equals(functions)) {
