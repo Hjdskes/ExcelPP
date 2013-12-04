@@ -70,6 +70,8 @@ public class Cell extends Observable {
 			} else {
 				value = "#ARGINV";
 			}
+		} else {
+			value = "#OPINV";
 		}
 		return value;
 	}

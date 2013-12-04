@@ -79,7 +79,7 @@ public class CellTest {
 	public void test_Constructor_FormuleInvalid6() {
 		Cell cell = new Cell("=6(2,4)");
 		assertTrue(cell.getContent().equals("=6(2,4)"));
-		assertTrue(cell.getValue().equals("OPINV"));
+		assertTrue(cell.getValue().equals("#OPINV"));
 	}
 	
 	@Test
