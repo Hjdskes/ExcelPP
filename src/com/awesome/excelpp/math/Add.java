@@ -1,7 +1,10 @@
 package com.awesome.excelpp.math;
 
 public class Add extends Formula {
-	public String getValue(String a, String b) {
-		return "" + (Integer.parseInt(a) + Integer.parseInt(b));
+	public int getValue(int ... numbers) {
+		int sum = 0;
+		for (int i = 0; i < numbers.length; i++)
+	        sum += numbers [i];
+		return sum;
 	}
 }

@@ -83,7 +83,7 @@ public class Cell extends Observable {
 			Constructor<?> formConstructor = formClass.getConstructor();
 			Formula form = (Formula)formConstructor.newInstance();
 			
-			value = "" + form.getValue(arg1, arg2);
+			value = "" + form.getValue(Integer.parseInt(arg1), Integer.parseInt(arg2));
 		} catch (NumberFormatException e) {
 			value = "#NUMINV";
 		} catch (Exception e) {
