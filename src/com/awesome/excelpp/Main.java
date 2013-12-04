@@ -16,7 +16,7 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
 		new GUI();
 		Document doc = XML.parse(new File("data/demo.xml"));
-		XML.print(doc);
+		XML.read(doc);
 	}
 
 

@@ -108,7 +108,7 @@ public class GUI extends JFrame implements ActionListener {
 			file = fc.getSelectedFile();
 			try {
 				Document doc = XML.parse(file);
-				XML.print(doc);
+				XML.read(doc);
 			} catch (Exception ex) {
 				System.err.println (ex.getMessage());
 			}

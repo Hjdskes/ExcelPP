@@ -42,7 +42,7 @@ public class XML {
 	 * 
 	 * @param doc - Een Document, eventueel ingelezen uit een XML bestand.
 	 */
-	public static void print(Document doc){
+	public static void read(Document doc){
 		doc.getDocumentElement().normalize();
 		
 		/* The master tag to identify the file */
