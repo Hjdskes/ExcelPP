@@ -20,6 +20,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.awesome.excelpp.models.SpreadSheet;
+
 /**Deze klasse parset van en write naar XML files.
  * 
  */
@@ -42,7 +44,8 @@ public class XML {
 	 * 
 	 * @param doc - Een Document, eventueel ingelezen uit een XML bestand.
 	 */
-	public static void print(Document doc){
+	public static SpreadSheet print(Document doc){
+		SpreadSheet sheet = new SpreadSheet();
 		doc.getDocumentElement().normalize();
 		
 		/* The master tag to identify the file */
@@ -81,10 +84,9 @@ public class XML {
 		        }
 		        theAttribute.getNodeValue();
 		      }
-		      System.out.println("Row: " + row);
-		      System.out.println("Column: " + column);
-		      System.out.println("Data: " + data);
+		      sheet.setValueAt(data, Integer.parseInt(row), Integer.parseInt(column));
 		    }
+		    return sheet;
 		  }
 	
 	/**Schrijft een Document object weg naar een File.
