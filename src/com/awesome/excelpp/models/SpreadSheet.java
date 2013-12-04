@@ -161,4 +161,21 @@ public class SpreadSheet implements TableModel {
 		}
 		return res;
 	}
+	
+	public String toXML() {
+		String res = "<?xml version=\"1.0\"?>\n";
+		res += "<SPREADSHEET>\n";
+		for (int row = 0; row < numberOfRows; row++) {
+			for (int col = 0; col < numberOfCols; col++) {
+				if((String)getValueAt(row, col) != "") {
+					String temp = (String)getValueAt(row, col);
+					temp = temp.replace("\n", "");
+					temp = temp.replace("\t", "");
+				res +="<CELL row=\"" + row + "\" column=\"" + col + "\">" + temp + "</CELL>\n";
+				}
+			}
+		}
+		res += "</SPREADSHEET>";
+		return res;
+	}
 }
