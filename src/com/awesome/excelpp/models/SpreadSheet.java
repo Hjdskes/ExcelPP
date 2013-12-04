@@ -1,7 +1,8 @@
 package com.awesome.excelpp.models;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Set;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -162,20 +163,31 @@ public class SpreadSheet implements TableModel {
 		return res;
 	}
 	
-	public String toXML() {
+	public void toXML(String dest) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(dest);
 		String res = "<?xml version=\"1.0\"?>\n";
 		res += "<SPREADSHEET>\n";
+		
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
 				if((String)getValueAt(row, col) != "") {
 					String temp = (String)getValueAt(row, col);
+					
+					/* Normalize stuff */
 					temp = temp.replace("\n", "");
 					temp = temp.replace("\t", "");
-				res +="<CELL row=\"" + row + "\" column=\"" + col + "\">" + temp + "</CELL>\n";
+					temp = temp.replace("\r", "");
+					int store_row = row + 1;
+					int store_col = col + 1;
+					
+				res +="<CELL row=\"" + store_row  + "\" column=\"" + store_col + "\">" + temp + "</CELL>\n";
 				}
 			}
 		}
 		res += "</SPREADSHEET>";
-		return res;
+						
+		pw.print(res);
+		pw.flush();
+		pw.close();
 	}
 }
