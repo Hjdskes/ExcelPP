@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class Lexer {
 	int index = 0;
 	private ArrayList<Token> tokens;
-	private String patterns = "";
+	private String patterns;
 	
 	public Lexer(String input) {
 		this.tokens = new ArrayList<Token>();
@@ -17,14 +17,21 @@ public class Lexer {
 		}
 		Pattern tokenPatterns = Pattern.compile(new String(patterns.substring(1)));
 
+		if (input == null)
+			return;
+		
 	    Matcher matcher = tokenPatterns.matcher(input);
 	    while(matcher.find()) {
 	    	if (matcher.group(TokenType.NUMBER.name()) != null)
 	    		tokens.add(new Token(TokenType.NUMBER, matcher.group(TokenType.NUMBER.name())));
 	    	if (matcher.group(TokenType.WORD.name()) != null)
 	    		tokens.add(new Token(TokenType.WORD, matcher.group(TokenType.WORD.name())));
+	    	if (matcher.group(TokenType.BINARYOP.name()) != null)
+	    		tokens.add(new Token(TokenType.BINARYOP, matcher.group(TokenType.BINARYOP.name())));
 	    	if (matcher.group(TokenType.BRACKET.name()) != null)
 	    		tokens.add(new Token(TokenType.BRACKET, matcher.group(TokenType.BRACKET.name())));
+	    	if (matcher.group(TokenType.COMMA.name()) != null)
+	    		tokens.add(new Token(TokenType.COMMA, matcher.group(TokenType.COMMA.name())));
 	    }
 	}
 	
@@ -36,8 +43,8 @@ public class Lexer {
 		return hasNext() && tokens.get(index).type == TokenType.WORD;
 	}
 	
-	public String next() {
-		return hasNext() ? tokens.get(index++).data : null;
+	public Token next() {
+		return hasNext() ? tokens.get(index++) : null;
 	}
 }
 
@@ -46,25 +53,12 @@ enum TokenType {
 	WORD("[a-zA-Z]+"),			// a-z, A-Z
 	BINARYOP("[*/+-]"),			// *, /, +, -
 	BRACKET("[\\(\\)]"),		// (, )
+	COMMA(","),					// ,
 	WHITESPACE("\\s+");			// all whitespace
 	
     public final String pattern;
 
     private TokenType(String pattern) {
         this.pattern = pattern;
-    }
-}
-
-class Token {
-    public TokenType type;
-    public String data;
-
-    public Token(TokenType type, String data) {
-        this.type = type;
-        this.data = data;
-    }
-    
-    public String toString() {
-        return String.format("(%s %s)", type.name(), data);
     }
 }

@@ -16,10 +16,10 @@ public class Parser {
 		String value = "";
 		if (scanner.hasNextWord()) {
 			String formName = "com.awesome.excelpp.math." + scanner.next();
-			String formLBracket = scanner.next();
-			String arg1 = scanner.next();
-			String arg2 = scanner.next();
-			String formRBracket = scanner.next();
+			String formLBracket = scanner.next().data;
+			String arg1 = scanner.next().data;
+			String arg2 = scanner.next().data;
+			String formRBracket = scanner.next().data;
 			
 			if (formLBracket != null && formLBracket.equals("(") &&
 				formRBracket != null && formRBracket.equals(")")) {
