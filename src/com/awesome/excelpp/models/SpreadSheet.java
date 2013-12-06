@@ -1,5 +1,6 @@
 package com.awesome.excelpp.models;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -163,8 +164,13 @@ public class SpreadSheet implements TableModel {
 		return res;
 	}
 	
-	public void toXML(String dest) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(dest);
+	/**
+	 * Outputs the assignd spreadsheet map to an normalized XML file
+	 * @param dest
+	 * @throws FileNotFoundException
+	 */
+	public void toXML(File file) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(file);
 		String res = "<?xml version=\"1.0\"?>\n";
 		res += "<SPREADSHEET>\n";
 		

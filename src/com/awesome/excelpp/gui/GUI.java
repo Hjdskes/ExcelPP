@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 
 import java.util.Scanner;
 
-public class GUI extends JFrame implements ActionListener, MouseListener {
+public class GUI extends JFrame implements ActionListener, MouseListener, FocusListener{
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
@@ -37,7 +37,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	private static ImageIcon openIcon;
 	private static ImageIcon saveIcon;
 	private static ImageIcon aboutIcon;
-
+	private static int selectedColumn;
+	private static int selectedRow;
+	
 	public GUI () {
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
@@ -50,6 +52,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		tabel = new SpreadSheetTable ();
 
 		tabel.addMouseListener(this);
+		tabel.addFocusListener(this);
 
 		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
@@ -82,6 +85,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
 
+		functionField.addFocusListener(this);
+		
 		openIcon = new ImageIcon("data/icons/PNG_32x32_black/folder-icon_32x32px.png");
 		saveIcon = new ImageIcon("data/icons/PNG_32x32_black/save-disk-icon_32x32px.png");
 		aboutIcon = new ImageIcon("data/icons/PNG_32x32_black/question-mark-icon_32x32px.png");
@@ -130,12 +135,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonSave)) {
-			//XML.write(sheet.toXML(), file.toString());
 			try {
-				sheet.toXML("data/output.xml");
-			} catch (FileNotFoundException e1) {
-				System.out.println("Er is iets mis gegaan");
-				e1.printStackTrace();
+				sheet.toXML(file.toString());
+			} catch (FileNotFoundException ex) {
+				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+				ex.printStackTrace();
 			}
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
@@ -173,6 +177,21 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				String cellContent = functionField.getText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
 				functionField.setText(cellContent);
 			}
+		}
+	}
+	
+	public void focusGained(FocusEvent e){
+		
+	}
+	
+	public void focusLost(FocusEvent e){
+		if(e.getSource().equals(tabel)){
+			selectedColumn = tabel.getSelectedColumn();
+			selectedRow = tabel.getSelectedRow();
+		}
+		
+		if(e.getSource().equals(functionField)){
+			tabel.setValueAt(functionField.getText(), selectedRow, selectedColumn);
 		}
 	}
 
