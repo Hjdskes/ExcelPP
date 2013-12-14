@@ -2,7 +2,7 @@ package com.awesome.excelpp.models;
 
 import java.util.Observable;
 
-import com.awesome.excelpp.scanner.Parser;
+import com.awesome.excelpp.parser.Parser;
 
 public class Cell extends Observable {
 	private String content; // =2+2
@@ -41,8 +41,8 @@ public class Cell extends Observable {
 	 */
 	public String getValue() {
 		if (content != null && content.charAt(0) == '=') {
-			Parser parse = new Parser(content.substring(1));
-			return parse.getValue();
+			//Parser parse = new Parser(content.substring(1));
+			//return parse.getValue();
 		}
 		
 		return content;

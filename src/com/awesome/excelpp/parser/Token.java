@@ -1,4 +1,4 @@
-package com.awesome.excelpp.scanner;
+package com.awesome.excelpp.parser;
 
 class Token {
     public TokenType type;

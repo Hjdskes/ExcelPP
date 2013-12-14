@@ -1,4 +1,4 @@
-package com.awesome.excelpp.scanner;
+package com.awesome.excelpp.parser;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
