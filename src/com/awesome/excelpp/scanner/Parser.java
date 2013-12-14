@@ -1,51 +1,87 @@
 package com.awesome.excelpp.scanner;
 
-import java.lang.reflect.Constructor;
-
-import com.awesome.excelpp.math.Formula;
-
 public class Parser {
-	/**
-	 * Parses the operation stored in this Cells content
-	 * @param operation		String representing an operation, for example ADD(1,2)
-	 * @return				the result of the stored operation, as a String
-	 */
-	public String parseFormula(String formula) {
-		Lexer scanner = new Lexer(formula);
-		
-		String value = "";
-		if (scanner.hasNextWord()) {
-			String formName = "com.awesome.excelpp.math." + scanner.next();
-			String formLBracket = scanner.next().data;
-			String arg1 = scanner.next().data;
-			String arg2 = scanner.next().data;
-			String formRBracket = scanner.next().data;
-			
-			if (formLBracket != null && formLBracket.equals("(") &&
-				formRBracket != null && formRBracket.equals(")")) {
-				value = getFormulaValue(formName, arg1, arg2);
-			} else {
-				value = "#ARGINV";
-			}
-		} else {
-			value = "#OPINV";
-		}
-		return value;
+	Lexer lex;
+	Token lookahead;
+	
+	public Parser(Lexer lex) throws Exception {
+		this.lex = lex;
+		lookahead = lex.next();
+		expression();
 	}
 	
-	private String getFormulaValue(String formName, String arg1, String arg2) {
-		String value = "";
-		try {
-			Class<?> formClass = Class.forName(formName); 
-			Constructor<?> formConstructor = formClass.getConstructor();
-			Formula form = (Formula)formConstructor.newInstance();
-			
-			value = "" + form.getValue(Integer.parseInt(arg1), Integer.parseInt(arg2));
-		} catch (NumberFormatException e) {
-			value = "#NUMINV";
-		} catch (Exception e) {
-			value = "#OPINV";
+	public Parser(String str) throws Exception {
+		this(new Lexer(str));
+	}
+	 
+	private void expression() throws Exception {
+		System.out.println("expression -> term sum_op");
+		signedTerm();
+		sumOp();
+	}
+	 
+	private void sumOp() throws Exception {
+		if (lookahead.type == TokenType.PLUSMINUS) {
+			System.out.println("sum_op -> PLUSMINUS term sum_op");
+			lookahead = lex.next();
+			term();
+			sumOp();
+	    } else {
+	    	System.out.println("sum_op -> EOL");
+	    }
+	}
+	
+	private void signedTerm() throws Exception {
+		if (lookahead.type == TokenType.PLUSMINUS) {
+			System.out.println("signedTerm -> PLUSMINUS term");
+			lookahead = lex.next();
+			term();
+		} else {
+			System.out.println("signedTerm -> term");
+			term();
 		}
-		return value;
+	}
+
+	private void term() throws Exception {
+		System.out.println("term -> argument term_op");
+		argument();
+		termOp();
+	}
+
+	private void termOp() throws Exception {
+		if (lookahead.type == TokenType.MULTDIV) {
+			System.out.println("term_op -> MULTDIV argument term_op");
+			lookahead = lex.next();
+			argument();
+			termOp();
+		} else {
+			System.out.println("term_op -> EOL");
+		}
+	}
+
+	private void argument() throws Exception {
+		if (lookahead.type == TokenType.LBRACKET) {
+			System.out.println("argument -> OPEN_BRACKET sum CLOSE_BRACKET");
+			lookahead = lex.next();
+			expression();
+			
+			if (lookahead.type != TokenType.RBRACKET)
+				throw new Exception("Closing brackets expected and " +
+											lookahead.type + " found instead");
+			
+			lookahead = lex.next();
+		} else {
+			System.out.println("argument -> value");
+			value();
+		}
+	}
+
+	private void value() throws Exception {
+		if (lookahead.type == TokenType.NUMBER) {
+			System.out.println("value -> NUMBER");
+			lookahead = lex.next();
+		} else {
+			throw new Exception("Unexpected symbol " + lookahead.type + " found");
+		}
 	}
 }

@@ -26,10 +26,14 @@ public class Lexer {
 	    		tokens.add(new Token(TokenType.NUMBER, matcher.group(TokenType.NUMBER.name())));
 	    	if (matcher.group(TokenType.WORD.name()) != null)
 	    		tokens.add(new Token(TokenType.WORD, matcher.group(TokenType.WORD.name())));
-	    	if (matcher.group(TokenType.BINARYOP.name()) != null)
-	    		tokens.add(new Token(TokenType.BINARYOP, matcher.group(TokenType.BINARYOP.name())));
-	    	if (matcher.group(TokenType.BRACKET.name()) != null)
-	    		tokens.add(new Token(TokenType.BRACKET, matcher.group(TokenType.BRACKET.name())));
+	    	if (matcher.group(TokenType.PLUSMINUS.name()) != null)
+	    		tokens.add(new Token(TokenType.PLUSMINUS, matcher.group(TokenType.PLUSMINUS.name())));
+	    	if (matcher.group(TokenType.MULTDIV.name()) != null)
+	    		tokens.add(new Token(TokenType.MULTDIV, matcher.group(TokenType.MULTDIV.name())));
+	    	if (matcher.group(TokenType.LBRACKET.name()) != null)
+	    		tokens.add(new Token(TokenType.LBRACKET, matcher.group(TokenType.LBRACKET.name())));
+	    	if (matcher.group(TokenType.RBRACKET.name()) != null)
+	    		tokens.add(new Token(TokenType.RBRACKET, matcher.group(TokenType.RBRACKET.name())));
 	    	if (matcher.group(TokenType.COMMA.name()) != null)
 	    		tokens.add(new Token(TokenType.COMMA, matcher.group(TokenType.COMMA.name())));
 	    }
@@ -44,17 +48,20 @@ public class Lexer {
 	}
 	
 	public Token next() {
-		return hasNext() ? tokens.get(index++) : null;
+		return hasNext() ? tokens.get(index++) : new Token(TokenType.EOL, null);
 	}
 }
 
 enum TokenType {
-	NUMBER("-?[0-9]+"),			// (-)0-9
+	NUMBER("[0-9]+"),			// (-)0-9
 	WORD("[a-zA-Z]+"),			// a-z, A-Z
-	BINARYOP("[*/+-]"),			// *, /, +, -
-	BRACKET("[\\(\\)]"),		// (, )
+	PLUSMINUS("[+-]"),			// +, -
+	MULTDIV("[*/]"),			// *, /
+	LBRACKET("\\("),			// (
+	RBRACKET("\\)"),			// )
 	COMMA(","),					// ,
-	WHITESPACE("\\s+");			// all whitespace
+	WHITESPACE("\\s+"),			// all whitespace
+	EOL("");
 	
     public final String pattern;
 

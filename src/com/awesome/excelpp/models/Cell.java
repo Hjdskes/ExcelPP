@@ -40,8 +40,10 @@ public class Cell extends Observable {
 	 * @return			String with an evaluated expression
 	 */
 	public String getValue() {
-		if (content != null && content.charAt(0) == '=')
-			return new Parser().parseFormula(content.substring(1));
+		if (content != null && content.charAt(0) == '=') {
+			Parser parse = new Parser(content.substring(1));
+			return parse.getValue();
+		}
 		
 		return content;
 	}
