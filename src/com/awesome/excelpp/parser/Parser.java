@@ -26,9 +26,10 @@ public class Parser {
 	private ExpressionNode sumOp(ExpressionNode a) throws Exception {
 		if (lookahead.type == TokenType.PLUSMINUS) {
 			//System.out.println("sum_op -> PLUSMINUS term sum_op");
+			boolean addition = lookahead.data.equals("+");
 			
 			lookahead = lex.next();
-			ExpressionNode sum = new AdditionExpressionNode(a, term());
+			ExpressionNode sum = new AdditionExpressionNode(a, term(), addition);
 			return sumOp(sum);
 	    }
 	    
@@ -39,7 +40,8 @@ public class Parser {
 	private ExpressionNode signedTerm() throws Exception {
 		if (lookahead.type == TokenType.PLUSMINUS) {
 			//System.out.println("signedTerm -> PLUSMINUS term");
-			boolean positive = lookahead.data.equals('+');
+			boolean positive = lookahead.data.equals("+");
+			
 			lookahead = lex.next();
 			return term();
 		}
@@ -56,9 +58,10 @@ public class Parser {
 	private ExpressionNode termOp(ExpressionNode a) throws Exception {
 		if (lookahead.type == TokenType.MULTDIV) {
 			//System.out.println("term_op -> MULTDIV argument term_op");
+			boolean multiply = lookahead.data.equals("*");
 			
 			lookahead = lex.next();
-			ExpressionNode term = new MultiplicationExpressionNode(a, argument());
+			ExpressionNode term = new MultiplicationExpressionNode(a, argument(), multiply);
 			return termOp(term);
 		}
 		
