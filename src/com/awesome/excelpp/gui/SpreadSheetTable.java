@@ -7,6 +7,10 @@ import com.awesome.excelpp.models.SpreadSheet;
 
 import java.awt.Color;
 
+/**
+ * Tablemodel for the spreadsheet
+ *
+ */
 public class SpreadSheetTable extends JTable {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	public static JScrollPane scrollPane;

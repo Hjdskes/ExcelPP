@@ -20,7 +20,10 @@ import javax.swing.*;
 import org.w3c.dom.Document;
 
 import java.util.Scanner;
-
+/**
+ * Class for the GUI
+ *
+ */
 public class GUI extends JFrame implements ActionListener, MouseListener, FocusListener{
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
@@ -40,6 +43,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private static int selectedColumn;
 	private static int selectedRow;
 	
+	/**
+	 * Constructor of GUI
+	 */
 	public GUI () {
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
@@ -58,21 +64,29 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
 	}
-
+	/**
+	 * Returns the screenwidth
+	 */
 	private static double getScreenWidth() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
 
 		return gd.getDefaultConfiguration().getBounds().getWidth();
 	}
-
+	
+	/**
+	 * Returns the screenheight
+	 */
 	private static double getScreenHeight() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
 
 		return gd.getDefaultConfiguration().getBounds().getHeight();
 	}
-
+	
+	/**
+	 * Creates the buttonpanel for our GUI
+	 */
 	private JPanel createButtonPanel() {
 		final JPanel buttonPanel = new JPanel();
 
@@ -115,7 +129,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 
 		return buttonPanel;
 	}
-
+	
+	/**
+	 * Opens the file dialog in which the user can select which file to open
+	 */
 	private final void openFileDialog() {
 		final JFileChooser fc = new JFileChooser();
 		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
