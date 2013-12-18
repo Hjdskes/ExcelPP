@@ -36,7 +36,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private static int selectedRow;
 	
 	/**
-	 * Constructor of GUI
+	 * Constructor
 	 */
 	public GUI () {
 		final JPanel buttonPanel = createButtonPanel();
@@ -60,7 +60,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 
 	/**
-	 * Returns the screenwidth
+	 * Function that gets the screen width
+	 * @return int
 	 */
 	private static double getScreenWidth() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -70,7 +71,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 	
 	/**
-	 * Returns the screenheight
+	 * Function that gets the screen height
+	 * @return int
 	 */
 	private static double getScreenHeight() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -80,7 +82,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 	
 	/**
-	 * Creates the buttonpanel for our GUI
+	 * createButtonPanel creates a JPanel holding the required buttons
+	 * @return JPanel
 	 */
 	private JPanel createButtonPanel() {
 		final JPanel panel = new JPanel();
@@ -144,7 +147,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 	
 	/**
-	 * Opens the file dialog in which the user can select which file to open
+	 * Opens a file dialog in which the user can select the file to open
+	 * @return void
 	 */
 	private final void openFileDialog() {
 		final JFileChooser fc = new JFileChooser();
@@ -163,6 +167,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		}
 	}
 
+	/**
+	 * Opens a file dialog in which the user can select where to save the current SpreadSheet
+	 * @return void
+	 */
 	private final void openSaveDialog() {
 		//ToDo: automatisch aanroepen als file niet bekend is
 		final JFileChooser fs = new JFileChooser();
@@ -178,7 +186,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			}
 		}
 	}
-	
+
+	/**
+	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts
+	 * @return void
+	 */
 	private final void openHelpDialog() {
 		JDialog helpDialog = new JDialog(mainFrame, "help");
 		JPanel helpPanel = new JPanel();
@@ -209,6 +221,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		helpDialog.setVisible(true);
 	}
 
+	/**
+	 * Listens for all events emitted by the elements of the GUI
+	 * Calls other functions
+	 * @return void
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
@@ -258,6 +275,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 
+	/**
+	 * Listens for all mouseClicked events emitted by the elements of the GUI
+	 * @return void
+	 */
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
 			if(tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
@@ -268,7 +289,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 	
 	public void focusGained(FocusEvent e) {}
-	
+
+	/**
+	 * Listens for all focusLost events emitted by the elements of the GUI
+	 * @return void
+	 */
 	public void focusLost(FocusEvent e){
 		if(e.getSource().equals(tabel)){
 			selectedColumn = tabel.getSelectedColumn();
