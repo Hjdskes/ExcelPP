@@ -115,7 +115,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonOpen.setToolTipText("Open file");
-		buttonOpen.setToolTipText("New file");
+		buttonNew.setToolTipText("New file");
 		buttonSave.setToolTipText("Save file");
 		buttonSaveAs.setToolTipText("Save as");
 		buttonAbout.setToolTipText("About");
