@@ -1,30 +1,21 @@
 package com.awesome.excelpp;
 
 import javax.swing.UIManager;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 import com.awesome.excelpp.gui.GUI;
-import com.awesome.excelpp.xml.XML;
 
 public class Main {
-	public static void main(String[] args) throws FileNotFoundException, IOException, ParserConfigurationException, SAXException, TransformerException {
+	public static void main(String[] args) {
 		try {
-			// Set system look & feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		new GUI();
-		Document doc = XML.parse(new File("data/demo.xml"));
-		XML.print(doc);
+
+		try {
+			new GUI();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }

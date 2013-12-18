@@ -182,7 +182,7 @@ public class SpreadSheet implements TableModel {
 	}
 	
 	/**
-	 * Outputs the assignd spreadsheet map to an normalized XML file
+	 * Outputs the assigned spreadsheet map to a normalized XML file
 	 * @param dest
 	 * @throws FileNotFoundException
 	 */
@@ -193,7 +193,7 @@ public class SpreadSheet implements TableModel {
 		
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				if((String)getValueAt(row, col) != "") {
+				if((String)getValueAt(row, col) != null) {
 					String temp = (String)getValueAt(row, col);
 					
 					/* Normalization */
@@ -207,7 +207,7 @@ public class SpreadSheet implements TableModel {
 				}
 			}
 		}
-		res += "</SPREADSHEET>";
+		res += "</SPREADSHEET>\n";
 						
 		pw.print(res);
 		pw.flush();

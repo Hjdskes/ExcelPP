@@ -7,10 +7,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+
 import org.w3c.dom.Document;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
@@ -21,24 +23,24 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
+	private static JFrame mainFrame;
+	private static JTextField functionField;
 	private static SpreadSheetTable tabel;
 	private static SpreadSheet sheet;
+	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
 	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
 	private static JButton buttonNew;
 	private static JButton buttonOpen;
-	private static JFrame mainFrame;
-	private static JTextField functionField;
 	private File file = null;
-	private static JComboBox<String> functions;
 	private static int selectedColumn;
 	private static int selectedRow;
 	
 	/**
 	 * Constructor
 	 */
-	public GUI () {
+	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
@@ -57,6 +59,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
+
+		file = File.createTempFile("excelpp_temp", ".xml");
 	}
 
 	/**
@@ -172,15 +176,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * @return void
 	 */
 	private final void openSaveDialog() {
-		final JFileChooser fs = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
-		fs.setFileFilter(filter);
-		if (fs.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			String file = fs.getSelectedFile().getName();
+		final JFileChooser fc = new JFileChooser();
+		if (fc.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
+			String file = fc.getSelectedFile().getName();
 			file = file.replaceAll("\\...*", "");
 			file += ".xml";
 			File fileXML = new File(file);
 			try {
+				fileXML.mkdirs();
 				sheet.toXML(fileXML);
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
@@ -325,6 +328,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 
 	//Tijdelijk zodat de GUI nog steeds getest kan worden
 	public static void main(String[] args){
-		new GUI();
+		try {
+			new GUI();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }
