@@ -34,8 +34,8 @@ public class Lexer {
 	    		tokens.add(new Token(TokenType.LBRACKET, matcher.group(TokenType.LBRACKET.name())));
 	    	if (matcher.group(TokenType.RBRACKET.name()) != null)
 	    		tokens.add(new Token(TokenType.RBRACKET, matcher.group(TokenType.RBRACKET.name())));
-	    	if (matcher.group(TokenType.COMMA.name()) != null)
-	    		tokens.add(new Token(TokenType.COMMA, matcher.group(TokenType.COMMA.name())));
+	    	if (matcher.group(TokenType.DELIM.name()) != null)
+	    		tokens.add(new Token(TokenType.DELIM, matcher.group(TokenType.DELIM.name())));
 	    }
 	}
 	
@@ -59,7 +59,8 @@ enum TokenType {
 	MULTDIV("[*/]"),			// *, /
 	LBRACKET("\\("),			// (
 	RBRACKET("\\)"),			// )
-	COMMA(","),					// ,
+	DELIM("[;,]"),				// ;, ,
+	LOGIC("[<>=]"),				// <, >, =
 	WHITESPACE("\\s+"),			// all whitespace
 	EOL("");
 	

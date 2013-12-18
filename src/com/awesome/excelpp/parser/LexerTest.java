@@ -77,7 +77,7 @@ public class LexerTest {
 		assertTrue(next.data.equals(arg1));
 		
 		next = lex.next();
-		assertTrue(next.type == TokenType.COMMA);
+		assertTrue(next.type == TokenType.DELIM);
 		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
@@ -106,7 +106,7 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertFalse(lex.hasNextWord());
-		assertTrue(next.type == TokenType.COMMA);
+		assertTrue(next.type == TokenType.DELIM);
 		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
