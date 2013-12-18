@@ -185,7 +185,7 @@ public class SpreadSheet implements TableModel {
 				if((String)getValueAt(row, col) != "") {
 					String temp = (String)getValueAt(row, col);
 					
-					/* Normalize stuff */
+					/* Normalization */
 					temp = temp.replace("\n", "");
 					temp = temp.replace("\t", "");
 					temp = temp.replace("\r", "");
