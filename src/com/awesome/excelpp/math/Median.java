@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Median {
+public class Median extends Formula {
 	public int getValue(int...numbers) {
 		int median = 0;
 		List<Integer> integers = new ArrayList<Integer>();	

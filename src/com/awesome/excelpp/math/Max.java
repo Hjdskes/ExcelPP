@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-public class Max {
+public class Max extends Formula {
 	public int getValue(int...numbers) {
 		int maximum = 0;
 		for(int i=0; i < numbers.length; i++) {

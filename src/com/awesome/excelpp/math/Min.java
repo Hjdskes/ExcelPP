@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-public class Min {
+public class Min extends Formula {
 	public int getValue(int...numbers) {
 		int minimum = 0;
 		for(int i=0; i<numbers.length; i++)
