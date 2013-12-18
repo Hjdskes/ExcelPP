@@ -140,7 +140,7 @@ public class SpreadSheet implements TableModel {
 	public void fillSheet() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				setValueAt("=Add(1,2)", row, col);
+				setValueAt("4", row, col);
 			}
 		}
 	}
