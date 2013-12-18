@@ -14,8 +14,8 @@ import javax.swing.table.TableModel;
  */
 public class SpreadSheet implements TableModel {
 	private HashMap<Integer, Cell> cells;
-	protected final short numberOfRows = 10;
-	protected final short numberOfCols = 10;
+	protected final short numberOfRows = 42;
+	protected final short numberOfCols = 26;
 	
 	public SpreadSheet() {
 		cells = new HashMap<Integer, Cell>();
