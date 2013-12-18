@@ -183,6 +183,34 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			}
 		}
 	}
+	
+	private final void openHelpDialog(){
+		JPanel helpPanel = new JPanel();
+		JDialog helpDialog = new JDialog(mainFrame, "help");
+		JTabbedPane helpTabbedPane = new JTabbedPane();
+		
+		JPanel formulaPanel = new JPanel();
+		helpTabbedPane.addTab("Formula Help", formulaPanel);
+		JLabel formulaText = new JLabel("<html>Help for formulas</html>");
+		formulaPanel.add(formulaText);
+		helpPanel.add(helpTabbedPane);
+		
+		JPanel hotkeyPanel = new JPanel();
+		JLabel hotkeyText = new JLabel("<html>Open - ctrl+o<br>Save - ctrl+s</html>");
+		hotkeyPanel.add(hotkeyText);
+		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
+		
+		JPanel aboutPanel = new JPanel();
+		JLabel aboutText = new JLabel("<html>Excel++ is een project van studenten aan de TU Delft.<br>Copyright 2013 Team Awesome.</html>");
+		aboutPanel.add(aboutText);
+		helpTabbedPane.addTab("About", aboutPanel);
+		
+		helpDialog.add(helpPanel);
+		helpDialog.setSize(500, 200);
+		helpDialog.setLocationRelativeTo(null);
+		
+		helpDialog.setVisible(true);
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
@@ -204,7 +232,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			//automatisch detecteren in het geval van nieuwe sheet
 			openSaveDialog();
 		} else if (e.getSource().equals(buttonAbout)) {
-			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
+			openHelpDialog();
 		} else if (e.getSource().equals(functions)) {
 			String formula = (String)functions.getSelectedItem();
 			formula = "=" + formula;
