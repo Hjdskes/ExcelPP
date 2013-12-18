@@ -116,7 +116,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonOpen.setToolTipText("Open file");
-		buttonOpen.setToolTipText("New file");
+		buttonNew.setToolTipText("New file");
 		buttonSave.setToolTipText("Save file");
 		buttonSaveAs.setToolTipText("Save as");
 		buttonAbout.setToolTipText("About");
@@ -189,7 +189,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html><b>Open</b> - Control + o<br><b>Save</b> - Control + s</html>");
+		JLabel hotkeyText = new JLabel("<html>Open file- Control + O<br>New file - Control + N<br>Save file - Control + S<br></html>");
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();
