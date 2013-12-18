@@ -18,7 +18,7 @@ public class SpreadSheetTable extends JTable {
 	public SpreadSheetTable (SpreadSheet sheet) {
 		super(sheet);
 
-		sheet.fillSheetFormula();
+		sheet.fillSheet();
 		setFillsViewportHeight (true);
 		setSelectionBackground (new Color(74, 144, 217));
 		setOpaque(true); //MUST do this for background to show up. even verifiëren
