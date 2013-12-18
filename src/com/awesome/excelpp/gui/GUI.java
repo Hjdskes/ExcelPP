@@ -230,10 +230,20 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonNew)) {
-			// ToDo: flaggen als er een bewerkt bestand verloren zal gaan. of tabs
-			// ToDo: hoe op te slaan?
-			SpreadSheet newSheet = new SpreadSheet();
-			tabel.setModel (newSheet);
+			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
+			try{
+				Document doc = XML.parse(file);
+				SpreadSheet fileSheet = XML.print(doc);
+				if(!sheet.equals(fileSheet)){
+					JOptionPane.showMessageDialog(mainFrame, "Aanpassingen gemaakt aan het huidige bestand zouden verloren gaan");
+				}
+			}catch (Exception ex) {
+				System.err.println (ex.getMessage());
+			}
+			
+			
+			sheet = new SpreadSheet();
+			tabel.setModel (sheet);
 			tabel.updateUI();
 			file = null;
 		} else if (e.getSource().equals(buttonSave)) {
@@ -248,7 +258,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			}
 			}
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			//automatisch detecteren in het geval van nieuwe sheet
 			openSaveDialog();
 		} else if (e.getSource().equals(buttonAbout)) {
 			openHelpDialog();
