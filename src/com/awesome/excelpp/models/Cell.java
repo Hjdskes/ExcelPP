@@ -5,7 +5,10 @@ import java.util.Observable;
 import java.util.Scanner;
 
 import com.awesome.excelpp.math.Formula;
-
+/**
+ * Class that represents a cell
+ *
+ */
 public class Cell extends Observable {
 	private String content; // =2+2
 	

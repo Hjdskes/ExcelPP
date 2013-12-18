@@ -8,6 +8,10 @@ import java.util.HashMap;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+/**
+ * Class that represents a spreadsheet
+ * 
+ */
 public class SpreadSheet implements TableModel {
 	private HashMap<Integer, Cell> cells;
 	protected final short numberOfRows = 10;
@@ -21,7 +25,9 @@ public class SpreadSheet implements TableModel {
 	 * column value greater than or equal to the specified column value to the right.
 	 * 
 	 * @param col - the column value at which a column will be inserted.
-	 *
+	 */
+	
+	/*
 	public void insertCol(int col){
 		if(col >= this.numberOfCols){
 			return;

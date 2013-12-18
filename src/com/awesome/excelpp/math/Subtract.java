@@ -1,5 +1,9 @@
 package com.awesome.excelpp.math;
 
+/**
+ * Class for the substract formula
+ *
+ */
 public class Subtract extends Formula {
 	public int getValue(int ... numbers) {
 		int res = numbers[0];
