@@ -1,11 +1,5 @@
 package com.awesome.excelpp.gui;
 
-/*
- * Jente & Bernd
- * We moeten o.a. uitzoeken hoe we kunnen voorkomen dat je een venster zodanig verkleint zodat de componenten
- *   verdwijnen.
- */
-
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.models.*;
 
@@ -53,7 +47,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.setSize (800, 400);
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-
+		mainFrame.setMinimumSize(new Dimension(800, 52));
 		tabel = new SpreadSheetTable (new SpreadSheet());
 
 		tabel.addMouseListener(this);
