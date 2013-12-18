@@ -21,7 +21,7 @@ public class SpreadSheetTable extends JTable {
 		//setOpaque(true); //MUST do this for background to show up. even verifiëren
 		
 		SpreadSheet sheet = new SpreadSheet();
-		sheet.fillSheetFormula();
+		sheet.fillSheet();
 		this.setModel(sheet);
 	}
 }
