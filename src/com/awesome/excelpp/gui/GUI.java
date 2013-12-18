@@ -231,20 +231,29 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonNew)) {
-			// ToDo: flaggen als er een bewerkt bestand verloren zal gaan. of tabs. of automatisch opslaan.
-			SpreadSheet newSheet = new SpreadSheet();
-			tabel.setModel (newSheet);
-			tabel.updateUI();
-		} else if (e.getSource().equals(buttonSave)) {
-			if(file == null) {
-				openSaveDialog();
-				return;
-			}
+			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
 			try {
-				sheet.toXML(file);
-			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
-				ex.printStackTrace();
+				Document doc = XML.parse(file);
+				SpreadSheet fileSheet = XML.print(doc);
+				if(!sheet.equals(fileSheet))
+					JOptionPane.showMessageDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
+			} catch (Exception ex) {
+				System.err.println (ex.getMessage());
+			}
+			sheet = new SpreadSheet();
+			tabel.setModel (sheet);
+			tabel.updateUI();
+			file = null;
+		} else if (e.getSource().equals(buttonSave)) {
+			if(file == null)
+				openSaveDialog();
+			else {
+				try {
+					sheet.toXML(file);
+				} catch (FileNotFoundException ex) {
+					JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+					ex.printStackTrace();
+				}
 			}
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			openSaveDialog();

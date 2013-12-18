@@ -21,6 +21,17 @@ public class SpreadSheet implements TableModel {
 		cells = new HashMap<Integer, Cell>();
 	}
 	
+	public boolean equals(Object other){
+		Boolean res = false;
+		if(other instanceof SpreadSheet){
+			SpreadSheet that = (SpreadSheet) other;
+			if(this.toString().equals(that.toString())){
+				res = true;
+			}
+		}
+		return res;
+	}
+	
 	/**Inserts a column at the specified column value, and moves each column with
 	 * column value greater than or equal to the specified column value to the right.
 	 * 
