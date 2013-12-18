@@ -91,8 +91,8 @@ public class SpreadSheet implements TableModel {
 
 	@Override
 	public String getColumnName(int col) {
-		// TODO Auto-generated method stub
-		return "Test";
+		char a = (char) (col + 65);
+		return Character.toString(a);
 	}
 
 	public int getRowCount() {
@@ -140,7 +140,7 @@ public class SpreadSheet implements TableModel {
 	public void fillSheet() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				setValueAt("=Add(1,2)", row, col);
+				setValueAt("4", row, col);
 			}
 		}
 	}

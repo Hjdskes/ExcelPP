@@ -17,12 +17,10 @@ public class SpreadSheetTable extends JTable {
 
 	public SpreadSheetTable (SpreadSheet sheet) {
 		super(sheet);
-		sheet.fillSheetFormula();
 
-		Color backgroundColor = new Color(222, 222, 222);
-
+		sheet.fillSheet();
 		setFillsViewportHeight (true);
-		setSelectionBackground (backgroundColor);
-		//setOpaque(true); //MUST do this for background to show up. even verifiëren
+		setSelectionBackground (new Color(74, 144, 217));
+		setOpaque(true); //must do this for background to show up.
 	}
 }
