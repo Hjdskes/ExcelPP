@@ -183,6 +183,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			file += ".xml";
 			File fileXML = new File(file);
 			try {
+				System.out.println("Test");
 				fileXML.mkdirs();
 				sheet.toXML(fileXML);
 			} catch (FileNotFoundException ex) {

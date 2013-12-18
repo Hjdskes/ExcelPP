@@ -187,6 +187,7 @@ public class SpreadSheet implements TableModel {
 	 * @throws FileNotFoundException
 	 */
 	public void toXML(File file) throws FileNotFoundException {
+		System.out.println("Test for export");
 		PrintWriter pw = new PrintWriter(file);
 		String res = "<?xml version=\"1.0\"?>\n";
 		res += "<SPREADSHEET>\n";
