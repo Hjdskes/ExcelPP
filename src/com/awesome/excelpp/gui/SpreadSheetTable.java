@@ -15,17 +15,14 @@ public class SpreadSheetTable extends JTable {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	public static JScrollPane scrollPane;
 
-	public SpreadSheetTable () {
-		super(10, 10);
-		
+	public SpreadSheetTable (SpreadSheet sheet) {
+		super(sheet);
+		sheet.fillSheetFormula();
+
 		Color backgroundColor = new Color(222, 222, 222);
 
 		setFillsViewportHeight (true);
 		setSelectionBackground (backgroundColor);
 		//setOpaque(true); //MUST do this for background to show up. even verifiëren
-		
-		SpreadSheet sheet = new SpreadSheet();
-		sheet.fillSheetFormula();
-		this.setModel(sheet);
 	}
 }

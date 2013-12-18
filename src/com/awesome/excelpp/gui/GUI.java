@@ -31,7 +31,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private static SpreadSheetTable tabel;
 	private static SpreadSheet sheet;
 	private static JButton buttonAbout;
+	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
+	private static JButton buttonNew;
 	private static JButton buttonOpen;
 	private static JFrame mainFrame;
 	private static JTextField functionField;
@@ -55,7 +57,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.setSize (800, 400);
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		tabel = new SpreadSheetTable ();
+
+		tabel = new SpreadSheetTable (new SpreadSheet());
 
 		tabel.addMouseListener(this);
 		tabel.addFocusListener(this);
@@ -92,7 +95,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 
 		buttonPanel.setLayout(new FlowLayout());
 		buttonOpen = new JButton();
+		buttonNew = new JButton();
 		buttonSave = new JButton();
+		buttonSaveAs = new JButton();
 		functionField = new JTextField(30);
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
@@ -106,23 +111,32 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		aboutIcon = new ImageIcon("data/icons/PNG_32x32_black/question-mark-icon_32x32px.png");
 
 		buttonOpen.setIcon(openIcon);
+		buttonNew.setText("New");
 		buttonSave.setIcon(saveIcon);
+		buttonSaveAs.setText("Opslaan als");
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonOpen.setToolTipText("Open file");
+		buttonOpen.setToolTipText("New file");
 		buttonSave.setToolTipText("Save file");
+		buttonSaveAs.setToolTipText("Save as");
 		buttonAbout.setToolTipText("About");
 
 		buttonPanel.add(buttonOpen);
+		buttonPanel.add(buttonNew);
 		buttonPanel.add(buttonSave);
+		buttonPanel.add(buttonSaveAs);
 		buttonPanel.add(functions);
 		buttonPanel.add(functionField);
 		buttonPanel.add(buttonAbout);
 
 		buttonOpen.addActionListener(this);
 		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonNew.addActionListener(this);
+		buttonNew.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSave.addActionListener(this);
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonSaveAs.addActionListener(this);
 		functionField.addActionListener(this);
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
@@ -134,6 +148,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * Opens the file dialog in which the user can select which file to open
 	 */
 	private final void openFileDialog() {
+		// ToDo: filefilter.
 		final JFileChooser fc = new JFileChooser();
 		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
@@ -148,9 +163,30 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		}
 	}
 
+	private final void openSaveDialog() {
+		//toDo: filefilter
+		//ToDo: automatisch aanroepen als file niet bekend is
+		final JFileChooser fs = new JFileChooser();
+		if (fs.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
+			file = fs.getSelectedFile();
+			try {
+				sheet.toXML(file);
+			} catch (FileNotFoundException ex) {
+				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+				ex.printStackTrace();
+			}
+		}
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
+		} else if (e.getSource().equals(buttonNew)) {
+			// ToDo: flaggen als er een bewerkt bestand verloren zal gaan. of tabs
+			// ToDo: hoe op te slaan?
+			SpreadSheet newSheet = new SpreadSheet();
+			tabel.setModel (newSheet);
+			tabel.updateUI();
 		} else if (e.getSource().equals(buttonSave)) {
 			try {
 				sheet.toXML(file);
@@ -158,6 +194,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
 				ex.printStackTrace();
 			}
+		} else if (e.getSource().equals(buttonSaveAs)) {
+			//automatisch detecteren in het geval van nieuwe sheet
+			openSaveDialog();
 		} else if (e.getSource().equals(buttonAbout)) {
 			JOptionPane.showMessageDialog(mainFrame, "Excel++ is een project van studenten aan de TU Delft.\nCopyright 2013 Team Awesome.");
 		} else if (e.getSource().equals(functions)) {
