@@ -14,8 +14,7 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 /**
- * Class for the GUI
- *
+ * Class that constructs everything needed for and by the GUI
  */
 public class GUI extends JFrame implements ActionListener, MouseListener, FocusListener{
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -172,14 +171,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * @return void
 	 */
 	private final void openSaveDialog() {
-		//ToDo: automatisch aanroepen als file niet bekend is
 		final JFileChooser fs = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
 		fs.setFileFilter(filter);
 		if (fs.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			file = fs.getSelectedFile();
+			String file = fs.getSelectedFile().getName();
+			file = file.replaceAll("\\...*", "");
+			file += ".xml";
+			File fileXML = new File(file);
 			try {
-				sheet.toXML(file);
+				sheet.toXML(fileXML);
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
 				ex.printStackTrace();
@@ -230,12 +231,15 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonNew)) {
-			// ToDo: flaggen als er een bewerkt bestand verloren zal gaan. of tabs
-			// ToDo: hoe op te slaan?
+			// ToDo: flaggen als er een bewerkt bestand verloren zal gaan. of tabs. of automatisch opslaan.
 			SpreadSheet newSheet = new SpreadSheet();
 			tabel.setModel (newSheet);
 			tabel.updateUI();
 		} else if (e.getSource().equals(buttonSave)) {
+			if(file == null) {
+				openSaveDialog();
+				return;
+			}
 			try {
 				sheet.toXML(file);
 			} catch (FileNotFoundException ex) {
@@ -243,7 +247,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				ex.printStackTrace();
 			}
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			//automatisch detecteren in het geval van nieuwe sheet
 			openSaveDialog();
 		} else if (e.getSource().equals(buttonAbout)) {
 			openHelpDialog();
