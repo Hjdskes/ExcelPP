@@ -14,8 +14,7 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 /**
- * Class for the GUI
- *
+ * Class that constructs everything needed for and by the GUI
  */
 public class GUI extends JFrame implements ActionListener, MouseListener, FocusListener{
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -172,14 +171,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * @return void
 	 */
 	private final void openSaveDialog() {
-		//ToDo: automatisch aanroepen als file niet bekend is
 		final JFileChooser fs = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
 		fs.setFileFilter(filter);
 		if (fs.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			file = fs.getSelectedFile();
+			String file = fs.getSelectedFile().getName();
+			file = file.replaceAll("\\...*", "");
+			file += ".xml";
+			File fileXML = new File(file);
 			try {
-				sheet.toXML(file);
+				sheet.toXML(fileXML);
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
 				ex.printStackTrace();
@@ -230,25 +231,31 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		if (e.getSource().equals(buttonOpen)) {
 			openFileDialog();
 		} else if (e.getSource().equals(buttonNew)) {
-			// ToDo: flaggen als er een bewerkt bestand verloren zal gaan. of tabs
-			// ToDo: hoe op te slaan?
-			SpreadSheet newSheet = new SpreadSheet();
-			tabel.setModel (newSheet);
+			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
+			try {
+				Document doc = XML.parse(file);
+				SpreadSheet fileSheet = XML.print(doc);
+				if(!sheet.equals(fileSheet))
+					JOptionPane.showMessageDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
+			} catch (Exception ex) {
+				System.err.println (ex.getMessage());
+			}
+			sheet = new SpreadSheet();
+			tabel.setModel (sheet);
 			tabel.updateUI();
 			file = null;
 		} else if (e.getSource().equals(buttonSave)) {
-			if(file == null){
+			if(file == null)
 				openSaveDialog();
-			} else{
-			try {
-				sheet.toXML(file);
-			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
-				ex.printStackTrace();
-			}
+			else {
+				try {
+					sheet.toXML(file);
+				} catch (FileNotFoundException ex) {
+					JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+					ex.printStackTrace();
+				}
 			}
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			//automatisch detecteren in het geval van nieuwe sheet
 			openSaveDialog();
 		} else if (e.getSource().equals(buttonAbout)) {
 			openHelpDialog();
