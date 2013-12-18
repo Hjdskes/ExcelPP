@@ -1,11 +1,11 @@
 package com.awesome.excelpp.math;
 
-public class Or extends Formula {
+import java.util.ArrayList;
 
-	@Override
-	public int getValue(int... numbers) {
-		// TODO Auto-generated method stub
-		return 0;
+
+public class Or {
+	public boolean or(ArrayList<Logic> arguments) {
+		
+		return false;
 	}
-
 }
