@@ -14,11 +14,15 @@ public class SpreadSheetTable extends JTable {
 	public SpreadSheetTable () {
 		super(10, 10);
 		
+		/**
+		 * Tablemodel for the spreadsheet
+		 *
+		 */
 		Color backgroundColor = new Color(222, 222, 222);
 
 		setFillsViewportHeight (true);
 		setSelectionBackground (backgroundColor);
-		//setOpaque(true); //MUST do this for background to show up. even verifiëren
+		//setOpaque(true); //MUST do this for background to show up. even verifi��ren
 		
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheetFormula();
