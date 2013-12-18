@@ -51,7 +51,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
-		tabel = new SpreadSheetTable (new SpreadSheet());
+		sheet = new SpreadSheet();
+		tabel = new SpreadSheetTable (sheet);
 
 		tabel.addMouseListener(this);
 		tabel.addFocusListener(this);
