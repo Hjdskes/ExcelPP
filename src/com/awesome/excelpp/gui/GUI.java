@@ -5,11 +5,14 @@ import com.awesome.excelpp.models.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
+
 import org.w3c.dom.Document;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
@@ -233,19 +236,25 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		} else if (e.getSource().equals(buttonNew)) {
 			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
 			try {
-				Document doc = XML.parse(file);
+				Document doc = XML.parse(file); //geeft file cannot be null
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
 					JOptionPane.showMessageDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
 			} catch (Exception ex) {
 				System.err.println (ex.getMessage());
 			}
-			sheet = new SpreadSheet();
-			tabel.setModel (sheet);
-			tabel.updateUI();
-			file = null;
+			try {
+				file = File.createTempFile("excelpp_temp", ".xml");
+				sheet = new SpreadSheet();
+				tabel.setModel (sheet);
+				tabel.updateUI();
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(mainFrame, "Can't open a temporary file.");
+				return;
+			}
 		} else if (e.getSource().equals(buttonSave)) {
-			if(file == null)
+			String path = file.getAbsolutePath();
+			if (path.contains("tmp") || path.contains("TEMP"))
 				openSaveDialog();
 			else {
 				try {
@@ -276,9 +285,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 					System.err.println("De formule wordt niet herkend");
 				}
 				sc.close();
-			} else {
+			} else
 				JOptionPane.showMessageDialog(mainFrame, "De ingevoerde functie is ongeldig.");
-			}
 		}
 	}
 
