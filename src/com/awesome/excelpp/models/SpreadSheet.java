@@ -91,8 +91,8 @@ public class SpreadSheet implements TableModel {
 
 	@Override
 	public String getColumnName(int col) {
-		// TODO Auto-generated method stub
-		return "Test";
+		char a = (char) (col + 65);
+		return Character.toString(a);
 	}
 
 	public int getRowCount() {
