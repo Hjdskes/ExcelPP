@@ -2,10 +2,9 @@ package com.awesome.excelpp.math;
 
 import java.util.ArrayList;
 
-
-public class Or {
-	public boolean or(ArrayList<Logic> arguments) {
-		boolean res = false;
+public class And {
+	public boolean and(ArrayList<Logic> arguments) {
+		boolean res = true;
 		for(int i = 0; i< arguments.size()-1; i++) {
 			switch(arguments.get(i).opp) {
 			case 0:
@@ -18,10 +17,10 @@ public class Or {
 				 res = arguments.get(i).equals();
 				break;
 			}
-			if(res) {
-				return true;
+			if(!res) {
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 }
