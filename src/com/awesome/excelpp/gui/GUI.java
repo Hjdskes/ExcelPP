@@ -50,7 +50,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
-		mainFrame.setSize (800, 400);
+		mainFrame.setSize (900, 400);
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 
