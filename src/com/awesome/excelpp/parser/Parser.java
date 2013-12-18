@@ -16,59 +16,87 @@ public class Parser {
 	public Parser(String str) throws Exception {
 		this(new Lexer(str));
 	}
-	 
+	
+	/**
+	 * expression -> signed_term sum_op
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode expression() throws Exception {
-		//System.out.println("expression -> signed_term sum_op");
-		ExpressionNode expr = signedTerm();		// a
+		ExpressionNode expr = signedTerm();
 		return sumOp(expr);
 	}
-	 
+	
+	/**
+	 * sum_op -> PLUSMINUS term sum_op
+	 * sum_op -> EOL
+	 * @param a
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode sumOp(ExpressionNode a) throws Exception {
 		if (lookahead.type == TokenType.PLUSMINUS) {
-			//System.out.println("sum_op -> PLUSMINUS term sum_op");
+			boolean addition = lookahead.data.equals("+");
 			
 			lookahead = lex.next();
-			ExpressionNode sum = new AdditionExpressionNode(a, term());
+			ExpressionNode sum = new AdditionExpressionNode(a, term(), addition);
 			return sumOp(sum);
-	    }
-	    
-		//System.out.println("sum_op -> EOL");
+		}
 		return a;
 	}
 	
+	/**
+	 * signedTerm -> PLUSMINUS term
+	 * signedTerm -> term
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode signedTerm() throws Exception {
 		if (lookahead.type == TokenType.PLUSMINUS) {
-			//System.out.println("signedTerm -> PLUSMINUS term");
-			boolean positive = lookahead.data.equals('+');
+			boolean positive = lookahead.data.equals("+");
+			
 			lookahead = lex.next();
 			return term();
 		}
-		//System.out.println("signedTerm -> term");
 		return term();
 	}
 
+	/**
+	 * term -> argument term_op
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode term() throws Exception {
-		//System.out.println("term -> argument term_op");
 		ExpressionNode expr = argument();
 		return termOp(expr);
 	}
 
+	/**
+	 * term_op -> MULTDIV argument term_op
+	 * term_op -> EOL
+	 * @param a
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode termOp(ExpressionNode a) throws Exception {
 		if (lookahead.type == TokenType.MULTDIV) {
-			//System.out.println("term_op -> MULTDIV argument term_op");
+			boolean multiply = lookahead.data.equals("*");
 			
 			lookahead = lex.next();
-			ExpressionNode term = new MultiplicationExpressionNode(a, argument());
+			ExpressionNode term = new MultiplicationExpressionNode(a, argument(), multiply);
 			return termOp(term);
 		}
-		
-		//System.out.println("term_op -> EOL");
 		return a;
 	}
 
+	/**
+	 * argument -> OPEN_BRACKET sum CLOSE_BRACKET
+	 * argument -> value 
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode argument() throws Exception {
 		if (lookahead.type == TokenType.LBRACKET) {
-			//System.out.println("argument -> OPEN_BRACKET sum CLOSE_BRACKET");
 			lookahead = lex.next();
 			
 			ExpressionNode expr = expression();
@@ -79,14 +107,16 @@ public class Parser {
 			lookahead = lex.next();
 			return expr;
 		}
-		
-		//System.out.println("argument -> value");
 		return value();
 	}
 
+	/**
+	 * value -> NUMBER
+	 * @return
+	 * @throws Exception
+	 */
 	private ExpressionNode value() throws Exception {
 		if (lookahead.type == TokenType.NUMBER) {
-			//System.out.println("value -> NUMBER");
 			ExpressionNode expr = new ConstantExpressionNode(lookahead.data);
 			
 			lookahead = lex.next();

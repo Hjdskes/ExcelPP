@@ -9,7 +9,7 @@ public class ParserTest {
 	
 	@Test
 	public void test_Constructor_Null() throws Exception {
-		parse = new Parser("-(2+2+2)*2*2");
+		parse = new Parser("2+2)2+2");
 		System.out.println(parse.getExpressionTree().getValue());
 		//assertTrue(parse.getValue().equals("4"));
 		

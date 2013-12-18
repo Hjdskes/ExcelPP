@@ -41,8 +41,12 @@ public class Cell extends Observable {
 	 */
 	public String getValue() {
 		if (content != null && content.charAt(0) == '=') {
-			//Parser parse = new Parser(content.substring(1));
-			//return parse.getValue();
+			try {
+				Parser parse = new Parser(content.substring(1));
+				return String.valueOf(parse.getExpressionTree().getValue());
+			} catch (Exception e) {
+				return "#OPINV";
+			}
 		}
 		
 		return content;

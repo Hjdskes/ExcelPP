@@ -7,10 +7,6 @@ public class ConstantExpressionNode implements ExpressionNode {
 		this.value = Double.valueOf(value);
 	}
 	
-	public void negate() {
-		value = -value;
-	}
-	
 	public double getValue() {
 		return value;
 	}
