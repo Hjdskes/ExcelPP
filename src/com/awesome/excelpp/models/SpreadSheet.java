@@ -194,7 +194,7 @@ public class SpreadSheet implements TableModel {
 		
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				if((String)getValueAt(row, col) != null) {
+				if((String)getValueAt(row, col) != null || (String)getValueAt(row, col) != "") {
 					String temp = (String)getValueAt(row, col);
 					
 					/* Normalization */
