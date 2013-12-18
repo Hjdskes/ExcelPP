@@ -7,12 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-
 import org.w3c.dom.Document;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
@@ -301,7 +299,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 */
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
-			if(tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
+			if(e.isShiftDown() && tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
 				String cellContent = functionField.getText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
 				functionField.setText(cellContent);
 			}
