@@ -194,7 +194,7 @@ public class SpreadSheet implements TableModel {
 		
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int col = 0; col < numberOfCols; col++) {
-				if((String)getValueAt(row, col) != null) {
+				if((String)getValueAt(row, col) != "") {
 					String temp = (String)getValueAt(row, col);
 					
 					/* Normalization */
@@ -204,7 +204,7 @@ public class SpreadSheet implements TableModel {
 					int store_row = row + 1;
 					int store_col = col + 1;
 					
-				res +="<CELL row=\"" + store_row  + "\" column=\"" + store_col + "\">" + temp + "</CELL>\n";
+					res +="<CELL row=\"" + store_row  + "\" column=\"" + store_col + "\">" + temp + "</CELL>\n";
 				}
 			}
 		}
