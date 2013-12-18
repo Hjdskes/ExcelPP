@@ -4,7 +4,6 @@ package com.awesome.excelpp.gui;
  * Jente & Bernd
  * We moeten o.a. uitzoeken hoe we kunnen voorkomen dat je een venster zodanig verkleint zodat de componenten
  *   verdwijnen.
- * Misschien een help dialog invoeren als een soort handleiding?
  */
 
 import com.awesome.excelpp.xml.XML;
@@ -12,14 +11,14 @@ import com.awesome.excelpp.models.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
+import java.util.Scanner;
 import org.w3c.dom.Document;
 
-import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.filechooser.*;
+
 /**
  * Class for the GUI
  *
@@ -67,6 +66,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
 	}
+
 	/**
 	 * Returns the screenwidth
 	 */
@@ -148,8 +148,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * Opens the file dialog in which the user can select which file to open
 	 */
 	private final void openFileDialog() {
-		// ToDo: filefilter.
 		final JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
+		fc.setFileFilter(filter);
 		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
 			try {
@@ -164,9 +165,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 
 	private final void openSaveDialog() {
-		//toDo: filefilter
 		//ToDo: automatisch aanroepen als file niet bekend is
 		final JFileChooser fs = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
+		fs.setFileFilter(filter);
 		if (fs.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
 			file = fs.getSelectedFile();
 			try {
@@ -236,9 +238,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		}
 	}
 	
-	public void focusGained(FocusEvent e){
-		
-	}
+	public void focusGained(FocusEvent e) {}
 	
 	public void focusLost(FocusEvent e){
 		if(e.getSource().equals(tabel)){
