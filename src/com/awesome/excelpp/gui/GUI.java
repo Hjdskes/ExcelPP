@@ -38,9 +38,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private static JTextField functionField;
 	private File file = null;
 	private static JComboBox<String> functions;
-	private static ImageIcon openIcon;
-	private static ImageIcon saveIcon;
-	private static ImageIcon aboutIcon;
 	private static int selectedColumn;
 	private static int selectedRow;
 	
@@ -92,6 +89,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 */
 	private JPanel createButtonPanel() {
 		final JPanel buttonPanel = new JPanel();
+		final ImageIcon openIcon;
+		final ImageIcon newIcon;
+		final ImageIcon saveIcon;
+		final ImageIcon saveIconAs;
+		final ImageIcon aboutIcon;
 
 		buttonPanel.setLayout(new FlowLayout());
 		buttonOpen = new JButton();
@@ -106,14 +108,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 
 		functionField.addFocusListener(this);
 		
-		openIcon = new ImageIcon("data/icons/PNG_32x32_black/folder-icon_32x32px.png");
-		saveIcon = new ImageIcon("data/icons/PNG_32x32_black/save-disk-icon_32x32px.png");
-		aboutIcon = new ImageIcon("data/icons/PNG_32x32_black/question-mark-icon_32x32px.png");
+		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
+		newIcon = new ImageIcon("data/woo-icons/page_table_add_32.png");
+		saveIcon = new ImageIcon("data/woo-icons/save_32.png");
+		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
+		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
 
 		buttonOpen.setIcon(openIcon);
-		buttonNew.setText("New");
+		buttonNew.setIcon(newIcon);
 		buttonSave.setIcon(saveIcon);
-		buttonSaveAs.setText("Opslaan als");
+		buttonSaveAs.setIcon(saveIconAs);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonOpen.setToolTipText("Open file");
