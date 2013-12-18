@@ -39,6 +39,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * Constructor of GUI
 	 */
 	public GUI () {
+		final JPanel buttonPanel = createButtonPanel();
 		screenWidth = (int)getScreenWidth();
 		screenHeight = (int)getScreenHeight();
 
@@ -47,13 +48,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.setSize (900, 400);
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		mainFrame.setMinimumSize(new Dimension(800, 52));
+		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
 		tabel = new SpreadSheetTable (new SpreadSheet());
 
 		tabel.addMouseListener(this);
 		tabel.addFocusListener(this);
 
-		mainFrame.add (createButtonPanel (), BorderLayout.PAGE_START);
+		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
 		mainFrame.setVisible (true);
 	}
@@ -82,14 +83,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * Creates the buttonpanel for our GUI
 	 */
 	private JPanel createButtonPanel() {
-		final JPanel buttonPanel = new JPanel();
+		final JPanel panel = new JPanel();
 		final ImageIcon openIcon;
 		final ImageIcon newIcon;
 		final ImageIcon saveIcon;
 		final ImageIcon saveIconAs;
 		final ImageIcon aboutIcon;
 
-		buttonPanel.setLayout(new FlowLayout());
+		panel.setLayout(new FlowLayout());
 		buttonOpen = new JButton();
 		buttonNew = new JButton();
 		buttonSave = new JButton();
@@ -120,13 +121,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		buttonSaveAs.setToolTipText("Save as");
 		buttonAbout.setToolTipText("About");
 
-		buttonPanel.add(buttonOpen);
-		buttonPanel.add(buttonNew);
-		buttonPanel.add(buttonSave);
-		buttonPanel.add(buttonSaveAs);
-		buttonPanel.add(functions);
-		buttonPanel.add(functionField);
-		buttonPanel.add(buttonAbout);
+		panel.add(buttonOpen);
+		panel.add(buttonNew);
+		panel.add(buttonSave);
+		panel.add(buttonSaveAs);
+		panel.add(functions);
+		panel.add(functionField);
+		panel.add(buttonAbout);
 
 		buttonOpen.addActionListener(this);
 		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -139,7 +140,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
 
-		return buttonPanel;
+		return panel;
 	}
 	
 	/**
@@ -178,30 +179,31 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		}
 	}
 	
-	private final void openHelpDialog(){
-		JPanel helpPanel = new JPanel();
+	private final void openHelpDialog() {
 		JDialog helpDialog = new JDialog(mainFrame, "help");
+		JPanel helpPanel = new JPanel();
 		JTabbedPane helpTabbedPane = new JTabbedPane();
 		
 		JPanel formulaPanel = new JPanel();
-		helpTabbedPane.addTab("Formula Help", formulaPanel);
 		JLabel formulaText = new JLabel("<html>Help for formulas</html>");
 		formulaPanel.add(formulaText);
-		helpPanel.add(helpTabbedPane);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open - ctrl+o<br>Save - ctrl+s</html>");
+		JLabel hotkeyText = new JLabel("<html><b>Open</b> - Control + o<br><b>Save</b> - Control + s</html>");
 		hotkeyPanel.add(hotkeyText);
-		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
-		
+
 		JPanel aboutPanel = new JPanel();
 		JLabel aboutText = new JLabel("<html>Excel++ is een project van studenten aan de TU Delft.<br>Copyright 2013 Team Awesome.</html>");
 		aboutPanel.add(aboutText);
+
+		helpPanel.add(helpTabbedPane);
+		helpTabbedPane.addTab("Formula Help", formulaPanel);
+		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
 		helpTabbedPane.addTab("About", aboutPanel);
-		
+
 		helpDialog.add(helpPanel);
-		helpDialog.setSize(500, 200);
-		helpDialog.setLocationRelativeTo(null);
+		helpDialog.setSize(helpPanel.getPreferredSize().width, helpPanel.getPreferredSize().height);
+		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);
 	}

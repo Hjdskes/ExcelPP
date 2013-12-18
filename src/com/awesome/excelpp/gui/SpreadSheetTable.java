@@ -21,6 +21,6 @@ public class SpreadSheetTable extends JTable {
 		sheet.fillSheet();
 		setFillsViewportHeight (true);
 		setSelectionBackground (new Color(74, 144, 217));
-		setOpaque(true); //MUST do this for background to show up. even verifiëren
+		setOpaque(true); //must do this for background to show up.
 	}
 }
