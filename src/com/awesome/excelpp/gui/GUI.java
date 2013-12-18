@@ -178,12 +178,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private final void openSaveDialog() {
 		final JFileChooser fc = new JFileChooser();
 		if (fc.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			String file = fc.getSelectedFile().getName();
+			String file = fc.getSelectedFile().getPath();
 			file = file.replaceAll("\\...*", "");
 			file += ".xml";
 			File fileXML = new File(file);
 			try {
-				fileXML.mkdirs();
 				sheet.toXML(fileXML);
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
