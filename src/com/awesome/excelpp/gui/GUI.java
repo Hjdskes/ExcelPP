@@ -203,6 +203,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 
 		helpDialog.add(helpPanel);
 		helpDialog.setSize(helpPanel.getPreferredSize().width, helpPanel.getPreferredSize().height);
+		helpDialog.setMinimumSize(helpPanel.getPreferredSize());
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);
