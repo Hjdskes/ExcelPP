@@ -190,7 +190,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		helpPanel.add(helpTabbedPane);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open - ctrl+o<br>Save - ctrl+s</html>");
+		JLabel hotkeyText = new JLabel("<html>Open - ctrl+o<br>New File - ctrl+n<br>Save - ctrl+s<br></html>");
 		hotkeyPanel.add(hotkeyText);
 		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
 		
