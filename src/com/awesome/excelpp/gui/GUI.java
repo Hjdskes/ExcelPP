@@ -235,12 +235,17 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			SpreadSheet newSheet = new SpreadSheet();
 			tabel.setModel (newSheet);
 			tabel.updateUI();
+			file = null;
 		} else if (e.getSource().equals(buttonSave)) {
+			if(file == null){
+				openSaveDialog();
+			} else{
 			try {
 				sheet.toXML(file);
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
 				ex.printStackTrace();
+			}
 			}
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			//automatisch detecteren in het geval van nieuwe sheet
