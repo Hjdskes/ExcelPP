@@ -1,8 +1,8 @@
 package com.awesome.excelpp.math;
 
 public class Max extends Formula {
-	public int getValue(int...numbers) {
-		int maximum = 0;
+	public double getValue(double...numbers) {
+		double maximum = 0;
 		for(int i=0; i < numbers.length; i++) {
 			if(maximum < numbers[i])
 				maximum = numbers[i];

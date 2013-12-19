@@ -198,7 +198,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * @return void
 	 */
 	private final void openHelpDialog() {
-		JDialog helpDialog = new JDialog(mainFrame, "help");
+		JDialog helpDialog = new JDialog(mainFrame, "Help");
 		JPanel helpPanel = new JPanel();
 		JTabbedPane helpTabbedPane = new JTabbedPane();
 		
@@ -207,7 +207,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open file- Control + O<br>New file - Control + N<br>Save file - Control + S<br></html>");
+		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br></html>");
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();
@@ -238,7 +238,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		} else if (e.getSource().equals(buttonNew)) {
 			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
 			try {
-				Document doc = XML.parse(file); //geeft file cannot be null
+				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
 					JOptionPane.showMessageDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
@@ -273,8 +273,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		} else if (e.getSource().equals(functions)) {
 			String formula = (String)functions.getSelectedItem();
 			formula = "=" + formula;
-			functionField.setText(formula);
 			//nu nog de geselecteerde cellen erbij
+			functionField.setText(formula);
 		} else if (e.getSource().equals(functionField)) {
 			String enteredText = functionField.getText();
 			if (enteredText.charAt(0) == '=') {
