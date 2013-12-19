@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-	int index = 0;
+	private int index = 0;
 	private ArrayList<Token> tokens;
 	private String patterns;
 	

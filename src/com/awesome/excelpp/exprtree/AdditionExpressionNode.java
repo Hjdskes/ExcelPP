@@ -2,7 +2,7 @@ package com.awesome.excelpp.exprtree;
 
 public class AdditionExpressionNode implements ExpressionNode {
 	private ExpressionNode a, b;
-	boolean addition;
+	private boolean addition;
 	
 	public AdditionExpressionNode(ExpressionNode a, ExpressionNode b, boolean addition) {
 		this.a = a;

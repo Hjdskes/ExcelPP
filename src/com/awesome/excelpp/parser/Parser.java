@@ -3,9 +3,9 @@ package com.awesome.excelpp.parser;
 import com.awesome.excelpp.exprtree.*;
 
 public class Parser {
-	Lexer lex;
-	Token lookahead;
-	ExpressionNode expressionTree;
+	private Lexer lex;
+	private Token lookahead;
+	private ExpressionNode expressionTree;
 	
 	public Parser(Lexer lex) throws Exception {
 		this.lex = lex;
