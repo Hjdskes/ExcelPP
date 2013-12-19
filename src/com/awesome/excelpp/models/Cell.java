@@ -44,7 +44,7 @@ public class Cell extends Observable {
 	 * @return			String with an evaluated expression
 	 */
 	public String getValue() {
-		if (content != null && content.charAt(0) == '=') {
+		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				Parser parse = new Parser(content.substring(1));
 				return String.valueOf(parse.getExpressionTree().getValue());
