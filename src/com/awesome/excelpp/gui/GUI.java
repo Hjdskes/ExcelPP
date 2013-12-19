@@ -187,7 +187,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				file.getParentFile().mkdirs();
 				sheet.toXML(file);
 			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
 				ex.printStackTrace();
 			}
 		}
@@ -211,7 +211,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();
-		JLabel aboutText = new JLabel("<html>Excel++ is een project van studenten aan de TU Delft.<br>Copyright 2013 Team Awesome.</html>");
+		JLabel aboutText = new JLabel("<html>Excel++ is a TU Delft project.<br>Copyright 2013 Team Awesome.</html>");
 		aboutPanel.add(aboutText);
 
 		helpPanel.add(helpTabbedPane);
@@ -262,7 +262,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				try {
 					sheet.toXML(file);
 				} catch (FileNotFoundException ex) {
-					JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
+					JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
 					ex.printStackTrace();
 				}
 			}
@@ -282,13 +282,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				sc = new Scanner(enteredText);
 				String formula = sc.next();
 				if (formula.equals("=Sum")) {
-					System.out.println("De formule is: Sum");
+					System.out.println("The formula is: Sum");
 				} else {
-					System.err.println("De formule wordt niet herkend");
+					System.err.println("The formula is not recognized");
 				}
 				sc.close();
 			} else
-				JOptionPane.showMessageDialog(mainFrame, "De ingevoerde functie is ongeldig.");
+				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.");
 		}
 	}
 
