@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class FormulaExpressionNodeTest {
+public class FormulaNodeTest {
 
 	@Test
 	public void test() {
-		ExpressionNode node = new FormulaExpressionNode("Add", new ConstantExpressionNode("20"), new ConstantExpressionNode("5"));
+		ExpressionNode node = new FormulaNode("Add", new ConstantNode("20"), new ConstantNode("5"));
 		System.out.println(node.getValue());
 	}
 

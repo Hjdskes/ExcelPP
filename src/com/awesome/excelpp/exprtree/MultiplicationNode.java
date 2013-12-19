@@ -1,16 +1,16 @@
 package com.awesome.excelpp.exprtree;
 
-public class MultiplicationExpressionNode implements ExpressionNode {
+public class MultiplicationNode implements ExpressionNode {
 	private ExpressionNode a, b;
 	private boolean multiply;
 	
-	public MultiplicationExpressionNode(ExpressionNode a, ExpressionNode b, boolean multiply) {
+	public MultiplicationNode(ExpressionNode a, ExpressionNode b, boolean multiply) {
 		this.a = a;
 		this.b = b;
 		this.multiply = multiply;
 	}
 	
-	public MultiplicationExpressionNode(ExpressionNode a, ExpressionNode b) {
+	public MultiplicationNode(ExpressionNode a, ExpressionNode b) {
 		this(a, b, true);
 	}
 

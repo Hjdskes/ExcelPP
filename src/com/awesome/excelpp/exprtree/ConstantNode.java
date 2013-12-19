@@ -1,9 +1,9 @@
 package com.awesome.excelpp.exprtree;
 
-public class ConstantExpressionNode implements ExpressionNode {
+public class ConstantNode implements ExpressionNode {
 	private double value;
 	
-	public ConstantExpressionNode(String value) {
+	public ConstantNode(String value) {
 		this.value = Double.valueOf(value);
 	}
 	

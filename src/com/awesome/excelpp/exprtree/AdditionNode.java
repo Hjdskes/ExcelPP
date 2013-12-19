@@ -1,16 +1,16 @@
 package com.awesome.excelpp.exprtree;
 
-public class AdditionExpressionNode implements ExpressionNode {
+public class AdditionNode implements ExpressionNode {
 	private ExpressionNode a, b;
 	private boolean addition;
 	
-	public AdditionExpressionNode(ExpressionNode a, ExpressionNode b, boolean addition) {
+	public AdditionNode(ExpressionNode a, ExpressionNode b, boolean addition) {
 		this.a = a;
 		this.b = b;
 		this.addition = addition;
 	}
 	
-	public AdditionExpressionNode(ExpressionNode a, ExpressionNode b) {
+	public AdditionNode(ExpressionNode a, ExpressionNode b) {
 		this(a, b, true);
 	}
 

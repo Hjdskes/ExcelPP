@@ -39,7 +39,7 @@ public class Parser {
 			boolean addition = lookahead.data.equals("+");
 			
 			lookahead = lex.next();
-			ExpressionNode sum = new AdditionExpressionNode(a, term(), addition);
+			ExpressionNode sum = new AdditionNode(a, term(), addition);
 			return sumOp(sum);
 		}
 		return a;
@@ -83,7 +83,7 @@ public class Parser {
 			boolean multiply = lookahead.data.equals("*");
 			
 			lookahead = lex.next();
-			ExpressionNode term = new MultiplicationExpressionNode(a, argument(), multiply);
+			ExpressionNode term = new MultiplicationNode(a, argument(), multiply);
 			return termOp(term);
 		}
 		return a;
@@ -117,7 +117,7 @@ public class Parser {
 	 */
 	private ExpressionNode value() throws Exception {
 		if (lookahead.type == TokenType.NUMBER) {
-			ExpressionNode expr = new ConstantExpressionNode(lookahead.data);
+			ExpressionNode expr = new ConstantNode(lookahead.data);
 			
 			lookahead = lex.next();
 			return expr;

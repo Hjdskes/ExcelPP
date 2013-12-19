@@ -4,11 +4,11 @@ import java.lang.reflect.Constructor;
 
 import com.awesome.excelpp.math.Formula;
 
-public class FormulaExpressionNode implements ExpressionNode {
+public class FormulaNode implements ExpressionNode {
 	private ExpressionNode nodes[];
 	private Formula formula;
 	
-	public FormulaExpressionNode(String formulaName, ExpressionNode ... nodes) {
+	public FormulaNode(String formulaName, ExpressionNode ... nodes) {
 		this.nodes = nodes;
 		
 		String packageName = "com.awesome.excelpp.math";
