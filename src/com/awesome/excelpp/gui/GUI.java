@@ -179,13 +179,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	private final void openSaveDialog() {
 		final JFileChooser fc = new JFileChooser();
 		if (fc.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			String file = fc.getSelectedFile().getPath();
-			file = file.replaceAll("\\...*", "");
-			file += ".xml";
-			File fileXML = new File(file);
+			String fileString = fc.getSelectedFile().getPath();
+			fileString = fileString.replaceAll("\\...*", "");
+			fileString += ".xml";
+			file = new File(fileString);
 			try {
-				fileXML.getParentFile().mkdirs();
-				sheet.toXML(fileXML);
+				file.getParentFile().mkdirs();
+				sheet.toXML(file);
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Er is iets mis gegaan: " + ex.toString());
 				ex.printStackTrace();
@@ -203,7 +203,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		JTabbedPane helpTabbedPane = new JTabbedPane();
 		
 		JPanel formulaPanel = new JPanel();
-		JLabel formulaText = new JLabel("<html>Help for formulas</html>");
+		JLabel formulaText = new JLabel("<html>Help for formulas<br>Shift + left mouse click to get cel content into entry</html>");
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
