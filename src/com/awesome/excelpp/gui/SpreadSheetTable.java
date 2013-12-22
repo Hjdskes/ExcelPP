@@ -82,7 +82,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return String
 	 */
 	public String getFileString () {
-		if (file.toString().contains("temp") || file.toString().contains("TEMP")) //check on Windows/OSX
+		if (file.getAbsolutePath().contains("temp") == true && (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true)) //check on windows/osx
 			return "Temporary file";
 		return file.toString();
 	}
@@ -96,6 +96,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
 		fc.setFileFilter(filter);
 		if (fc.showOpenDialog(tabel) == JFileChooser.APPROVE_OPTION) {
+			removeTempFile(file);
 			file = fc.getSelectedFile();
 			try {
 				Document doc = XML.parse(file);
@@ -115,6 +116,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public final void newFile () {
 		if(closeFile() == 0) {
 			try {
+				removeTempFile(file);
 				file = File.createTempFile("excelpp_temp", ".xml");
 				sheet = new SpreadSheet();
 				tabel.setModel (sheet);
@@ -131,8 +133,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return void
 	 */
 	public final void saveFile () {
-		String path = file.getAbsolutePath();
-		if (path.contains("tmp") || path.contains("TEMP")) //check on Windows/OSX
+		if (file.getAbsolutePath().contains("temp") == true && (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true)) //check on windows/osx
 			openSaveDialog();
 		else {
 			try {
@@ -151,16 +152,14 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public final int closeFile () {
 		int close = 1;
 		try {
-			if (file.toString().contains("temp") == false && file.toString().contains("TEMP") == false && file.toString().contains("tmp") == false) {
-				System.out.println("debug");
+			if (file.getAbsolutePath().contains("temp") == false && (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false)) { //check on windows/osx
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 			} else {
 				if(sheet.isEmpty() == false) {
-					sheet.toXML(file);
-					System.out.println(file.toString());
+					//sheet.toXML(file);
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 					if(close == 0) {
 						if(file.delete() != true)
@@ -169,8 +168,8 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 				} else {
 					if(file.delete() != true)
 						JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
-					System.out.println("Temp deleted");
-					close = 0;
+					else
+						close = 0;
 				}
 			}
 		} catch (Exception ex) {
@@ -189,11 +188,8 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 			String fileString = fc.getSelectedFile().getPath();
 			fileString = fileString.replaceAll("\\...*", "");
 			fileString += ".xml";
-			File fileDest = new File(fileString);
-			file.renameTo(fileDest);
-			if(file.delete() != true)
-				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
-			file = fileDest;
+			removeTempFile(file);
+			file = new File(fileString);
 			try {
 				file.getParentFile().mkdirs();
 				sheet.toXML(file);
@@ -202,6 +198,12 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 				ex.printStackTrace();
 			}
 		}
+	}
+
+	private final void removeTempFile(File file) {
+		if (file.getAbsolutePath().contains("temp") == true && (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true)) //check on windows/osx
+			if(file.delete() != true)
+				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 	}
 
 	public void mousePressed(MouseEvent e) {}
