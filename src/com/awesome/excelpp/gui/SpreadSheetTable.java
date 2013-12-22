@@ -150,7 +150,6 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 */
 	public final int closeFile () {
 		int close = 1;
-		//ToDo: dit werkt nog niet als er een nieuw bestand wordt aangemaakt, hier wat aan wordt veranderd en er vervolgens op Nieuw wordt geklikt.
 		try {
 			if (file.toString().contains("temp") == false && file.toString().contains("TEMP") == false && file.toString().contains("tmp") == false) {
 				System.out.println("debug");
