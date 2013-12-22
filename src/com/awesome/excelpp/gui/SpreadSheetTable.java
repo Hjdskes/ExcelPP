@@ -149,10 +149,10 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		int close = 1;
 		//ToDo: dit werkt nog niet als er een nieuw bestand wordt aangemaakt, hier wat aan wordt veranderd en er vervolgens op Nieuw wordt geklikt.
 		try {
-		Document doc = XML.parse(file);
-		SpreadSheet fileSheet = XML.print(doc);
-		if(!sheet.equals(fileSheet))
-			close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION); //dialog met Yes/No?
+			Document doc = XML.parse(file);
+			SpreadSheet fileSheet = XML.print(doc);
+			if(!sheet.equals(fileSheet))
+				close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION); //dialog met Yes/No?
 		} catch (Exception ex) {
 			System.err.println (ex.getMessage());
 		}

@@ -13,7 +13,7 @@ import javax.swing.*;
 /**
  * Class that constructs everything needed for and by the GUI
  * ToDo:
- *   switch to specific tab with keyboard shortcut / arrow keys
+ *   switch to specific tab with keyboard shortcut
  */
 public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -181,7 +181,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			panes.get(index).newFile();
 		else if (e.getSource().equals(buttonNewTab)) {
 			createNewTab();
-			mainTabs.setSelectedIndex(index + 1);
 		} else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
 			if(panes.get(index).getFileString().equals("Temporary file"))
@@ -222,6 +221,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			panes.add(table);
 			int last = panes.size() - 1;
 			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
+			mainTabs.setSelectedIndex(last);
+			//mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
