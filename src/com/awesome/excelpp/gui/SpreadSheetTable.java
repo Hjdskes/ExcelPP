@@ -113,7 +113,7 @@ public class SpreadSheetTable implements MouseListener {
 				tabel.setModel (sheet);
 				tabel.updateUI();
 			} catch (IOException ex) {
-				JOptionPane.showMessageDialog(tabel, "Can't open a temporary file.");
+				JOptionPane.showMessageDialog(tabel, "Can't open a temporary file.", "Warning", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}
@@ -127,7 +127,7 @@ public class SpreadSheetTable implements MouseListener {
 			try {
 				sheet.toXML(file);
 			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString());
+				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
 		}
@@ -162,7 +162,7 @@ public class SpreadSheetTable implements MouseListener {
 				file.getParentFile().mkdirs();
 				sheet.toXML(file);
 			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString());
+				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
 		}

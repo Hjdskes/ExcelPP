@@ -14,9 +14,6 @@ import javax.swing.*;
 /**
  * Class that constructs everything needed for and by the GUI
  * ToDo:
- *   add new tabs
- *     with new file
- *     with opened file
  *   switch to specific tab with keyboard shortcut / arrow keys
  */
 public class GUI extends JFrame implements ActionListener, FocusListener {
@@ -154,7 +151,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br></html>");
+		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br>New tab - Control + T<br></html>");
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();
@@ -214,7 +211,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				String formula = sc.next();
 				sc.close();
 			} else
-				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.");
+				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -226,7 +223,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			int last = panes.size() - 1;
 			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
 		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
+			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
 		}
 	}
