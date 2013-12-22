@@ -2,6 +2,7 @@ package com.awesome.excelpp.gui;
 
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.models.*;
+import com.awesome.excelpp.gui.SpreadSheetTable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,36 +15,41 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.*;
 
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo:
+ *   add new tabs
+ *     with new file
+ *     with opened file
+ *   switch to specific tab with keyboard shortcut / arrow keys
+ *   remove tabs
  */
-public class GUI extends JFrame implements ActionListener, MouseListener, FocusListener{
+public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
 	private static JFrame mainFrame;
 	private static JTextField functionField;
-	private static SpreadSheetTable tabel;
-	private static SpreadSheet sheet;
+	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
 	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
 	private static JButton buttonNew;
 	private static JButton buttonOpen;
-	private File file = null;
-	private static int selectedColumn;
-	private static int selectedRow;
-	
+	private static SpreadSheetTable firstPane;
+
 	/**
 	 * Constructor
 	 */
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-		screenWidth = (int)getScreenWidth();
-		screenHeight = (int)getScreenHeight();
+		//final SpreadSheetTable firstPane = new SpreadSheetTable();
+		firstPane = new SpreadSheetTable();
+
+		screenWidth = (int)Utils.getScreenWidth();
+		screenHeight = (int)Utils.getScreenHeight();
 
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
@@ -51,41 +57,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
-		sheet = new SpreadSheet();
-		tabel = new SpreadSheetTable (sheet);
 
-		tabel.addMouseListener(this);
-		tabel.addFocusListener(this);
-
+		mainTabs = new JTabbedPane();
+		mainTabs.addTab(firstPane.getFileString(), new ImageIcon("data/woo-icons/page_16.png"), firstPane.getScrollPane(), null);
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
-		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
+		mainFrame.add (mainTabs, BorderLayout.CENTER);
 		mainFrame.setVisible (true);
-
-		file = File.createTempFile("excelpp_temp", ".xml");
 	}
 
-	/**
-	 * Function that gets the screen width
-	 * @return int
-	 */
-	private static double getScreenWidth() {
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-
-		return gd.getDefaultConfiguration().getBounds().getWidth();
-	}
-	
-	/**
-	 * Function that gets the screen height
-	 * @return int
-	 */
-	private static double getScreenHeight() {
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-
-		return gd.getDefaultConfiguration().getBounds().getHeight();
-	}
-	
 	/**
 	 * createButtonPanel creates a JPanel holding the required buttons
 	 * @return JPanel
@@ -152,48 +131,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	}
 	
 	/**
-	 * Opens a file dialog in which the user can select the file to open
-	 * @return void
-	 */
-	private final void openFileDialog() {
-		final JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
-		fc.setFileFilter(filter);
-		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			file = fc.getSelectedFile();
-			try {
-				Document doc = XML.parse(file);
-				sheet = XML.print(doc);
-				tabel.setModel(sheet);
-				tabel.updateUI();
-			} catch (Exception ex) {
-				System.err.println (ex.getMessage());
-			}
-		}
-	}
-
-	/**
-	 * Opens a file dialog in which the user can select where to save the current SpreadSheet
-	 * @return void
-	 */
-	private final void openSaveDialog() {
-		final JFileChooser fc = new JFileChooser();
-		if (fc.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			String fileString = fc.getSelectedFile().getPath();
-			fileString = fileString.replaceAll("\\...*", "");
-			fileString += ".xml";
-			file = new File(fileString);
-			try {
-				file.getParentFile().mkdirs();
-				sheet.toXML(file);
-			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
-				ex.printStackTrace();
-			}
-		}
-	}
-
-	/**
 	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts
 	 * @return void
 	 */
@@ -234,10 +171,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
-			openFileDialog();
+			getActiveSpreadSheetTable().openFileDialog();
 		} else if (e.getSource().equals(buttonNew)) {
 			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
-			try {
+			/*try {
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
@@ -253,26 +190,17 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 			} catch (IOException ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Can't open a temporary file.");
 				return;
-			}
+			}*/
 		} else if (e.getSource().equals(buttonSave)) {
-			String path = file.getAbsolutePath();
-			if (path.contains("tmp") || path.contains("TEMP"))
-				openSaveDialog();
-			else {
-				try {
-					sheet.toXML(file);
-				} catch (FileNotFoundException ex) {
-					JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
-					ex.printStackTrace();
-				}
-			}
+			getActiveSpreadSheetTable().saveFile();
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			openSaveDialog();
+			getActiveSpreadSheetTable().openSaveDialog();
+			//niet echt optimaal? Werkt ook niet als er via buttonSave een dialog opkomt bij een tempfile
+			mainTabs.setTitleAt(mainTabs.getSelectedIndex(), getActiveSpreadSheetTable().getFileString());
 		} else if (e.getSource().equals(buttonAbout)) {
 			openHelpDialog();
 		} else if (e.getSource().equals(functions)) {
-			String formula = (String)functions.getSelectedItem();
-			formula = "=" + formula;
+			String formula = "=" + (String)functions.getSelectedItem();
 			//nu nog de geselecteerde cellen erbij
 			functionField.setText(formula);
 		} else if (e.getSource().equals(functionField)) {
@@ -281,54 +209,51 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				Scanner sc; //we moeten hier ook nog de cellen invoeren en scannen
 				sc = new Scanner(enteredText);
 				String formula = sc.next();
-				if (formula.equals("=Sum")) {
-					System.out.println("The formula is: Sum");
-				} else {
-					System.err.println("The formula is not recognized");
-				}
 				sc.close();
 			} else
 				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.");
 		}
 	}
 
-	public void mousePressed(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-
-	/**
-	 * Listens for all mouseClicked events emitted by the elements of the GUI
-	 * @return void
-	 */
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource().equals(tabel)) {
-			if(e.isShiftDown() && tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				String cellContent = functionField.getText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
-				functionField.setText(cellContent);
-			}
-		}
-	}
-	
 	public void focusGained(FocusEvent e) {}
 
 	/**
 	 * Listens for all focusLost events emitted by the elements of the GUI
 	 * @return void
 	 */
-	public void focusLost(FocusEvent e){
-		if(e.getSource().equals(tabel)){
+	public void focusLost(FocusEvent e) { //waar was dit ook al weer voor?
+		/*if(e.getSource().equals(tabel)){
 			selectedColumn = tabel.getSelectedColumn();
 			selectedRow = tabel.getSelectedRow();
 		}
 		
 		if(e.getSource().equals(functionField)){
 			tabel.setValueAt(functionField.getText(), selectedRow, selectedColumn);
-		}
+		}*/
+	}
+
+	public SpreadSheetTable getActiveSpreadSheetTable() {
+		return null;
+	}
+
+	/**
+	 * Helper method to set the text in the function field
+	 * @param String - text to set
+	 */
+	public static void functionFieldSetText (String text) {
+		functionField.setText(text);
+	}
+
+	/**
+	 * Helper method to get the text from the function field
+	 * @return String
+	 */
+	public static String functionFieldGetText () {
+		return functionField.getText();
 	}
 
 	//Tijdelijk zodat de GUI nog steeds getest kan worden
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		try {
 			new GUI();
 		} catch (IOException ex) {
