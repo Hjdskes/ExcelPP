@@ -1,49 +1,42 @@
 package com.awesome.excelpp.gui;
 
-import com.awesome.excelpp.xml.XML;
-import com.awesome.excelpp.models.*;
+import com.awesome.excelpp.gui.SpreadSheetTable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-
-import org.w3c.dom.Document;
+import java.util.ArrayList;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
-import javax.swing.filechooser.*;
 
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo:
+ *   switch to specific tab with keyboard shortcut
  */
-public class GUI extends JFrame implements ActionListener, MouseListener, FocusListener{
+public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
 	private static int screenWidth;
 	private static int screenHeight;
 	private static JFrame mainFrame;
 	private static JTextField functionField;
-	private static SpreadSheetTable tabel;
-	private static SpreadSheet sheet;
+	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
+	private static JButton buttonCloseTab;
 	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
-	private static JButton buttonNew;
 	private static JButton buttonOpen;
-	private File file = null;
-	private static int selectedColumn;
-	private static int selectedRow;
-	
-	/**
-	 * Constructor
-	 */
+	private static JButton buttonNewTab;
+	private static JButton buttonNew;
+	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
+
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-		screenWidth = (int)getScreenWidth();
-		screenHeight = (int)getScreenHeight();
+
+		screenWidth = (int)Utils.getScreenWidth();
+		screenHeight = (int)Utils.getScreenHeight();
 
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
@@ -51,148 +44,95 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
-		sheet = new SpreadSheet();
-		tabel = new SpreadSheetTable (sheet);
 
-		tabel.addMouseListener(this);
-		tabel.addFocusListener(this);
+		mainTabs = new JTabbedPane();
+		createNewTab(); //open altijd één tab
 
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
-		mainFrame.add (new JScrollPane (tabel), BorderLayout.CENTER);
+		mainFrame.add (mainTabs, BorderLayout.CENTER);
 		mainFrame.setVisible (true);
-
-		file = File.createTempFile("excelpp_temp", ".xml");
 	}
 
 	/**
-	 * Function that gets the screen width
-	 * @return int
-	 */
-	private static double getScreenWidth() {
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-
-		return gd.getDefaultConfiguration().getBounds().getWidth();
-	}
-	
-	/**
-	 * Function that gets the screen height
-	 * @return int
-	 */
-	private static double getScreenHeight() {
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-
-		return gd.getDefaultConfiguration().getBounds().getHeight();
-	}
-	
-	/**
-	 * createButtonPanel creates a JPanel holding the required buttons
+	 * Creates a JPanel holding the required buttons
 	 * @return JPanel
 	 */
 	private JPanel createButtonPanel() {
 		final JPanel panel = new JPanel();
-		final ImageIcon openIcon;
 		final ImageIcon newIcon;
+		final ImageIcon newTabIcon;
+		final ImageIcon openIcon;
 		final ImageIcon saveIcon;
 		final ImageIcon saveIconAs;
+		final ImageIcon closeTabIcon;
 		final ImageIcon aboutIcon;
 
 		panel.setLayout(new FlowLayout());
-		buttonOpen = new JButton();
 		buttonNew = new JButton();
+		buttonNewTab = new JButton();
+		buttonOpen = new JButton();
 		buttonSave = new JButton();
 		buttonSaveAs = new JButton();
 		functionField = new JTextField(30);
+		buttonCloseTab = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
 
 		functionField.addFocusListener(this);
-		
-		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
+
 		newIcon = new ImageIcon("data/woo-icons/page_table_add_32.png");
+		newTabIcon = new ImageIcon("data/woo-icons/add_32.png");
+		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
 		saveIcon = new ImageIcon("data/woo-icons/save_32.png");
 		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
+		closeTabIcon = new ImageIcon("data/woo-icons/close_32.png");
 		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
 
-		buttonOpen.setIcon(openIcon);
 		buttonNew.setIcon(newIcon);
+		buttonNewTab.setIcon(newTabIcon);
+		buttonOpen.setIcon(openIcon);
 		buttonSave.setIcon(saveIcon);
 		buttonSaveAs.setIcon(saveIconAs);
+		buttonCloseTab.setIcon(closeTabIcon);
 		buttonAbout.setIcon(aboutIcon);
 
-		buttonOpen.setToolTipText("Open file");
 		buttonNew.setToolTipText("New file");
+		buttonNewTab.setToolTipText("New tab");
+		buttonOpen.setToolTipText("Open file");
 		buttonSave.setToolTipText("Save file");
 		buttonSaveAs.setToolTipText("Save as");
+		buttonCloseTab.setToolTipText("Close tab");
 		buttonAbout.setToolTipText("About");
 
-		panel.add(buttonOpen);
 		panel.add(buttonNew);
+		panel.add(buttonNewTab);
+		panel.add(buttonOpen);
 		panel.add(buttonSave);
 		panel.add(buttonSaveAs);
 		panel.add(functions);
 		panel.add(functionField);
+		panel.add(buttonCloseTab);
 		panel.add(buttonAbout);
 
-		buttonOpen.addActionListener(this);
-		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonNew.addActionListener(this);
 		buttonNew.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonNewTab.addActionListener(this);
+		buttonNewTab.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonOpen.addActionListener(this);
+		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSave.addActionListener(this);
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSaveAs.addActionListener(this);
 		functionField.addActionListener(this);
+		buttonCloseTab.addActionListener(this);
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
 
 		return panel;
 	}
 	
-	/**
-	 * Opens a file dialog in which the user can select the file to open
-	 * @return void
-	 */
-	private final void openFileDialog() {
-		final JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
-		fc.setFileFilter(filter);
-		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			file = fc.getSelectedFile();
-			try {
-				Document doc = XML.parse(file);
-				sheet = XML.print(doc);
-				tabel.setModel(sheet);
-				tabel.updateUI();
-			} catch (Exception ex) {
-				System.err.println (ex.getMessage());
-			}
-		}
-	}
-
-	/**
-	 * Opens a file dialog in which the user can select where to save the current SpreadSheet
-	 * @return void
-	 */
-	private final void openSaveDialog() {
-		final JFileChooser fc = new JFileChooser();
-		if (fc.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			String fileString = fc.getSelectedFile().getPath();
-			fileString = fileString.replaceAll("\\...*", "");
-			fileString += ".xml";
-			file = new File(fileString);
-			try {
-				file.getParentFile().mkdirs();
-				sheet.toXML(file);
-			} catch (FileNotFoundException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
-				ex.printStackTrace();
-			}
-		}
-	}
-
 	/**
 	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts
 	 * @return void
@@ -207,7 +147,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br></html>");
+		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br>New tab - Control + T<br></html>");
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();
@@ -233,46 +173,31 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 	 * @return void
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(buttonOpen)) {
-			openFileDialog();
-		} else if (e.getSource().equals(buttonNew)) {
-			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
-			try {
-				Document doc = XML.parse(file);
-				SpreadSheet fileSheet = XML.print(doc);
-				if(!sheet.equals(fileSheet))
-					JOptionPane.showMessageDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
-			} catch (Exception ex) {
-				System.err.println (ex.getMessage());
-			}
-			try {
-				file = File.createTempFile("excelpp_temp", ".xml");
-				sheet = new SpreadSheet();
-				tabel.setModel (sheet);
-				tabel.updateUI();
-			} catch (IOException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Can't open a temporary file.");
-				return;
-			}
+		int index = mainTabs.getSelectedIndex();
+
+		if (e.getSource().equals(buttonOpen))
+			panes.get(index).openFileDialog();
+			if(panes.get(index).getFileString().equals("Temporary file"))
+				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
+		else if (e.getSource().equals(buttonNew))
+			panes.get(index).newFile();
+		else if (e.getSource().equals(buttonNewTab)) {
+			createNewTab();
 		} else if (e.getSource().equals(buttonSave)) {
-			String path = file.getAbsolutePath();
-			if (path.contains("tmp") || path.contains("TEMP"))
-				openSaveDialog();
-			else {
-				try {
-					sheet.toXML(file);
-				} catch (FileNotFoundException ex) {
-					JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
-					ex.printStackTrace();
-				}
-			}
+			panes.get(index).saveFile();
+			if(panes.get(index).getFileString().equals("Temporary file"))
+				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			openSaveDialog();
-		} else if (e.getSource().equals(buttonAbout)) {
+			panes.get(index).openSaveDialog();
+			mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
+		} else if (e.getSource().equals(buttonCloseTab)) {
+			int close = panes.get(index).closeFile();
+			if (close == 0)
+				mainTabs.remove(index);
+		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
-		} else if (e.getSource().equals(functions)) {
-			String formula = (String)functions.getSelectedItem();
-			formula = "=" + formula;
+		else if (e.getSource().equals(functions)) {
+			String formula = "=" + (String)functions.getSelectedItem();
 			//nu nog de geselecteerde cellen erbij
 			functionField.setText(formula);
 		} else if (e.getSource().equals(functionField)) {
@@ -281,54 +206,62 @@ public class GUI extends JFrame implements ActionListener, MouseListener, FocusL
 				Scanner sc; //we moeten hier ook nog de cellen invoeren en scannen
 				sc = new Scanner(enteredText);
 				String formula = sc.next();
-				if (formula.equals("=Sum")) {
-					System.out.println("The formula is: Sum");
-				} else {
-					System.err.println("The formula is not recognized");
-				}
 				sc.close();
 			} else
-				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.");
+				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-
-	public void mousePressed(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
 
 	/**
-	 * Listens for all mouseClicked events emitted by the elements of the GUI
+	 * Creates a new tab
 	 * @return void
 	 */
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource().equals(tabel)) {
-			if(e.isShiftDown() && tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				String cellContent = functionField.getText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
-				functionField.setText(cellContent);
-			}
+	private static void createNewTab() {
+		SpreadSheetTable table;
+		try {
+			table = new SpreadSheetTable();
+			panes.add(table);
+			int last = panes.size() - 1;
+			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
+			mainTabs.setSelectedIndex(last);
+			//mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
 		}
 	}
-	
+
 	public void focusGained(FocusEvent e) {}
 
 	/**
 	 * Listens for all focusLost events emitted by the elements of the GUI
 	 * @return void
 	 */
-	public void focusLost(FocusEvent e){
-		if(e.getSource().equals(tabel)){
-			selectedColumn = tabel.getSelectedColumn();
-			selectedRow = tabel.getSelectedRow();
-		}
-		
-		if(e.getSource().equals(functionField)){
-			tabel.setValueAt(functionField.getText(), selectedRow, selectedColumn);
+	public void focusLost(FocusEvent e) {
+		if(e.getSource().equals(functionField)) {
+			int index = mainTabs.getSelectedIndex();
+			panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
 		}
 	}
 
+	/**
+	 * Helper method to set the text in the function field
+	 * @param String - text to set
+	 */
+	public static void functionFieldSetText (String text) {
+		functionField.setText(text);
+	}
+
+	/**
+	 * Helper method to get the text from the function field
+	 * @return String
+	 */
+	public static String functionFieldGetText () {
+		return functionField.getText();
+	}
+
 	//Tijdelijk zodat de GUI nog steeds getest kan worden
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		try {
 			new GUI();
 		} catch (IOException ex) {
