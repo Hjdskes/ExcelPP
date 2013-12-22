@@ -1,15 +1,12 @@
 package com.awesome.excelpp.gui;
 
-import com.awesome.excelpp.xml.XML;
-import com.awesome.excelpp.models.*;
 import com.awesome.excelpp.gui.SpreadSheetTable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-
-import org.w3c.dom.Document;
+import java.util.ArrayList;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -36,17 +33,16 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static JButton buttonAbout;
 	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
-	private static JButton buttonNew;
 	private static JButton buttonOpen;
-	private static SpreadSheetTable firstPane;
+	private static JButton buttonNewTab;
+	private static JButton buttonNew;
+	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 
 	/**
 	 * Constructor
 	 */
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-		//final SpreadSheetTable firstPane = new SpreadSheetTable();
-		firstPane = new SpreadSheetTable();
 
 		screenWidth = (int)Utils.getScreenWidth();
 		screenHeight = (int)Utils.getScreenHeight();
@@ -59,7 +55,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
 
 		mainTabs = new JTabbedPane();
-		mainTabs.addTab(firstPane.getFileString(), new ImageIcon("data/woo-icons/page_16.png"), firstPane.getScrollPane(), null);
+		createNewTab(); //open altijd één tab
+
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
 		mainFrame.setVisible (true);
@@ -71,15 +68,17 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 */
 	private JPanel createButtonPanel() {
 		final JPanel panel = new JPanel();
-		final ImageIcon openIcon;
 		final ImageIcon newIcon;
+		final ImageIcon newTabIcon;
+		final ImageIcon openIcon;
 		final ImageIcon saveIcon;
 		final ImageIcon saveIconAs;
 		final ImageIcon aboutIcon;
 
 		panel.setLayout(new FlowLayout());
-		buttonOpen = new JButton();
 		buttonNew = new JButton();
+		buttonNewTab = new JButton();
+		buttonOpen = new JButton();
 		buttonSave = new JButton();
 		buttonSaveAs = new JButton();
 		functionField = new JTextField(30);
@@ -89,37 +88,43 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		functions.setSelectedIndex(0);
 
 		functionField.addFocusListener(this);
-		
-		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
+
 		newIcon = new ImageIcon("data/woo-icons/page_table_add_32.png");
+		newTabIcon = new ImageIcon("data/woo-icons/add_32.png");
+		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
 		saveIcon = new ImageIcon("data/woo-icons/save_32.png");
 		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
 		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
 
-		buttonOpen.setIcon(openIcon);
 		buttonNew.setIcon(newIcon);
+		buttonNewTab.setIcon(newTabIcon);
+		buttonOpen.setIcon(openIcon);
 		buttonSave.setIcon(saveIcon);
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonAbout.setIcon(aboutIcon);
 
-		buttonOpen.setToolTipText("Open file");
 		buttonNew.setToolTipText("New file");
+		buttonNewTab.setToolTipText("New tab");
+		buttonOpen.setToolTipText("Open file");
 		buttonSave.setToolTipText("Save file");
 		buttonSaveAs.setToolTipText("Save as");
 		buttonAbout.setToolTipText("About");
 
-		panel.add(buttonOpen);
 		panel.add(buttonNew);
+		panel.add(buttonNewTab);
+		panel.add(buttonOpen);
 		panel.add(buttonSave);
 		panel.add(buttonSaveAs);
 		panel.add(functions);
 		panel.add(functionField);
 		panel.add(buttonAbout);
 
-		buttonOpen.addActionListener(this);
-		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonNew.addActionListener(this);
 		buttonNew.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonNewTab.addActionListener(this);
+		buttonNewTab.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonOpen.addActionListener(this);
+		buttonOpen.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSave.addActionListener(this);
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSaveAs.addActionListener(this);
@@ -171,7 +176,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(buttonOpen)) {
-			getActiveSpreadSheetTable().openFileDialog();
+			int index = mainTabs.getSelectedIndex();
+			panes.get(index).openFileDialog();
 		} else if (e.getSource().equals(buttonNew)) {
 			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
 			/*try {
@@ -191,12 +197,17 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				JOptionPane.showMessageDialog(mainFrame, "Can't open a temporary file.");
 				return;
 			}*/
+		} else if (e.getSource().equals(buttonNewTab)) {
+			createNewTab();
 		} else if (e.getSource().equals(buttonSave)) {
-			getActiveSpreadSheetTable().saveFile();
+			int index = mainTabs.getSelectedIndex();
+			panes.get(index).saveFile();
+			if(panes.get(index).getFileString().equals("Temporary file"))
+				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			getActiveSpreadSheetTable().openSaveDialog();
-			//niet echt optimaal? Werkt ook niet als er via buttonSave een dialog opkomt bij een tempfile
-			mainTabs.setTitleAt(mainTabs.getSelectedIndex(), getActiveSpreadSheetTable().getFileString());
+			int index = mainTabs.getSelectedIndex();
+			panes.get(index).openSaveDialog();
+			mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
 		} else if (e.getSource().equals(buttonAbout)) {
 			openHelpDialog();
 		} else if (e.getSource().equals(functions)) {
@@ -215,25 +226,30 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 	}
 
+	private static void createNewTab() {
+		SpreadSheetTable table;
+		try {
+			table = new SpreadSheetTable();
+			panes.add(table);
+			int last = panes.size() - 1;
+			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString());
+			ex.printStackTrace();
+		}
+	}
+
 	public void focusGained(FocusEvent e) {}
 
 	/**
 	 * Listens for all focusLost events emitted by the elements of the GUI
 	 * @return void
 	 */
-	public void focusLost(FocusEvent e) { //waar was dit ook al weer voor?
-		/*if(e.getSource().equals(tabel)){
-			selectedColumn = tabel.getSelectedColumn();
-			selectedRow = tabel.getSelectedRow();
+	public void focusLost(FocusEvent e) {
+		if(e.getSource().equals(functionField)) {
+			int index = mainTabs.getSelectedIndex();
+			panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
 		}
-		
-		if(e.getSource().equals(functionField)){
-			tabel.setValueAt(functionField.getText(), selectedRow, selectedColumn);
-		}*/
-	}
-
-	public SpreadSheetTable getActiveSpreadSheetTable() {
-		return null;
 	}
 
 	/**

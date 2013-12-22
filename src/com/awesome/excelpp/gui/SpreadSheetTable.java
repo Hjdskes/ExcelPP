@@ -51,6 +51,14 @@ public class SpreadSheetTable implements MouseListener {
 	}
 
 	/**
+	 * Returns the JTable of this tab
+	 * @return JTable
+	 */
+	public JTable getTable() {
+		return tabel;
+	}
+
+	/**
 	 * Returns the currently selected column in the JTable
 	 * @return int
 	 */
@@ -138,7 +146,7 @@ public class SpreadSheetTable implements MouseListener {
 	public void mouseExited(MouseEvent e) {}
 
 	/**
-	 * Listens for all mouseClicked events emitted by the elements of the GUI
+	 * Listens for all mouseClicked events emitted by the elements of the tab
 	 * @return void
 	 */
 	public void mouseClicked(MouseEvent e) {
@@ -147,6 +155,17 @@ public class SpreadSheetTable implements MouseListener {
 				String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
 				GUI.functionFieldSetText(cellContent);
 			}
+		}
+	}
+
+	/**
+	 * Listens for all focusLost events emitted by the elements of the tab
+	 * @return void
+	 */
+	public void focusLost(FocusEvent e) {
+		if(e.getSource().equals(tabel)){
+			selectedColumn = tabel.getSelectedColumn();
+			selectedRow = tabel.getSelectedRow();
 		}
 	}
 }
