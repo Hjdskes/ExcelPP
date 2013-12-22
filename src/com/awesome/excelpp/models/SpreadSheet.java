@@ -145,6 +145,10 @@ public class SpreadSheet implements TableModel {
 		return row * numberOfCols + col;
 	}
 	
+	public boolean isEmpty() {
+		return cells.isEmpty();
+	}
+	
 	/**
 	 * -=TEST=-
 	 */
