@@ -33,7 +33,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		sheet = new SpreadSheet();
 		tabel = new JTable(sheet);
 		tabel.setFillsViewportHeight (true);
-		tabel.setSelectionBackground (new Color(74, 144, 217));
+		tabel.setSelectionBackground (new Color(200, 221, 242));
 		rowTabel = new RowNumberTable(tabel);
 		
 		scrollPane = new JScrollPane(tabel);
@@ -152,10 +152,25 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		int close = 1;
 		//ToDo: dit werkt nog niet als er een nieuw bestand wordt aangemaakt, hier wat aan wordt veranderd en er vervolgens op Nieuw wordt geklikt.
 		try {
-			Document doc = XML.parse(file);
-			SpreadSheet fileSheet = XML.print(doc);
-			if(!sheet.equals(fileSheet))
-				close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+			if (file.toString().contains("temp") == false || file.toString().contains("TEMP") == false) {
+				Document doc = XML.parse(file);
+				SpreadSheet fileSheet = XML.print(doc);
+				if(!sheet.equals(fileSheet))
+					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+			} else {
+				if(sheet.isEmpty() == false) {
+					sheet.toXML(file);
+					System.out.println(file.toString());
+					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+					if(close == 0) {
+						if(file.delete() != true)
+							JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
+					}
+				} else {
+					if(file.delete() != true)
+						JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
+			}
 		} catch (Exception ex) {
 			System.err.println (ex.getMessage());
 		}

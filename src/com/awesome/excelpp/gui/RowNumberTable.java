@@ -12,9 +12,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.TableColumn;
 
 /*
- *	Use a JTable as a renderer for row numbers of a given main table.
- *  This table must be added to the row header of the scrollpane that
- *  contains the main table.
+ * Use a JTable as a renderer for row numbers of a given main table.
+ * This table must be added to the row header of the scrollpane that
+ * contains the main table.
  */
 public class RowNumberTable extends JTable implements ChangeListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -22,16 +22,16 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 
 	public RowNumberTable(JTable table) {
 		main = table;
-		main.addPropertyChangeListener( this );
+		main.addPropertyChangeListener (this);
 
 		setFocusable( false );
-		setAutoCreateColumnsFromModel( false );
-		setModel( main.getModel() );
-		setSelectionModel( main.getSelectionModel() );
+		setAutoCreateColumnsFromModel (false);
+		setModel(main.getModel());
+		setSelectionModel(main.getSelectionModel());
 
 		TableColumn column = new TableColumn();
 		column.setHeaderValue(" ");
-		addColumn( column );
+		addColumn(column);
 		
 		column.setCellRenderer(table.getTableHeader().getDefaultRenderer());
 
@@ -48,12 +48,12 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 		//  Keep scrolling of the row table in sync with the main table.
 		if (c instanceof JViewport) {
 			JViewport viewport = (JViewport)c;
-			viewport.addChangeListener( this );
+			viewport.addChangeListener (this);
 		}
 	}
 
 	/*
-	 *  Delegate method to main table
+	 * Delegate method to main table
 	 */
 	@Override
 	public int getRowCount() {
@@ -66,8 +66,8 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	}
 
 	/*
-	 *  This table does not use any data from the main TableModel,
-	 *  so just return a value based on the row parameter.
+	 * This table does not use any data from the main TableModel,
+	 * so just return a value based on the row parameter.
 	 */
 	@Override
 	public Object getValueAt(int row, int column) {
@@ -75,7 +75,7 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	}
 
 	/*
-	 *  Don't edit data in the main TableModel by mistake
+	 * Don't edit data in the main TableModel by mistake
 	 */
 	@Override
 	public boolean isCellEditable(int row, int column) {
@@ -83,7 +83,7 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	}
 	
 	/*
-	 *  Implement the ChangeListener
+	 * Implement the ChangeListener
 	 */
 	public void stateChanged(ChangeEvent e) {
 		//  Keep the scrolling of the row table in sync with main table
@@ -91,11 +91,11 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 		JScrollPane scrollPane = (JScrollPane)viewport.getParent();
 		scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
 	}
+
 	/*
-	 *  Implement the PropertyChangeListener
+	 * Implement the PropertyChangeListener
 	 */
-	public void propertyChange(PropertyChangeEvent e)
-	{
+	public void propertyChange(PropertyChangeEvent e) {
 		//  Keep the row table in sync with the main table
 		if ("selectionModel".equals(e.getPropertyName())) {
 			setSelectionModel( main.getSelectionModel() );
