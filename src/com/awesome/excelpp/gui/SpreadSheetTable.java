@@ -22,7 +22,7 @@ import org.w3c.dom.Document;
  * Class that sets up everything needed for a new tab in the GUI
  *
  */
-public class SpreadSheetTable implements MouseListener {
+public class SpreadSheetTable implements MouseListener, FocusListener {
 	private static JScrollPane scrollPane;
 	private static JTable tabel;
 	private static SpreadSheet sheet;
@@ -75,7 +75,7 @@ public class SpreadSheetTable implements MouseListener {
 	}
 
 	/**
-	 * This function returns a String representation of the opened file
+	 * Returns a String representation of the opened file
 	 * @return String
 	 */
 	public String getFileString () {
@@ -105,6 +105,10 @@ public class SpreadSheetTable implements MouseListener {
 		}
 	}
 
+	/**
+	 * Properly handles opening a new file - spawns a dialog if changes will be lost
+	 * @return void
+	 */
 	public final void newFile () {
 		if(closeFile() == 0) {
 			try {
@@ -119,6 +123,10 @@ public class SpreadSheetTable implements MouseListener {
 		}
 	}
 
+	/**
+	 * Saves the currently opened file
+	 * @return void
+	 */
 	public final void saveFile () {
 		String path = file.getAbsolutePath();
 		if (path.contains("tmp") || path.contains("TEMP")) //check on Windows/OSX
@@ -133,6 +141,10 @@ public class SpreadSheetTable implements MouseListener {
 		}
 	}
 
+	/**
+	 * Properly handles closing of a file - spawns a dialog if changes will be lost
+	 * @return int - choice made: 0 for OK, 1 for cancel.
+	 */
 	public final int closeFile () {
 		int close = 1;
 		//ToDo: dit werkt nog niet als er een nieuw bestand wordt aangemaakt, hier wat aan wordt veranderd en er vervolgens op Nieuw wordt geklikt.
@@ -185,6 +197,8 @@ public class SpreadSheetTable implements MouseListener {
 			}
 		}
 	}
+
+	public void focusGained(FocusEvent e) {}
 
 	/**
 	 * Listens for all focusLost events emitted by the elements of the tab

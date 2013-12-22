@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 /**
@@ -33,9 +32,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static JButton buttonNew;
 	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 
-	/**
-	 * Constructor
-	 */
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
 
@@ -58,7 +54,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	}
 
 	/**
-	 * createButtonPanel creates a JPanel holding the required buttons
+	 * Creates a JPanel holding the required buttons
 	 * @return JPanel
 	 */
 	private JPanel createButtonPanel() {
@@ -215,6 +211,10 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 	}
 
+	/**
+	 * Creates a new tab
+	 * @return void
+	 */
 	private static void createNewTab() {
 		SpreadSheetTable table;
 		try {
