@@ -20,7 +20,6 @@ import org.w3c.dom.Document;
 
 /**
  * Class that sets up everything needed for a new tab in the GUI
- *
  */
 public class SpreadSheetTable implements MouseListener, FocusListener {
 	private static JScrollPane scrollPane;
@@ -173,7 +172,11 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 			String fileString = fc.getSelectedFile().getPath();
 			fileString = fileString.replaceAll("\\...*", "");
 			fileString += ".xml";
-			file = new File(fileString);
+			File fileDest = new File(fileString);
+			file.renameTo(fileDest);
+			if(file.delete() != true)
+				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
+			file = fileDest;
 			try {
 				file.getParentFile().mkdirs();
 				sheet.toXML(file);

@@ -224,7 +224,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			panes.add(table);
 			int last = panes.size() - 1;
 			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
-			//mainTabs.setSelectedIndex(last);
+			mainTabs.setSelectedIndex(last);
 			//mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
