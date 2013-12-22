@@ -177,6 +177,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 		if (e.getSource().equals(buttonOpen))
 			panes.get(index).openFileDialog();
+			if(panes.get(index).getFileString().equals("Temporary file"))
+				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
 		else if (e.getSource().equals(buttonNew))
 			panes.get(index).newFile();
 		else if (e.getSource().equals(buttonNewTab)) {
