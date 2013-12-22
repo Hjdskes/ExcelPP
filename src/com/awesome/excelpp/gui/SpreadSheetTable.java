@@ -24,7 +24,7 @@ import org.w3c.dom.Document;
  */
 public class SpreadSheetTable implements MouseListener, FocusListener {
 	private static JScrollPane scrollPane;
-	private static JTable tabel;
+	private static JTable tabel, rowTabel;
 	private static SpreadSheet sheet;
 	private File file = null;
 	private static int selectedColumn;
@@ -35,7 +35,11 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		tabel = new JTable(sheet);
 		tabel.setFillsViewportHeight (true);
 		tabel.setSelectionBackground (new Color(74, 144, 217));
+		rowTabel = new RowNumberTable(tabel);
+		
 		scrollPane = new JScrollPane(tabel);
+		scrollPane.setRowHeaderView(rowTabel);
+		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTabel.getTableHeader());
 
 		tabel.addMouseListener(this);
 
