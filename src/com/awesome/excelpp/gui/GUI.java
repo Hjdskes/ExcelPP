@@ -2,8 +2,6 @@ package com.awesome.excelpp.gui;
 
 import com.awesome.excelpp.gui.SpreadSheetTable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -175,42 +173,24 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 * @return void
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(buttonOpen)) {
-			int index = mainTabs.getSelectedIndex();
+		int index = mainTabs.getSelectedIndex();
+
+		if (e.getSource().equals(buttonOpen))
 			panes.get(index).openFileDialog();
-		} else if (e.getSource().equals(buttonNew)) {
-			//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
-			/*try {
-				Document doc = XML.parse(file);
-				SpreadSheet fileSheet = XML.print(doc);
-				if(!sheet.equals(fileSheet))
-					JOptionPane.showMessageDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
-			} catch (Exception ex) {
-				System.err.println (ex.getMessage());
-			}
-			try {
-				file = File.createTempFile("excelpp_temp", ".xml");
-				sheet = new SpreadSheet();
-				tabel.setModel (sheet);
-				tabel.updateUI();
-			} catch (IOException ex) {
-				JOptionPane.showMessageDialog(mainFrame, "Can't open a temporary file.");
-				return;
-			}*/
-		} else if (e.getSource().equals(buttonNewTab)) {
+		else if (e.getSource().equals(buttonNew))
+			panes.get(index).newFile();
+		else if (e.getSource().equals(buttonNewTab))
 			createNewTab();
-		} else if (e.getSource().equals(buttonSave)) {
-			int index = mainTabs.getSelectedIndex();
+		else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
 			if(panes.get(index).getFileString().equals("Temporary file"))
 				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			int index = mainTabs.getSelectedIndex();
 			panes.get(index).openSaveDialog();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
-		} else if (e.getSource().equals(buttonAbout)) {
+		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
-		} else if (e.getSource().equals(functions)) {
+		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			//nu nog de geselecteerde cellen erbij
 			functionField.setText(formula);

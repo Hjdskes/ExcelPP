@@ -105,6 +105,28 @@ public class SpreadSheetTable implements MouseListener {
 		}
 	}
 
+	public final void newFile () {
+		//ToDo: keuze laten aan gebruiker of hij de veranderingen wil opslaan of gewoon doorgaan
+		//ToDo: dit werkt nog niet als er een nieuw bestand wordt aangemaakt, hier wat aan wordt veranderd en er vervolgens op Nieuw wordt geklikt.
+		try {
+			Document doc = XML.parse(file);
+			SpreadSheet fileSheet = XML.print(doc);
+			if(!sheet.equals(fileSheet))
+				JOptionPane.showMessageDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?"); //dialog met Yes/No?
+		} catch (Exception ex) {
+			System.err.println (ex.getMessage());
+		}
+		try {
+			file = File.createTempFile("excelpp_temp", ".xml");
+			sheet = new SpreadSheet();
+			tabel.setModel (sheet);
+			tabel.updateUI();
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(tabel, "Can't open a temporary file.");
+			return;
+		}
+	}
+
 	public final void saveFile () {
 		String path = file.getAbsolutePath();
 		if (path.contains("tmp") || path.contains("TEMP")) //check on Windows/OSX
