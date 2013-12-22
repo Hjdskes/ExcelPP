@@ -8,7 +8,7 @@ import java.awt.GraphicsEnvironment;
  */
 public class Utils {
 	/**
-	 * Function that gets the screen width
+	 * Returns the screen width
 	 * @return int
 	 */
 	static double getScreenWidth() {
@@ -19,7 +19,7 @@ public class Utils {
 	}
 	
 	/**
-	 * Function that gets the screen height
+	 * Returns the screen height
 	 * @return int
 	 */
 	static double getScreenHeight() {
