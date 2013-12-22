@@ -9,9 +9,7 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /*
  *	Use a JTable as a renderer for row numbers of a given main table.
