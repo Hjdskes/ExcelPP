@@ -177,23 +177,25 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 		if (e.getSource().equals(buttonOpen))
 			panes.get(index).openFileDialog();
-			if(panes.get(index).getFileString().equals("Temporary file"))
-				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
+			//if(panes.get(index).getFileString().equals("Temporary file"))
+			//	mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
 		else if (e.getSource().equals(buttonNew))
 			panes.get(index).newFile();
 		else if (e.getSource().equals(buttonNewTab)) {
 			createNewTab();
 		} else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
-			if(panes.get(index).getFileString().equals("Temporary file"))
-				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
+			//if(panes.get(index).getFileString().equals("Temporary file"))
+			//	mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			panes.get(index).openSaveDialog();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
+			//mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
 		} else if (e.getSource().equals(buttonCloseTab)) {
 			int close = panes.get(index).closeFile();
-			if (close == 0)
+			if (close == 0) {
 				mainTabs.remove(index);
+				panes.remove(index);
+			}
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
@@ -217,13 +219,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 * @return void
 	 */
 	private static void createNewTab() {
-		SpreadSheetTable table;
 		try {
-			table = new SpreadSheetTable();
+			SpreadSheetTable table = new SpreadSheetTable();
 			panes.add(table);
 			int last = panes.size() - 1;
 			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
-			mainTabs.setSelectedIndex(last);
+			//mainTabs.setSelectedIndex(last);
 			//mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);

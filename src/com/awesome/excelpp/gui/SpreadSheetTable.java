@@ -152,7 +152,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 			Document doc = XML.parse(file);
 			SpreadSheet fileSheet = XML.print(doc);
 			if(!sheet.equals(fileSheet))
-				close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION); //dialog met Yes/No?
+				close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 		} catch (Exception ex) {
 			System.err.println (ex.getMessage());
 		}
