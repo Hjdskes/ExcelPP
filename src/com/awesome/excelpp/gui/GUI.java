@@ -18,7 +18,6 @@ import javax.swing.*;
  *     with new file
  *     with opened file
  *   switch to specific tab with keyboard shortcut / arrow keys
- *   automatisch switchen naar nieuw geopende tab
  */
 public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -187,9 +186,10 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			panes.get(index).openFileDialog();
 		else if (e.getSource().equals(buttonNew))
 			panes.get(index).newFile();
-		else if (e.getSource().equals(buttonNewTab))
+		else if (e.getSource().equals(buttonNewTab)) {
 			createNewTab();
-		else if (e.getSource().equals(buttonSave)) {
+			mainTabs.setSelectedIndex(index + 1);
+		} else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
 			if(panes.get(index).getFileString().equals("Temporary file"))
 				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
