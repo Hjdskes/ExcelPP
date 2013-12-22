@@ -138,7 +138,10 @@ public class SpreadSheet implements TableModel {
 	 * @param col		int representing y-coordinate
 	 */
 	public void setValueAt(Object aValue, int row, int col) {
-		cells.put(getNumCell(row, col), new Cell((String)aValue));
+		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null)
+			cells.remove(getNumCell(row, col));
+		else if (((String)aValue).length() != 0)
+			cells.put(getNumCell(row, col), new Cell((String)aValue));
 	}
 	
 	private int getNumCell(int row, int col) {
