@@ -18,7 +18,7 @@ import javax.swing.*;
  *     with new file
  *     with opened file
  *   switch to specific tab with keyboard shortcut / arrow keys
- *   remove tabs
+ *   automatisch switchen naar nieuw geopende tab
  */
 public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
@@ -29,6 +29,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
+	private static JButton buttonCloseTab;
 	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
 	private static JButton buttonOpen;
@@ -71,6 +72,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		final ImageIcon openIcon;
 		final ImageIcon saveIcon;
 		final ImageIcon saveIconAs;
+		final ImageIcon closeTabIcon;
 		final ImageIcon aboutIcon;
 
 		panel.setLayout(new FlowLayout());
@@ -80,6 +82,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		buttonSave = new JButton();
 		buttonSaveAs = new JButton();
 		functionField = new JTextField(30);
+		buttonCloseTab = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
@@ -92,6 +95,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
 		saveIcon = new ImageIcon("data/woo-icons/save_32.png");
 		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
+		closeTabIcon = new ImageIcon("data/woo-icons/close_32.png");
 		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
 
 		buttonNew.setIcon(newIcon);
@@ -99,6 +103,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		buttonOpen.setIcon(openIcon);
 		buttonSave.setIcon(saveIcon);
 		buttonSaveAs.setIcon(saveIconAs);
+		buttonCloseTab.setIcon(closeTabIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -106,6 +111,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		buttonOpen.setToolTipText("Open file");
 		buttonSave.setToolTipText("Save file");
 		buttonSaveAs.setToolTipText("Save as");
+		buttonCloseTab.setToolTipText("Close tab");
 		buttonAbout.setToolTipText("About");
 
 		panel.add(buttonNew);
@@ -115,6 +121,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		panel.add(buttonSaveAs);
 		panel.add(functions);
 		panel.add(functionField);
+		panel.add(buttonCloseTab);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -127,6 +134,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSaveAs.addActionListener(this);
 		functionField.addActionListener(this);
+		buttonCloseTab.addActionListener(this);
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
 
@@ -184,10 +192,14 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
 			if(panes.get(index).getFileString().equals("Temporary file"))
-				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
+				mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			panes.get(index).openSaveDialog();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
+		} else if (e.getSource().equals(buttonCloseTab)) {
+			int close = panes.get(index).closeFile();
+			if (close == 0)
+				mainTabs.remove(index);
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
