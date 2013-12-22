@@ -152,7 +152,8 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		int close = 1;
 		//ToDo: dit werkt nog niet als er een nieuw bestand wordt aangemaakt, hier wat aan wordt veranderd en er vervolgens op Nieuw wordt geklikt.
 		try {
-			if (file.toString().contains("temp") == false || file.toString().contains("TEMP") == false) {
+			if (file.toString().contains("temp") == false && file.toString().contains("TEMP") == false && file.toString().contains("tmp") == false) {
+				System.out.println("debug");
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
@@ -169,6 +170,8 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 				} else {
 					if(file.delete() != true)
 						JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
+					System.out.println("Temp deleted");
+					close = 0;
 				}
 			}
 		} catch (Exception ex) {
