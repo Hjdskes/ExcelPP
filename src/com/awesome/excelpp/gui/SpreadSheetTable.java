@@ -38,6 +38,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		tabel = new JTable(sheet);
 		tabel.setFillsViewportHeight (true);
 		tabel.setSelectionBackground (new Color(200, 221, 242));
+		tabel.setColumnSelectionAllowed(true);
 		rowTabel = new RowNumberTable(tabel);
 		
 		scrollPane = new JScrollPane(tabel);
