@@ -6,8 +6,11 @@ public class SpreadSheetManualTest {
 		String res1 = test();
 		System.out.println(res1);
 		
-		String res2 = testInsertCol();
-		System.out.println(res2);
+//		String res2 = testInsertCol();
+//		System.out.println(res2);
+		
+//		String res2 = testInsertRow();
+//		System.out.println(res2);
 		
 //		String res3 = testFormules();
 //		System.out.println(res3);
@@ -26,7 +29,7 @@ public class SpreadSheetManualTest {
 		return "Time to insert: " + (insertEnd - insertStart) + " ms";
 	}
 	
-	/*
+	
 	public static String testInsertRow(){
 		SpreadSheet sheet = new SpreadSheet();
 		sheet.fillSheet();
@@ -37,7 +40,7 @@ public class SpreadSheetManualTest {
 		System.out.println(sheet);
 		
 		return "Time to insert: " + (insertEnd - insertStart) + " ms\n";
-	}*/
+	}
 	
 	public static String test() {
 		SpreadSheet sheet = new SpreadSheet();
