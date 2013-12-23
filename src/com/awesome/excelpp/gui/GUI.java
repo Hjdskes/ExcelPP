@@ -33,7 +33,7 @@ import javax.swing.KeyStroke;
  *   switch to specific tab with keyboard shortcut
  */
 public class GUI extends JFrame implements ActionListener, FocusListener {
-	private static final long serialVersionUID = 1L; // anders zeurt eclipse, maar waarom?
+	private static final long serialVersionUID = 1L;
 	private static int screenWidth;
 	private static int screenHeight;
 	private static JFrame mainFrame;
@@ -218,12 +218,13 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
-			//nu nog de geselecteerde cellen erbij
-			functionField.setText(formula);
-		} else if (e.getSource().equals(functionField)) {
+			char activeCol = (char) (panes.get(index).getSelectedColumn() + 65);
+			int activeRow = panes.get(index).getSelectedRow() + 1;
+			functionField.setText(formula + "(" + activeCol + activeRow + ")");
+		} else if (e.getSource().equals(functionField)) { //ToDo: wacht hiermee tot de Parser af is
 			String enteredText = functionField.getText();
 			if (enteredText.charAt(0) == '=') {
-				Scanner sc; //we moeten hier ook nog de cellen invoeren en scannen
+				Scanner sc; //ToDo: we moeten hier ook nog de cellen invoeren en scannen
 				sc = new Scanner(enteredText);
 				String formula = sc.next();
 				sc.close();
@@ -243,7 +244,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			int last = panes.size() - 1;
 			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
 			mainTabs.setSelectedIndex(last);
-			//mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
+			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();

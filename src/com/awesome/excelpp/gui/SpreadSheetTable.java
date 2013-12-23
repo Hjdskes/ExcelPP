@@ -224,9 +224,15 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 */
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
-			if(e.isShiftDown() && tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
-				GUI.functionFieldSetText(cellContent);
+			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
+				selectedColumn = tabel.getSelectedColumn();
+				selectedRow = tabel.getSelectedRow();
+				if(e.isShiftDown()) {
+					String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(selectedRow, selectedColumn);
+					GUI.functionFieldSetText(cellContent);
+				}
+			} else {
+				//ToDo: als er meerdere cellen zijn geselecteerd
 			}
 		}
 	}
@@ -237,7 +243,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * Listens for all focusLost events emitted by the elements of the tab
 	 * @return void
 	 */
-	public void focusLost(FocusEvent e) {
+	public void focusLost(FocusEvent e) { //ToDo: waarom hebben we deze nodig?
 		if(e.getSource().equals(tabel)){
 			selectedColumn = tabel.getSelectedColumn();
 			selectedRow = tabel.getSelectedRow();
