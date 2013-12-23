@@ -82,7 +82,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return String
 	 */
 	public String getFileString () {
-		if (file.getAbsolutePath().contains("temp") == true && (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true)) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true) //check on windows/osx
 			return "Temporary file";
 		return file.toString();
 	}
@@ -133,7 +133,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return void
 	 */
 	public final void saveFile () {
-		if (file.getAbsolutePath().contains("temp") == true && (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true)) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true) //check on windows/osx
 			openSaveDialog();
 		else {
 			try {
@@ -152,13 +152,14 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public final int closeFile () {
 		int close = 1;
 		try {
-			if (file.getAbsolutePath().contains("temp") == false && (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false)) { //check on windows/osx
+			if (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false) { //check on windows/osx
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 			} else {
 				if(sheet.isEmpty() == false) {
+					System.out.println("sheet is niet empty");
 					//sheet.toXML(file);
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 					if(close == 0) {
@@ -166,6 +167,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 							JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
+					System.out.println("sheet is empty");
 					if(file.delete() != true)
 						JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 					else
@@ -201,7 +203,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	}
 
 	private final void removeTempFile(File file) {
-		if (file.getAbsolutePath().contains("temp") == true && (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true)) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true) //check on windows/osx
 			if(file.delete() != true)
 				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 	}
