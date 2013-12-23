@@ -232,7 +232,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 					GUI.functionFieldSetText(cellContent);
 				}
 			} else {
-				//als er meerdere cellen zijn geselecteerd
+				//ToDo: als er meerdere cellen zijn geselecteerd
 			}
 		}
 	}
@@ -243,7 +243,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * Listens for all focusLost events emitted by the elements of the tab
 	 * @return void
 	 */
-	public void focusLost(FocusEvent e) { //waarom hebben we deze nodig?
+	public void focusLost(FocusEvent e) { //ToDo: waarom hebben we deze nodig?
 		if(e.getSource().equals(tabel)){
 			selectedColumn = tabel.getSelectedColumn();
 			selectedRow = tabel.getSelectedRow();
