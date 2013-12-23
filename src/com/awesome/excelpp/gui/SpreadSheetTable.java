@@ -4,19 +4,23 @@ import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.gui.GUI;
 
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import java.awt.Color;
-import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
 import org.w3c.dom.Document;
+
+import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Class that sets up everything needed for a new tab in the GUI
@@ -149,7 +153,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * Properly handles closing of a file - spawns a dialog if changes will be lost
 	 * @return int - choice made: 0 for OK, 1 for cancel.
 	 */
-	public final int closeFile () {
+	public final int closeFile () { //ToDo: functioneert nog niet 100%
 		int close = 1;
 		try {
 			if (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false) { //check on windows/osx
