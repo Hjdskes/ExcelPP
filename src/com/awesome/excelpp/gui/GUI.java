@@ -195,8 +195,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		if (e.getSource().equals(buttonOpen)){
 			panes.get(index).openFileDialog();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-			//if(panes.get(index).getFileString().equals("Temporary file"))
-			//	mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
 		}else if (e.getSource().equals(buttonNew)){
 			panes.get(index).newFile();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString());
@@ -205,12 +203,9 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		} else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-			//if(panes.get(index).getFileString().equals("Temporary file")){
-			//mainTabs.setTitleAt(index, panes.get(index).getFileString());} //niet echt optimaal? werkt deze wel?
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			panes.get(index).openSaveDialog();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-			//mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
 		} else if (e.getSource().equals(buttonCloseTab)) {
 			if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
 				int close = panes.get(index).closeFile();

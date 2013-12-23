@@ -86,9 +86,9 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return String
 	 */
 	public String getFileString () {
-		if (file.getAbsolutePath().contains("tmp") == true || file.toString().contains(System.getProperty("java.io.tmpdir")) == true)
+		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
 			return "Temporary file";
-		return file.toString().substring(file.toString().lastIndexOf("\\")+1);
+		return file.getName();
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return void
 	 */
 	public final void saveFile () {
-		if (file.toString().contains(System.getProperty("java.io.tmpdir")) == true) //check on windows/osx
+		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
 			openSaveDialog();
 		else {
 			try {
@@ -156,7 +156,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public final int closeFile () { //ToDo: functioneert nog niet 100%
 		int close = 1;
 		try {
-			if (file.getAbsolutePath().contains("temp") == false && file.toString().contains(System.getProperty("java.io.tmpdir")) == false) {
+			if (file.toString().contains(System.getProperty("java.io.tmpdir")) == false) {
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
@@ -207,7 +207,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	}
 
 	private final void removeTempFile(File file) {
-		if (file.toString().contains(System.getProperty("java.io.tmpdir")) == true)
+		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
 			if(file.delete() != true)
 				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 	}
