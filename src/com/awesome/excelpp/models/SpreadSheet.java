@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -37,12 +38,12 @@ public class SpreadSheet implements TableModel {
 	 * 
 	 * @param col - the column value at which a column will be inserted.
 	 */
-	
-	/*
 	public void insertCol(int col){
 		if(col >= this.numberOfCols){
 			return;
 		}
+		
+		//TODO: Put a warning message if a cell will dissapear.
 		Set<Integer> s = this.cells.keySet();
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
@@ -57,7 +58,7 @@ public class SpreadSheet implements TableModel {
 		}
 		this.cells = temp;
 		for(int i = 0; i < numberOfRows; i++){
-			this.setCell(i, col, new Cell("werkt"));
+			this.setValueAt("werkt", i, col);
 		}
 	}
 	
@@ -65,11 +66,13 @@ public class SpreadSheet implements TableModel {
 	 * row value greater than or equal to the specified row value downwards.
 	 * 
 	 * @param row - the row value at which a row will be inserted.
-	 *
+	 */
 	public void insertRow(int row){
 		if(row >= this.numberOfRows){
 			return;
 		}
+		
+		//TODO: Put a warning message if a cell will dissapear.
 		Set<Integer> s = this.cells.keySet();
 		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
 		for(Integer key : s){
@@ -82,9 +85,9 @@ public class SpreadSheet implements TableModel {
 		}
 		this.cells = temp;
 		for(int i = 0; i < numberOfCols; i++){
-			this.setCell(row, i, new Cell("werkt"));
+			this.setValueAt("werkt", row, i);
 		}
-	}*/
+	}
 
 	@Override
 	public void addTableModelListener(TableModelListener l) {
@@ -102,8 +105,8 @@ public class SpreadSheet implements TableModel {
 
 	@Override
 	public String getColumnName(int col) {
-		char a = (char) (col + 65);
-		return Character.toString(a);
+		char a = (char) (col + 65);			//column + 65 yields the ASCII code, same as Unicode. Cast to char type.
+		return Character.toString(a);		//convert to String, return.
 	}
 
 	public int getRowCount() {
@@ -138,10 +141,11 @@ public class SpreadSheet implements TableModel {
 	 * @param col		int representing y-coordinate
 	 */
 	public void setValueAt(Object aValue, int row, int col) {
-		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null)
+		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
 			cells.remove(getNumCell(row, col));
-		else if (((String)aValue).length() != 0)
+		}else if (((String)aValue).length() != 0){
 			cells.put(getNumCell(row, col), new Cell((String)aValue));
+		}
 	}
 	
 	private int getNumCell(int row, int col) {
