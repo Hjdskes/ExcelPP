@@ -26,12 +26,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * Class that sets up everything needed for a new tab in the GUI
  */
 public class SpreadSheetTable implements MouseListener, FocusListener {
-	private static JScrollPane scrollPane;
-	private static JTable tabel, rowTabel;
-	private static SpreadSheet sheet;
+	private JScrollPane scrollPane;
+	private JTable tabel, rowTabel;
+	private SpreadSheet sheet;
 	private File file = null;
-	private static int selectedColumn;
-	private static int selectedRow;
+	private int selectedColumn;
+	private int selectedRow;
 
 	public SpreadSheetTable () throws IOException {
 		sheet = new SpreadSheet();
