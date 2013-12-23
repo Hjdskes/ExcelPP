@@ -86,7 +86,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return String
 	 */
 	public String getFileString () {
-		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true || file.getAbsolutePath().contains("Temp")) //check on windows/osx
 			return "Temporary file";
 		return file.toString();
 	}
@@ -137,7 +137,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return void
 	 */
 	public final void saveFile () {
-		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true || file.getAbsolutePath().contains("Temp")) //check on windows/osx
 			openSaveDialog();
 		else {
 			try {

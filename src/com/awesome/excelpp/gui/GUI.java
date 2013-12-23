@@ -202,8 +202,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			createNewTab();
 		} else if (e.getSource().equals(buttonSave)) {
 			panes.get(index).saveFile();
-			//if(panes.get(index).getFileString().equals("Temporary file"))
-			//	mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal? werkt deze wel?
+			//if(panes.get(index).getFileString().equals("Temporary file")){
+			//mainTabs.setTitleAt(index, panes.get(index).getFileString());} //niet echt optimaal? werkt deze wel?
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			panes.get(index).openSaveDialog();
 			//mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
