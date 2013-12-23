@@ -218,9 +218,10 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
-			//nu nog de geselecteerde cellen erbij
-			functionField.setText(formula);
-		} else if (e.getSource().equals(functionField)) {
+			char activeCol = (char) (panes.get(index).getSelectedColumn() + 65);
+			int activeRow = panes.get(index).getSelectedRow() + 1;
+			functionField.setText(formula + "(" + activeCol + activeRow + ")");
+		} else if (e.getSource().equals(functionField)) { //wacht hiermee tot de Parser af is
 			String enteredText = functionField.getText();
 			if (enteredText.charAt(0) == '=') {
 				Scanner sc; //we moeten hier ook nog de cellen invoeren en scannen
