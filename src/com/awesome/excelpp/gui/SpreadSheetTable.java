@@ -86,7 +86,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return String
 	 */
 	public String getFileString () {
-		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true || file.getAbsolutePath().contains("Temp")) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("Temp") == true)
 			return "Temporary file";
 		return file.toString();
 	}
@@ -137,7 +137,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * @return void
 	 */
 	public final void saveFile () {
-		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true || file.getAbsolutePath().contains("Temp")) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("Temp")) //check on windows/osx
 			openSaveDialog();
 		else {
 			try {
@@ -156,7 +156,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public final int closeFile () { //ToDo: functioneert nog niet 100%
 		int close = 1;
 		try {
-			if (file.getAbsolutePath().contains("temp") == false && (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false)) { //check on windows/osx
+			if (file.getAbsolutePath().contains("temp") == false && (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("Temp") == false)) {
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
@@ -207,7 +207,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	}
 
 	private final void removeTempFile(File file) {
-		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("TEMP") == true) //check on windows/osx
+		if (file.getAbsolutePath().contains("tmp") == true || file.getAbsolutePath().contains("Temp") == true)
 			if(file.delete() != true)
 				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 	}
