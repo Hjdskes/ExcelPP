@@ -156,7 +156,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public final int closeFile () { //ToDo: functioneert nog niet 100%
 		int close = 1;
 		try {
-			if (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false) { //check on windows/osx
+			if (file.getAbsolutePath().contains("temp") == false && (file.getAbsolutePath().contains("tmp") == false || file.getAbsolutePath().contains("TEMP") == false)) { //check on windows/osx
 				Document doc = XML.parse(file);
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!sheet.equals(fileSheet))
@@ -164,7 +164,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 			} else {
 				if(sheet.isEmpty() == false) {
 					System.out.println("sheet is niet empty");
-					//sheet.toXML(file);
+					sheet.toXML(file);
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 					if(close == 0) {
 						if(file.delete() != true)

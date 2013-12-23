@@ -208,10 +208,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			panes.get(index).openSaveDialog();
 			//mainTabs.setTitleAt(index, panes.get(index).getFileString()); //niet echt optimaal?
 		} else if (e.getSource().equals(buttonCloseTab)) {
-			int close = panes.get(index).closeFile();
-			if (close == 0) {
-				mainTabs.remove(index);
-				panes.remove(index);
+			if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
+				int close = panes.get(index).closeFile();
+				if (close == 0) {
+					mainTabs.remove(index);
+					panes.remove(index);
+				}
 			}
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();

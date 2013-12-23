@@ -1,8 +1,8 @@
 package com.awesome.excelpp;
 
-import javax.swing.UIManager;
-import java.io.IOException;
 import com.awesome.excelpp.gui.GUI;
+import java.io.IOException;
+import javax.swing.UIManager;
 
 public class Main {
 	public static void main(String[] args) {
