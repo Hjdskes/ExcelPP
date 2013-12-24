@@ -5,6 +5,7 @@ import com.awesome.excelpp.gui.SpreadSheetTable;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -32,7 +32,7 @@ import javax.swing.KeyStroke;
  * ToDo:
  *   switch to specific tab with keyboard shortcut
  */
-public class GUI extends JFrame implements ActionListener, FocusListener, KeyListener {
+public class GUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
 	private static int screenWidth;
 	private static int screenHeight;
@@ -47,12 +47,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 	private static JButton buttonOpen;
 	private static JButton buttonNewTab;
 	private static JButton buttonNew;
-	private static JButton buttonOptions;
 	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 
-	private static Options userOptions = new Options();
-	JTextField newKeybindingInput;
-	
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
 
@@ -61,7 +57,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
-		mainFrame.setSize (1100, 400);
+		mainFrame.setSize (900, 400);
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
@@ -87,7 +83,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		final ImageIcon saveIconAs;
 		final ImageIcon closeTabIcon;
 		final ImageIcon aboutIcon;
-		final ImageIcon optionsIcon;
 
 		panel.setLayout(new FlowLayout());
 		buttonNew = new JButton();
@@ -98,7 +93,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		functionField = new JTextField(30);
 		buttonCloseTab = new JButton();
 		buttonAbout = new JButton();
-		buttonOptions = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
@@ -112,7 +106,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
 		closeTabIcon = new ImageIcon("data/woo-icons/close_32.png");
 		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
-		optionsIcon = new ImageIcon("data/woo-icons/tools_32.png");
 
 		buttonNew.setIcon(newIcon);
 		buttonNewTab.setIcon(newTabIcon);
@@ -121,7 +114,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonCloseTab.setIcon(closeTabIcon);
 		buttonAbout.setIcon(aboutIcon);
-		buttonOptions.setIcon(optionsIcon);
 
 		buttonNew.setToolTipText("New file");
 		buttonNewTab.setToolTipText("New tab");
@@ -130,8 +122,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		buttonSaveAs.setToolTipText("Save as");
 		buttonCloseTab.setToolTipText("Close tab");
 		buttonAbout.setToolTipText("About");
-		buttonOptions.setIcon(optionsIcon);
-		
 
 		panel.add(buttonNew);
 		panel.add(buttonNewTab);
@@ -142,7 +132,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		panel.add(functionField);
 		panel.add(buttonCloseTab);
 		panel.add(buttonAbout);
-		panel.add(buttonOptions);
 
 		buttonNew.addActionListener(this);
 		buttonNew.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -157,7 +146,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		buttonCloseTab.addActionListener(this);
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
-		buttonOptions.addActionListener(this);
 
 		return panel;
 	}
@@ -194,40 +182,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);
-	}
-	
-	public void openOptionsDialog(){
-		//ToDo: alle keybindings toevoegen
-		//mogelijkheid voor modifier aan te passen
-		//uitzicht van het menu
-		//meer opties dan enkel keybindings
-		//opties saven nog niet
-		JDialog optionsDialog = new JDialog(mainFrame, "Options");
-		JPanel optionsPanel = new JPanel();
-		JTabbedPane optionsTabbedPane = new JTabbedPane();
-		
-		JPanel keybindingsPanel = new JPanel();
-		JLabel keybindingsText = new JLabel("<html>Here you can change the keybindings of the hotkeys<br>Click a textfield and type a key to change the keybinding</html>");
-		keybindingsPanel.add(keybindingsText);
-		
-		JLabel newKeybindingText = new JLabel("<html><br>New button: </html>");
-		newKeybindingInput = new JTextField();
-		newKeybindingInput.addKeyListener(this);
-		
-		keybindingsPanel.add(newKeybindingText);
-		keybindingsPanel.add(newKeybindingInput);
-		
-		
-		optionsPanel.add(optionsTabbedPane);
-		optionsTabbedPane.add("Keybindings",keybindingsPanel);
-		
-		optionsDialog.add(optionsTabbedPane);
-		optionsDialog.setSize(optionsPanel.getPreferredSize().width, optionsPanel.getPreferredSize().height);
-		optionsDialog.setMinimumSize(optionsPanel.getPreferredSize());
-		optionsDialog.setLocation ((screenWidth / 2) - (optionsPanel.getPreferredSize().width / 2), (screenHeight / 2) - (optionsPanel.getPreferredSize().height / 2));
-		
-		optionsDialog.setVisible(true);
-		
 	}
 
 	/**
@@ -276,8 +230,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 				sc.close();
 			} else
 				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);
-		} else if(e.getSource().equals(buttonOptions)){
-			openOptionsDialog();
 		}
 	}
 
@@ -327,16 +279,4 @@ public class GUI extends JFrame implements ActionListener, FocusListener, KeyLis
 	public static String functionFieldGetText () {
 		return functionField.getText();
 	}
-	
-	public void keyPressed(KeyEvent e){
-		if(e.getSource().equals(newKeybindingInput)){
-			userOptions.setNewKeybinding(e.getKeyCode());
-			buttonNew.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke((char) userOptions.getNewKeybinding(), KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-		}
-	}
-	
-	public void keyTyped(KeyEvent e){}
-
-	@Override
-	public void keyReleased(KeyEvent e) {}
 }
