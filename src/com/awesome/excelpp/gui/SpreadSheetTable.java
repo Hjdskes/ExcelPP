@@ -20,12 +20,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 /**
  * Class that sets up everything needed for a new tab in the GUI
  */
-public class SpreadSheetTable implements MouseListener, FocusListener {
+public class SpreadSheetTable implements MouseListener, FocusListener, TableModelListener{
 	private JScrollPane scrollPane;
 	private JTable tabel, rowTabel;
 	private SpreadSheet sheet;
@@ -46,7 +49,8 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTabel.getTableHeader());
 
 		tabel.addMouseListener(this);
-
+		sheet.addTableModelListener(this);
+		
 		file = File.createTempFile("excelpp_temp", ".xml");
 	}
 
@@ -225,10 +229,14 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				selectedColumn = tabel.getSelectedColumn();
-				selectedRow = tabel.getSelectedRow();
-				if(e.isShiftDown()) {
-					String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(selectedRow, selectedColumn);
+				
+				if(e.isAltDown()) {
+					String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
+					GUI.functionFieldSetText(cellContent);
+				} else{
+					selectedColumn = tabel.getSelectedColumn();
+					selectedRow = tabel.getSelectedRow();
+					String cellContent = (String) tabel.getValueAt(selectedRow, selectedColumn);
 					GUI.functionFieldSetText(cellContent);
 				}
 			} else {
@@ -243,10 +251,12 @@ public class SpreadSheetTable implements MouseListener, FocusListener {
 	 * Listens for all focusLost events emitted by the elements of the tab
 	 * @return void
 	 */
-	public void focusLost(FocusEvent e) { //ToDo: waarom hebben we deze nodig?
-		if(e.getSource().equals(tabel)){
-			selectedColumn = tabel.getSelectedColumn();
-			selectedRow = tabel.getSelectedRow();
-		}
+	public void focusLost(FocusEvent e) {} //niet meer nodig
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		tabel.repaint();
+		
 	}
+	
 }

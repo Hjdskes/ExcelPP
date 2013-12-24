@@ -5,7 +5,6 @@ import com.awesome.excelpp.gui.SpreadSheetTable;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -160,7 +159,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		JTabbedPane helpTabbedPane = new JTabbedPane();
 		
 		JPanel formulaPanel = new JPanel();
-		JLabel formulaText = new JLabel("<html>Help for formulas<br>Shift + left mouse click to get cel content into entry</html>");
+		JLabel formulaText = new JLabel("<html>Help for formulas<br>Alt + left mouse click to get cel content into entry</html>");
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
