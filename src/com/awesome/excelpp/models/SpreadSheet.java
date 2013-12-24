@@ -119,6 +119,7 @@ public class SpreadSheet implements TableModel {
 	 * @param col		int representing y-coordinate
 	 * @return			String value of the Cell object at row, col
 	 */
+	@Override
 	public Object getValueAt(int row, int col) {
 		Cell c = cells.get(getNumCell(row, col));
 		return c == null ? "" : c.getValue();
@@ -140,6 +141,7 @@ public class SpreadSheet implements TableModel {
 	 * @param row		int representing x-coordinate
 	 * @param col		int representing y-coordinate
 	 */
+	@Override
 	public void setValueAt(Object aValue, int row, int col) {
 		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
 			cells.remove(getNumCell(row, col));
