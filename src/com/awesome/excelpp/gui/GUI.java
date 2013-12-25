@@ -5,6 +5,7 @@ import com.awesome.excelpp.gui.SpreadSheetTable;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -217,9 +218,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
-			char activeCol = (char) (panes.get(index).getSelectedColumn() + 65);
-			int activeRow = panes.get(index).getSelectedRow() + 1;
-			functionField.setText(formula + "(" + activeCol + activeRow + ")");
+			functionField.setText(formula + "("); //ToDo: hoe doen we het laatste haakje?
 		} else if (e.getSource().equals(functionField)) { //ToDo: wacht hiermee tot de Parser af is
 			String enteredText = functionField.getText();
 			if (enteredText.charAt(0) == '=') {

@@ -11,8 +11,6 @@ import java.io.FileNotFoundException;
 import org.w3c.dom.Document;
 
 import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -28,7 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Class that sets up everything needed for a new tab in the GUI
  */
-public class SpreadSheetTable implements MouseListener, FocusListener, TableModelListener{
+public class SpreadSheetTable implements MouseListener, TableModelListener {
 	private JScrollPane scrollPane;
 	private JTable tabel, rowTabel;
 	private SpreadSheet sheet;
@@ -58,7 +56,7 @@ public class SpreadSheetTable implements MouseListener, FocusListener, TableMode
 	 * Returns the JScrollPane of this tab
 	 * @return JScrollPane
 	 */
-	public JScrollPane getScrollPane () {
+	public JScrollPane getScrollPane() {
 		return scrollPane;
 	}
 
@@ -211,6 +209,11 @@ public class SpreadSheetTable implements MouseListener, FocusListener, TableMode
 		}
 	}
 
+	/**
+	 * Checks if parameter file is a temporary file and if so, tries to delete it
+	 * @param file
+	 * @return void
+	 */
 	private final void removeTempFile(File file) {
 		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
 			if(file.delete() != true)
@@ -229,34 +232,41 @@ public class SpreadSheetTable implements MouseListener, FocusListener, TableMode
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				
-				if(e.isAltDown()) {
+				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) {
 					String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
 					GUI.functionFieldSetText(cellContent);
-				} else{
+				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
 					selectedColumn = tabel.getSelectedColumn();
 					selectedRow = tabel.getSelectedRow();
-					String cellContent = (String) tabel.getValueAt(selectedRow, selectedColumn);
-					GUI.functionFieldSetText(cellContent);
+					String currentText = GUI.functionFieldGetText();
+					GUI.functionFieldSetText(currentText + "(" + tabel.getColumnName(selectedColumn) + (selectedRow + 1) + ")");
 				}
 			} else {
-				//ToDo: als er meerdere cellen zijn geselecteerd
+				String currentText = GUI.functionFieldGetText();
+				int selectedRows[] = tabel.getSelectedRows();
+				int selectedColumns[] = tabel.getSelectedColumns();
+				if (e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) { //ToDo: wordt overridden door bovenstaande, maar werkt wel als deze wordt veranderd naar bijv BUTTON2 (middlemouse button)
+					for (int i = 0; i < selectedColumns.length; i++) {
+						for (int j = 0; j < selectedRows.length; j++) {
+							currentText += (String) tabel.getValueAt(selectedRows[j], selectedColumns[i]) + ",";
+						}
+					}
+				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
+					for (int i = 0; i < selectedColumns.length; i++) {
+						for (int j = 0; j < selectedRows.length; j++) {
+							currentText += "(" + tabel.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1) + "),";
+						}
+					}
+				}
+				currentText = currentText.substring(0, currentText.length()-1); //laatste komma verwijderen
+				GUI.functionFieldSetText(currentText);
 			}
 		}
 	}
 
-	public void focusGained(FocusEvent e) {}
-
-	/**
-	 * Listens for all focusLost events emitted by the elements of the tab
-	 * @return void
-	 */
-	public void focusLost(FocusEvent e) {} //niet meer nodig
-
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		tabel.repaint();
-		
 	}
 	
 }
