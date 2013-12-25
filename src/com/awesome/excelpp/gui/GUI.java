@@ -164,7 +164,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		formulaPanel.add(formulaText);
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br>New tab - Control + T<br></html>");
+		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br>New tab - Control + T<br><hr>Cel contents to textfield - Alt + left mouse button<br>Cel position to textfield - Alt + right mouse button</html>");
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();

@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Class that sets up everything needed for a new tab in the GUI
+ * ToDo: inhoud van tekstvak in een cel krijgen
  */
 public class SpreadSheetTable implements MouseListener, TableModelListener {
 	private JScrollPane scrollPane;
