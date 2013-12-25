@@ -3,14 +3,13 @@ package com.awesome.excelpp.gui;
 import com.awesome.excelpp.gui.SpreadSheetTable;
 
 import java.io.IOException;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.ArrayList;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
@@ -33,7 +32,7 @@ import javax.swing.event.DocumentListener;
  * ToDo:
  *   switch to specific tab with keyboard shortcut
  */
-public class GUI extends JFrame implements ActionListener, DocumentListener{
+public class GUI extends JFrame implements ActionListener, DocumentListener {
 	private static final long serialVersionUID = 1L;
 	private static int screenWidth;
 	private static int screenHeight;
@@ -188,53 +187,6 @@ public class GUI extends JFrame implements ActionListener, DocumentListener{
 	}
 
 	/**
-	 * Listens for all events emitted by the elements of the GUI
-	 * Calls other functions
-	 * @return void
-	 */
-	public void actionPerformed(ActionEvent e) {
-		int index = mainTabs.getSelectedIndex();
-
-		if (e.getSource().equals(buttonOpen)){
-			panes.get(index).openFileDialog();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-		}else if (e.getSource().equals(buttonNew)){
-			panes.get(index).newFile();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-		}else if (e.getSource().equals(buttonNewTab)) {
-			createNewTab();
-		} else if (e.getSource().equals(buttonSave)) {
-			panes.get(index).saveFile();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-		} else if (e.getSource().equals(buttonSaveAs)) {
-			panes.get(index).openSaveDialog();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-		} else if (e.getSource().equals(buttonCloseTab)) {
-			if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
-				int close = panes.get(index).closeFile();
-				if (close == 0) {
-					mainTabs.remove(index);
-					panes.remove(index);
-				}
-			}
-		} else if (e.getSource().equals(buttonAbout))
-			openHelpDialog();
-		else if (e.getSource().equals(functions)) {
-			String formula = "=" + (String)functions.getSelectedItem();
-			functionField.setText(formula + "(");
-		} else if (e.getSource().equals(functionField)) { //ToDo: wacht hiermee tot de Parser af is
-			String enteredText = functionField.getText();
-			if (enteredText.charAt(0) == '=') {
-				Scanner sc; //ToDo: we moeten hier ook nog de cellen invoeren en scannen
-				sc = new Scanner(enteredText);
-				String formula = sc.next();
-				sc.close();
-			} else
-				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);
-		}
-	}
-
-	/**
 	 * Creates a new tab
 	 * @return void
 	 */
@@ -268,17 +220,70 @@ public class GUI extends JFrame implements ActionListener, DocumentListener{
 		return functionField.getText();
 	}
 
-	public void changedUpdate(DocumentEvent e){}
-	
-	public void insertUpdate(DocumentEvent e){
+	/**
+	 * Listens for all events emitted by the elements of the GUI
+	 * Calls other functions
+	 * @return void
+	 */
+	public void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
-		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
+
+		if (e.getSource().equals(buttonOpen)) {
+			panes.get(index).openFileDialog();
+			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+		} else if (e.getSource().equals(buttonNew)) {
+			panes.get(index).newFile();
+			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+		} else if (e.getSource().equals(buttonNewTab))
+			createNewTab();
+		else if (e.getSource().equals(buttonSave)) {
+			panes.get(index).saveFile();
+			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+		} else if (e.getSource().equals(buttonSaveAs)) {
+			panes.get(index).openSaveDialog();
+			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+		} else if (e.getSource().equals(buttonCloseTab)) {
+			if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
+				int close = panes.get(index).closeFile();
+				if (close == 0) {
+					mainTabs.remove(index);
+					panes.remove(index);
+				}
+			}
+		} else if (e.getSource().equals(buttonAbout))
+			openHelpDialog();
+		else if (e.getSource().equals(functions)) {
+			String formula = "=" + (String)functions.getSelectedItem();
+			functionField.setText(formula + "(");
+		/*} else if (e.getSource().equals(functionField)) { //ToDo: wacht hiermee tot de Parser af is. Dit werkt niet samen met invoer naar cel geven.
+			String enteredText = functionField.getText();
+			if (enteredText.charAt(0) == '=') {
+				Scanner sc; //ToDo: we moeten hier ook nog de cellen invoeren en scannen
+				sc = new Scanner(enteredText);
+				String formula = sc.next();
+				sc.close();
+			} else
+				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);*/
+		}
+	}
+
+	public void changedUpdate(DocumentEvent e) {}
+
+	/**
+	 * Listens for insertions in the function field and sends them to the selected cell
+	 * @return void
+	 */
+	public void insertUpdate(DocumentEvent e) {
+		int index = mainTabs.getSelectedIndex();
+		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn()); //dit overwrite standaard cel A0 als de GUI/tab net is aangemaakt
 		panes.get(index).getTable().repaint();
 	}
-	
-	public void removeUpdate(DocumentEvent e){
-		int index = mainTabs.getSelectedIndex();
-		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
-		panes.get(index).getTable().repaint();
+
+	/**
+	 * Listens for removals from the function field and sends them to the selected cell
+	 * @return void
+	 */
+	public void removeUpdate(DocumentEvent e) {
+		insertUpdate(e);
 	}
 }

@@ -26,7 +26,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Class that sets up everything needed for a new tab in the GUI
- * ToDo: inhoud van tekstvak in een cel krijgen
  */
 public class SpreadSheetTable implements MouseListener, TableModelListener {
 	private JScrollPane scrollPane;
@@ -233,30 +232,28 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 	 */
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
-			if(e.getButton() == (MouseEvent.BUTTON3)){ //anders werkt alt + right klik niet op de cel die je wilt
+			if(e.getButton() == MouseEvent.BUTTON3) { //anders werkt alt + right klik niet op de cel die je wilt
 				Point p = e.getPoint();
 				int row = tabel.rowAtPoint(p);
 				int column = tabel.columnAtPoint(p);
 				tabel.changeSelection(row, column, false, false);
 			}
-			
+
+			String currentText = GUI.functionFieldGetText();
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				String currentText = GUI.functionFieldGetText();
 				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1){
 					currentText += "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
 					GUI.functionFieldSetText(currentText);
 				}
-				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3){
+				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
 					currentText += "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
 					GUI.functionFieldSetText(currentText);
 				}
-				else{
+				else {
 					selectedColumn = tabel.getSelectedColumn();
 					selectedRow = tabel.getSelectedRow();
-					GUI.functionFieldSetText((String) tabel.getValueAt(selectedRow, selectedColumn));
 				}
 			} else {
-				String currentText = GUI.functionFieldGetText();
 				int selectedRows[] = tabel.getSelectedRows();
 				int selectedColumns[] = tabel.getSelectedColumns();
 				if (e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) { //ToDo: wordt overridden door bovenstaande, maar werkt wel als deze wordt veranderd naar bijv BUTTON2 (middlemouse button)
