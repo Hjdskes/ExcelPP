@@ -142,8 +142,10 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		buttonSave.addActionListener(this);
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSaveAs.addActionListener(this);
+		buttonSaveAs.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functionField.addActionListener(this);
 		buttonCloseTab.addActionListener(this);
+		buttonCloseTab.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonAbout.addActionListener(this);
 		functions.addActionListener(this);
 
