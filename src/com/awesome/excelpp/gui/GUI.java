@@ -5,7 +5,6 @@ import com.awesome.excelpp.gui.SpreadSheetTable;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -26,13 +25,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * Class that constructs everything needed for and by the GUI
  * ToDo:
  *   switch to specific tab with keyboard shortcut
  */
-public class GUI extends JFrame implements ActionListener, FocusListener {
+public class GUI extends JFrame implements ActionListener, DocumentListener{
 	private static final long serialVersionUID = 1L;
 	private static int screenWidth;
 	private static int screenHeight;
@@ -97,7 +98,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
 
-		functionField.addFocusListener(this);
 
 		newIcon = new ImageIcon("data/woo-icons/page_table_add_32.png");
 		newTabIcon = new ImageIcon("data/woo-icons/add_32.png");
@@ -144,6 +144,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		buttonSaveAs.addActionListener(this);
 		buttonSaveAs.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functionField.addActionListener(this);
+		functionField.getDocument().addDocumentListener(this);
 		buttonCloseTab.addActionListener(this);
 		buttonCloseTab.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonAbout.addActionListener(this);
@@ -251,19 +252,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 	}
 
-	public void focusGained(FocusEvent e) {}
-
-	/**
-	 * Listens for all focusLost events emitted by the elements of the GUI
-	 * @return void
-	 */
-	public void focusLost(FocusEvent e) {
-		if(e.getSource().equals(functionField)) {
-			int index = mainTabs.getSelectedIndex();
-			panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
-		}
-	}
-
 	/**
 	 * Helper method to set the text in the function field
 	 * @param String - text to set
@@ -278,5 +266,19 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 */
 	public static String functionFieldGetText () {
 		return functionField.getText();
+	}
+
+	public void changedUpdate(DocumentEvent e){}
+	
+	public void insertUpdate(DocumentEvent e){
+		int index = mainTabs.getSelectedIndex();
+		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
+		panes.get(index).getTable().repaint();
+	}
+	
+	public void removeUpdate(DocumentEvent e){
+		int index = mainTabs.getSelectedIndex();
+		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
+		panes.get(index).getTable().repaint();
 	}
 }

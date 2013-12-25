@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import org.w3c.dom.Document;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -232,15 +233,28 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 	 */
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
+			if(e.getButton() == (MouseEvent.BUTTON3)){ //anders werkt alt + right klik niet op de cel die je wilt
+				Point p = e.getPoint();
+				int row = tabel.rowAtPoint(p);
+				int column = tabel.columnAtPoint(p);
+				tabel.changeSelection(row, column, false, false);
+			}
+			
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				selectedColumn = tabel.getSelectedColumn();
-				selectedRow = tabel.getSelectedRow();
 				String currentText = GUI.functionFieldGetText();
-				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1)
-					currentText += "(" + tabel.getValueAt(selectedRow, selectedColumn) + ")";
-				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3)
-					currentText += "(" + tabel.getColumnName(selectedColumn) + (selectedRow + 1) + ")";
-				GUI.functionFieldSetText(currentText);
+				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1){
+					currentText += "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
+					GUI.functionFieldSetText(currentText);
+				}
+				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3){
+					currentText += "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
+					GUI.functionFieldSetText(currentText);
+				}
+				else{
+					selectedColumn = tabel.getSelectedColumn();
+					selectedRow = tabel.getSelectedRow();
+					GUI.functionFieldSetText((String) tabel.getValueAt(selectedRow, selectedColumn));
+				}
 			} else {
 				String currentText = GUI.functionFieldGetText();
 				int selectedRows[] = tabel.getSelectedRows();
@@ -267,6 +281,7 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		tabel.repaint();
+		System.out.println("table change");
 	}
 	
 }
