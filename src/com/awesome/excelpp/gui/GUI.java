@@ -220,7 +220,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
-			functionField.setText(formula + "("); //ToDo: hoe doen we het laatste haakje?
+			functionField.setText(formula + "(");
 		} else if (e.getSource().equals(functionField)) { //ToDo: wacht hiermee tot de Parser af is
 			String enteredText = functionField.getText();
 			if (enteredText.charAt(0) == '=') {

@@ -233,15 +233,14 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) {
-					String cellContent = GUI.functionFieldGetText() + (String) tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn());
-					GUI.functionFieldSetText(cellContent);
-				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
-					selectedColumn = tabel.getSelectedColumn();
-					selectedRow = tabel.getSelectedRow();
-					String currentText = GUI.functionFieldGetText();
-					GUI.functionFieldSetText(currentText + "(" + tabel.getColumnName(selectedColumn) + (selectedRow + 1) + ")");
-				}
+				selectedColumn = tabel.getSelectedColumn();
+				selectedRow = tabel.getSelectedRow();
+				String currentText = GUI.functionFieldGetText();
+				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1)
+					currentText += "(" + tabel.getValueAt(selectedRow, selectedColumn) + ")";
+				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3)
+					currentText += "(" + tabel.getColumnName(selectedColumn) + (selectedRow + 1) + ")";
+				GUI.functionFieldSetText(currentText);
 			} else {
 				String currentText = GUI.functionFieldGetText();
 				int selectedRows[] = tabel.getSelectedRows();
@@ -259,7 +258,7 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 						}
 					}
 				}
-				currentText = currentText.substring(0, currentText.length()-1); //laatste komma verwijderen
+				currentText = currentText.substring(0, currentText.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
 				GUI.functionFieldSetText(currentText);
 			}
 		}
