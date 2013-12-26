@@ -9,9 +9,8 @@ public class ParserNew {
 	 * 
 	 * - NUMBER
 	 * - CELL
-	 * - FUNCTIONS (Formulas)
 	 */
-	public LinkedList<Token> output;
+	public LinkedList<Token> output; //public for testing
 	
 	/*
 	 * The following Tokens are operators:
@@ -23,7 +22,7 @@ public class ParserNew {
 	 * - FACT ?
 	 */
 	private LinkedList<Token> operators;
-	public Lexer lex;
+	public Lexer lex; //public for testing
 	private Token currentToken;
 	
 	public ParserNew(Lexer lex){
