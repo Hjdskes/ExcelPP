@@ -52,7 +52,7 @@ public class ParserNew {
 				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("MULTDIV")){
 				if(!operators.isEmpty()){
-					System.out.println(operators.getFirst());		//Returns PLUSMINUS
+//					System.out.println(operators.getFirst());		//Returns PLUSMINUS
 					while(!operators.isEmpty() && (operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
 						  operators.getFirst().getTokenType().equals("MULTDIV"))) {
 						output.push(operators.pop());

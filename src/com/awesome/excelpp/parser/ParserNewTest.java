@@ -5,7 +5,7 @@ public class ParserNewTest {
 		ParserNew test = new ParserNew("=3+7/(4*5-6)");
 		
 		while(!test.output.isEmpty()){
-			System.out.println(test.output.getFirst().data);
+			System.out.println(test.output.removeFirst().data);
 		}
 	}
 }
