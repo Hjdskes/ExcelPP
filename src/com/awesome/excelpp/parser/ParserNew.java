@@ -44,10 +44,9 @@ public class ParserNew {
 	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +
 	 * 
 	 */
-	public void toPostfix(){
+	public LinkedList<Token> toPostfix(){
 		while(lex.hasNext()){
 			currentToken = lex.next();
-			System.out.println(currentToken.data);
 			if(currentToken.getTokenType().equals("NUMBER") || currentToken.getTokenType().equals("CELL")){
 				output.push(currentToken);
 			}else if(currentToken.getTokenType().equals("MULTDIV")){
@@ -74,11 +73,12 @@ public class ParserNew {
 				}
 			}
 		}
+		return output;
 	}
 	
 	/**Evaluate the mathematical expression
 	 * 
-	 * @param - A list of tokens, representing a mathematical expression in postfix-notation
+	 * @param - A queue of tokens, representing a mathematical expression in postfix-notation
 	 * @return - The evaluated expression
 	 */
 	public double eval(LinkedList<Token> expr){
@@ -91,9 +91,11 @@ public class ParserNew {
 				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
 				*/
 			}else if(output.getLast().getTokenType().equals("MULTDIV") ||
-			   output.getLast().getTokenType().equals("PLUSMINUS")){
-				Double a = evalStack.pop();
+			         output.getLast().getTokenType().equals("PLUSMINUS")){
 				Double b = evalStack.pop();
+				Double a = evalStack.pop();
+				
+				System.out.println(a.toString() + ", " + b.toString());
 				if(output.getLast().data.equals("+")){
 					output.removeLast();
 					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
