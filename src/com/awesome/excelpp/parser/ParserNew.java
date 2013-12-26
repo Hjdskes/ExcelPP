@@ -83,4 +83,42 @@ public class ParserNew {
 			}
 		}
 	}
+	
+	/**Evaluate the mathematical expression
+	 * 
+	 * @param - A list of tokens, representing a mathematical expression in postfix-notation
+	 * @return - The evaluated expression
+	 */
+	public double eval(LinkedList<Token> expr){
+		LinkedList<Double> evalStack = new LinkedList<Double>();
+		
+		while(!output.isEmpty()){
+			if(output.getLast().getTokenType().equals("NUMBER")){
+				evalStack.push(new Double(output.removeLast().data)); //JDK source zegt dat dit ineffici‘nt is, alternatieven?
+				/*Mogelijk alternatief:
+				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
+				*/
+			}
+			if(output.getLast().getTokenType().equals("MULTDIV") ||
+			   output.getLast().getTokenType().equals("PLUSMINUS")){
+				Double a = evalStack.pop();
+				Double b = evalStack.pop();
+				if(output.getLast().data.equals("+")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
+				}else if(output.getLast().data.equals("-")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
+				}else if(output.getLast().data.equals("*")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
+				}else{
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
+				}
+			}
+		}
+
+		return evalStack.pop().doubleValue();
+	}
 }
