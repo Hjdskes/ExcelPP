@@ -1,132 +1,115 @@
 package com.awesome.excelpp.parser;
 
-import com.awesome.excelpp.exprtree.*;
+import java.util.LinkedList;
 
 public class Parser {
-	private Lexer lex;
-	private Token lookahead;
-	private ExpressionNode expressionTree;
 	
-	public Parser(Lexer lex) throws Exception {
+	/*
+	 * The following Tokens are operands:
+	 * 
+	 * - NUMBER
+	 * - CELL
+	 */
+	public LinkedList<Token> output; //public for testing
+	
+	/*
+	 * The following Tokens are operators:
+	 * 
+	 * - PLUS, MINUS
+	 * - MULT, DIV
+	 * - LBRACKET, RBRACKET
+	 * - POW ?
+	 * - FACT ?
+	 */
+	private LinkedList<Token> operators;
+	public Lexer lex; //public for testing
+	private Token currentToken;
+	
+	public Parser(Lexer lex){
 		this.lex = lex;
-		lookahead = lex.next();
-		this.expressionTree = expression();
+		output = new LinkedList<Token>();
+		operators = new LinkedList<Token>();
+		toPostfix();
 	}
 	
-	public Parser(String str) throws Exception {
-		this(new Lexer(str));
+	public Parser(String expr){
+		this(new Lexer(expr));
 	}
 	
-	/**
-	 * expression -> signed_term sum_op
-	 * @return
-	 * @throws Exception
+	/**Converts the expression in infix-notation to postfix-notation using the
+	 * Shunting-yard Algorithm:
+	 * 
+	 * infix               | postfix
+	 * ------------------- | -----------------
+	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +
+	 * 
 	 */
-	private ExpressionNode expression() throws Exception {
-		ExpressionNode expr = signedTerm();
-		return sumOp(expr);
-	}
-	
-	/**
-	 * sum_op -> PLUSMINUS term sum_op
-	 * sum_op -> EOL
-	 * @param a
-	 * @return
-	 * @throws Exception
-	 */
-	private ExpressionNode sumOp(ExpressionNode a) throws Exception {
-		if (lookahead.type == TokenType.PLUSMINUS) {
-			boolean addition = lookahead.data.equals("+");
-			
-			lookahead = lex.next();
-			ExpressionNode sum = new AdditionNode(a, term(), addition);
-			return sumOp(sum);
+	public LinkedList<Token> toPostfix(){
+		while(lex.hasNext()){
+			currentToken = lex.next();
+			if(currentToken.getTokenType().equals("NUMBER") || currentToken.getTokenType().equals("CELL")){
+				output.push(currentToken);
+			}else if(currentToken.getTokenType().equals("MULTDIV")){
+				while(!operators.isEmpty() && operators.getFirst().getTokenType().equals("MULTDIV")) {
+					output.push(operators.pop());
+				}
+				operators.push(currentToken);
+			}else if(currentToken.getTokenType().equals("PLUSMINUS")){
+				while(!operators.isEmpty() && ((operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
+					  operators.getFirst().getTokenType().equals("MULTDIV")))){
+					output.push(operators.pop());
+				}
+				operators.push(currentToken);
+			}else if(currentToken.getTokenType().equals("LBRACKET")){
+				operators.push(currentToken);
+			}else if(currentToken.getTokenType().equals("RBRACKET")){
+				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
+					output.push(operators.pop());
+				}
+				operators.pop();
+			}else if(currentToken.getTokenType().equals("EOL")){
+				while(!operators.isEmpty()){
+					output.push(operators.pop());
+				}
+			}
 		}
-		return a;
+		return output;
 	}
 	
-	/**
-	 * signedTerm -> PLUSMINUS term
-	 * signedTerm -> term
-	 * @return
-	 * @throws Exception
+	/**Evaluate the mathematical expression
+	 * 
+	 * @param - A queue of tokens, representing a mathematical expression in postfix-notation
+	 * @return - The evaluated expression
 	 */
-	private ExpressionNode signedTerm() throws Exception {
-		if (lookahead.type == TokenType.PLUSMINUS) {
-			boolean positive = lookahead.data.equals("+");
-			
-			lookahead = lex.next();
-			return term();
+	public double eval(LinkedList<Token> expr){
+		LinkedList<Double> evalStack = new LinkedList<Double>();
+		
+		while(!output.isEmpty()){
+			if(output.getLast().getTokenType().equals("NUMBER")){
+				evalStack.push(new Double(output.removeLast().data)); //JDK source zegt dat dit ineffici<91>nt is, alternatieven?
+				/*Mogelijk alternatief:
+				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
+				*/
+			}else if(output.getLast().getTokenType().equals("MULTDIV") ||
+			         output.getLast().getTokenType().equals("PLUSMINUS")){
+				Double b = evalStack.pop();
+				Double a = evalStack.pop();
+				if(output.getLast().data.equals("+")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
+				}else if(output.getLast().data.equals("-")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
+				}else if(output.getLast().data.equals("*")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
+				}else{
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
+				}
+			}
 		}
-		return term();
-	}
 
-	/**
-	 * term -> argument term_op
-	 * @return
-	 * @throws Exception
-	 */
-	private ExpressionNode term() throws Exception {
-		ExpressionNode expr = argument();
-		return termOp(expr);
-	}
-
-	/**
-	 * term_op -> MULTDIV argument term_op
-	 * term_op -> EOL
-	 * @param a
-	 * @return
-	 * @throws Exception
-	 */
-	private ExpressionNode termOp(ExpressionNode a) throws Exception {
-		if (lookahead.type == TokenType.MULTDIV) {
-			boolean multiply = lookahead.data.equals("*");
-			
-			lookahead = lex.next();
-			ExpressionNode term = new MultiplicationNode(a, argument(), multiply);
-			return termOp(term);
-		}
-		return a;
-	}
-
-	/**
-	 * argument -> OPEN_BRACKET sum CLOSE_BRACKET
-	 * argument -> value 
-	 * @return
-	 * @throws Exception
-	 */
-	private ExpressionNode argument() throws Exception {
-		if (lookahead.type == TokenType.LBRACKET) {
-			lookahead = lex.next();
-			
-			ExpressionNode expr = expression();
-			
-			if (lookahead.type != TokenType.RBRACKET)
-				throw new Exception("Closing brackets expected and " + lookahead.type + " found instead");
-			
-			lookahead = lex.next();
-			return expr;
-		}
-		return value();
-	}
-
-	/**
-	 * value -> NUMBER
-	 * @return
-	 * @throws Exception
-	 */
-	private ExpressionNode value() throws Exception {
-		if (lookahead.type == TokenType.NUMBER) {
-			ExpressionNode expr = new ConstantNode(lookahead.data);
-			
-			lookahead = lex.next();
-			return expr;
-		} else {
-			throw new Exception("Unexpected symbol " + lookahead.type + " found");
-		}
-	}
-	
-	public ExpressionNode getExpressionTree() {
-		return expressionTree;
+		return evalStack.pop().doubleValue();
 	}
 }

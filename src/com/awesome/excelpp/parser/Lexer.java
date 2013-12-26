@@ -24,6 +24,8 @@ public class Lexer {
 	    while(matcher.find()) {
 	    	if (matcher.group(TokenType.NUMBER.name()) != null)
 	    		tokens.add(new Token(TokenType.NUMBER, matcher.group(TokenType.NUMBER.name())));
+	    	if (matcher.group(TokenType.CELL.name()) != null)
+	    		tokens.add(new Token(TokenType.CELL, matcher.group(TokenType.CELL.name())));
 	    	if (matcher.group(TokenType.WORD.name()) != null)
 	    		tokens.add(new Token(TokenType.WORD, matcher.group(TokenType.WORD.name())));
 	    	if (matcher.group(TokenType.PLUSMINUS.name()) != null)
