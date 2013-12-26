@@ -37,6 +37,8 @@ public class Lexer {
 	    	if (matcher.group(TokenType.DELIM.name()) != null)
 	    		tokens.add(new Token(TokenType.DELIM, matcher.group(TokenType.DELIM.name())));
 	    }
+	    
+	    tokens.add(new Token(TokenType.EOL, "end"));
 	}
 	
 	public boolean hasNext() {

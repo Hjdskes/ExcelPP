@@ -29,7 +29,6 @@ public class ParserNew {
 		this.lex = lex;
 		output = new LinkedList<Token>();
 		operators = new LinkedList<Token>();
-		currentToken = lex.next();
 		toPostfix();
 	}
 	
@@ -47,30 +46,23 @@ public class ParserNew {
 	 */
 	public void toPostfix(){
 		while(lex.hasNext()){
+			currentToken = lex.next();
+			System.out.println(currentToken.data);
 			if(currentToken.getTokenType().equals("NUMBER") || currentToken.getTokenType().equals("CELL")){
 				output.push(currentToken);
-				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("MULTDIV")){
-				if(!operators.isEmpty()){
-//					System.out.println(operators.getFirst());		//Returns PLUSMINUS
-					while(!operators.isEmpty() && (operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
-						  operators.getFirst().getTokenType().equals("MULTDIV"))) {
-						output.push(operators.pop());
-					}					
+				while(!operators.isEmpty() && operators.getFirst().getTokenType().equals("MULTDIV")) {
+					output.push(operators.pop());
 				}
 				operators.push(currentToken);
-				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("PLUSMINUS")){
-				if(!operators.isEmpty()){
-					while(operators.getFirst().getTokenType().equals("PLUSMINUS")){
-						output.push(operators.pop());
-					}					
+				while(!operators.isEmpty() && ((operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
+					  operators.getFirst().getTokenType().equals("MULTDIV")))){
+					output.push(operators.pop());
 				}
 				operators.push(currentToken);
-				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("LBRACKET")){
 				operators.push(currentToken);
-				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("RBRACKET")){
 				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
 					output.push(operators.pop());
