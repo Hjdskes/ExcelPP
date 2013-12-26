@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class Lexer {
 	private int index = 0;
-	private ArrayList<Token> tokens;
+	public ArrayList<Token> tokens;
 	private String patterns;
 	
 	public Lexer(String input) {
@@ -35,7 +35,7 @@ public class Lexer {
 	    	if (matcher.group(TokenType.RBRACKET.name()) != null)
 	    		tokens.add(new Token(TokenType.RBRACKET, matcher.group(TokenType.RBRACKET.name())));
 	    	if (matcher.group(TokenType.DELIM.name()) != null)
-	    		tokens.add(new Token(TokenType.DELIM, matcher.group(TokenType.DELIM.name())));
+	    		tokens.add(new Token(TokenType.DELIM, matcher.group(TokenType.DELIM.name())));  	
 	    }
 	}
 	
