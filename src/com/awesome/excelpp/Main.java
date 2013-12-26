@@ -1,10 +1,11 @@
 package com.awesome.excelpp;
 
+import com.awesome.excelpp.gui.GUI;
+
 import java.io.IOException;
 
 import javax.swing.UIManager;
-
-import com.awesome.excelpp.gui.GUI;
+import javax.swing.SwingUtilities;
 
 public class Main {
 	public static void main(String[] args) {
@@ -14,10 +15,14 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		try {
-			new GUI();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		SwingUtilities.invokeLater(new Runnable() { //thread save zijn
+			public void run() {
+				try {
+					new GUI();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 }
