@@ -52,9 +52,9 @@ public class ParserNew {
 				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("MULTDIV")){
 				if(!operators.isEmpty()){
-					System.out.println(operators.getFirst().getTokenType());		//Returns PLUSMINUS
-					while(operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
-						  operators.getFirst().getTokenType().equals("MULTDIV")) {
+					System.out.println(operators.getFirst());		//Returns PLUSMINUS
+					while(!operators.isEmpty() && (operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
+						  operators.getFirst().getTokenType().equals("MULTDIV"))) {
 						output.push(operators.pop());
 					}					
 				}
@@ -94,7 +94,7 @@ public class ParserNew {
 		
 		while(!output.isEmpty()){
 			if(output.getLast().getTokenType().equals("NUMBER")){
-				evalStack.push(new Double(output.removeLast().data)); //JDK source zegt dat dit ineffici‘nt is, alternatieven?
+				evalStack.push(new Double(output.removeLast().data)); //JDK source zegt dat dit ineffici<91>nt is, alternatieven?
 				/*Mogelijk alternatief:
 				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
 				*/
