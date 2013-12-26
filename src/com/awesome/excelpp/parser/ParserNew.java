@@ -52,8 +52,8 @@ public class ParserNew {
 				currentToken = lex.next();
 			}else if(currentToken.getTokenType().equals("MULTDIV")){
 				if(!operators.isEmpty()){
-					System.out.println(operators.getFirst().getTokenType());
-					while(operators.getFirst().getTokenType().equals("PLUSMINUS")|| 
+					System.out.println(operators.getFirst().getTokenType());		//Returns PLUSMINUS
+					while(operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
 						  operators.getFirst().getTokenType().equals("MULTDIV")) {
 						output.push(operators.pop());
 					}					
@@ -98,8 +98,7 @@ public class ParserNew {
 				/*Mogelijk alternatief:
 				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
 				*/
-			}
-			if(output.getLast().getTokenType().equals("MULTDIV") ||
+			}else if(output.getLast().getTokenType().equals("MULTDIV") ||
 			   output.getLast().getTokenType().equals("PLUSMINUS")){
 				Double a = evalStack.pop();
 				Double b = evalStack.pop();
