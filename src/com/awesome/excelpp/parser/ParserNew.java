@@ -94,8 +94,6 @@ public class ParserNew {
 			         output.getLast().getTokenType().equals("PLUSMINUS")){
 				Double b = evalStack.pop();
 				Double a = evalStack.pop();
-				
-				System.out.println(a.toString() + ", " + b.toString());
 				if(output.getLast().data.equals("+")){
 					output.removeLast();
 					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
