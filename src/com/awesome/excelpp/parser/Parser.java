@@ -2,6 +2,9 @@ package com.awesome.excelpp.parser;
 
 import java.util.LinkedList;
 
+import com.awesome.excelpp.models.Cell;
+import com.awesome.excelpp.models.SpreadSheet;
+
 public class Parser {
 	
 	/*
@@ -23,17 +26,19 @@ public class Parser {
 	 */
 	private LinkedList<Token> operators;
 	public Lexer lex; //public for testing
+	private SpreadSheet sheet;
 	private Token currentToken;
 	
-	public Parser(Lexer lex){
+	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
+		this.sheet = sheet;
 		output = new LinkedList<Token>();
 		operators = new LinkedList<Token>();
 		toPostfix();
 	}
 	
-	public Parser(String expr){
-		this(new Lexer(expr));
+	public Parser(String expr, SpreadSheet sheet){
+		this(new Lexer(expr), sheet);
 	}
 	
 	/**Converts the expression in infix-notation to postfix-notation using the
@@ -90,6 +95,13 @@ public class Parser {
 				/*Mogelijk alternatief:
 				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
 				*/
+			}else if(output.getLast().getTokenType().equals("CELL")){
+				String ref = output.removeLast().data;
+				int row = Integer.parseInt(ref.substring(1));
+		        int col = (int) ref.charAt(0);
+		        col -= 65;
+		        Parser cellParse = new Parser(((Cell) sheet.getValueAt(row - 1, col)).getContent().toString(), sheet);
+		        evalStack.push(new Double(cellParse.eval(cellParse.toPostfix())));
 			}else if(output.getLast().getTokenType().equals("MULTDIV") ||
 			         output.getLast().getTokenType().equals("PLUSMINUS")){
 				Double b = evalStack.pop();

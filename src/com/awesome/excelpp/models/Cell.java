@@ -41,12 +41,13 @@ public class Cell extends Observable {
 	 * Gets the evaluated content of this Cell
 	 * 	Suppose the content of this Cell is "=4+4"
 	 * 	This function will then return "8"
-	 * @return			String with an evaluated expression
+	 * @param sheet - the SpreadSheet to which the to-be-parsed Cell belongs to.
+	 * @return String with an evaluated expression
 	 */
-	public String getValue() {
+	public String getValue(SpreadSheet sheet) {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
-				Parser parse = new Parser(content.substring(1));
+				Parser parse = new Parser(content.substring(1), sheet);
 				return String.valueOf(parse.eval(parse.toPostfix()));
 			} catch (Exception e) {
 				return "#OPINV";
