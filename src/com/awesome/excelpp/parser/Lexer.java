@@ -22,22 +22,22 @@ public class Lexer {
 		
 	    Matcher matcher = tokenPatterns.matcher(input);
 	    while(matcher.find()) {
-	    	if (matcher.group(TokenType.NUMBER.name()) != null)
-	    		tokens.add(new Token(TokenType.NUMBER, matcher.group(TokenType.NUMBER.name())));
-	    	if (matcher.group(TokenType.CELL.name()) != null)
-	    		tokens.add(new Token(TokenType.CELL, matcher.group(TokenType.CELL.name())));
-	    	if (matcher.group(TokenType.WORD.name()) != null)
-	    		tokens.add(new Token(TokenType.WORD, matcher.group(TokenType.WORD.name())));
-	    	if (matcher.group(TokenType.PLUSMINUS.name()) != null)
-	    		tokens.add(new Token(TokenType.PLUSMINUS, matcher.group(TokenType.PLUSMINUS.name())));
-	    	if (matcher.group(TokenType.MULTDIV.name()) != null)
-	    		tokens.add(new Token(TokenType.MULTDIV, matcher.group(TokenType.MULTDIV.name())));
-	    	if (matcher.group(TokenType.LBRACKET.name()) != null)
-	    		tokens.add(new Token(TokenType.LBRACKET, matcher.group(TokenType.LBRACKET.name())));
-	    	if (matcher.group(TokenType.RBRACKET.name()) != null)
-	    		tokens.add(new Token(TokenType.RBRACKET, matcher.group(TokenType.RBRACKET.name())));
-	    	if (matcher.group(TokenType.DELIM.name()) != null)
-	    		tokens.add(new Token(TokenType.DELIM, matcher.group(TokenType.DELIM.name())));
+	    	if (matcher.group("NUMBER") != null)
+	    		tokens.add(new Token(TokenType.NUMBER, matcher.group("NUMBER")));
+	    	if (matcher.group("CELL") != null)
+	    		tokens.add(new Token(TokenType.CELL, matcher.group("CELL")));
+	    	if (matcher.group("WORD") != null)
+	    		tokens.add(new Token(TokenType.WORD, matcher.group("WORD")));
+	    	if (matcher.group("PLUSMINUS") != null)
+	    		tokens.add(new Token(TokenType.PLUSMINUS, matcher.group("PLUSMINUS")));
+	    	if (matcher.group("MULTDIV") != null)
+	    		tokens.add(new Token(TokenType.MULTDIV, matcher.group("MULTDIV")));
+	    	if (matcher.group("LBRACKET") != null)
+	    		tokens.add(new Token(TokenType.LBRACKET, matcher.group("LBRACKET")));
+	    	if (matcher.group("RBRACKET") != null)
+	    		tokens.add(new Token(TokenType.RBRACKET, matcher.group("RBRACKET")));
+	    	if (matcher.group("DELIM") != null)
+	    		tokens.add(new Token(TokenType.DELIM, matcher.group("DELIM")));
 	    }
 	    
 	    tokens.add(new Token(TokenType.EOL, "end"));
