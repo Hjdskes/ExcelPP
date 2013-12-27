@@ -90,17 +90,20 @@ public class Parser {
 		LinkedList<Double> evalStack = new LinkedList<Double>();
 		
 		while(!output.isEmpty()){
-			if(output.getLast().getTokenType().equals("NUMBER")){
+			switch (output.getLast().type) {
+			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
-			}else if(output.getLast().getTokenType().equals("CELL")){
+				break;
+			case CELL:
 				String ref = output.removeLast().data;
 				int row = Integer.parseInt(ref.substring(1));
-		        int col = (int) ref.charAt(0);
-		        col -= 65;
-		        Parser cellParse = new Parser(sheet.getCellAt(row - 1, col).getContent().toString(), sheet);
-		        evalStack.push(new Double(cellParse.eval(cellParse.toPostfix())));
-			}else if(output.getLast().getTokenType().equals("MULTDIV") ||
-			         output.getLast().getTokenType().equals("PLUSMINUS")){
+				int col = (int) ref.charAt(0);
+				col -= 65;
+				Parser cellParse = new Parser(sheet.getCellAt(row - 1, col).getContent().toString(), sheet);
+				evalStack.push(new Double(cellParse.eval(cellParse.toPostfix())));
+				break;
+			case MULTDIV:
+			case PLUSMINUS:
 				Double b = evalStack.pop();
 				Double a = evalStack.pop();
 				if(output.getLast().data.equals("+")){
@@ -116,9 +119,9 @@ public class Parser {
 					output.removeLast();
 					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
 				}
+				break;
 			}
 		}
-
 		return evalStack.pop().doubleValue();
 	}
 }
