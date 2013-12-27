@@ -15,7 +15,7 @@ public class ParserTest {
 		
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=9-1", 0, 2);
-		Parser test = new Parser("=2*2+C1", testSheet);
+		Parser test = new Parser("=2*2.3+C1", testSheet);
 		System.out.println(test.eval(test.toPostfix()));
 	}
 }
