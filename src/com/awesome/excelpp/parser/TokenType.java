@@ -5,6 +5,7 @@ public enum TokenType {
 	CELL("[a-zA-Z][0-9]+"),		// A-Z0-9
 	WORD("[a-zA-Z]+"),			// a-z, A-Z
 	PLUSMINUS("[+-]"),			// +, -
+	UNARYMINUS("-"),
 	MULTDIV("[*/]"),			// *, /
 	LBRACKET("\\("),			// (
 	RBRACKET("\\)"),			// )

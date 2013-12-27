@@ -50,6 +50,8 @@ public class Parser {
 	 * 
 	 */
 	public LinkedList<Token> toPostfix(){
+		boolean lastWasNumber = false;
+		
 		while(lex.hasNext()){
 			currentToken = lex.next();
 			
@@ -57,19 +59,28 @@ public class Parser {
 			case NUMBER:
 			case CELL:
 				output.push(currentToken);
+				lastWasNumber = true;
 				break;
 			case MULTDIV:
-				while(!operators.isEmpty() && operators.getFirst().getTokenType().equals("MULTDIV")) {
+				while(!operators.isEmpty() && (operators.getFirst().getTokenType().equals("MULTDIV") ||
+					   operators.getFirst().getTokenType().equals("UNARYMINUS"))) {
 					output.push(operators.pop());
 				}
 				operators.push(currentToken);
+				lastWasNumber = false;
 				break;
 			case PLUSMINUS:
-				while(!operators.isEmpty() && ((operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
-						  operators.getFirst().getTokenType().equals("MULTDIV")))){
-					output.push(operators.pop());
+				if(!lastWasNumber){
+					operators.push(new Token(TokenType.UNARYMINUS, "-"));
+				}else{
+					while(!operators.isEmpty() && ((operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
+						   operators.getFirst().getTokenType().equals("MULTDIV") || 
+						   operators.getFirst().getTokenType().equals("UNARYMINUS")))){
+						output.push(operators.pop());
+					}
+					operators.push(currentToken);
+					lastWasNumber = false;
 				}
-				operators.push(currentToken);
 				break;
 			case LBRACKET:
 				operators.push(currentToken);
@@ -99,7 +110,12 @@ public class Parser {
 		LinkedList<Double> evalStack = new LinkedList<Double>();
 		
 		while(!output.isEmpty()){
+			System.out.println(output.getLast());
 			switch (output.getLast().type) {
+			case UNARYMINUS:
+				output.removeLast();
+				evalStack.push(new Double(-1*evalStack.pop().doubleValue()));
+				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
 				break;
