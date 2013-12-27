@@ -17,6 +17,7 @@ public class Parser {
 	 */
 	public LinkedList<Token> output; //public for testing
 	
+	
 	/*
 	 * The following Tokens are operators:
 	 * 
@@ -31,11 +32,14 @@ public class Parser {
 	private SpreadSheet sheet;
 	private Token currentToken;
 	
+	private LinkedList<Integer> arityStack;
+	
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
 		this.sheet = sheet;
 		output = new LinkedList<Token>();
 		operators = new LinkedList<Token>();
+		arityStack = new LinkedList<Integer>();
 		toPostfix();
 	}
 	
@@ -97,11 +101,14 @@ public class Parser {
 				}
 				break;
 			case DELIM:
+				Integer arity = arityStack.pop() + 1;
+				arityStack.push(arity);
 				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
 					output.push(operators.pop());
 				}
 				break;
 			case WORD:
+				arityStack.push(1);
 				operators.push(currentToken);
 				break;
 			case EOL:
@@ -158,9 +165,11 @@ public class Parser {
 				}
 				break;
 			case WORD:
-				Double d = evalStack.pop();
-				Double c = evalStack.pop();
-				double[] args = {c, d};
+				int numArgs = arityStack.pop();
+				double[] args = new double[numArgs];
+				for (int i = numArgs - 1; i >= 0; i--) {
+					args[i] = evalStack.pop();
+				}
 				
 				evalStack.push(evalFunction(output.removeLast().data, args));
 				break;
