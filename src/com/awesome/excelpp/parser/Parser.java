@@ -52,30 +52,39 @@ public class Parser {
 	public LinkedList<Token> toPostfix(){
 		while(lex.hasNext()){
 			currentToken = lex.next();
-			if(currentToken.getTokenType().equals("NUMBER") || currentToken.getTokenType().equals("CELL")){
+			
+			switch (currentToken.type) {
+			case NUMBER:
+			case CELL:
 				output.push(currentToken);
-			}else if(currentToken.getTokenType().equals("MULTDIV")){
+				break;
+			case MULTDIV:
 				while(!operators.isEmpty() && operators.getFirst().getTokenType().equals("MULTDIV")) {
 					output.push(operators.pop());
 				}
 				operators.push(currentToken);
-			}else if(currentToken.getTokenType().equals("PLUSMINUS")){
+				break;
+			case PLUSMINUS:
 				while(!operators.isEmpty() && ((operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
-					  operators.getFirst().getTokenType().equals("MULTDIV")))){
+						  operators.getFirst().getTokenType().equals("MULTDIV")))){
 					output.push(operators.pop());
 				}
 				operators.push(currentToken);
-			}else if(currentToken.getTokenType().equals("LBRACKET")){
+				break;
+			case LBRACKET:
 				operators.push(currentToken);
-			}else if(currentToken.getTokenType().equals("RBRACKET")){
+				break;
+			case RBRACKET:
 				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
 					output.push(operators.pop());
 				}
 				operators.pop();
-			}else if(currentToken.getTokenType().equals("EOL")){
+				break;
+			case EOL:
 				while(!operators.isEmpty()){
 					output.push(operators.pop());
 				}
+				break;
 			}
 		}
 		return output;
