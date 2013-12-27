@@ -1,7 +1,9 @@
 package com.awesome.excelpp.parser;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 
+import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
@@ -90,6 +92,17 @@ public class Parser {
 					output.push(operators.pop());
 				}
 				operators.pop();
+				if (operators.getFirst().getTokenType().equals("WORD")){
+					output.push(operators.pop());
+				}
+				break;
+			case DELIM:
+				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
+					output.push(operators.pop());
+				}
+				break;
+			case WORD:
+				operators.push(currentToken);
 				break;
 			case EOL:
 				while(!operators.isEmpty()){
@@ -110,11 +123,10 @@ public class Parser {
 		LinkedList<Double> evalStack = new LinkedList<Double>();
 		
 		while(!output.isEmpty()){
-			System.out.println(output.getLast());
 			switch (output.getLast().type) {
 			case UNARYMINUS:
 				output.removeLast();
-				evalStack.push(new Double(-1*evalStack.pop().doubleValue()));
+				evalStack.push(new Double(-evalStack.pop().doubleValue()));
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
@@ -145,8 +157,31 @@ public class Parser {
 					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
 				}
 				break;
+			case WORD:
+				double[] args = {evalStack.pop(), evalStack.pop()};
+				String function = output.removeLast().data;
+				
+				evalStack.push(evalFunction(function, args));
+				break;
 			}
 		}
 		return evalStack.pop().doubleValue();
+	}
+	
+	public double evalFunction(String function, double ... args) {
+		String packageName = "com.awesome.excelpp.math";
+		String formulaNameFull = packageName + '.' + function;
+		Formula formula;
+		double value = 0;
+		
+		try {
+			Class<?> formulaClass = Class.forName(formulaNameFull);
+			Constructor<?> opConstructor = formulaClass.getConstructor();
+			formula = (Formula)opConstructor.newInstance();
+			value = formula.getValue(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
 	}
 }

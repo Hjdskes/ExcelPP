@@ -15,8 +15,9 @@ public class ParserTest {
 		
 		SpreadSheet testSheet = new SpreadSheet();
 //		testSheet.setValueAt("=4*5", 0, 2);
-		Parser test = new Parser("=-3+-7", testSheet);
+		Parser test = new Parser("=Add(2,4)", testSheet);
 		LinkedList<Token> output = test.toPostfix();
+		System.out.println(output);
 		System.out.println(test.eval(output));
 		
 //		SpreadSheet testSheet = new SpreadSheet();
