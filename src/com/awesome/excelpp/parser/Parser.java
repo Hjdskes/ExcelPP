@@ -158,10 +158,11 @@ public class Parser {
 				}
 				break;
 			case WORD:
-				double[] args = {evalStack.pop(), evalStack.pop()};
-				String function = output.removeLast().data;
+				Double d = evalStack.pop();
+				Double c = evalStack.pop();
+				double[] args = {c, d};
 				
-				evalStack.push(evalFunction(function, args));
+				evalStack.push(evalFunction(output.removeLast().data, args));
 				break;
 			}
 		}
