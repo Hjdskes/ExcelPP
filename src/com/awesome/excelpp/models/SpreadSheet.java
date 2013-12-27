@@ -122,7 +122,11 @@ public class SpreadSheet implements TableModel {
 	@Override
 	public Object getValueAt(int row, int col) {
 		Cell c = cells.get(getNumCell(row, col));
-		return c == null ? "" : c.getValue();
+		return c == null ? "" : c.getValue(this);
+	}
+	
+	public Cell getCellAt(int row, int col) {
+		return cells.get(getNumCell(row, col));
 	}
 
 	public boolean isCellEditable(int row, int col) {
