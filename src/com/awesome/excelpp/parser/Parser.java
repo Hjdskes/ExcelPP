@@ -91,10 +91,7 @@ public class Parser {
 		
 		while(!output.isEmpty()){
 			if(output.getLast().getTokenType().equals("NUMBER")){
-				evalStack.push(new Double(output.removeLast().data)); //JDK source zegt dat dit ineffici<91>nt is, alternatieven?
-				/*Mogelijk alternatief:
-				evalStack.push(new Double(Double.parseDouble(output.removeLast().data));
-				*/
+				evalStack.push(Double.valueOf(output.removeLast().data));
 			}else if(output.getLast().getTokenType().equals("CELL")){
 				String ref = output.removeLast().data;
 				int row = Integer.parseInt(ref.substring(1));
