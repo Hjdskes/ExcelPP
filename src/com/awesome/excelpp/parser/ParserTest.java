@@ -122,6 +122,6 @@ public class ParserTest {
 		endTime = System.currentTimeMillis();
 		double secondTime = endTime - startTime;
 
-		System.out.println("Infix-->postfix: (" + firstTime + " ms)\n" + finalResult + " (" + secondTime + " ms)\n" + "Total:" + secondTime + firstTime);
+		System.out.println("Infix-->postfix: (" + firstTime + " ms)\n" + finalResult + " (" + secondTime + " ms)\n" + "Total:" + (secondTime + firstTime));
 	}
 }
