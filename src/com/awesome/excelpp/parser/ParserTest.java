@@ -15,7 +15,7 @@ public class ParserTest {
 		
 		SpreadSheet testSheet = new SpreadSheet();
 //		testSheet.setValueAt("=4*5", 0, 2);
-		Parser test = new Parser("=Add(1,2,Add(3,4),Subtract(5,6))", testSheet);
+		Parser test = new Parser("=Add(1,2,Add(-3,4),Subtract(5,6))", testSheet);
 		LinkedList<Token> output = test.toPostfix();
 		System.out.println(test.arityStack);
 		System.out.println(output);

@@ -91,6 +91,7 @@ public class Parser {
 				break;
 			case LBRACKET:
 				operators.push(currentToken);
+				lastWasNumber = false;
 				break;
 			case RBRACKET:
 				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
@@ -112,6 +113,7 @@ public class Parser {
 			case WORD:
 				numargsStack.push(1);
 				operators.push(currentToken);
+				lastWasNumber = false;
 				break;
 			case EOL:
 				while(!operators.isEmpty()){
