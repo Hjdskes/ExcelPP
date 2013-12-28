@@ -47,10 +47,6 @@ public class Lexer {
 		return (tokens.size() - index) > 0;
 	}
 	
-	public boolean hasNextWord() {
-		return hasNext() && tokens.get(index).type == TokenType.WORD;
-	}
-	
 	public Token next() {
 		return hasNext() ? tokens.get(index++) : new Token(TokenType.EOL, null);
 	}
