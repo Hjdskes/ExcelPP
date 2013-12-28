@@ -17,12 +17,13 @@ public class ParserTest {
 		result = new Parser("=450.257").eval();
 		assertEquals(expected, result, .001);
 		
-		expected = 4.0;
 		Lexer lex = new Lexer("2.+2");
-		result = new Parser(lex, null).eval();
 		assertTrue("2".equals(lex.next().data));
 		assertTrue("+".equals(lex.next().data));
-		assertTrue("2".equals(lex.next().data));
+		assertTrue("2".equals(lex.next().data));		
+
+		expected = 4.0;
+		result = new Parser("2.+2").eval();
 		assertEquals(expected, result, .001);
 	}
 	
@@ -56,6 +57,10 @@ public class ParserTest {
 		
 		expected = -.57;
 		result = new Parser("=2+-2.57").eval();
+		assertEquals(expected, result, .001);
+		
+		expected = 1.43;
+		result = new Parser("=2+-.57").eval();
 		assertEquals(expected, result, .001);
 	}
 	
