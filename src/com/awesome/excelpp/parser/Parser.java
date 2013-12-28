@@ -98,6 +98,7 @@ public class Parser {
 				operators.pop();
 				if (operators.getFirst().getTokenType().equals("WORD")){
 					output.push(operators.pop());
+					System.out.println("numargs: " + arityStack.pop());
 				}
 				break;
 			case DELIM:
@@ -165,12 +166,12 @@ public class Parser {
 				}
 				break;
 			case WORD:
-				int numArgs = arityStack.pop();
+				int numArgs = arityStack.removeLast();
+				System.out.println(numArgs);
 				double[] args = new double[numArgs];
 				for (int i = numArgs - 1; i >= 0; i--) {
 					args[i] = evalStack.pop();
 				}
-				
 				evalStack.push(evalFunction(output.removeLast().data, args));
 				break;
 			}
