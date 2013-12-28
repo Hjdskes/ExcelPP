@@ -99,17 +99,14 @@ public class LexerTest {
 		assertTrue(next.data.equals(expr));
 		
 		next = lex.next();
-		assertFalse(lex.hasNextWord());
 		assertEquals(TokenType.NUMBER, next.type);
 		assertTrue(next.data.equals(arg1));
 		
 		next = lex.next();
-		assertFalse(lex.hasNextWord());
 		assertEquals(TokenType.DELIM, next.type);
 		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
-		assertFalse(lex.hasNextWord());
 		assertEquals(TokenType.NUMBER, next.type);
 		assertTrue(next.data.equals(arg2));
 		
