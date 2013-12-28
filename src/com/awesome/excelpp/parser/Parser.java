@@ -218,9 +218,9 @@ public class Parser {
 		endTime = System.currentTimeMillis();
 		totalSecond = endTime - startTime;
 		
-		System.out.println("Lexer first run: (" + totalLexer + " ms)");
-		System.out.println("toPostfix() first run: (" + totalFirst + " ms)");
-		System.out.println("eval() first run: (" + totalSecond + " ms)");
+		System.out.println("Lexer first run: " + totalLexer + " ms");
+		System.out.println("toPostfix() first run: " + totalFirst + " ms");
+		System.out.println("eval() first run: " + totalSecond + " ms");
 		totalFirst = 0;
 		totalSecond = 0;
 		for (int i = 0; i < 100; i++) {
@@ -235,7 +235,7 @@ public class Parser {
 			endTime = System.currentTimeMillis();
 			totalSecond += endTime - startTime;
 		}
-		System.out.println("Parser construction average over 100 runs: " + totalFirst / 100 + " ms)");
-		System.out.println("eval() average over 100 runs (includes toPostFix()): " + totalSecond / 100 + " ms)");
+		System.out.println("Parser construction average over 100 runs: " + totalFirst / 100 + " ms");
+		System.out.println("eval() average over 100 runs (includes toPostFix()): " + totalSecond / 100 + " ms");
 	}
 }
