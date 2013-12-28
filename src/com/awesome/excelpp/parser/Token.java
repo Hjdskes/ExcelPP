@@ -9,10 +9,6 @@ class Token {
         this.data = data;
     }
     
-    public String getTokenType(){
-    	return this.type.name();
-    }
-    
     public String toString() {
         return String.format("(%s %s)", type.name(), data);
     }
