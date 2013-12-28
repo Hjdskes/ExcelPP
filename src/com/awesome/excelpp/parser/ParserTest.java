@@ -15,12 +15,7 @@ public class ParserTest {
 		
 		expected = 450.257;
 		result = new Parser("=450.257").eval();
-		assertEquals(expected, result, .001);
-		
-		Lexer lex = new Lexer("2.+2");
-		assertTrue("2".equals(lex.next().data));
-		assertTrue("+".equals(lex.next().data));
-		assertTrue("2".equals(lex.next().data));		
+		assertEquals(expected, result, .001);		
 
 		expected = 4.0;
 		result = new Parser("2.+2").eval();
