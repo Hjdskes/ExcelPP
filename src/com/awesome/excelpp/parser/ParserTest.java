@@ -81,8 +81,19 @@ public class ParserTest {
 		result = new Parser("=25/2").eval();
 		assertEquals(expected, result, .001);
 		
-		expected = 40;
+		expected = 40.0;
 		result = new Parser("=30/.75").eval();
+		assertEquals(expected, result, .001);
+	}
+	
+	@Test
+	public void test_function() {
+		expected = 6.0;
+		result = new Parser("=Add(2,4)").eval();
+		assertEquals(expected, result, .001);
+		
+		expected = -1.0;
+		result = new Parser("=Subtract(5,6)").eval();
 		assertEquals(expected, result, .001);
 	}
 	
