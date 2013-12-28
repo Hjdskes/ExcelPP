@@ -48,7 +48,8 @@ public class Cell extends Observable {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				Parser parse = new Parser(content.substring(1), sheet);
-				return String.valueOf(parse.eval(parse.toPostfix()));
+				parse.toPostfix();
+				return String.valueOf(parse.eval());
 			} catch (Exception e) {
 				return "#OPINV";
 			}
