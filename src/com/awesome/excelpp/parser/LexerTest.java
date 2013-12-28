@@ -14,6 +14,12 @@ public class LexerTest {
 	}
 	
 	@Test
+	public void test_Constructor_Double() {
+		lex = new Lexer("2.+2");
+		test_ExprBinaryTwoArgs("2", "2");
+	}
+	
+	@Test
 	public void test_Constructor_Formule() {
 		lex = new Lexer("Add(2,4)");
 		test_ExprTwoArgs("Add", "2", "4");
