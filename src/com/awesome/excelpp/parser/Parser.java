@@ -57,6 +57,7 @@ public class Parser {
 	 */
 	public LinkedList<Token> toPostfix(){
 		boolean lastWasNumber = false;
+		LinkedList<Integer> numargsStack = new LinkedList<Integer>();
 		
 		while(lex.hasNext()){
 			currentToken = lex.next();
@@ -98,18 +99,18 @@ public class Parser {
 				operators.pop();
 				if (operators.getFirst().getTokenType().equals("WORD")){
 					output.push(operators.pop());
-					System.out.println("numargs: " + arityStack.pop());
+					arityStack.push(numargsStack.pop());
 				}
 				break;
 			case DELIM:
-				Integer arity = arityStack.pop() + 1;
-				arityStack.push(arity);
+				Integer numargs = numargsStack.pop() + 1;
+				numargsStack.push(numargs);
 				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
 					output.push(operators.pop());
 				}
 				break;
 			case WORD:
-				arityStack.push(1);
+				numargsStack.push(1);
 				operators.push(currentToken);
 				break;
 			case EOL:
@@ -167,7 +168,6 @@ public class Parser {
 				break;
 			case WORD:
 				int numArgs = arityStack.removeLast();
-				System.out.println(numArgs);
 				double[] args = new double[numArgs];
 				for (int i = numArgs - 1; i >= 0; i--) {
 					args[i] = evalStack.pop();
