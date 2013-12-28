@@ -7,15 +7,15 @@ import java.util.regex.Pattern;
 public class Lexer {
 	private int index = 0;
 	public ArrayList<Token> tokens; //public for testing
-	private String patterns;
 	
 	public Lexer(String input) {
 		this.tokens = new ArrayList<Token>();
 		
+		String patterns = "";
 		for (TokenType tokenType : TokenType.values()) {
 			patterns += String.format("|(?<%s>%s)", tokenType.name(), tokenType.pattern);
 		}
-		Pattern tokenPatterns = Pattern.compile(new String(patterns.substring(1)));
+		Pattern tokenPatterns = Pattern.compile(patterns.substring(1));
 
 		if (input == null)
 			return;
