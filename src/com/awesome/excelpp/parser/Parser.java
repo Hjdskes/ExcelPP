@@ -73,8 +73,8 @@ public class Parser {
 				lastWasNumber = true;
 				break;
 			case MULTDIV:
-				while(!operators.isEmpty() && (operators.getFirst().getTokenType().equals("MULTDIV") ||
-					   operators.getFirst().getTokenType().equals("UNARYMINUS"))) {
+				while(!operators.isEmpty() && (operators.getFirst().type == TokenType.MULTDIV ||
+					   operators.getFirst().type == TokenType.UNARYMINUS)) {
 					output.push(operators.pop());
 				}
 				operators.push(currentToken);
@@ -84,9 +84,9 @@ public class Parser {
 				if(!lastWasNumber){
 					operators.push(new Token(TokenType.UNARYMINUS, "-"));
 				}else{
-					while(!operators.isEmpty() && ((operators.getFirst().getTokenType().equals("PLUSMINUS")|| //throws NoSuchElementException, why?
-						   operators.getFirst().getTokenType().equals("MULTDIV") || 
-						   operators.getFirst().getTokenType().equals("UNARYMINUS")))){
+					while(!operators.isEmpty() && (operators.getFirst().type == TokenType.PLUSMINUS|| //throws NoSuchElementException, why?
+						   operators.getFirst().type == TokenType.MULTDIV || 
+						   operators.getFirst().type == TokenType.UNARYMINUS)){
 						output.push(operators.pop());
 					}
 					operators.push(currentToken);
@@ -98,11 +98,11 @@ public class Parser {
 				lastWasNumber = false;
 				break;
 			case RBRACKET:
-				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
+				while(!(operators.getFirst().type == TokenType.LBRACKET)){
 					output.push(operators.pop());
 				}
 				operators.pop();
-				if (operators.getFirst().getTokenType().equals("WORD")){
+				if (operators.getFirst().type == TokenType.WORD){
 					output.push(operators.pop());
 					arityStack.push(numargsStack.pop());
 				}
@@ -110,7 +110,7 @@ public class Parser {
 			case DELIM:
 				Integer numargs = numargsStack.pop() + 1;
 				numargsStack.push(numargs);
-				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
+				while(!(operators.getFirst().type == TokenType.LBRACKET)){
 					output.push(operators.pop());
 				}
 				break;
