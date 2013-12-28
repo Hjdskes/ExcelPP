@@ -3,10 +3,7 @@ package com.awesome.excelpp.parser;
 import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 
-import org.junit.Test;
-
 import com.awesome.excelpp.math.Formula;
-import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
 public class Parser {
@@ -18,29 +15,15 @@ public class Parser {
 	 * - CELL
 	 */
 	public LinkedList<Token> output; //public for testing
+	public LinkedList<Integer> arityStack; //public for testing
 	
-	
-	/*
-	 * The following Tokens are operators:
-	 * 
-	 * - PLUS, MINUS
-	 * - MULT, DIV
-	 * - LBRACKET, RBRACKET
-	 * - POW ?
-	 * - FACT ?
-	 */
-	private LinkedList<Token> operators;
 	public Lexer lex; //public for testing
 	private SpreadSheet sheet;
-	private Token currentToken;
-	
-	public LinkedList<Integer> arityStack;
 	
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
 		this.sheet = sheet;
 		output = new LinkedList<Token>();
-		operators = new LinkedList<Token>();
 		arityStack = new LinkedList<Integer>();
 		toPostfix();
 	}
@@ -62,8 +45,19 @@ public class Parser {
 	 * 
 	 */
 	public LinkedList<Token> toPostfix(){
-		boolean lastWasNumber = false;
+		/*
+		 * The following Tokens are operators:
+		 * 
+		 * - PLUS, MINUS
+		 * - MULT, DIV
+		 * - LBRACKET, RBRACKET
+		 * - POW ?
+		 * - FACT ?
+		 */
+		LinkedList<Token> operators = new LinkedList<Token>();
 		LinkedList<Integer> numargsStack = new LinkedList<Integer>();
+		boolean lastWasNumber = false;
+		Token currentToken;
 		
 		while(lex.hasNext()){
 			currentToken = lex.next();
