@@ -32,7 +32,7 @@ public class Parser {
 	private SpreadSheet sheet;
 	private Token currentToken;
 	
-	private LinkedList<Integer> arityStack;
+	public LinkedList<Integer> arityStack;
 	
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
