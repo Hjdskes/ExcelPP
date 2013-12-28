@@ -17,6 +17,7 @@ public class Parser {
 	 */
 	public LinkedList<Token> output; //public for testing
 	
+	
 	/*
 	 * The following Tokens are operators:
 	 * 
@@ -31,11 +32,14 @@ public class Parser {
 	private SpreadSheet sheet;
 	private Token currentToken;
 	
+	public LinkedList<Integer> arityStack;
+	
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
 		this.sheet = sheet;
 		output = new LinkedList<Token>();
 		operators = new LinkedList<Token>();
+		arityStack = new LinkedList<Integer>();
 		toPostfix();
 	}
 	
@@ -53,6 +57,7 @@ public class Parser {
 	 */
 	public LinkedList<Token> toPostfix(){
 		boolean lastWasNumber = false;
+		LinkedList<Integer> numargsStack = new LinkedList<Integer>();
 		
 		while(lex.hasNext()){
 			currentToken = lex.next();
@@ -94,14 +99,18 @@ public class Parser {
 				operators.pop();
 				if (operators.getFirst().getTokenType().equals("WORD")){
 					output.push(operators.pop());
+					arityStack.push(numargsStack.pop());
 				}
 				break;
 			case DELIM:
+				Integer numargs = numargsStack.pop() + 1;
+				numargsStack.push(numargs);
 				while(!operators.getFirst().getTokenType().equals("LBRACKET")){
 					output.push(operators.pop());
 				}
 				break;
 			case WORD:
+				numargsStack.push(1);
 				operators.push(currentToken);
 				break;
 			case EOL:
@@ -158,10 +167,12 @@ public class Parser {
 				}
 				break;
 			case WORD:
-				double[] args = {evalStack.pop(), evalStack.pop()};
-				String function = output.removeLast().data;
-				
-				evalStack.push(evalFunction(function, args));
+				int numArgs = arityStack.removeLast();
+				double[] args = new double[numArgs];
+				for (int i = numArgs - 1; i >= 0; i--) {
+					args[i] = evalStack.pop();
+				}
+				evalStack.push(evalFunction(output.removeLast().data, args));
 				break;
 			}
 		}
