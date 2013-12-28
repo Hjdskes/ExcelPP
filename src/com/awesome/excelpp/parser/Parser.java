@@ -47,6 +47,10 @@ public class Parser {
 		this(new Lexer(expr), sheet);
 	}
 	
+	public Parser(String expr){
+		this(new Lexer(expr), null);
+	}
+	
 	/**Converts the expression in infix-notation to postfix-notation using the
 	 * Shunting-yard Algorithm:
 	 * 
@@ -179,6 +183,10 @@ public class Parser {
 			}
 		}
 		return evalStack.pop().doubleValue();
+	}
+	
+	public double eval() {
+		return eval(output);
 	}
 	
 	public double evalFunction(String function, double ... args) {
