@@ -1,53 +1,97 @@
 package com.awesome.excelpp.parser;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.LinkedList;
+
+enum State {
+	NONE,
+	NUMBER,
+	CELL,
+	WORD
+}
 
 public class Lexer {
-	private int index = 0;
-	public ArrayList<Token> tokens; //public for testing
+	public LinkedList<Token> tokens; //public for testing
+	StringBuilder token = new StringBuilder();
+	State state = State.NONE;
 	
 	public Lexer(String input) {
-		this.tokens = new ArrayList<Token>();
+		this.tokens = new LinkedList<Token>();
 		
-		String patterns = "";
-		for (TokenType tokenType : TokenType.values()) {
-			patterns += String.format("|(?<%s>%s)", tokenType.name(), tokenType.pattern);
-		}
-		Pattern tokenPatterns = Pattern.compile(patterns.substring(1));
-
 		if (input == null)
 			return;
-		
-	    Matcher matcher = tokenPatterns.matcher(input);
-	    while(matcher.find()) {
-	    	if (matcher.group("NUMBER") != null)
-	    		tokens.add(new Token(TokenType.NUMBER, matcher.group("NUMBER")));
-	    	if (matcher.group("CELL") != null)
-	    		tokens.add(new Token(TokenType.CELL, matcher.group("CELL")));
-	    	if (matcher.group("WORD") != null)
-	    		tokens.add(new Token(TokenType.WORD, matcher.group("WORD")));
-	    	if (matcher.group("PLUSMINUS") != null)
-	    		tokens.add(new Token(TokenType.PLUSMINUS, matcher.group("PLUSMINUS")));
-	    	if (matcher.group("MULTDIV") != null)
-	    		tokens.add(new Token(TokenType.MULTDIV, matcher.group("MULTDIV")));
-	    	if (matcher.group("LBRACKET") != null)
-	    		tokens.add(new Token(TokenType.LBRACKET, matcher.group("LBRACKET")));
-	    	if (matcher.group("RBRACKET") != null)
-	    		tokens.add(new Token(TokenType.RBRACKET, matcher.group("RBRACKET")));
-	    	if (matcher.group("DELIM") != null)
-	    		tokens.add(new Token(TokenType.DELIM, matcher.group("DELIM")));
+
+	    for (int i = 0; i < input.length(); i++) {
+	    	char ch = input.charAt(i);
+	    	
+	    	switch (ch) {
+	    	case '*':
+	    	case '/':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(TokenType.MULTDIV, Character.toString(ch)));
+	    		break;
+	    	case '+':
+	    	case '-':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(TokenType.PLUSMINUS, Character.toString(ch)));
+	    		break;
+	    	case '(':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(TokenType.LBRACKET, Character.toString(ch)));
+	    		break;
+	    	case ')':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(TokenType.RBRACKET, Character.toString(ch)));
+	    		break;
+	    	case ',':
+	    	case ';':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(TokenType.DELIM,Character.toString(ch)));
+	    		break;
+	    	case '.':
+	    		setState(State.NUMBER);
+	    		token.append(ch);
+	    		break;
+	    	case ' ': case '\t': case '\n': case '\r': case '\f':
+	    		setState(State.NONE);
+	    		break;
+	    	default:
+	    		if (Character.isDigit(ch)) {
+	    			if(this.state == State.WORD){
+	    				setState(State.CELL);
+	    				token.append(ch);
+	    			}else{
+	    				setState(State.NUMBER);    				
+	    				token.append(ch);
+	    			}
+	    		} else if (Character.isLetter(ch)) {
+	    			setState(State.WORD);
+	    			token.append(ch);
+	    		}
+	    	}
 	    }
-	    
-	    tokens.add(new Token(TokenType.EOL, "end"));
+	    setState(State.NONE);
+	    tokens.add(new Token(TokenType.EOL, null));
+	}
+	
+	private void setState(State state) {
+		if (this.state != state && state != State.CELL) {
+			if (this.state == State.NUMBER){
+				tokens.add(new Token(TokenType.NUMBER, token.toString()));
+			}else if(this.state == State.CELL){
+				tokens.add(new Token(TokenType.CELL, token.toString()));
+			}else if (this.state == State.WORD){
+				tokens.add(new Token(TokenType.WORD, token.toString()));
+			}
+			token = new StringBuilder();
+		}
+		this.state = state;
 	}
 	
 	public boolean hasNext() {
-		return (tokens.size() - index) > 0;
+		return !tokens.isEmpty();
 	}
 	
 	public Token next() {
-		return hasNext() ? tokens.get(index++) : new Token(TokenType.EOL, null);
+		return hasNext() ? tokens.pop() : new Token(TokenType.EOL, null);
 	}
 }

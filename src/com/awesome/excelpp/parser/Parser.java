@@ -129,6 +129,10 @@ public class Parser {
 	 * @return - The evaluated expression
 	 */
 	public double eval(){
+		if (output.isEmpty()) {
+			toPostfix();
+		}
+		
 		LinkedList<Double> evalStack = new LinkedList<Double>();
 		
 		while(!output.isEmpty()){

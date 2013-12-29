@@ -14,9 +14,33 @@ public class LexerTest {
 	}
 	
 	@Test
+	public void test_Constructor_Plus() {
+		lex = new Lexer("2+2");
+		test_ExprBinaryTwoArgs("2", "2");
+	}
+	
+	@Test
+	public void test_Constructor_Minus() {
+		lex = new Lexer("2-2");
+		test_ExprBinaryTwoArgs("2", "2");
+	}
+	
+	@Test
+	public void test_Constructor_Mult() {
+		lex = new Lexer("2*2");
+		test_ExprBinaryTwoArgs("2", "2");
+	}
+	
+	@Test
+	public void test_Constructor_Div() {
+		lex = new Lexer("2/2");
+		test_ExprBinaryTwoArgs("2", "2");
+	}
+	
+	@Test
 	public void test_Constructor_Double() {
 		lex = new Lexer("2.+2");
-		test_ExprBinaryTwoArgs("2", "2");
+		test_ExprBinaryTwoArgs("2.", "2");
 	}
 	
 	@Test
@@ -47,12 +71,6 @@ public class LexerTest {
 	public void test_Constructor_FormuleNumbers() {
 		lex = new Lexer(" Add(24571,17843)");
 		test_ExprTwoArgs("Add", "24571", "17843");
-	}
-	
-	@Test
-	public void test_Constructor_FormuleNumbersInvalid() {
-		lex = new Lexer(" Add24571,17843");
-		test_ExprInvTwoArgs("Add", "24571", "17843");
 	}
 	
 	@Test
@@ -128,8 +146,9 @@ public class LexerTest {
 		assertTrue(next.data.equals(arg1));
 		
 		next = lex.next();
-		assertEquals(TokenType.PLUSMINUS, next.type);
-		assertTrue(next.data.equals("+"));
+		assertTrue(next.type.equals(TokenType.PLUSMINUS) || next.type.equals(TokenType.MULTDIV));
+		assertTrue(next.data.equals("+") || next.data.equals("-") ||
+				   next.data.equals("*") || next.data.equals("/"));
 		
 		next = lex.next();
 		assertEquals(TokenType.NUMBER, next.type);
