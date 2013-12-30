@@ -23,23 +23,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.undo.UndoManager;
 
 
 /**
  * Class that sets up everything needed for a new tab in the GUI
  */
-public class SpreadSheetTable implements MouseListener, Observer{
+public class SpreadSheetTable implements MouseListener, Observer, UndoableEditListener{
 	private JScrollPane scrollPane;
 	private JTable tabel, rowTabel;
 	private SpreadSheet sheet;
 	private File file = null;
 	private int selectedColumn;
 	private int selectedRow;
+	private UndoManager undoManager;
 
 	public SpreadSheetTable () throws IOException {
 		sheet = new SpreadSheet();
 		tabel = new JTable(sheet);
+		undoManager = new UndoManager();
 		tabel.setFillsViewportHeight (true);
 		tabel.setSelectionBackground (new Color(200, 221, 242));
 		tabel.setColumnSelectionAllowed(true);
@@ -51,6 +56,7 @@ public class SpreadSheetTable implements MouseListener, Observer{
 
 		tabel.addMouseListener(this);
 		sheet.addObserver(this);
+		sheet.addUndoableEditListener(this);
 		
 		file = File.createTempFile("excelpp_temp", ".xml");
 	}
@@ -95,6 +101,10 @@ public class SpreadSheetTable implements MouseListener, Observer{
 		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
 			return "Temporary file";
 		return file.getName();
+	}
+	
+	public UndoManager getUndoManager(){
+		return undoManager;
 	}
 
 	/**
@@ -222,6 +232,7 @@ public class SpreadSheetTable implements MouseListener, Observer{
 			if(file.delete() != true)
 				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 	}
+	
 
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
@@ -283,6 +294,15 @@ public class SpreadSheetTable implements MouseListener, Observer{
 	 */
 	public void update(Observable o, Object arg) {
 		tabel.repaint();
+	}
+
+	@Override
+	/**
+	 * Listen for undoable edits and adds them to the undoManager
+	 */
+	public void undoableEditHappened(UndoableEditEvent e) {
+		undoManager.addEdit(e.getEdit());
+		
 	}
 	
 }
