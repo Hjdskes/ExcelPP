@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import javax.swing.event.TableModelListener;
@@ -13,7 +15,7 @@ import javax.swing.table.TableModel;
  * Class that represents a spreadsheet
  * 
  */
-public class SpreadSheet implements TableModel {
+public class SpreadSheet extends Observable implements TableModel {
 	private HashMap<Integer, Cell> cells;
 	protected final short numberOfRows = 42;
 	protected final short numberOfCols = 26;
@@ -149,8 +151,14 @@ public class SpreadSheet implements TableModel {
 	public void setValueAt(Object aValue, int row, int col) {
 		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
 			cells.remove(getNumCell(row, col));
+			//voor de observers
+			setChanged();
+			notifyObservers();
 		}else if (((String)aValue).length() != 0){
 			cells.put(getNumCell(row, col), new Cell((String)aValue));
+			//voor de observers
+			setChanged();
+			notifyObservers();
 		}
 	}
 	

@@ -276,7 +276,6 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 	public void insertUpdate(DocumentEvent e) {
 		int index = mainTabs.getSelectedIndex();
 		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn()); //dit overwrite standaard cel A0 als de GUI/tab net is aangemaakt
-		panes.get(index).getTable().repaint();
 	}
 
 	/**

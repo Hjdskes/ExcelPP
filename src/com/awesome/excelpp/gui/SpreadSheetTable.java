@@ -7,6 +7,8 @@ import com.awesome.excelpp.gui.GUI;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.w3c.dom.Document;
 
@@ -27,7 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Class that sets up everything needed for a new tab in the GUI
  */
-public class SpreadSheetTable implements MouseListener, TableModelListener {
+public class SpreadSheetTable implements MouseListener, Observer{
 	private JScrollPane scrollPane;
 	private JTable tabel, rowTabel;
 	private SpreadSheet sheet;
@@ -48,7 +50,7 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTabel.getTableHeader());
 
 		tabel.addMouseListener(this);
-		sheet.addTableModelListener(this);
+		sheet.addObserver(this);
 		
 		file = File.createTempFile("excelpp_temp", ".xml");
 	}
@@ -276,9 +278,11 @@ public class SpreadSheetTable implements MouseListener, TableModelListener {
 	}
 
 	@Override
-	public void tableChanged(TableModelEvent e) {
+	/**
+	 * Observes changes in the table
+	 */
+	public void update(Observable o, Object arg) {
 		tabel.repaint();
-		System.out.println("table change");
 	}
 	
 }
