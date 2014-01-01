@@ -25,7 +25,12 @@ public class Parser {
 	
 	public Lexer lex; //public for testing
 	private SpreadSheet sheet;
-	
+
+	/**
+	 * Creates a new expression Parser
+	 * @param lex		The Lexer containing the expression 
+	 * @param sheet		The referenced SpreadSheet
+	 */
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
 		this.sheet = sheet;
@@ -33,22 +38,31 @@ public class Parser {
 		arityStack = new LinkedList<Integer>();
 	}
 	
+	/**
+	 * Creates a new expression Parser
+	 * @param expr		The String containing the expression
+	 * @param sheet		The referenced SpreadSheet
+	 */
 	public Parser(String expr, SpreadSheet sheet){
 		this(new Lexer(expr), sheet);
 	}
 	
+	/**
+	 * Creates a new expression Parser
+	 * @param expr		The String containing the expression
+	 */
 	public Parser(String expr){
 		this(new Lexer(expr), null);
 	}
 	
-	/**Converts the expression in infix-notation to postfix-notation using the
+	/**
+	 * Converts the expression in infix-notation to postfix-notation using the
 	 * Shunting-yard Algorithm:
 	 * 
 	 * infix               | postfix
 	 * ------------------- | -----------------
 	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +
-	 * @throws ParserException 
-	 * 
+	 * @throws		ParserException 
 	 */
 	public void toPostfix() throws ParserException{
 		/*
@@ -142,11 +156,10 @@ public class Parser {
 		}
 	}
 	
-	/**Evaluate the mathematical expression
-	 * 
-	 * @param - A queue of tokens, representing a mathematical expression in postfix-notation
-	 * @return - The evaluated expression
-	 * @throws ParserException 
+	/**
+	 * Evaluate the stored mathematical expression represented in postfix-notation
+	 * @return		The evaluated expression
+	 * @throws		ParserException
 	 */
 	public double eval() throws ParserException{
 		if (output.isEmpty()) {
@@ -216,6 +229,13 @@ public class Parser {
 		return evalStack.pop().doubleValue();
 	}
 	
+	/**
+	 * Evaluate a function using the formulas in package com.awesome.excelpp.math
+	 * @param function		The function name
+	 * @param args			The function arguments (1..*)
+	 * @return				The evaluated function
+	 * @throws FormulaException
+	 */
 	public double evalFunction(String function, double ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
