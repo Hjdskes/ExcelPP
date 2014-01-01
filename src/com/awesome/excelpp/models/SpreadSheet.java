@@ -4,22 +4,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import javax.swing.event.TableModelListener;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.table.TableModel;
+import javax.swing.undo.UndoableEditSupport;
 
 /**
  * Class that represents a spreadsheet
  * 
  */
-public class SpreadSheet implements TableModel {
+public class SpreadSheet extends Observable implements TableModel {
 	private HashMap<Integer, Cell> cells;
 	protected final short numberOfRows = 42;
 	protected final short numberOfCols = 26;
+	private UndoableEditSupport undoSupport;
 	
 	public SpreadSheet() {
 		cells = new HashMap<Integer, Cell>();
+		undoSupport = new UndoableEditSupport();
 	}
 	
 	public boolean equals(Object other){
@@ -94,6 +100,13 @@ public class SpreadSheet implements TableModel {
 		// TODO Auto-generated method stub
 		
 	}
+	/**
+	 * Adds an UndoableEditListener to the SpreadSheet
+	 * @param l UndoableEditListener that is added
+	 */
+	public void addUndoableEditListener(UndoableEditListener l){
+		this.undoSupport.addUndoableEditListener(l);
+	}
 
 	public Class<?> getColumnClass(int columnIndex) {
 		return String.class;
@@ -147,12 +160,55 @@ public class SpreadSheet implements TableModel {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
+		Object oldValue = this.getValueAt(row, col);
 		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
 			cells.remove(getNumCell(row, col));
+			//voor de observers
+			setChanged();
+			notifyObservers();
 		}else if (((String)aValue).length() != 0){
 			cells.put(getNumCell(row, col), new Cell((String)aValue));
+			//voor de observers
+			setChanged();
+			notifyObservers();
+		}
+		Object newValue = this.getValueAt(row, col);
+		if(oldValue != null && !oldValue.equals(newValue) || newValue != null && !newValue.equals(oldValue)){
+			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
+			undoSupport.postEdit(e);
 		}
 	}
+	
+	/**
+	 * Sets a Cell with coordinates row, col in this SpreadSheet
+	 * @param aValue	String object to store in the Cell object
+	 * @param row		int representing x-coordinate
+	 * @param col		int representing y-coordinate
+	 * @param postEdit when true an edit is posted so that it can be undone/redone
+	 */
+	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
+		Object oldValue = this.getValueAt(row, col);
+		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
+			cells.remove(getNumCell(row, col));
+			//voor de observers
+			setChanged();
+			notifyObservers();
+		}else if (((String)aValue).length() != 0){
+			cells.put(getNumCell(row, col), new Cell((String)aValue));
+			//voor de observers
+			setChanged();
+			notifyObservers();
+		}
+		if(postEdit == true){
+		Object newValue = this.getValueAt(row, col);
+		if(oldValue != null && !oldValue.equals(newValue) || newValue != null && !newValue.equals(oldValue)){
+			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
+			undoSupport.postEdit(e);
+			System.out.println("edit posted"); //test
+		}
+		}
+	}
+
 	
 	private int getNumCell(int row, int col) {
 		return row * numberOfCols + col;
@@ -160,28 +216,6 @@ public class SpreadSheet implements TableModel {
 	
 	public boolean isEmpty() {
 		return cells.isEmpty();
-	}
-	
-	/**
-	 * -=TEST=-
-	 */
-	public void fillSheet() {
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfCols; col++) {
-				setValueAt("4", row, col);
-			}
-		}
-	}
-	
-	/**
-	 * -=TEST=-
-	 */
-	public void fillSheetFormula() {
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfCols; col++) {
-				setValueAt("=Add(1,2)", row, col);
-			}
-		}
 	}
 	
 	/**
