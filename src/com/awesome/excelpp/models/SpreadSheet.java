@@ -221,28 +221,6 @@ public class SpreadSheet extends Observable implements TableModel {
 	/**
 	 * -=TEST=-
 	 */
-	public void fillSheet() {
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfCols; col++) {
-				setValueAt("4", row, col);
-			}
-		}
-	}
-	
-	/**
-	 * -=TEST=-
-	 */
-	public void fillSheetFormula() {
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfCols; col++) {
-				setValueAt("=Add(1,2)", row, col);
-			}
-		}
-	}
-	
-	/**
-	 * -=TEST=-
-	 */
 	public String toString() {
 		String res = "";
 		for (int row = 0; row < numberOfRows; row++) {
