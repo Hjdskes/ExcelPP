@@ -2,6 +2,7 @@ package com.awesome.excelpp.parser;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
@@ -41,9 +42,10 @@ public class Parser {
 	 * infix               | postfix
 	 * ------------------- | -----------------
 	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +
+	 * @throws ParserException 
 	 * 
 	 */
-	public void toPostfix(){
+	public void toPostfix() throws ParserException{
 		/*
 		 * The following Tokens are operators:
 		 * 
@@ -68,20 +70,24 @@ public class Parser {
 				lastWasNumber = true;
 				break;
 			case MULTDIV:
-				while(!operators.isEmpty() && (operators.getFirst().type == TokenType.MULTDIV ||
-					   operators.getFirst().type == TokenType.UNARYMINUS)) {
+				while(!operators.isEmpty() &&
+						(operators.getFirst().type == TokenType.MULTDIV ||
+						operators.getFirst().type == TokenType.UNARYMINUS))
+				{
 					output.push(operators.pop());
 				}
 				operators.push(currentToken);
 				lastWasNumber = false;
 				break;
 			case PLUSMINUS:
-				if(!lastWasNumber){
+				if(!lastWasNumber) {
 					operators.push(new Token(TokenType.UNARYMINUS, "-"));
-				}else{
-					while(!operators.isEmpty() && (operators.getFirst().type == TokenType.PLUSMINUS|| //throws NoSuchElementException, why?
-						   operators.getFirst().type == TokenType.MULTDIV || 
-						   operators.getFirst().type == TokenType.UNARYMINUS)){
+				} else {
+					while(!operators.isEmpty() &&
+							(operators.getFirst().type == TokenType.PLUSMINUS ||
+							operators.getFirst().type == TokenType.MULTDIV ||
+							operators.getFirst().type == TokenType.UNARYMINUS))
+					{
 						output.push(operators.pop());
 					}
 					operators.push(currentToken);
@@ -93,20 +99,28 @@ public class Parser {
 				lastWasNumber = false;
 				break;
 			case RBRACKET:
-				while(!(operators.getFirst().type == TokenType.LBRACKET)){
-					output.push(operators.pop());
-				}
-				operators.pop();
-				if (operators.getFirst().type == TokenType.WORD){
-					output.push(operators.pop());
-					arityStack.push(numargsStack.pop());
+				try {
+					while(!(operators.getFirst().type == TokenType.LBRACKET)){
+						output.push(operators.pop());
+					}
+					operators.pop();
+					if (!operators.isEmpty() && operators.getFirst().type == TokenType.WORD){
+						output.push(operators.pop());
+						arityStack.push(numargsStack.pop());
+					}
+				} catch (NoSuchElementException e) {
+					throw new MissingLBracketException();
 				}
 				break;
 			case DELIM:
-				Integer numargs = numargsStack.pop() + 1;
-				numargsStack.push(numargs);
-				while(!(operators.getFirst().type == TokenType.LBRACKET)){
-					output.push(operators.pop());
+				try {
+					Integer numargs = numargsStack.pop() + 1;
+					numargsStack.push(numargs);
+					while(!(operators.getFirst().type == TokenType.LBRACKET)){
+						output.push(operators.pop());
+					}
+				} catch (NoSuchElementException e) {
+					throw new MissingLBracketException();
 				}
 				break;
 			case WORD:
@@ -127,8 +141,9 @@ public class Parser {
 	 * 
 	 * @param - A queue of tokens, representing a mathematical expression in postfix-notation
 	 * @return - The evaluated expression
+	 * @throws ParserException 
 	 */
-	public double eval(){
+	public double eval() throws ParserException{
 		if (output.isEmpty()) {
 			toPostfix();
 		}
@@ -172,19 +187,31 @@ public class Parser {
 				}
 				break;
 			case WORD:
-				int numArgs = arityStack.removeLast();
-				double[] args = new double[numArgs];
-				for (int i = numArgs - 1; i >= 0; i--) {
-					args[i] = evalStack.pop();
+				int numArgs = 0;
+				double[] args;
+				try {
+					numArgs = arityStack.removeLast();
+					args = new double[numArgs];
+				} catch (NoSuchElementException e) {
+					throw new MissingLBracketException();
 				}
-				evalStack.push(evalFunction(output.removeLast().data, args));
+				try {
+					for (int i = numArgs - 1; i >= 0; i--) {
+						args[i] = evalStack.pop();
+					}
+					evalStack.push(evalFunction(output.removeLast().data, args));
+				} catch (NoSuchElementException e) {
+					throw new MissingArgException();
+				}
 				break;
+			case LBRACKET:
+				throw new MissingRBracketException();
 			}
 		}
 		return evalStack.pop().doubleValue();
 	}
 	
-	public double evalFunction(String function, double ... args) {
+	public double evalFunction(String function, double ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
 		Formula formula;
@@ -196,12 +223,12 @@ public class Parser {
 			formula = (Formula)opConstructor.newInstance();
 			value = formula.getValue(args);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new FormulaException();
 		}
 		return value;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserException {
 		double totalFirst = 0, totalSecond = 0, totalLexer = 0;
 		double startTime, endTime;
 		
