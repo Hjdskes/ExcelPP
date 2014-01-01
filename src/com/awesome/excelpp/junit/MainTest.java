@@ -1,4 +1,4 @@
-package com.awesome.excelpp;
+package com.awesome.excelpp.junit;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

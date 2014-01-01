@@ -1,24 +1,56 @@
 package com.awesome.excelpp.parser;
 
+/**
+ * Enum representing the different TokenTypes the Lexer can produce.<br>
+ * The Parser will have to understand all the TokenTypes.
+ */
 public enum TokenType {
-	NUMBER("[0-9]*\\.?[0-9]+"),	// (0-9)(.(0-9))
-	CELL("[a-zA-Z][0-9]+"),		// A-Z0-9
-	WORD("[a-zA-Z]+"),			// a-z, A-Z
-	PLUSMINUS("[+-]"),			// +, -
-	MULTDIV("[*/]"),			// *, /
-	LBRACKET("\\("),			// (
-	RBRACKET("\\)"),			// )
-	DELIM("[;,]"),				// ;, ,
-	LOGIC("[<>=]"),				// <, >, =
-	WHITESPACE("\\s+"),			// all whitespace
-	
-	// PSEUDO TOKENS
-	UNARYMINUS(""),
-	EOL("");
-	
-	public final String pattern;
-
-	private TokenType(String pattern) {
-		this.pattern = pattern;
-	}
+	/**
+	 * Token representing a NUMBER: <code>(0-9)(.(0-9))</code>
+	 */
+	NUMBER,
+	/**
+	 * Token representing a CELL: <code>(A-Z)+(0-9)+</code>
+	 */
+	CELL,
+	/**
+	 * Token representing a WORD: <code>a-zA-Z</code>
+	 */
+	WORD,
+	/**
+	 * Token representing a PLUSMINUS: <code>+-</code>
+	 */
+	PLUSMINUS,
+	/**
+	 * Token representing a MULTDIV: <code>{@literal *}/</code>
+	 */
+	MULTDIV,
+	/**
+	 * Token representing an LBRACKET: <code>(</code>
+	 */
+	LBRACKET,
+	/**
+	 * Token representing an RBRACKET: <code>)</code>
+	 */
+	RBRACKET,
+	/**
+	 * Token representing a DELIM: <code>,;</code>
+	 */
+	DELIM,
+	/**
+	 * Token representing LOGIC: <code><>=</code>
+	 */
+	LOGIC,
+	/**
+	 * Token representing WHITESPACE: <code>\ \t\n\r\f</code>
+	 */
+	WHITESPACE,
+	/**
+	 * Pseudo Token representing UNARYMINUS
+	 */
+	UNARYMINUS,
+	/**
+	 * Pseudo Token representing EOL
+	 */
+	EOL;
 }

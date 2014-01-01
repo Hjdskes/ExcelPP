@@ -1,6 +1,11 @@
 package com.awesome.excelpp.models;
 
 import com.awesome.excelpp.parser.Parser;
+import com.awesome.excelpp.parser.exception.FormulaException;
+import com.awesome.excelpp.parser.exception.MissingArgException;
+import com.awesome.excelpp.parser.exception.MissingLBracketException;
+import com.awesome.excelpp.parser.exception.MissingRBracketException;
+import com.awesome.excelpp.parser.exception.ParserException;
 
 import java.util.Observable;
 
@@ -48,9 +53,15 @@ public class Cell extends Observable {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				Parser parse = new Parser(content.substring(1), sheet);
-				return String.valueOf(parse.eval(parse.toPostfix()));
-			} catch (Exception e) {
-				return "#OPINV";
+				parse.toPostfix();
+				return String.valueOf(parse.eval());
+			} catch (ParserException e) {
+				if (e instanceof MissingRBracketException ||
+						e instanceof MissingLBracketException ||
+						e instanceof MissingArgException)
+					return "#ARGINV";
+				else if (e instanceof FormulaException)
+					return "#OPINV";
 			}
 		}
 		
