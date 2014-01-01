@@ -20,16 +20,16 @@ public class Parser {
 	 * - NUMBER
 	 * - CELL
 	 */
-	public LinkedList<Token> output; //public for testing
-	public LinkedList<Integer> arityStack; //public for testing
+	private LinkedList<Token> output;
+	private LinkedList<Integer> arityStack;
 	
-	public Lexer lex; //public for testing
+	private Lexer lex;
 	private SpreadSheet sheet;
 
 	/**
 	 * Creates a new expression Parser
-	 * @param lex		The Lexer containing the expression 
-	 * @param sheet		The referenced SpreadSheet
+	 * @param lex		the Lexer containing the expression 
+	 * @param sheet		the referenced SpreadSheet
 	 */
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
@@ -40,8 +40,8 @@ public class Parser {
 	
 	/**
 	 * Creates a new expression Parser
-	 * @param expr		The String containing the expression
-	 * @param sheet		The referenced SpreadSheet
+	 * @param expr		the String containing the expression
+	 * @param sheet		the referenced SpreadSheet
 	 */
 	public Parser(String expr, SpreadSheet sheet){
 		this(new Lexer(expr), sheet);
@@ -49,21 +49,21 @@ public class Parser {
 	
 	/**
 	 * Creates a new expression Parser
-	 * @param expr		The String containing the expression
+	 * @param expr		the String containing the expression
 	 */
 	public Parser(String expr){
 		this(new Lexer(expr), null);
 	}
 	
 	/**
-	 * Converts the expression in infix-notation to postfix-notation using the
-	 * Shunting-yard Algorithm:
-	 * 
-	 * infix               | postfix
-	 * ------------------- | -----------------
-	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +
+	 * Converts the expression in infix-notation to postfix-notation using the Shunting-yard Algorithm:<br>
+	 * <br>
+	 * infix               | postfix<br>
+	 * ------------------- | -----------------<br>
+	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +<br>
 	 * @throws		ParserException 
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public void toPostfix() throws ParserException{
 		/*
 		 * The following Tokens are operators:
@@ -158,9 +158,10 @@ public class Parser {
 	
 	/**
 	 * Evaluate the stored mathematical expression represented in postfix-notation
-	 * @return		The evaluated expression
+	 * @return		the evaluated expression
 	 * @throws		ParserException
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public double eval() throws ParserException{
 		if (output.isEmpty()) {
 			toPostfix();
@@ -231,12 +232,12 @@ public class Parser {
 	
 	/**
 	 * Evaluate a function using the formulas in package com.awesome.excelpp.math
-	 * @param function		The function name
-	 * @param args			The function arguments (1..*)
-	 * @return				The evaluated function
+	 * @param function		the function name
+	 * @param args			the function arguments (1..*)
+	 * @return				the evaluated function
 	 * @throws FormulaException
 	 */
-	public double evalFunction(String function, double ... args) throws FormulaException {
+	private double evalFunction(String function, double ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
 		Formula formula;

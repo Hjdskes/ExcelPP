@@ -1,6 +1,7 @@
-package com.awesome.excelpp.parser;
+package com.awesome.excelpp.junit.parser;
 
 import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.parser.Parser;
 import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;

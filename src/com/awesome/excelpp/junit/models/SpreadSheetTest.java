@@ -1,9 +1,11 @@
-package com.awesome.excelpp.models;
+package com.awesome.excelpp.junit.models;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.awesome.excelpp.models.SpreadSheet;
 
 public class SpreadSheetTest {
 	String sheet;

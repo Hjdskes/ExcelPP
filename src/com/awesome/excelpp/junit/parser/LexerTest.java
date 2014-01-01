@@ -1,8 +1,12 @@
-package com.awesome.excelpp.parser;
+package com.awesome.excelpp.junit.parser;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.awesome.excelpp.parser.Lexer;
+import com.awesome.excelpp.parser.Token;
+import com.awesome.excelpp.parser.TokenType;
 
 public class LexerTest {
 	Lexer lex;

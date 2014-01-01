@@ -1,13 +1,13 @@
-package com.awesome.excelpp;
+package com.awesome.excelpp.junit;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.awesome.excelpp.models.CellTest;
-import com.awesome.excelpp.models.SpreadSheetTest;
-import com.awesome.excelpp.parser.LexerTest;
-import com.awesome.excelpp.parser.ParserTest;
+import com.awesome.excelpp.junit.models.CellTest;
+import com.awesome.excelpp.junit.models.SpreadSheetTest;
+import com.awesome.excelpp.junit.parser.LexerTest;
+import com.awesome.excelpp.junit.parser.ParserTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ MainTest.class,

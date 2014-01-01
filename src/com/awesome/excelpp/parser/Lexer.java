@@ -2,18 +2,15 @@ package com.awesome.excelpp.parser;
 
 import java.util.LinkedList;
 
-enum State {
-	NONE,
-	NUMBER,
-	CELL,
-	WORD
-}
-
 public class Lexer {
-	public LinkedList<Token> tokens; //public for testing
-	StringBuilder token = new StringBuilder();
-	State state = State.NONE;
+	private LinkedList<Token> tokens;
+	private StringBuilder token = new StringBuilder();
+	private State state = State.NONE;
 	
+	/**
+	 * Creates a new expression {@link Lexer}
+	 * @param input		the String containing the expression
+	 */
 	public Lexer(String input) {
 		this.tokens = new LinkedList<Token>();
 		
@@ -73,6 +70,10 @@ public class Lexer {
 	    tokens.add(new Token(TokenType.EOL, null));
 	}
 	
+	/**
+	 * Changes the parser's internal {@link State}.
+	 * @param state		the {@link State} we want to change to
+	 */
 	private void setState(State state) {
 		if (this.state != state && state != State.CELL) {
 			if (this.state == State.NUMBER){
@@ -87,10 +88,18 @@ public class Lexer {
 		this.state = state;
 	}
 	
+	/**
+	 * Checks whether the {@link Lexer} has another {@link Token} in its input. 
+	 * @return		true / false
+	 */
 	public boolean hasNext() {
 		return !tokens.isEmpty();
 	}
 	
+	/**
+	 * Returns the next {@link Token} the {@link Lexer} has in its input.
+	 * @return		the next {@link Token}
+	 */
 	public Token next() {
 		return hasNext() ? tokens.pop() : new Token(TokenType.EOL, null);
 	}
