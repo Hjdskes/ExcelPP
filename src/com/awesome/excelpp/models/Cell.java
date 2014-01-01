@@ -1,11 +1,11 @@
 package com.awesome.excelpp.models;
 
-import com.awesome.excelpp.parser.FormulaException;
-import com.awesome.excelpp.parser.MissingArgException;
-import com.awesome.excelpp.parser.MissingLBracketException;
-import com.awesome.excelpp.parser.MissingRBracketException;
 import com.awesome.excelpp.parser.Parser;
-import com.awesome.excelpp.parser.ParserException;
+import com.awesome.excelpp.parser.exception.FormulaException;
+import com.awesome.excelpp.parser.exception.MissingArgException;
+import com.awesome.excelpp.parser.exception.MissingLBracketException;
+import com.awesome.excelpp.parser.exception.MissingRBracketException;
+import com.awesome.excelpp.parser.exception.ParserException;
 
 import java.util.Observable;
 

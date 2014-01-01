@@ -6,6 +6,11 @@ import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.parser.exception.FormulaException;
+import com.awesome.excelpp.parser.exception.MissingArgException;
+import com.awesome.excelpp.parser.exception.MissingLBracketException;
+import com.awesome.excelpp.parser.exception.MissingRBracketException;
+import com.awesome.excelpp.parser.exception.ParserException;
 
 public class Parser {
 	
