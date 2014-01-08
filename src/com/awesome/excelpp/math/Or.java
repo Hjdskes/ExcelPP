@@ -3,25 +3,34 @@ package com.awesome.excelpp.math;
 import java.util.ArrayList;
 
 
-public class Or {
-	public boolean or(ArrayList<Logic> arguments) {
-		boolean res = false;
+public class Or extends Logic {
+	public double or(ArrayList<Logic> arguments) {
+		double res = 0.0;
 		for(int i = 0; i< arguments.size()-1; i++) {
 			switch(arguments.get(i).opp) {
 			case 0:
-				res =  ((LogicInt) arguments.get(i)).largerThan();
+				res = ((LogicInt) arguments.get(i)).largerThan();
 				break;
 			case 1:
 				res = ((LogicInt) arguments.get(i)).smallerThan();
 				break;
 			case 2:
-				 res = arguments.get(i).equals();
+				 res = arguments.get(i).equality();
 				break;
 			}
-			if(res) {
-				return true;
-			}
 		}
-		return false;
+		return res;
+	}
+
+	@Override
+	public double equality() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getValue(double... numbers) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

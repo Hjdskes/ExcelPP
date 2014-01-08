@@ -2,9 +2,9 @@ package com.awesome.excelpp.math;
 
 import java.util.ArrayList;
 
-public class And {
-	public boolean getValue(ArrayList<Logic> arguments) {
-		boolean res = true;
+public class And extends Logic {
+	public double getValue(ArrayList<Logic> arguments) {
+		double res = 0.0;
 		for(int i = 0; i< arguments.size()-1; i++) {
 			switch(arguments.get(i).opp) {
 			case 0:
@@ -14,13 +14,22 @@ public class And {
 				res = ((LogicInt) arguments.get(i)).smallerThan();
 				break;
 			case 2:
-				 res = arguments.get(i).equals();
+				 res = arguments.get(i).equality();
 				break;
 			}
-			if(!res) {
-				return false;
-			}
 		}
-		return true;
+		return res;
+	}
+
+	@Override
+	public double getValue(double... numbers) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double equality() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

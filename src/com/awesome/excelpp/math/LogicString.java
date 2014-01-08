@@ -8,14 +8,18 @@ public class LogicString extends Logic {
 		super();
 	}
 	
-	public boolean equals() {
-		return (x.equals(y));
+	public double equality() {
+		double res = 0.0;
+		if(x.equals(y))
+			res = 1.0;
+		return res;
 	}
 
+	
 	@Override
-	public boolean getValue() {
+	public double getValue(double... numbers) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 }
