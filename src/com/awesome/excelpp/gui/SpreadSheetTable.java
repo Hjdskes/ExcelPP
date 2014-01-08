@@ -273,10 +273,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 					GUI.functionFieldSetText(currentText);
 				} else if (e.getClickCount() == 2) {
 					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-					if(activeCell != null) {
-						GUI.functionFieldSetText(activeCell.getContent());
-						System.out.println(activeCell.getContent());
-					}
+					GUI.functionFieldSetText(activeCell == null ? "" : activeCell.getContent());
 					System.out.println(" double click" );
 				}
 			} else {
