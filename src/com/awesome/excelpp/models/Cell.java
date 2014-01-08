@@ -27,6 +27,11 @@ public class Cell extends Observable {
 		this.content = content;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
+	}
+	
 	/**
 	 * Gets the unevaluated content of this Cell
 	 * 	Suppose the content of this Cell is "=4+4"
@@ -43,11 +48,6 @@ public class Cell extends Observable {
 	 */
 	public void setContent(String content) {
 		this.content = content;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
 	}
 	
 	/**

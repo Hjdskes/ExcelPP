@@ -56,7 +56,9 @@ public class Lexer {
 	    			if(this.state == State.WORD){
 	    				setState(State.CELL);
 	    				token.append(ch);
-	    			}else{
+	    			} else if (this.state == State.CELL) {
+	    				token.append(ch);
+	    			} else {
 	    				setState(State.NUMBER);    				
 	    				token.append(ch);
 	    			}
@@ -68,6 +70,22 @@ public class Lexer {
 	    }
 	    setState(State.NONE);
 	    tokens.add(new Token(TokenType.EOL, null));
+	}
+	
+	/**
+	 * Checks whether the {@link Lexer} has another {@link Token} in its input. 
+	 * @return		true / false
+	 */
+	public boolean hasNext() {
+		return !tokens.isEmpty();
+	}
+	
+	/**
+	 * Returns the next {@link Token} the {@link Lexer} has in its input.
+	 * @return		the next {@link Token}
+	 */
+	public Token next() {
+		return hasNext() ? tokens.pop() : new Token(TokenType.EOL, null);
 	}
 	
 	/**
@@ -86,21 +104,5 @@ public class Lexer {
 			token = new StringBuilder();
 		}
 		this.state = state;
-	}
-	
-	/**
-	 * Checks whether the {@link Lexer} has another {@link Token} in its input. 
-	 * @return		true / false
-	 */
-	public boolean hasNext() {
-		return !tokens.isEmpty();
-	}
-	
-	/**
-	 * Returns the next {@link Token} the {@link Lexer} has in its input.
-	 * @return		the next {@link Token}
-	 */
-	public Token next() {
-		return hasNext() ? tokens.pop() : new Token(TokenType.EOL, null);
 	}
 }
