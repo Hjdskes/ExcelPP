@@ -116,20 +116,22 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * @return void
 	 */
 	public final void openFileDialog() {
-		final JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
-		fc.setFileFilter(filter);
-		if (fc.showOpenDialog(tabel) == JFileChooser.APPROVE_OPTION) {
-			removeTempFile(file);
-			file = fc.getSelectedFile();
-			try {
-				Document doc = XML.parse(file);
-				sheet = XML.print(doc);
-				tabel.setModel(sheet);
-				tabel.updateUI();
-			} catch (Exception ex) {
-				System.err.println (ex.getMessage());
+		if(closeFile() == 0) {
+			final JFileChooser fc = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
+			fc.setFileFilter(filter);
+			if (fc.showOpenDialog(tabel) == JFileChooser.APPROVE_OPTION) {
+				removeTempFile(file);
+				file = fc.getSelectedFile();
+				try {
+					Document doc = XML.parse(file);
+					sheet = XML.print(doc);
+					tabel.setModel(sheet);
+					tabel.updateUI();
+				} catch (Exception ex) {
+					System.err.println (ex.getMessage());
 			}
+		}
 		}
 	}
 
