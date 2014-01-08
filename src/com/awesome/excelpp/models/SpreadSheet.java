@@ -136,10 +136,6 @@ public class SpreadSheet extends Observable implements TableModel {
 	public Object getValueAt(int row, int col) {
 		return cells.get(getNumCell(row, col));
 	}
-	
-	public Cell getCellAt(int row, int col) {
-		return cells.get(getNumCell(row, col));
-	}
 
 	public boolean isCellEditable(int row, int col) {
 		return true;
@@ -159,22 +155,25 @@ public class SpreadSheet extends Observable implements TableModel {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
-		Object oldValue = this.getValueAt(row, col);
-		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
+		Cell oldValue = (Cell)this.getValueAt(row, col);
+		Cell newValue = new Cell(this, (String)aValue);
+		
+		if (newValue.getContent() == null
+				|| newValue.getContent().length() == 0) {
 			cells.remove(getNumCell(row, col));
-			//voor de observers
-			setChanged();
-			notifyObservers();
-		}else if (((String)aValue).length() != 0){
-			cells.put(getNumCell(row, col), new Cell(this, (String)aValue));
-			//voor de observers
-			setChanged();
-			notifyObservers();
+		} else {
+			cells.put(getNumCell(row, col), newValue);
 		}
-		Object newValue = this.getValueAt(row, col);
-		if(oldValue != null && !oldValue.equals(newValue) || newValue != null && !newValue.equals(oldValue)){
+		
+		//voor de observers
+		setChanged();
+		notifyObservers();
+		
+		if (oldValue != null && oldValue.getContent().length() > 0 && !oldValue.equals(newValue)
+				|| newValue != null && newValue.getContent().length() > 0 && !newValue.equals(oldValue)) {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
 			undoSupport.postEdit(e);
+			System.out.println("edit");
 		}
 	}
 	
@@ -186,26 +185,18 @@ public class SpreadSheet extends Observable implements TableModel {
 	 * @param postEdit when true an edit is posted so that it can be undone/redone
 	 */
 	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
-		Object oldValue = this.getValueAt(row, col);
-		if (((String)aValue).length() == 0 && cells.get(getNumCell(row, col)) != null){			
+		Cell newValue = (Cell)aValue;
+		
+		if (newValue == null || newValue.getContent() == null || newValue.getContent().length() == 0){			
 			cells.remove(getNumCell(row, col));
-			//voor de observers
-			setChanged();
-			notifyObservers();
-		}else if (((String)aValue).length() != 0){
-			cells.put(getNumCell(row, col), new Cell(this, (String)aValue));
-			//voor de observers
-			setChanged();
-			notifyObservers();
+		} else {
+			cells.put(getNumCell(row, col), (Cell)aValue);
 		}
-		if(postEdit == true){
-		Object newValue = this.getValueAt(row, col);
-		if(oldValue != null && !oldValue.equals(newValue) || newValue != null && !newValue.equals(oldValue)){
-			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
-			undoSupport.postEdit(e);
-			System.out.println("edit posted"); //test
-		}
-		}
+		
+		//voor de observers
+		setChanged();
+		notifyObservers();
+		System.out.println("undo");
 	}
 
 	
