@@ -256,12 +256,9 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	public void mouseClicked(MouseEvent e) {		
 		if (e.getSource().equals(tabel)) {
 			cellSelected = true;
-			if(e.getButton() == MouseEvent.BUTTON3) { //anders werkt alt + right klik niet op de cel die je wilt
-				Point p = e.getPoint();
-				selectedRow = tabel.rowAtPoint(p);
-				selectedColumn = tabel.columnAtPoint(p);
-				tabel.changeSelection(selectedRow, selectedColumn, false, false);
-			}
+			Point p = e.getPoint();
+			selectedRow = tabel.rowAtPoint(p);
+			selectedColumn = tabel.columnAtPoint(p);
 
 			String currentText = GUI.functionFieldGetText();
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
@@ -292,7 +289,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 						}
 					}
 				}
-				currentText = currentText.substring(0, currentText.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
+				currentText = currentText == null || currentText.length() == 0 ? "" : currentText.substring(0, currentText.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
 				GUI.functionFieldSetText(currentText);
 			}
 		}
