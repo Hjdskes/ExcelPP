@@ -30,8 +30,6 @@ import javax.swing.undo.UndoManager;
 
 /**
  * Class that constructs everything needed for and by the GUI
- * ToDo: 'close' icon in tab
- *       icoontje voor tekstvak, voor de mooi?
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
