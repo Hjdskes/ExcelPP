@@ -134,8 +134,7 @@ public class SpreadSheet extends Observable implements TableModel {
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
-		Cell c = cells.get(getNumCell(row, col));
-		return c == null ? "" : c.getValue(this);
+		return cells.get(getNumCell(row, col));
 	}
 	
 	public Cell getCellAt(int row, int col) {
@@ -167,7 +166,7 @@ public class SpreadSheet extends Observable implements TableModel {
 			setChanged();
 			notifyObservers();
 		}else if (((String)aValue).length() != 0){
-			cells.put(getNumCell(row, col), new Cell((String)aValue));
+			cells.put(getNumCell(row, col), new Cell(this, (String)aValue));
 			//voor de observers
 			setChanged();
 			notifyObservers();
@@ -194,7 +193,7 @@ public class SpreadSheet extends Observable implements TableModel {
 			setChanged();
 			notifyObservers();
 		}else if (((String)aValue).length() != 0){
-			cells.put(getNumCell(row, col), new Cell((String)aValue));
+			cells.put(getNumCell(row, col), new Cell(this, (String)aValue));
 			//voor de observers
 			setChanged();
 			notifyObservers();
