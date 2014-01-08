@@ -191,7 +191,7 @@ public class Parser {
 					int col = (int) ref.charAt(0);
 					col -= 65;
 					evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException | NullPointerException e) {
 					throw new ReferenceException();
 				}
 				break;
