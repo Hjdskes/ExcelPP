@@ -79,6 +79,14 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	}
 
 	/**
+	 * Returns the current SpreadSheet
+	 * @return SpreadSheet
+	 */
+	public SpreadSheet getSheet() {
+		return sheet;
+	}
+
+	/**
 	 * Returns the currently selected column in the JTable
 	 * @return int
 	 */
@@ -95,6 +103,14 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	}
 
 	/**
+	 * Returns the currently opened file
+	 * @return File
+	 */
+	public File getFile() {
+		return file;
+	}
+
+	/**
 	 * Returns a String representation of the opened file
 	 * @return String
 	 */
@@ -103,18 +119,26 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			return "Temporary file";
 		return file.getName();
 	}
-	
+
+	/**
+	 * Returns this tab's UndoManager
+	 * @return UndoManager
+	 */
 	public UndoManager getUndoManager(){
 		return undoManager;
 	}
-	
+
+	/**
+	 * Returns true is a Cell has ever been selected
+	 * @return boolean
+	 */
 	public boolean getCellSelected(){
 		return cellSelected;
 	}
 
 	/**
 	 * Opens a file dialog in which the user can select the file to open
-	 * @return int
+	 * @return int - choice made: 0 for OK, 1 for cancel.
 	 */
 	public final int openFileDialog() {
 		int opened = 1;
@@ -189,15 +213,12 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 			} else {
 				if(sheet.isEmpty() == false) {
-					System.out.println("sheet is niet empty");
-					sheet.toXML(file);
 					close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 					if(close == 0) {
 						if(file.delete() != true)
 							JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
-					System.out.println("sheet is empty");
 					if(file.delete() != true)
 						JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 					else
@@ -262,18 +283,15 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			selectedColumn = tabel.columnAtPoint(p);
 			tabel.changeSelection(selectedRow, selectedColumn, false, false);
 
-			String text;
+			String text = null;
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
 				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1)
 					text = GUI.functionFieldGetText() + "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
 				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3)
 					text = GUI.functionFieldGetText() + "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
-				else if (e.getClickCount() == 2) { //ToDo: moet hier nog een specifieke knop voor worden ingesteld?
+				else { //ToDo: moet hier nog een specifieke knop voor worden ingesteld, ipv alle mousebuttons?
 					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
 					text = activeCell == null ? "" : activeCell.getContent();
-				} else { //ToDo: moet dit alleen de linker muisknop worden?
-					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-					text = activeCell == null ? "" : activeCell.toString();
 				}
 				GUI.functionFieldSetText(text);
 			} else {

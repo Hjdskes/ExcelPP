@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -28,8 +30,10 @@ import javax.swing.undo.UndoManager;
 
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo: 'close' icon in tab
+ *       icoontje voor tekstvak, voor de mooi?
  */
-public class GUI extends JFrame implements ActionListener, KeyListener {
+public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static int screenWidth;
 	private static int screenHeight;
@@ -57,9 +61,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
 		mainFrame.setSize (900, 400);
-		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
-		mainFrame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
+		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
+		mainFrame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
+		mainFrame.addWindowListener(this);
 
 		mainTabs = new JTabbedPane();
 		createNewTab(); //open altijd één tab
@@ -295,8 +300,38 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	}
 
 	@Override
+	public void windowClosing(WindowEvent e) {
+		for(int i = 0; i < panes.size(); i++) {
+			SpreadSheetTable currentPane = panes.get(i);
+			if(currentPane.closeFile() == 1) {
+				JOptionPane.showMessageDialog(mainFrame, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+		}
+		System.exit(0); //ToDo: niet de beste oplossing?
+	}
+
+	@Override
 	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void windowOpened(WindowEvent e) {}
+
+	@Override
+	public void windowClosed(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
 }
