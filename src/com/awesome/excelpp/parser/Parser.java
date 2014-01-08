@@ -227,7 +227,14 @@ public class Parser {
 				throw new MissingRBracketException();
 			}
 		}
-		return evalStack.pop().doubleValue();
+		
+		double retvalue = 0.0;
+		try {
+			retvalue = evalStack.pop().doubleValue();
+		} catch (NoSuchElementException e) {
+			throw new MissingArgException();
+		}
+		return retvalue;
 	}
 	
 	/**
