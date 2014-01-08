@@ -6,6 +6,7 @@ import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.util.Observable;
 
@@ -15,12 +16,14 @@ import java.util.Observable;
  */
 public class Cell extends Observable {
 	private String content; // =2+2
+	private SpreadSheet sheet;
 	
 	/**
 	 * Constructs a new Cell
 	 * @param content	String with an unevaluated expression
 	 */
-	public Cell(String content) {
+	public Cell(SpreadSheet sheet, String content) {
+		this.sheet = sheet;
 		this.content = content;
 	}
 	
@@ -42,14 +45,18 @@ public class Cell extends Observable {
 		this.content = content;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
+	}
+	
 	/**
 	 * Gets the evaluated content of this Cell
 	 * 	Suppose the content of this Cell is "=4+4"
 	 * 	This function will then return "8"
-	 * @param sheet - the SpreadSheet to which the to-be-parsed Cell belongs to.
 	 * @return String with an evaluated expression
 	 */
-	public String getValue(SpreadSheet sheet) {
+	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				Parser parse = new Parser(content.substring(1), sheet);
@@ -62,6 +69,8 @@ public class Cell extends Observable {
 					return "#ARGINV";
 				else if (e instanceof FormulaException)
 					return "#OPINV";
+				else if (e instanceof ReferenceException)
+					return "#REFINV";
 			}
 		}
 		

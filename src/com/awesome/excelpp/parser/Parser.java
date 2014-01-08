@@ -12,6 +12,7 @@ import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.ReferenceException;
 
 public class Parser {
 	
@@ -184,13 +185,15 @@ public class Parser {
 				evalStack.push(Double.valueOf(output.removeLast().data));
 				break;
 			case CELL:
-				String ref = output.removeLast().data;
-				int row = Integer.parseInt(ref.substring(1));
-				int col = (int) ref.charAt(0);
-				col -= 65;
-				Parser cellParse = new Parser(sheet.getCellAt(row - 1, col).getContent().toString(), sheet);
-				cellParse.toPostfix();
-				evalStack.push(new Double(cellParse.eval()));
+				try {
+					String ref = output.removeLast().data;
+					int row = Integer.parseInt(ref.substring(1));
+					int col = (int) ref.charAt(0);
+					col -= 65;
+					evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
+				} catch (NumberFormatException e) {
+					throw new ReferenceException();
+				}
 				break;
 			case MULTDIV:
 			case PLUSMINUS:

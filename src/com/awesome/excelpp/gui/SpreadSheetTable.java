@@ -1,6 +1,7 @@
 package com.awesome.excelpp.gui;
 
 import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.gui.GUI;
 
@@ -255,26 +256,22 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	public void mouseClicked(MouseEvent e) {		
 		if (e.getSource().equals(tabel)) {
 			cellSelected = true;
-			if(e.getButton() == MouseEvent.BUTTON3) { //anders werkt alt + right klik niet op de cel die je wilt
-				Point p = e.getPoint();
-				int row = tabel.rowAtPoint(p);
-				int column = tabel.columnAtPoint(p);
-				tabel.changeSelection(row, column, false, false);
-			}
+			Point p = e.getPoint();
+			selectedRow = tabel.rowAtPoint(p);
+			selectedColumn = tabel.columnAtPoint(p);
 
 			String currentText = GUI.functionFieldGetText();
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
 				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1){
 					currentText += "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
 					GUI.functionFieldSetText(currentText);
-				}
-				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
+				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
 					currentText += "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
 					GUI.functionFieldSetText(currentText);
-				}
-				else {
-					selectedColumn = tabel.getSelectedColumn();
-					selectedRow = tabel.getSelectedRow();
+				} else if (e.getClickCount() == 2) {
+					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+					GUI.functionFieldSetText(activeCell == null ? "" : activeCell.getContent());
+					System.out.println(" double click" );
 				}
 			} else {
 				int selectedRows[] = tabel.getSelectedRows();
@@ -292,7 +289,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 						}
 					}
 				}
-				currentText = currentText.substring(0, currentText.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
+				currentText = currentText == null || currentText.length() == 0 ? "" : currentText.substring(0, currentText.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
 				GUI.functionFieldSetText(currentText);
 			}
 		}
