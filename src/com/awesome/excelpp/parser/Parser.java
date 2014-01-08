@@ -168,7 +168,6 @@ public class Parser {
 			toPostfix();
 		}
 		
-		System.out.println(output);		
 		LinkedList<Double> evalStack = new LinkedList<Double>();
 		
 		while(!output.isEmpty()){
