@@ -188,9 +188,8 @@ public class Parser {
 				int row = Integer.parseInt(ref.substring(1));
 				int col = (int) ref.charAt(0);
 				col -= 65;
-				Parser cellParse = new Parser(sheet.getCellAt(row - 1, col).getContent().toString(), sheet);
-				cellParse.toPostfix();
-				evalStack.push(new Double(cellParse.eval()));
+				//TODO: error checking!!
+				evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
