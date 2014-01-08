@@ -1,12 +1,20 @@
 package com.awesome.excelpp.math;
 
-public class IsNumber {
-	public static boolean getValue(String str) {
+public class IsNumber extends Formula {
+	public static double getValue(String str) {
+		double res = 0.0;
 		try {
 			Double.parseDouble(str);
-			return true;
+			res = 1.0;
 		} catch(NumberFormatException e) {
-			return false;
+			//niks doen want res is al 0.0
 		}
+		return res;
+	}
+
+	@Override
+	public double getValue(double... numbers) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

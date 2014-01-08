@@ -28,9 +28,4 @@ public class MathTest {
 		assertFalse(IsNumber.getValue("a"));
 	}
 	
-	@Test 
-	public void Power() {
-		assertEquals(Math.pow(2, 2), Power.getValue(2,2));
-	}
-
 }

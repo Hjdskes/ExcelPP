@@ -1,8 +1,7 @@
 package com.awesome.excelpp.math;
 
-public abstract class Logic {
+public abstract class Logic extends Formula{
 	protected int opp;
 	
-	public abstract boolean getValue();
-	public abstract boolean equals();
+	public abstract double equality();
 }
