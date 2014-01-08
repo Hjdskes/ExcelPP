@@ -299,7 +299,13 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 	 */
 	public void insertUpdate(DocumentEvent e) {
 		int index = mainTabs.getSelectedIndex();
+		if(panes.get(index).getCellSelected() == false){
+			System.out.println("geen cell geselecteerd");
+			JOptionPane.showMessageDialog(mainFrame, "Select a cell first.");
+		}
+		if(panes.get(index).getCellSelected() == true){
 		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn()); //dit overwrite standaard cel A0 als de GUI/tab net is aangemaakt
+		}
 	}
 
 	/**
