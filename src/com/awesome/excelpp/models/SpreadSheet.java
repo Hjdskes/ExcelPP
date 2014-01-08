@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.event.UndoableEditListener;
@@ -18,110 +16,34 @@ import javax.swing.undo.UndoableEditSupport;
  * 
  */
 public class SpreadSheet extends Observable implements TableModel {
-	private HashMap<Integer, Cell> cells;
 	protected final short numberOfRows = 42;
 	protected final short numberOfCols = 26;
+	
+	private HashMap<Integer, Cell> cells;
 	private UndoableEditSupport undoSupport;
 	
 	public SpreadSheet() {
 		cells = new HashMap<Integer, Cell>();
 		undoSupport = new UndoableEditSupport();
 	}
-	
-	public boolean equals(Object other){
-		Boolean res = false;
-		if(other instanceof SpreadSheet){
-			SpreadSheet that = (SpreadSheet) other;
-			if(this.toString().equals(that.toString())){
-				res = true;
-			}
-		}
-		return res;
-	}
-	
-	/**Inserts a column at the specified column value, and moves each column with
-	 * column value greater than or equal to the specified column value to the right.
-	 * 
-	 * @param col - the column value at which a column will be inserted.
-	 */
-	public void insertCol(int col){
-		if(col >= this.numberOfCols){
-			return;
-		}
-		
-		//TODO: Put a warning message if a cell will dissapear.
-		Set<Integer> s = this.cells.keySet();
-		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
-		for(Integer key : s){
-			int j = key.intValue()%numberOfCols;
-			if(j >= col){										//key mod numberOfCols gives us the correct column value.
-				if(j + 1 < numberOfCols){					
-					temp.put(key + 1, this.cells.get(key));
-				}
-			}else{
-				temp.put(key, this.cells.get(key));
-			}
-		}
-		this.cells = temp;
-		for(int i = 0; i < numberOfRows; i++){
-			this.setValueAt("werkt", i, col);
-		}
-	}
-	
-	/**Inserts a row at the specified row value, and moves each row with
-	 * row value greater than or equal to the specified row value downwards.
-	 * 
-	 * @param row - the row value at which a row will be inserted.
-	 */
-	public void insertRow(int row){
-		if(row >= this.numberOfRows){
-			return;
-		}
-		
-		//TODO: Put a warning message if a cell will dissapear.
-		Set<Integer> s = this.cells.keySet();
-		HashMap<Integer, Cell> temp = new HashMap<Integer, Cell>();
-		for(Integer key : s){
-			int j = key.intValue()/numberOfCols;
-			if(j >= row){											//key divided by numberOfCols gives us the correct column value, because the
-				temp.put(key + numberOfCols, this.cells.get(key));	//result will always be rounded down, since it's not a floating point type.
-			}else{
-				temp.put(key, this.cells.get(key));
-			}
-		}
-		this.cells = temp;
-		for(int i = 0; i < numberOfCols; i++){
-			this.setValueAt("werkt", row, i);
-		}
-	}
 
 	@Override
-	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
-	}
-	/**
-	 * Adds an UndoableEditListener to the SpreadSheet
-	 * @param l UndoableEditListener that is added
-	 */
-	public void addUndoableEditListener(UndoableEditListener l){
-		this.undoSupport.addUndoableEditListener(l);
-	}
-
 	public Class<?> getColumnClass(int columnIndex) {
 		return String.class;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return numberOfCols;
 	}
-
+	
 	@Override
 	public String getColumnName(int col) {
 		char a = (char) (col + 65);			//column + 65 yields the ASCII code, same as Unicode. Cast to char type.
 		return Character.toString(a);		//convert to String, return.
 	}
-
+	
+	@Override
 	public int getRowCount() {
 		return numberOfRows;
 	}
@@ -136,15 +58,14 @@ public class SpreadSheet extends Observable implements TableModel {
 	public Object getValueAt(int row, int col) {
 		return cells.get(getNumCell(row, col));
 	}
-
+	
+	@Override
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
+	
+	public boolean isEmpty() {
+		return cells.isEmpty();
 	}
 
 	/**
@@ -198,28 +119,29 @@ public class SpreadSheet extends Observable implements TableModel {
 		notifyObservers();
 		System.out.println("undo");
 	}
-
 	
-	private int getNumCell(int row, int col) {
-		return row * numberOfCols + col;
-	}
-	
-	public boolean isEmpty() {
-		return cells.isEmpty();
+	/* LISTENERS */
+	@Override
+	public void addTableModelListener(TableModelListener l) {
+		// TODO Auto-generated method stub
 	}
 	
 	/**
-	 * -=TEST=-
+	 * Adds an UndoableEditListener to the SpreadSheet
+	 * @param l UndoableEditListener that is added
 	 */
-	public String toString() {
-		String res = "";
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfCols; col++) {
-				res += (String)getValueAt(row, col) + "\t";
-			}
-			res += "\n";
-		}
-		return res;
+	public void addUndoableEditListener(UndoableEditListener l){
+		this.undoSupport.addUndoableEditListener(l);
+	}
+	
+	@Override
+	public void removeTableModelListener(TableModelListener l) {
+		// TODO Auto-generated method stub
+	}
+	
+	/* OTHER */
+	private int getNumCell(int row, int col) {
+		return row * numberOfCols + col;
 	}
 	
 	/**
