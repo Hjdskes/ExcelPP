@@ -6,7 +6,6 @@ import com.awesome.excelpp.gui.SpreadSheetTable;
 import java.io.IOException;
 //import java.util.Scanner;
 import java.util.ArrayList;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -27,11 +26,10 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.undo.UndoManager;
 
 /**
  * Class that constructs everything needed for and by the GUI
- * ToDo:
- *   switch to specific tab with keyboard shortcut
  */
 public class GUI extends JFrame implements ActionListener, DocumentListener {
 	private static final long serialVersionUID = 1L;
@@ -43,13 +41,13 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
 	private static JButton buttonCloseTab;
+	private static JButton buttonRedo;
+	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
 	private static JButton buttonSave;
 	private static JButton buttonOpen;
 	private static JButton buttonNewTab;
 	private static JButton buttonNew;
-	private static JButton buttonUndo;
-	private static JButton buttonRedo;
 	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 
 	public GUI () throws IOException {
@@ -71,7 +69,6 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
 		mainFrame.setVisible (true);
-		
 	}
 
 	/**
@@ -96,51 +93,52 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		buttonOpen = new JButton();
 		buttonSave = new JButton();
 		buttonSaveAs = new JButton();
+		buttonUndo = new JButton();
+		buttonRedo = new JButton();
 		functionField = new JTextField(30);
 		buttonCloseTab = new JButton();
 		buttonAbout = new JButton();
-		buttonUndo = new JButton();
-		buttonRedo = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
-
 
 		newIcon = new ImageIcon("data/woo-icons/page_table_add_32.png");
 		newTabIcon = new ImageIcon("data/woo-icons/add_32.png");
 		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
 		saveIcon = new ImageIcon("data/woo-icons/save_32.png");
 		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
-		closeTabIcon = new ImageIcon("data/woo-icons/close_32.png");
-		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
 		undoIcon = new ImageIcon("data/woo-icons/arrow_left_32.png");
 		redoIcon = new ImageIcon("data/woo-icons/arrow_right_32.png");
+		closeTabIcon = new ImageIcon("data/woo-icons/close_32.png");
+		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
 
 		buttonNew.setIcon(newIcon);
 		buttonNewTab.setIcon(newTabIcon);
 		buttonOpen.setIcon(openIcon);
 		buttonSave.setIcon(saveIcon);
 		buttonSaveAs.setIcon(saveIconAs);
-		buttonCloseTab.setIcon(closeTabIcon);
-		buttonAbout.setIcon(aboutIcon);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
+		buttonCloseTab.setIcon(closeTabIcon);
+		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
 		buttonNewTab.setToolTipText("New tab");
 		buttonOpen.setToolTipText("Open file");
 		buttonSave.setToolTipText("Save file");
 		buttonSaveAs.setToolTipText("Save as");
+		buttonUndo.setToolTipText("Undo last change");
+		buttonRedo.setToolTipText("Redo last change");
 		buttonCloseTab.setToolTipText("Close tab");
 		buttonAbout.setToolTipText("About");
 		
-		panel.add(buttonUndo);
-		panel.add(buttonRedo);
 		panel.add(buttonNew);
 		panel.add(buttonNewTab);
 		panel.add(buttonOpen);
 		panel.add(buttonSave);
 		panel.add(buttonSaveAs);
+		panel.add(buttonUndo);
+		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
 		panel.add(buttonCloseTab);
@@ -156,16 +154,16 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		buttonSave.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonSaveAs.addActionListener(this);
 		buttonSaveAs.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-		functionField.addActionListener(this);
-		functionField.getDocument().addDocumentListener(this);
-		buttonCloseTab.addActionListener(this);
-		buttonCloseTab.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-		buttonAbout.addActionListener(this);
 		buttonUndo.addActionListener(this);
 		buttonUndo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonRedo.addActionListener(this);
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
+		functionField.addActionListener(this);
+		functionField.getDocument().addDocumentListener(this);
+		buttonCloseTab.addActionListener(this);
+		buttonCloseTab.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		buttonAbout.addActionListener(this);
 
 		return panel;
 	}
@@ -282,10 +280,14 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 				sc.close();
 			} else
 				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);*/
-		} else if (e.getSource().equals(buttonUndo)){ //TODO error als er een cannotUndoException is
-			panes.get(index).getUndoManager().undo();
-		} else if (e.getSource().equals(buttonRedo)){ //TODO error als er een cannotRedoException is
-			panes.get(index).getUndoManager().redo();
+		} else if (e.getSource().equals(buttonUndo)) {
+			UndoManager manager = panes.get(index).getUndoManager();
+			if (manager.canUndo() == true)
+				manager.undo();
+		} else if (e.getSource().equals(buttonRedo)) {
+			UndoManager manager = panes.get(index).getUndoManager();
+			if (manager.canRedo() == true)
+				manager.redo();
 		}
 	}
 
@@ -297,7 +299,12 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 	 */
 	public void insertUpdate(DocumentEvent e) {
 		int index = mainTabs.getSelectedIndex();
+		if(panes.get(index).getCellSelected() == false){
+			JOptionPane.showMessageDialog(mainFrame, "Select a cell first.");
+		}
+		if(panes.get(index).getCellSelected() == true){
 		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn()); //dit overwrite standaard cel A0 als de GUI/tab net is aangemaakt
+		}
 	}
 
 	/**

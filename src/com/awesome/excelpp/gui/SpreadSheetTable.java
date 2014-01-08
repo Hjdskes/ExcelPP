@@ -21,8 +21,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -40,11 +38,13 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	private int selectedColumn;
 	private int selectedRow;
 	private UndoManager undoManager;
+	private boolean cellSelected;
 
 	public SpreadSheetTable () throws IOException {
 		sheet = new SpreadSheet();
 		tabel = new JTable(sheet);
 		undoManager = new UndoManager();
+		cellSelected = false;
 		tabel.setFillsViewportHeight (true);
 		tabel.setSelectionBackground (new Color(200, 221, 242));
 		tabel.setColumnSelectionAllowed(true);
@@ -105,6 +105,10 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	
 	public UndoManager getUndoManager(){
 		return undoManager;
+	}
+	
+	public boolean getCellSelected(){
+		return cellSelected;
 	}
 
 	/**
@@ -169,7 +173,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Properly handles closing of a file - spawns a dialog if changes will be lost
 	 * @return int - choice made: 0 for OK, 1 for cancel.
 	 */
-	public final int closeFile () { //ToDo: functioneert nog niet 100%
+	public final int closeFile () {
 		int close = 1;
 		try {
 			if (file.toString().contains(System.getProperty("java.io.tmpdir")) == false) {
@@ -243,8 +247,9 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Listens for all mouseClicked events emitted by the elements of the tab
 	 * @return void
 	 */
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {		
 		if (e.getSource().equals(tabel)) {
+			cellSelected = true;
 			if(e.getButton() == MouseEvent.BUTTON3) { //anders werkt alt + right klik niet op de cel die je wilt
 				Point p = e.getPoint();
 				int row = tabel.rowAtPoint(p);
@@ -302,7 +307,5 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 */
 	public void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
-		
 	}
-	
 }

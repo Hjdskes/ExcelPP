@@ -9,7 +9,7 @@ public class Or {
 		for(int i = 0; i< arguments.size()-1; i++) {
 			switch(arguments.get(i).opp) {
 			case 0:
-				res = ((LogicInt) arguments.get(i)).largerThan();
+				res =  ((LogicInt) arguments.get(i)).largerThan();
 				break;
 			case 1:
 				res = ((LogicInt) arguments.get(i)).smallerThan();

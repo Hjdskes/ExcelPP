@@ -1,6 +1,7 @@
 bin
-data/write.xml
+doc
 .classpath
 .metadata
 .project
 .settings
+.DS_Store

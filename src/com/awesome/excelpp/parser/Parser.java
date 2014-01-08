@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.parser.exception.DivisionException;
 import com.awesome.excelpp.parser.exception.FormulaException;
 import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
@@ -99,7 +100,7 @@ public class Parser {
 				lastWasNumber = false;
 				break;
 			case PLUSMINUS:
-				if(!lastWasNumber) {
+				if(!lastWasNumber && currentToken.data.equals("-")) {
 					operators.push(new Token(TokenType.UNARYMINUS, "-"));
 				} else {
 					while(!operators.isEmpty() &&
@@ -167,13 +168,18 @@ public class Parser {
 			toPostfix();
 		}
 		
+		System.out.println(output);		
 		LinkedList<Double> evalStack = new LinkedList<Double>();
 		
 		while(!output.isEmpty()){
 			switch (output.getLast().type) {
 			case UNARYMINUS:
-				output.removeLast();
-				evalStack.push(new Double(-evalStack.pop().doubleValue()));
+				try {
+					output.removeLast();
+					evalStack.push(new Double(-evalStack.pop().doubleValue()));
+				} catch (NoSuchElementException e) {
+					throw new MissingArgException();
+				}
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
@@ -189,20 +195,26 @@ public class Parser {
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
-				Double b = evalStack.pop();
-				Double a = evalStack.pop();
-				if(output.getLast().data.equals("+")){
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
-				}else if(output.getLast().data.equals("-")){
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
-				}else if(output.getLast().data.equals("*")){
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
-				}else{
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
+				try {
+					Double b = evalStack.pop();
+					Double a = evalStack.pop();
+					if(output.getLast().data.equals("+")){
+						output.removeLast();
+						evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
+					}else if(output.getLast().data.equals("-")){
+						output.removeLast();
+						evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
+					}else if(output.getLast().data.equals("*")){
+						output.removeLast();
+						evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
+					}else{
+						output.removeLast();
+						evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
+					}
+				} catch (NoSuchElementException e) {
+					throw new MissingArgException();
+				} catch (ArithmeticException e) {
+					throw new DivisionException();
 				}
 				break;
 			case WORD:
