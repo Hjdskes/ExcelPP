@@ -12,4 +12,10 @@ public class LogicString extends Logic {
 		return (x.equals(y));
 	}
 
+	@Override
+	public boolean getValue() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
