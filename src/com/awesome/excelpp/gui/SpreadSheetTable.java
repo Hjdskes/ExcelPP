@@ -38,11 +38,13 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	private int selectedColumn;
 	private int selectedRow;
 	private UndoManager undoManager;
+	private boolean cellSelected;
 
 	public SpreadSheetTable () throws IOException {
 		sheet = new SpreadSheet();
 		tabel = new JTable(sheet);
 		undoManager = new UndoManager();
+		cellSelected = false;
 		tabel.setFillsViewportHeight (true);
 		tabel.setSelectionBackground (new Color(200, 221, 242));
 		tabel.setColumnSelectionAllowed(true);
@@ -103,6 +105,10 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	
 	public UndoManager getUndoManager(){
 		return undoManager;
+	}
+	
+	public boolean getCellSelected(){
+		return cellSelected;
 	}
 
 	/**
@@ -241,8 +247,9 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Listens for all mouseClicked events emitted by the elements of the tab
 	 * @return void
 	 */
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {		
 		if (e.getSource().equals(tabel)) {
+			cellSelected = true;
 			if(e.getButton() == MouseEvent.BUTTON3) { //anders werkt alt + right klik niet op de cel die je wilt
 				Point p = e.getPoint();
 				int row = tabel.rowAtPoint(p);
