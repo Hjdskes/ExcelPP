@@ -6,6 +6,7 @@ import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.util.Observable;
 
@@ -68,6 +69,8 @@ public class Cell extends Observable {
 					return "#ARGINV";
 				else if (e instanceof FormulaException)
 					return "#OPINV";
+				else if (e instanceof ReferenceException)
+					return "#REFINV";
 			}
 		}
 		
