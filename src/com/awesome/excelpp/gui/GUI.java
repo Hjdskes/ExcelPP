@@ -102,15 +102,15 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
 
-		newIcon = new ImageIcon("data/woo-icons/page_table_add_32.png");
-		newTabIcon = new ImageIcon("data/woo-icons/add_32.png");
-		openIcon = new ImageIcon("data/woo-icons/folder_32.png");
-		saveIcon = new ImageIcon("data/woo-icons/save_32.png");
-		saveIconAs = new ImageIcon("data/woo-icons/save_download_32.png");
-		undoIcon = new ImageIcon("data/woo-icons/arrow_left_32.png");
-		redoIcon = new ImageIcon("data/woo-icons/arrow_right_32.png");
-		closeTabIcon = new ImageIcon("data/woo-icons/close_32.png");
-		aboutIcon = new ImageIcon("data/woo-icons/star_32.png");
+		newIcon = new ImageIcon("data/icons/window-new.png");
+		newTabIcon = new ImageIcon("data/icons/stock_new-tab.png");
+		openIcon = new ImageIcon("data/icons/gtk-open.png");
+		saveIcon = new ImageIcon("data/icons/document-save.png");
+		saveIconAs = new ImageIcon("data/icons/document-save-as.png");
+		undoIcon = new ImageIcon("data/icons/edit-undo.png");
+		redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		closeTabIcon = new ImageIcon("data/icons/button_cancel.png");
+		aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		buttonNew.setIcon(newIcon);
 		buttonNewTab.setIcon(newTabIcon);
@@ -245,8 +245,8 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		int index = mainTabs.getSelectedIndex();
 
 		if (e.getSource().equals(buttonOpen)) {
-			panes.get(index).openFileDialog();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+			if(panes.get(index).openFileDialog() == 0) //alleen doen als er echt een nieuwe file wordt gekozen
+				mainTabs.setTitleAt(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonNew)) {
 			panes.get(index).newFile();
 			mainTabs.setTitleAt(index, panes.get(index).getFileString());
@@ -271,15 +271,6 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
-		/*} else if (e.getSource().equals(functionField)) { //ToDo: wacht hiermee tot de Parser af is. Dit werkt niet samen met invoer naar cel geven.
-			String enteredText = functionField.getText();
-			if (enteredText.charAt(0) == '=') {
-				Scanner sc; //ToDo: we moeten hier ook nog de cellen invoeren en scannen
-				sc = new Scanner(enteredText);
-				String formula = sc.next();
-				sc.close();
-			} else
-				JOptionPane.showMessageDialog(mainFrame, "The entered formula is invalid.", "Invalid formula", JOptionPane.INFORMATION_MESSAGE);*/
 		} else if (e.getSource().equals(buttonUndo)) {
 			UndoManager manager = panes.get(index).getUndoManager();
 			if (manager.canUndo() == true)
