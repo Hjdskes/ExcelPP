@@ -262,36 +262,39 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			selectedColumn = tabel.columnAtPoint(p);
 			tabel.changeSelection(selectedRow, selectedColumn, false, false);
 
-			String currentText = GUI.functionFieldGetText();
+			String text;
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
-				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1){
-					currentText += "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
-					GUI.functionFieldSetText(currentText);
-				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
-					currentText += "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
-					GUI.functionFieldSetText(currentText);
-				} else if (e.getClickCount() == 2) {
+				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1)
+					text = GUI.functionFieldGetText() + "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
+				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3)
+					text = GUI.functionFieldGetText() + "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
+				else if (e.getClickCount() == 2) { //ToDo: moet hier nog een specifieke knop voor worden ingesteld?
 					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-					GUI.functionFieldSetText(activeCell == null ? "" : activeCell.getContent());
+					text = activeCell == null ? "" : activeCell.getContent();
+				} else { //ToDo: moet dit alleen de linker muisknop worden?
+					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+					text = activeCell == null ? "" : activeCell.toString();
 				}
+				GUI.functionFieldSetText(text);
 			} else {
+				text = GUI.functionFieldGetText();
 				int selectedRows[] = tabel.getSelectedRows();
 				int selectedColumns[] = tabel.getSelectedColumns();
 				if (e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) { //ToDo: wordt overridden door bovenstaande, maar werkt wel als deze wordt veranderd naar bijv BUTTON2 (middlemouse button)
 					for (int i = 0; i < selectedColumns.length; i++) {
 						for (int j = 0; j < selectedRows.length; j++) {
-							currentText += (String) tabel.getValueAt(selectedRows[j], selectedColumns[i]) + ",";
+							text += (String) tabel.getValueAt(selectedRows[j], selectedColumns[i]) + ",";
 						}
 					}
 				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
 					for (int i = 0; i < selectedColumns.length; i++) {
 						for (int j = 0; j < selectedRows.length; j++) {
-							currentText += "(" + tabel.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1) + "),";
+							text += "(" + tabel.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1) + "),";
 						}
 					}
 				}
-				currentText = currentText == null || currentText.length() == 0 ? "" : currentText.substring(0, currentText.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
-				GUI.functionFieldSetText(currentText);
+				text = text == null || text.length() == 0 ? "" : text.substring(0, text.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
+				GUI.functionFieldSetText(text);
 			}
 		}
 	}

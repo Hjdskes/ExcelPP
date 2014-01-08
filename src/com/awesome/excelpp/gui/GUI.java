@@ -279,6 +279,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		}
 	}
 
+	/**
+	 * Listens for all KeyPressed events emitted by the elements of the GUI
+	 * @return void
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
