@@ -1,6 +1,7 @@
 package com.awesome.excelpp.gui;
 
 import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.xml.XML;
 import com.awesome.excelpp.gui.GUI;
 
@@ -257,9 +258,9 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			cellSelected = true;
 			if(e.getButton() == MouseEvent.BUTTON3) { //anders werkt alt + right klik niet op de cel die je wilt
 				Point p = e.getPoint();
-				int row = tabel.rowAtPoint(p);
-				int column = tabel.columnAtPoint(p);
-				tabel.changeSelection(row, column, false, false);
+				selectedRow = tabel.rowAtPoint(p);
+				selectedColumn = tabel.columnAtPoint(p);
+				tabel.changeSelection(selectedRow, selectedColumn, false, false);
 			}
 
 			String currentText = GUI.functionFieldGetText();
@@ -267,14 +268,16 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1){
 					currentText += "(" + tabel.getValueAt(tabel.getSelectedRow(), tabel.getSelectedColumn()) + ")";
 					GUI.functionFieldSetText(currentText);
-				}
-				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
+				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
 					currentText += "(" + tabel.getColumnName(tabel.getSelectedColumn()) + (tabel.getSelectedRow() + 1) + ")";
 					GUI.functionFieldSetText(currentText);
-				}
-				else {
-					selectedColumn = tabel.getSelectedColumn();
-					selectedRow = tabel.getSelectedRow();
+				} else if (e.getClickCount() == 2) {
+					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+					if(activeCell != null) {
+						GUI.functionFieldSetText(activeCell.getContent());
+						System.out.println(activeCell.getContent());
+					}
+					System.out.println(" double click" );
 				}
 			} else {
 				int selectedRows[] = tabel.getSelectedRows();
