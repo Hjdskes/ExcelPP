@@ -3,27 +3,36 @@ package com.awesome.excelpp.math;
 public class LogicInt extends Logic  {
 	int x;
 	int y;
-	boolean state;
-
+	
 	public LogicInt() {
 		super();
 	}
 	
-	public boolean largerThan() {
-		return(x>y);
+	public double largerThan() {
+		double res = 0.0;
+		if(x>y)
+			res = 1.0;
+		return res;
 	}
 	
-	public boolean smallerThan() {
-		return(x<y);
+	public double smallerThan() {
+		double res = 0.0;
+		if(x<y)
+			res = 1.0;
+		return res;
 	}
 
-	public boolean equals() {
-		return (x==y);
+	public double equality() {
+		double res = 0.0;
+		if(x==y)
+			res = 1.0;
+		return res;
 	}
 
 	@Override
-	public boolean getValue() {
+	public double getValue(double... numbers) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
+
 }
