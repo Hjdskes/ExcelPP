@@ -30,8 +30,6 @@ import javax.swing.undo.UndoManager;
 
 /**
  * Class that constructs everything needed for and by the GUI
- * ToDo: 'close' icon in tab
- *       icoontje voor tekstvak, voor de mooi?
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -68,6 +66,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 		mainTabs = new JTabbedPane();
 		createNewTab(); //open altijd één tab
+		//mainTabs.setTabComponentAt(0, new ButtonTabComponent(mainTabs), "Temporary ");
 
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
@@ -214,6 +213,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			panes.add(table);
 			int last = panes.size() - 1;
 			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/icons/stock_edit.png"), panes.get(last).getScrollPane(), null);
+			mainTabs.setTabComponentAt(last, new ButtonTabComponent(mainTabs, panes.get(last).getFileString()));
 			mainTabs.setSelectedIndex(last);
 			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {

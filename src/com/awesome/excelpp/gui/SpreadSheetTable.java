@@ -27,7 +27,6 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
 
-
 /**
  * Class that sets up everything needed for a new tab in the GUI
  */
