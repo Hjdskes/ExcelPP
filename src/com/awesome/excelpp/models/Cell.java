@@ -48,7 +48,6 @@ public class Cell extends Observable {
 	 * Gets the evaluated content of this Cell
 	 * 	Suppose the content of this Cell is "=4+4"
 	 * 	This function will then return "8"
-	 * @param sheet - the SpreadSheet to which the to-be-parsed Cell belongs to.
 	 * @return String with an evaluated expression
 	 */
 	public String toString() {
