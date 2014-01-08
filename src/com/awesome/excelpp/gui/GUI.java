@@ -4,13 +4,13 @@ package com.awesome.excelpp.gui;
 import com.awesome.excelpp.gui.SpreadSheetTable;
 
 import java.io.IOException;
-//import java.util.Scanner;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -24,14 +24,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoManager;
 
 /**
  * Class that constructs everything needed for and by the GUI
  */
-public class GUI extends JFrame implements ActionListener, DocumentListener {
+public class GUI extends JFrame implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private static int screenWidth;
 	private static int screenHeight;
@@ -159,8 +157,7 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		buttonRedo.addActionListener(this);
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
-		functionField.addActionListener(this);
-		functionField.getDocument().addDocumentListener(this);
+		functionField.addKeyListener(this);
 		buttonCloseTab.addActionListener(this);
 		buttonCloseTab.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonAbout.addActionListener(this);
@@ -211,7 +208,7 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 			SpreadSheetTable table = new SpreadSheetTable();
 			panes.add(table);
 			int last = panes.size() - 1;
-			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/woo-icons/page_16.png"), panes.get(last).getScrollPane(), null);
+			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/icons/stock_edit.png"), panes.get(last).getScrollPane(), null);
 			mainTabs.setSelectedIndex(last);
 			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
@@ -282,27 +279,20 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 		}
 	}
 
-	public void changedUpdate(DocumentEvent e) {}
-
-	/**
-	 * Listens for insertions in the function field and sends them to the selected cell
-	 * @return void
-	 */
-	public void insertUpdate(DocumentEvent e) {
-		int index = mainTabs.getSelectedIndex();
-		if(panes.get(index).getCellSelected() == false){
-			JOptionPane.showMessageDialog(mainFrame, "Select a cell first.");
-		}
-		if(panes.get(index).getCellSelected() == true){
-		panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn()); //dit overwrite standaard cel A0 als de GUI/tab net is aangemaakt
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+			int index = mainTabs.getSelectedIndex();
+			if(panes.get(index).getCellSelected() == false)
+				JOptionPane.showMessageDialog(mainFrame, "Select a cell first.", "Oops!", JOptionPane.INFORMATION_MESSAGE);
+			if(panes.get(index).getCellSelected() == true)
+				panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
 		}
 	}
 
-	/**
-	 * Listens for removals from the function field and sends them to the selected cell
-	 * @return void
-	 */
-	public void removeUpdate(DocumentEvent e) {
-		insertUpdate(e);
-	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 }

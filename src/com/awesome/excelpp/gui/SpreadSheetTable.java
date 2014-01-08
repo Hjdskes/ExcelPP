@@ -256,9 +256,11 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	public void mouseClicked(MouseEvent e) {		
 		if (e.getSource().equals(tabel)) {
 			cellSelected = true;
+
 			Point p = e.getPoint();
 			selectedRow = tabel.rowAtPoint(p);
 			selectedColumn = tabel.columnAtPoint(p);
+			tabel.changeSelection(selectedRow, selectedColumn, false, false);
 
 			String currentText = GUI.functionFieldGetText();
 			if (tabel.getSelectedColumnCount() == 1 && tabel.getSelectedRowCount() == 1) {
@@ -271,7 +273,6 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 				} else if (e.getClickCount() == 2) {
 					Cell activeCell = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
 					GUI.functionFieldSetText(activeCell == null ? "" : activeCell.getContent());
-					System.out.println(" double click" );
 				}
 			} else {
 				int selectedRows[] = tabel.getSelectedRows();
