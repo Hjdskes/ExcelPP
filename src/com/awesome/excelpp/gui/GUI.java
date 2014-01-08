@@ -300,7 +300,6 @@ public class GUI extends JFrame implements ActionListener, DocumentListener {
 	public void insertUpdate(DocumentEvent e) {
 		int index = mainTabs.getSelectedIndex();
 		if(panes.get(index).getCellSelected() == false){
-			System.out.println("geen cell geselecteerd");
 			JOptionPane.showMessageDialog(mainFrame, "Select a cell first.");
 		}
 		if(panes.get(index).getCellSelected() == true){
