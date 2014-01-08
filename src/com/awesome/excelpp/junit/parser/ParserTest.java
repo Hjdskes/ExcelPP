@@ -19,6 +19,12 @@ public class ParserTest {
 	public ExpectedException exception = ExpectedException.none();
 	
 	@Test
+	public void test_empty() throws ParserException {
+		exception.expect(MissingArgException.class);
+		result = new Parser("").eval();
+	}
+	
+	@Test
 	public void test_number() throws ParserException {
 		expected = 2.0;
 		result = new Parser("=2").eval();

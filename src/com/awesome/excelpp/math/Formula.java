@@ -5,5 +5,5 @@ package com.awesome.excelpp.math;
  *
  */
 public abstract class Formula {
-	public abstract double getValue(double ... numbers);
+	public abstract double  getValue(double ... numbers);
 }

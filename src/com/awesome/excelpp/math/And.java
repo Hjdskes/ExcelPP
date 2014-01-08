@@ -3,7 +3,7 @@ package com.awesome.excelpp.math;
 import java.util.ArrayList;
 
 public class And {
-	public boolean and(ArrayList<Logic> arguments) {
+	public boolean getValue(ArrayList<Logic> arguments) {
 		boolean res = true;
 		for(int i = 0; i< arguments.size()-1; i++) {
 			switch(arguments.get(i).opp) {

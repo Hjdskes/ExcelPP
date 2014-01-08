@@ -1,9 +1,10 @@
 package com.awesome.excelpp.math;
 
-public class LogicInt extends Logic {
+public class LogicInt extends Logic  {
 	int x;
 	int y;
-	
+	boolean state;
+
 	public LogicInt() {
 		super();
 	}
@@ -16,8 +17,13 @@ public class LogicInt extends Logic {
 		return(x<y);
 	}
 
-	@Override
 	public boolean equals() {
 		return (x==y);
+	}
+
+	@Override
+	public boolean getValue() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
