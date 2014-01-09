@@ -91,10 +91,9 @@ public class SpreadSheet extends Observable implements TableModel {
 		notifyObservers();
 		
 		if (oldValue != null && oldValue.getContent().length() > 0 && !oldValue.equals(newValue)
-				|| newValue != null && newValue.getContent().length() > 0 && !newValue.equals(oldValue)) {
+				|| newValue.getContent() != null && newValue.getContent().length() > 0 && !newValue.equals(oldValue)) {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
 			undoSupport.postEdit(e);
-			System.out.println("edit");
 		}
 	}
 	
@@ -117,7 +116,6 @@ public class SpreadSheet extends Observable implements TableModel {
 		//voor de observers
 		setChanged();
 		notifyObservers();
-		System.out.println("undo");
 	}
 	
 	/* LISTENERS */
@@ -144,6 +142,11 @@ public class SpreadSheet extends Observable implements TableModel {
 		return row * numberOfCols + col;
 	}
 	
+	private int[] getXYCell(int nr) {
+		int[] temp = {nr % numberOfCols, nr / numberOfCols};
+		return temp;
+	}
+	
 	/**
 	 * Outputs the assigned spreadsheet map to a normalized XML file
 	 * @param file		the output file
@@ -154,23 +157,13 @@ public class SpreadSheet extends Observable implements TableModel {
 		String res = "<?xml version=\"1.0\"?>\n";
 		res += "<SPREADSHEET>\n";
 		
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfCols; col++) {
-				if((String)getValueAt(row, col) != "") {
-					String temp = (String)getValueAt(row, col);
-					
-					/* Normalization */
-					temp = temp.replace("\n", "");
-					temp = temp.replace("\t", "");
-					temp = temp.replace("\r", "");
-					int store_row = row + 1;
-					int store_col = col + 1;
-					
-					res +="<CELL row=\"" + store_row  + "\" column=\"" + store_col + "\">" + temp + "</CELL>\n";
-				}
-			}
+		for (Integer cell : cells.keySet()) {
+			int[] xy = getXYCell(cell);
+			res +="<CELL row=\"" + xy[0] + "\" column=\"" + xy[1] + "\">" + cells.get(cell).getContent() + "</CELL>\n";
 		}
 		res += "</SPREADSHEET>\n";
+		
+		System.out.println("debug\n" + res);
 						
 		pw.print(res);
 		pw.flush();
