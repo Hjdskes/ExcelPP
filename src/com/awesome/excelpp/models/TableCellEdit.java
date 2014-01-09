@@ -9,6 +9,7 @@ import javax.swing.undo.CannotUndoException;
  *
  */
 public class TableCellEdit extends AbstractUndoableEdit{
+	private static final long serialVersionUID = 1L;
 	private SpreadSheet sheet;
 	private Object oldValue;
 	private Object newValue;
@@ -25,8 +26,7 @@ public class TableCellEdit extends AbstractUndoableEdit{
 	
 	public void undo() throws CannotUndoException{
 		super.undo();
-		sheet.setValueAt(oldValue, row, col, false);
-		
+		sheet.setValueAt(oldValue, row, col, false);	
 	}
 	
 	public void redo() throws CannotRedoException{
