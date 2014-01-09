@@ -78,6 +78,6 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		GUI.removeTab();		
+		GUI.removeTab();
 	}
 }

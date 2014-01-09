@@ -193,6 +193,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			mainTabs.addTab(null, null, panes.get(last).getScrollPane(), panes.get(last).getFile().toString()); // Add tab to pane without label or icon but with tooltip
 			mainTabs.setTabComponentAt(last, new CloseableTabComponent(panes.get(last).getFileString())); // Now assign the component for the tab
 			mainTabs.setSelectedIndex(last);
+			System.out.println("##### DEBUG #####");
+			System.out.println("isDisplayable: " + mainTabs.getComponentAt(last).isDisplayable());
+			System.out.println("isEnabled: " + mainTabs.getComponentAt(last).isEnabled());
+			System.out.println("isShowing:" + mainTabs.getComponentAt(last).isShowing());
+			System.out.println("isValid: " + mainTabs.getComponentAt(last).isValid());
+			System.out.println("isVisible: " + mainTabs.getComponentAt(last).isVisible());
 			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
