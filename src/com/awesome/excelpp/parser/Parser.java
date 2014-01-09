@@ -6,13 +6,7 @@ import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
-import com.awesome.excelpp.parser.exception.DivisionException;
-import com.awesome.excelpp.parser.exception.FormulaException;
-import com.awesome.excelpp.parser.exception.MissingArgException;
-import com.awesome.excelpp.parser.exception.MissingLBracketException;
-import com.awesome.excelpp.parser.exception.MissingRBracketException;
-import com.awesome.excelpp.parser.exception.ParserException;
-import com.awesome.excelpp.parser.exception.ReferenceException;
+import com.awesome.excelpp.parser.exception.*;
 
 public class Parser {
 	
@@ -30,8 +24,8 @@ public class Parser {
 
 	/**
 	 * Creates a new expression Parser
-	 * @param lex		the Lexer containing the expression 
-	 * @param sheet		the referenced SpreadSheet
+	 * @param lex		the {@link Lexer} containing the expression 
+	 * @param sheet		the referenced {@link SpreadSheet}
 	 */
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
@@ -43,7 +37,7 @@ public class Parser {
 	/**
 	 * Creates a new expression Parser
 	 * @param expr		the String containing the expression
-	 * @param sheet		the referenced SpreadSheet
+	 * @param sheet		the referenced {@link SpreadSheet}
 	 */
 	public Parser(String expr, SpreadSheet sheet){
 		this(new Lexer(expr), sheet);
@@ -215,8 +209,6 @@ public class Parser {
 					}
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
-				} catch (ArithmeticException e) {
-					throw new DivisionException();
 				}
 				break;
 			case WORD:
@@ -252,10 +244,10 @@ public class Parser {
 	}
 	
 	/**
-	 * Evaluate a function using the formulas in package com.awesome.excelpp.math
-	 * @param function		the function name
-	 * @param args			the function arguments (1..*)
-	 * @return				the evaluated function
+	 * Evaluate a {@link Formula} using the formulas in package com.awesome.excelpp.math
+	 * @param formulaName	the {@link Formula} name
+	 * @param args			the {@link Formula} arguments (1..*)
+	 * @return				the evaluated {@link Formula}
 	 * @throws FormulaException
 	 */
 	private double evalFunction(String function, double ... args) throws FormulaException {
