@@ -146,7 +146,7 @@ public class SpreadSheet extends Observable implements TableModel {
 	
 	/**
 	 * Outputs the assigned spreadsheet map to a normalized XML file
-	 * @param dest
+	 * @param file		the output file
 	 * @throws FileNotFoundException
 	 */
 	public void toXML(File file) throws FileNotFoundException {
