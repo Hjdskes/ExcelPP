@@ -14,6 +14,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -48,6 +49,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonOpen;
 	private static JButton buttonNewTab;
 	private static JButton buttonNew;
+	private static final ImageIcon tabIcon = new ImageIcon("data/icons/stock_edit.png");
+	private static final ImageIcon closeTabIcon = new ImageIcon ("/data/icons/tab_close_gray.png");
+	private static final ImageIcon closeTabIconRollover = new ImageIcon ("/data/icons/tab_close.png");
 	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 
 	public GUI () throws IOException {
@@ -66,7 +70,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 		mainTabs = new JTabbedPane();
 		createNewTab(); //open altijd één tab
-		//mainTabs.setTabComponentAt(0, new ButtonTabComponent(mainTabs), "Temporary ");
 
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
@@ -212,14 +215,69 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			SpreadSheetTable table = new SpreadSheetTable();
 			panes.add(table);
 			int last = panes.size() - 1;
-			mainTabs.addTab(panes.get(last).getFileString(), new ImageIcon("data/icons/stock_edit.png"), panes.get(last).getScrollPane(), null);
-			mainTabs.setTabComponentAt(last, new ButtonTabComponent(mainTabs, panes.get(last).getFileString()));
+			JComponent closeAbleTabComponent = createCloseableTabComponent(panes.get(last).getScrollPane(), panes.get(last).getFileString());
+			mainTabs.setTabComponentAt(last, closeAbleTabComponent); // Now assign the component for the tab
 			mainTabs.setSelectedIndex(last);
 			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
 		}
+	}
+
+	/**
+	 * Adds a component to a JTabbedPane with a little "close tab" button on the
+	 * right side of the tab.
+	 *
+	 * @param tabbedPane the JTabbedPane
+	 * @param c any JComponent
+	 * @param title the title for the tab
+	 * @param icon the icon for the tab, if desired
+	 *
+	 * @author Tad Harrison
+	 * @source http://paperjammed.com/2012/11/22/adding-tab-close-buttons-to-a-jtabbedpane-in-java-swing/
+	 */
+	private static JComponent createCloseableTabComponent(final JComponent c, final String title) {
+		// Add the tab to the pane without any label
+		mainTabs.addTab(null, c);
+
+		// Create a FlowLayout that will space things 5px apart
+		FlowLayout f = new FlowLayout(FlowLayout.CENTER, 5, 0);
+
+		// Make a small JPanel with the layout and make it non-opaque
+		JPanel tabPanel = new JPanel(f);
+		tabPanel.setOpaque(false);
+
+		// Add a JLabel with title and the left-side tab icon
+		JLabel tabTitle = new JLabel(title);
+		tabTitle.setIcon(tabIcon);
+
+		// Create a JButton for the close tab button
+		JButton buttonClose = new JButton();
+		buttonClose.setOpaque(false);
+		buttonClose.setBorder(null); // Set border null so the button doesn't make the tab too big
+		buttonClose.setFocusable(false); // Make sure the button can't get focus, otherwise it looks funny
+		buttonClose.setRolloverIcon(closeTabIconRollover); // Configure icon and rollover icon for button
+		buttonClose.setRolloverEnabled(true); // Configure icon and rollover icon for button
+		buttonClose.setIcon(closeTabIcon); // Configure icon and rollover icon for button
+		buttonClose.setToolTipText("Close this tab");
+
+		tabPanel.add(tabTitle);
+		tabPanel.add(buttonClose);
+		tabPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0)); // Add a thin border to keep the image below the top edge of the tab when the tab is selected
+
+		return tabPanel;
+
+		// Add the listener that removes the tab
+		//ActionListener listener = new ActionListener() {
+		//	@Override
+		//	public void actionPerformed(ActionEvent e) {
+		//		// The component parameter must be declared "final" so that it can be
+		//		// referenced in the anonymous listener class like this.
+		//		mainTabs.remove(c);
+		//	}
+		//};
+		//buttonClose.addActionListener(listener);
 	}
 
 	/**
