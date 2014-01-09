@@ -1,8 +1,6 @@
 
 package com.awesome.excelpp.gui;
 
-import com.awesome.excelpp.gui.SpreadSheetTable;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
@@ -14,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -31,17 +28,18 @@ import javax.swing.undo.UndoManager;
 
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo: change filename on tabs
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
-	private static int screenWidth;
-	private static int screenHeight;
+	private static final int screenWidth = (int)Utils.getScreenWidth();
+	private static final int screenHeight = (int)Utils.getScreenHeight();
+	private static final ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 	private static JFrame mainFrame;
 	private static JTextField functionField;
 	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
-	private static JButton buttonCloseTab;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
@@ -49,16 +47,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonOpen;
 	private static JButton buttonNewTab;
 	private static JButton buttonNew;
-	private static final ImageIcon tabIcon = new ImageIcon("data/icons/stock_edit.png");
-	private static final ImageIcon closeTabIcon = new ImageIcon ("/data/icons/tab_close_gray.png");
-	private static final ImageIcon closeTabIconRollover = new ImageIcon ("/data/icons/tab_close.png");
-	private static ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
 
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-
-		screenWidth = (int)Utils.getScreenWidth();
-		screenHeight = (int)Utils.getScreenHeight();
 
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
@@ -80,17 +71,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Creates a JPanel holding the required buttons
 	 * @return JPanel
 	 */
-	private JPanel createButtonPanel() {
+	private final JPanel createButtonPanel() {
 		final JPanel panel = new JPanel();
-		final ImageIcon newIcon;
-		final ImageIcon newTabIcon;
-		final ImageIcon openIcon;
-		final ImageIcon saveIcon;
-		final ImageIcon saveIconAs;
-		final ImageIcon closeTabIcon;
-		final ImageIcon aboutIcon;
-		final ImageIcon undoIcon;
-		final ImageIcon redoIcon;
 
 		panel.setLayout(new FlowLayout());
 		buttonNew = new JButton();
@@ -101,21 +83,19 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(30);
-		buttonCloseTab = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
 
-		newIcon = new ImageIcon("data/icons/window-new.png");
-		newTabIcon = new ImageIcon("data/icons/stock_new-tab.png");
-		openIcon = new ImageIcon("data/icons/gtk-open.png");
-		saveIcon = new ImageIcon("data/icons/document-save.png");
-		saveIconAs = new ImageIcon("data/icons/document-save-as.png");
-		undoIcon = new ImageIcon("data/icons/edit-undo.png");
-		redoIcon = new ImageIcon("data/icons/edit-redo.png");
-		closeTabIcon = new ImageIcon("data/icons/button_cancel.png");
-		aboutIcon = new ImageIcon("data/icons/gtk-about.png");
+		final ImageIcon newIcon = new ImageIcon("data/icons/window-new.png");
+		final ImageIcon newTabIcon = new ImageIcon("data/icons/stock_new-tab.png");
+		final ImageIcon openIcon = new ImageIcon("data/icons/gtk-open.png");
+		final ImageIcon saveIcon = new ImageIcon("data/icons/document-save.png");
+		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
+		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
+		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		buttonNew.setIcon(newIcon);
 		buttonNewTab.setIcon(newTabIcon);
@@ -124,7 +104,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
-		buttonCloseTab.setIcon(closeTabIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -134,7 +113,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setToolTipText("Save as");
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
-		buttonCloseTab.setToolTipText("Close tab");
 		buttonAbout.setToolTipText("About");
 		
 		panel.add(buttonNew);
@@ -146,7 +124,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
-		panel.add(buttonCloseTab);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -165,8 +142,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
-		buttonCloseTab.addActionListener(this);
-		buttonCloseTab.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonAbout.addActionListener(this);
 
 		return panel;
@@ -207,16 +182,16 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a new tab
+	 * Creates a new tab with a new SpreadSheetTable inside it
 	 * @return void
 	 */
-	private static void createNewTab() {
+	private final void createNewTab() {
 		try {
 			SpreadSheetTable table = new SpreadSheetTable();
 			panes.add(table);
 			int last = panes.size() - 1;
-			JComponent closeAbleTabComponent = createCloseableTabComponent(panes.get(last).getScrollPane(), panes.get(last).getFileString());
-			mainTabs.setTabComponentAt(last, closeAbleTabComponent); // Now assign the component for the tab
+			mainTabs.addTab(null, null, panes.get(last).getScrollPane(), panes.get(last).getFile().toString()); // Add tab to pane without label or icon but with tooltip
+			mainTabs.setTabComponentAt(last, new CloseableTabComponent(panes.get(last).getFileString())); // Now assign the component for the tab
 			mainTabs.setSelectedIndex(last);
 			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 		} catch (IOException ex) {
@@ -226,58 +201,29 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Adds a component to a JTabbedPane with a little "close tab" button on the
-	 * right side of the tab.
-	 *
-	 * @param tabbedPane the JTabbedPane
-	 * @param c any JComponent
-	 * @param title the title for the tab
-	 * @param icon the icon for the tab, if desired
-	 *
-	 * @author Tad Harrison
-	 * @source http://paperjammed.com/2012/11/22/adding-tab-close-buttons-to-a-jtabbedpane-in-java-swing/
+	 * Updates the tab's title.
+	 * @param newTitle - the new title to set.
+	 * @return void
 	 */
-	private static JComponent createCloseableTabComponent(final JComponent c, final String title) {
-		// Add the tab to the pane without any label
-		mainTabs.addTab(null, c);
+	private final void updateTabTitle(int index, String newTitle) {
+		/*CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getComponentAt(index);
+		currentComponent.setTitle(newTitle);
+		System.out.println(currentComponent.getTitle());*/
+	}
 
-		// Create a FlowLayout that will space things 5px apart
-		FlowLayout f = new FlowLayout(FlowLayout.CENTER, 5, 0);
-
-		// Make a small JPanel with the layout and make it non-opaque
-		JPanel tabPanel = new JPanel(f);
-		tabPanel.setOpaque(false);
-
-		// Add a JLabel with title and the left-side tab icon
-		JLabel tabTitle = new JLabel(title);
-		tabTitle.setIcon(tabIcon);
-
-		// Create a JButton for the close tab button
-		JButton buttonClose = new JButton();
-		buttonClose.setOpaque(false);
-		buttonClose.setBorder(null); // Set border null so the button doesn't make the tab too big
-		buttonClose.setFocusable(false); // Make sure the button can't get focus, otherwise it looks funny
-		buttonClose.setRolloverIcon(closeTabIconRollover); // Configure icon and rollover icon for button
-		buttonClose.setRolloverEnabled(true); // Configure icon and rollover icon for button
-		buttonClose.setIcon(closeTabIcon); // Configure icon and rollover icon for button
-		buttonClose.setToolTipText("Close this tab");
-
-		tabPanel.add(tabTitle);
-		tabPanel.add(buttonClose);
-		tabPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0)); // Add a thin border to keep the image below the top edge of the tab when the tab is selected
-
-		return tabPanel;
-
-		// Add the listener that removes the tab
-		//ActionListener listener = new ActionListener() {
-		//	@Override
-		//	public void actionPerformed(ActionEvent e) {
-		//		// The component parameter must be declared "final" so that it can be
-		//		// referenced in the anonymous listener class like this.
-		//		mainTabs.remove(c);
-		//	}
-		//};
-		//buttonClose.addActionListener(listener);
+	/**
+	 * Removes the currently active tab. Makes sure there is always one tab remaining.
+	 * @return void
+	 */
+	final static void removeTab() {
+		int index = mainTabs.getSelectedIndex();
+		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
+			int close = panes.get(index).closeFile();
+			if (close == 0) {
+				mainTabs.remove(index);
+				panes.remove(index);
+			}
+		}
 	}
 
 	/**
@@ -301,31 +247,23 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Calls other functions
 	 * @return void
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
 
 		if (e.getSource().equals(buttonOpen)) {
-			if(panes.get(index).openFileDialog() == 0) //alleen doen als er echt een nieuwe file wordt gekozen
-				mainTabs.setTitleAt(index, panes.get(index).getFileString());
+			if(panes.get(index).openFileDialog() == 0)
+				updateTabTitle(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonNew)) {
-			panes.get(index).newFile();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+			if(panes.get(index).newFile() == 0)
+				updateTabTitle(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab();
 		else if (e.getSource().equals(buttonSave)) {
-			panes.get(index).saveFile();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
+			if(panes.get(index).saveFile() == 0)
+				updateTabTitle(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			panes.get(index).openSaveDialog();
-			mainTabs.setTitleAt(index, panes.get(index).getFileString());
-		} else if (e.getSource().equals(buttonCloseTab)) {
-			if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
-				int close = panes.get(index).closeFile();
-				if (close == 0) {
-					mainTabs.remove(index);
-					panes.remove(index);
-				}
-			}
+			if(panes.get(index).openSaveDialog() == 0)
+				updateTabTitle(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
@@ -347,7 +285,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			int index = mainTabs.getSelectedIndex();
 			if(panes.get(index).getCellSelected() == false)
@@ -357,8 +295,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		}
 	}
 
+	/**
+	 * Is executed right before the window closes. We use this to do some clean ups and check if files
+	 * need to be saved.
+	 */
 	@Override
-	public void windowClosing(WindowEvent e) {
+	public final void windowClosing(WindowEvent e) {
 		for(int i = 0; i < panes.size(); i++) {
 			SpreadSheetTable currentPane = panes.get(i);
 			if(currentPane.closeFile() == 1) {

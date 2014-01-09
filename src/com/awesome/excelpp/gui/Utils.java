@@ -9,9 +9,9 @@ import java.awt.GraphicsEnvironment;
 public class Utils {
 	/**
 	 * Returns the screen width
-	 * @return int
+	 * @return double - the screen width
 	 */
-	static double getScreenWidth() {
+	public static double getScreenWidth() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
 
@@ -20,9 +20,9 @@ public class Utils {
 	
 	/**
 	 * Returns the screen height
-	 * @return int
+	 * @return double - the screen width
 	 */
-	static double getScreenHeight() {
+	public static double getScreenHeight() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
 

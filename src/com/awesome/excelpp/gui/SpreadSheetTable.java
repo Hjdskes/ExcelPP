@@ -30,7 +30,7 @@ import javax.swing.undo.UndoManager;
 /**
  * Class that sets up everything needed for a new tab in the GUI
  */
-public class SpreadSheetTable implements MouseListener, Observer, UndoableEditListener{
+public class SpreadSheetTable implements MouseListener, Observer, UndoableEditListener {
 	private JScrollPane scrollPane;
 	private JTable tabel, rowTabel;
 	private SpreadSheet sheet;
@@ -65,7 +65,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns the JScrollPane of this tab
 	 * @return JScrollPane
 	 */
-	public JScrollPane getScrollPane() {
+	public final JScrollPane getScrollPane() {
 		return scrollPane;
 	}
 
@@ -73,7 +73,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns the JTable of this tab
 	 * @return JTable
 	 */
-	public JTable getTable() {
+	public final JTable getTable() {
 		return tabel;
 	}
 
@@ -81,7 +81,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns the current SpreadSheet
 	 * @return SpreadSheet
 	 */
-	public SpreadSheet getSheet() {
+	public final SpreadSheet getSheet() {
 		return sheet;
 	}
 
@@ -89,7 +89,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns the currently selected column in the JTable
 	 * @return int
 	 */
-	public int getSelectedColumn() {
+	public final int getSelectedColumn() {
 		return selectedColumn;
 	}
 
@@ -97,7 +97,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns the currently selected row in the JTable
 	 * @return int
 	 */
-	public int getSelectedRow() {
+	public final int getSelectedRow() {
 		return selectedRow;
 	}
 
@@ -105,7 +105,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns the currently opened file
 	 * @return File
 	 */
-	public File getFile() {
+	public final File getFile() {
 		return file;
 	}
 
@@ -113,7 +113,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns a String representation of the opened file
 	 * @return String
 	 */
-	public String getFileString () {
+	public final String getFileString () {
 		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
 			return "Temporary file";
 		return file.getName();
@@ -123,7 +123,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns this tab's UndoManager
 	 * @return UndoManager
 	 */
-	public UndoManager getUndoManager(){
+	public final UndoManager getUndoManager(){
 		return undoManager;
 	}
 
@@ -131,13 +131,13 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Returns true is a Cell has ever been selected
 	 * @return boolean
 	 */
-	public boolean getCellSelected(){
+	public final boolean getCellSelected(){
 		return cellSelected;
 	}
 
 	/**
 	 * Opens a file dialog in which the user can select the file to open
-	 * @return int - choice made: 0 for OK, 1 for cancel.
+	 * @return int - choice made: 0 for opened, 1 for cancel.
 	 */
 	public final int openFileDialog() {
 		int opened = 1;
@@ -164,38 +164,43 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 
 	/**
 	 * Properly handles opening a new file - spawns a dialog if changes will be lost
-	 * @return void
+	 * @return int - 0 for OK, 1 for cancel.
 	 */
-	public final void newFile () {
+	public final int newFile () {
+		int res = 1;
 		if(closeFile() == 0) {
 			try {
 				removeTempFile(file);
 				file = File.createTempFile("excelpp_temp", ".xml");
+				res = 0;
 				sheet = new SpreadSheet();
 				tabel.setModel (sheet);
 				tabel.updateUI();
 			} catch (IOException ex) {
 				JOptionPane.showMessageDialog(tabel, "Can't open a temporary file.", "Warning", JOptionPane.WARNING_MESSAGE);
-				return;
 			}
 		}
+		return res;
 	}
 
 	/**
 	 * Saves the currently opened file
-	 * @return void
+	 * @return int - choice made: 0 for saved, 1 for cancel.
 	 */
-	public final void saveFile () {
+	public final int saveFile () {
+		int saved = 1;
 		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
-			openSaveDialog();
+			saved = openSaveDialog();
 		else {
 			try {
 				sheet.toXML(file);
+				saved = 0;
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
 		}
+		return saved;
 	}
 
 	/**
@@ -232,9 +237,10 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 
 	/**
 	 * Opens a file dialog in which the user can select where to save the current SpreadSheet
-	 * @return void
+	 * @return int - choice made: 0 for saved, 1 for cancel.
 	 */
-	public final void openSaveDialog() {
+	public final int openSaveDialog() {
+		int saved = 1;
 		final JFileChooser fc = new JFileChooser();
 		if (fc.showSaveDialog(tabel) == JFileChooser.APPROVE_OPTION) {
 			String fileString = fc.getSelectedFile().getPath();
@@ -245,11 +251,13 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			try {
 				file.getParentFile().mkdirs();
 				sheet.toXML(file);
+				saved = 0;
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
 		}
+		return saved;
 	}
 
 	/**
@@ -267,7 +275,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Listens for all mouseClicked events emitted by the elements of the tab
 	 * @return void
 	 */
-	public void mouseClicked(MouseEvent e) {		
+	public final void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(tabel)) {
 			cellSelected = true;
 
@@ -314,7 +322,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	/**
 	 * Observes changes in the table
 	 */
-	public void update(Observable o, Object arg) {
+	public final void update(Observable o, Object arg) {
 		tabel.repaint();
 	}
 
@@ -322,7 +330,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	/**
 	 * Listen for undoable edits and adds them to the undoManager
 	 */
-	public void undoableEditHappened(UndoableEditEvent e) {
+	public final void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
 	}
 
