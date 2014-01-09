@@ -17,7 +17,7 @@ import javax.swing.table.TableColumn;
  * contains the main table.
  *
  * @author Rob Camick, modified by us
- * @source http://tips4java.wordpress.com/2008/11/18/row-number-table/ 
+ * @source http://tips4java.wordpress.com/2008/11/18/row-number-table/
  */
 public class RowNumberTable extends JTable implements ChangeListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
