@@ -27,10 +27,15 @@ public class Cell extends Observable {
 		this.content = content;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
+	}
+	
 	/**
 	 * Gets the unevaluated content of this Cell
-	 * 	Suppose the content of this Cell is "=4+4"
-	 * 	This function will then return "=4+4"
+	 * Suppose the content of this Cell is "=4+4"
+	 * This function will then return "=4+4"
 	 * @return			String with an unevaluated expression
 	 */
 	public String getContent() {
@@ -45,16 +50,11 @@ public class Cell extends Observable {
 		this.content = content;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
-	}
-	
 	/**
 	 * Gets the evaluated content of this Cell
-	 * 	Suppose the content of this Cell is "=4+4"
-	 * 	This function will then return "8"
-	 * @return String with an evaluated expression
+	 * Suppose the content of this Cell is "=4+4"
+	 * This function will then return "8"
+	 * @return	String with an evaluated expression
 	 */
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {

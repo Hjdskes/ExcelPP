@@ -11,10 +11,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableColumn;
 
-/*
+/**
  * Use a JTable as a renderer for row numbers of a given main table.
  * This table must be added to the row header of the scrollpane that
  * contains the main table.
+ *
+ * @author Rob Camick, modified by us
+ * @source http://tips4java.wordpress.com/2008/11/18/row-number-table/
  */
 public class RowNumberTable extends JTable implements ChangeListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;

@@ -161,4 +161,18 @@ public class ParserTest {
 		exception.expect(MissingLBracketException.class);
 		result = new Parser("=Add 5,5").eval();
 	}
+	
+	@Test
+	public void test_invalid_function6() throws ParserException {
+		exception.expect(MissingArgException.class);
+		result = new Parser("=-").eval();
+	}
+	
+	@Test
+	public void test_invalid_function7() throws ParserException {
+		exception.expect(MissingArgException.class);
+		result = new Parser("=2-").eval();
+	}
+	
+	//TODO: reference exception testen
 }

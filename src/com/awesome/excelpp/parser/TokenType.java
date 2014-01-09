@@ -1,8 +1,8 @@
 package com.awesome.excelpp.parser;
 
 /**
- * Enum representing the different TokenTypes the Lexer can produce.<br>
- * The Parser will have to understand all the TokenTypes.
+ * Enum representing the different TokenTypes the {@link Lexer} can produce.<br>
+ * The {@link Parser} will have to understand all the TokenTypes.
  */
 public enum TokenType {
 	/**

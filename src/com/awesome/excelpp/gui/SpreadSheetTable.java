@@ -262,12 +262,6 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			if(file.delete() != true)
 				JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
 	}
-	
-
-	public void mousePressed(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
 
 	/**
 	 * Listens for all mouseClicked events emitted by the elements of the tab
@@ -331,4 +325,9 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	public void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
 	}
+
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
 }

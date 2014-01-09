@@ -369,27 +369,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		System.exit(0); //ToDo: niet de beste oplossing?
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {}
-
-	@Override
 	public void keyReleased(KeyEvent e) {}
-
-	@Override
 	public void windowOpened(WindowEvent e) {}
-
-	@Override
 	public void windowClosed(WindowEvent e) {}
-
-	@Override
 	public void windowIconified(WindowEvent e) {}
-
-	@Override
 	public void windowDeiconified(WindowEvent e) {}
-
-	@Override
 	public void windowActivated(WindowEvent e) {}
-
-	@Override
 	public void windowDeactivated(WindowEvent e) {}
 }

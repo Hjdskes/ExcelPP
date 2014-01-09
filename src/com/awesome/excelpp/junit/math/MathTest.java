@@ -1,4 +1,4 @@
-package com.awesome.excelpp.junit;
+package com.awesome.excelpp.junit.math;
 
 import static org.junit.Assert.*;
 
