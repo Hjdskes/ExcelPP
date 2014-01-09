@@ -2,7 +2,8 @@ package com.awesome.excelpp.gui;
 
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.models.Cell;
-import com.awesome.excelpp.xml.XML;
+import com.awesome.excelpp.readers.XML;
+import com.awesome.excelpp.writers.XMLWriter;
 import com.awesome.excelpp.gui.GUI;
 
 import java.io.File;
@@ -190,7 +191,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			openSaveDialog();
 		else {
 			try {
-				sheet.toXML(file);
+				sheet.write(new XMLWriter(file));
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
@@ -244,7 +245,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 			file = new File(fileString);
 			try {
 				file.getParentFile().mkdirs();
-				sheet.toXML(file);
+				sheet.write(new XMLWriter(file));
 			} catch (FileNotFoundException ex) {
 				JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();

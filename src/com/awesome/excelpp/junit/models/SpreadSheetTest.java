@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import org.junit.Test;
 
 import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.writers.SysOutWriter;
 
 public class SpreadSheetTest {
 	@Test
@@ -59,6 +60,6 @@ public class SpreadSheetTest {
 		sheet.setValueAt("=Add(2,2)", 0, 2);
 		assertTrue(sheet.getValueAt(0, 2).toString().equals("4.0"));
 		
-		sheet.toXML(new File("/dev/null"));
+		sheet.write(new SysOutWriter());
 	}
 }
