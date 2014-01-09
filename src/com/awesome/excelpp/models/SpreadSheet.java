@@ -1,8 +1,6 @@
 package com.awesome.excelpp.models;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Observable;
 
@@ -10,6 +8,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.table.TableModel;
 import javax.swing.undo.UndoableEditSupport;
+
+import com.awesome.excelpp.writers.Writer;
 
 /**
  * Class that represents a spreadsheet
@@ -152,21 +152,11 @@ public class SpreadSheet extends Observable implements TableModel {
 	 * @param file		the output file
 	 * @throws FileNotFoundException
 	 */
-	public void toXML(File file) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(file);
-		String res = "<?xml version=\"1.0\"?>\n";
-		res += "<SPREADSHEET>\n";
-		
+	public void write(Writer writer) throws FileNotFoundException {
 		for (Integer cell : cells.keySet()) {
 			int[] xy = getXYCell(cell);
-			res +="<CELL row=\"" + xy[0] + "\" column=\"" + xy[1] + "\">" + cells.get(cell).getContent() + "</CELL>\n";
+			writer.addCell(cells.get(cell), xy[0], xy[1]);
 		}
-		res += "</SPREADSHEET>\n";
-		
-		System.out.println("debug\n" + res);
-						
-		pw.print(res);
-		pw.flush();
-		pw.close();
+		writer.close();
 	}
 }
