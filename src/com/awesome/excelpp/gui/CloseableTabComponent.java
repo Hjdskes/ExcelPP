@@ -50,15 +50,6 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 		buttonClose.setIcon(closeTabIcon); // Configure icon and rollover icon for button
 		buttonClose.setToolTipText("Close this tab");
 
-		// Add the listener that removes the tab
-		//ActionListener tabCloseButtonListener = new ActionListener() {
-		//	@Override
-		//	public void actionPerformed(ActionEvent e) {
-		//		// The component parameter must be declared "final" so that it can be
-		//		// referenced in the anonymous listener class like this.
-		//		GUI.removeTab();
-		//	}
-		//};
 		buttonClose.addActionListener(this);
 		buttonClose.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
