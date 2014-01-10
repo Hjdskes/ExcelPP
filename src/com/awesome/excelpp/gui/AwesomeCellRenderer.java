@@ -16,15 +16,15 @@ import com.awesome.excelpp.models.Cell;
  * @author: Oracle, Philip Milne. Modified by us to support Cell markup
  * @source: http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/7-b147/javax/swing/table/DefaultTableCellRenderer.java/?v=source
  */
-public class AwesomeCellRenderer extends DefaultTableCellRenderer { // implements TableCellRenderer {
+public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 	private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
 	private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
 	protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
 
-    public AwesomeCellRenderer () {
+	public AwesomeCellRenderer () {
 		super();
-    }
+	}
 
     private Border getNoFocusBorder() {
 		Border border = DefaultLookup.getBorder(this, ui, "Table.cellNoFocusBorder");
