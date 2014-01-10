@@ -126,7 +126,7 @@ public class SpreadSheet extends AbstractTableModel {
 	public void write(Writer writer) throws FileNotFoundException {
 		for (Integer cell : cells.keySet()) {
 			int[] xy = getXYCell(cell);
-			writer.addCell(cells.get(cell), xy[0], xy[1]);
+			writer.addCell(cells.get(cell), xy[0] + 1, xy[1] + 1);
 		}
 		writer.close();
 	}
