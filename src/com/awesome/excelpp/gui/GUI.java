@@ -72,7 +72,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		mainFrame.addWindowListener(this);
 
 		mainTabs = new JTabbedPane();
-		createNewTab(); //open altijd één tab
+		createNewTab(null); //open altijd één tab
 
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
@@ -199,16 +199,28 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Creates a new tab with a new SpreadSheetTable inside it
 	 * @return void
 	 */
-	private final void createNewTab() {
-		SpreadSheetTable table = new SpreadSheetTable();
+	private final void createNewTab(File file) {
+		SpreadSheet sheet;
+		String tabTitle;
+		
+		try {
+			Document doc = XML.parse(file);
+			sheet = XML.print(doc);
+			sheet.write(new SysOutWriter());  //TODO: REMOVE DEBUG
+			tabTitle = file.getName();
+		} catch (Exception e) {
+			sheet = new SpreadSheet();
+			tabTitle = "New File";
+		}
+		
+		SpreadSheetTable table = new SpreadSheetTable(sheet, file);
 		SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
 		
 		int last = panes.size();
 		panes.add(pane);
-		mainTabs.addTab(null, null, pane, "New File"); // Add tab to pane without label or icon but with tooltip
-		mainTabs.setTabComponentAt(last, new CloseableTabComponent("New File")); // Now assign the component for the tab
+		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
+		mainTabs.setTabComponentAt(last, new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
 		mainTabs.setSelectedIndex(last);
-		//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 	}
 
 	/**
@@ -254,7 +266,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			//if(panes.get(index).newFile() == 0)
 				//updateTabTitle(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonNewTab))
-			createNewTab();
+			createNewTab(null);
 		else if (e.getSource().equals(buttonSave)) {
 			//TODO: Save file
 			//if(panes.get(index).saveFile() == 0)
@@ -328,24 +340,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
 		fc.setFileFilter(filter);
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
-			try {
-				Document doc = XML.parse(file);
-				SpreadSheet sheet = XML.print(doc);
-				sheet.write(new SysOutWriter());
-				SpreadSheetTable table = new SpreadSheetTable(sheet, file);
-				SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
-				
-				int last = panes.size();
-				panes.add(pane);
-				mainTabs.addTab(null, null, pane, table.getFileString()); // Add tab to pane without label or icon but with tooltip
-				mainTabs.setTabComponentAt(last, new CloseableTabComponent(table.getFileString())); // Now assign the component for the tab
-				mainTabs.setSelectedIndex(last);
-				opened = 0; // Return 0, zoals closeFile
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				System.err.println ("debug: " + ex.getMessage());
-			}
+			createNewTab(fc.getSelectedFile());
 		}
 		return opened;
 	}
