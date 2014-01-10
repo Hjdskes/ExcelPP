@@ -22,6 +22,7 @@ public class SpreadSheet extends AbstractTableModel {
 	private UndoableEditSupport undoSupport;
 	
 	public SpreadSheet() {
+		super();
 		cells = new HashMap<Integer, Cell>();
 		undoSupport = new UndoableEditSupport();
 	}

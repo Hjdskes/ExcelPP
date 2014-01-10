@@ -5,14 +5,12 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.gui.GUI;
 
 import java.io.File;
-import java.io.IOException;
 
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
@@ -23,40 +21,27 @@ import javax.swing.undo.UndoManager;
  */
 public class SpreadSheetTable extends JTable implements MouseListener, UndoableEditListener {
 	private static final long serialVersionUID = 1L;
-
-	private JScrollPane scrollPane;
 	
-	private File file = null;
+	private File file;
 	private int selectedColumn;
 	private int selectedRow;
 	private UndoManager undoManager;
 
-	public SpreadSheetTable (SpreadSheet sheet) throws IOException {
+	public SpreadSheetTable (SpreadSheet sheet, File file) {
 		super(sheet);
+		this.file = file;
 		undoManager = new UndoManager();
 		this.setFillsViewportHeight (true);
 		this.setSelectionBackground (new Color(200, 221, 242));
 		this.setColumnSelectionAllowed(true);
-		
-		JTable rowTabel = new RowNumberTable(this);
-		scrollPane = new JScrollPane(this);
-		scrollPane.setRowHeaderView(rowTabel);
-		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTabel.getTableHeader());
-
 		this.addMouseListener(this);
 		
 		sheet.addTableModelListener(this);
 		//sheet.addUndoableEditListener(this);
-		
-		file = File.createTempFile("excelpp_temp", ".xml");
 	}
-
-	/**
-	 * Returns the JScrollPane of this tab
-	 * @return JScrollPane
-	 */
-	public final JScrollPane getScrollPane() {
-		return scrollPane;
+	
+	public SpreadSheetTable() {
+		this(new SpreadSheet(), null);
 	}
 
 	/**
