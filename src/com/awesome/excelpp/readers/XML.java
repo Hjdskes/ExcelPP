@@ -1,4 +1,4 @@
-package com.awesome.excelpp.xml;
+package com.awesome.excelpp.readers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
