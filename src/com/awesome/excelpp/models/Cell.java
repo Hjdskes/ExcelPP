@@ -9,12 +9,11 @@ import com.awesome.excelpp.parser.exception.ParserException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.awt.Color;
-import java.util.Observable;
 
 /**
  * Class that represents a cell
  */
-public class Cell extends Observable {
+public class Cell {
 	private String content; // =2+2
 	private SpreadSheet sheet;
 	private int fontBold; // 1 = bold, 0 = niet bold

@@ -53,7 +53,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonAbout;
 	private static JButton buttonBackgroundColor;
 	private static JButton buttonForegroundColor;
-	private static JButton buttonItalics;
+	private static JButton buttonItalic;
 	private static JButton buttonBold;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
@@ -102,7 +102,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo = new JButton();
 		functionField = new JTextField(50);
 		buttonBold = new JButton("Bold");
-		buttonItalics = new JButton("Italics");
+		buttonItalic = new JButton("Italic");
 		buttonForegroundColor = new JButton();
 		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
@@ -139,7 +139,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
 		buttonBold.setToolTipText("Make this cell's text bold");
-		buttonItalics.setToolTipText("Make this cell's text italic");
+		buttonItalic.setToolTipText("Make this cell's text italic");
 		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
 		buttonBackgroundColor.setToolTipText("Set this cell's background color");
 		buttonAbout.setToolTipText("About");
@@ -154,7 +154,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(functions);
 		panel.add(functionField);
 		panel.add(buttonBold);
-		panel.add(buttonItalics);
+		panel.add(buttonItalic);
 		panel.add(buttonForegroundColor);
 		panel.add(buttonBackgroundColor);
 		panel.add(buttonAbout);
@@ -176,7 +176,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
 		buttonBold.addActionListener(this);
-		buttonItalics.addActionListener(this);
+		buttonItalic.addActionListener(this);
 		buttonForegroundColor.addActionListener(this);
 		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
@@ -301,9 +301,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			if(panes.get(index).openSaveDialog() == 0)
 				updateTabTitle(index, panes.get(index).getFileString());
 		} else if (e.getSource().equals(buttonBold)) {
-			panes.get(index).setCellBold();
-		} else if (e.getSource().equals(buttonItalics)) {
-			panes.get(index).setCellItalic();
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			int bold = current.getBold()  == 0 ? 1 : 0;
+			current.setBold(bold);
+		} else if (e.getSource().equals(buttonItalic)) {
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			int italic = current.getItalic() == 0 ? 2 : 0;
+			current.setItalic(italic);
 		} else if (e.getSource().equals(buttonForegroundColor)) {
 			Color foreground = null;
 			int row = panes.get(index).getSelectedRow();

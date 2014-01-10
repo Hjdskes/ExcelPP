@@ -14,7 +14,7 @@ import sun.swing.DefaultLookup;
 import com.awesome.excelpp.models.Cell;
 
 /**
- * @author: Oracle, Philip Milne. Modified by us to support Cell markup
+ * @author: Oracle, Philip Milne. Modified by Team Awesome to support Cell markup
  * @source: http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/7-b147/javax/swing/table/DefaultTableCellRenderer.java/?v=source
  */
 public class AwesomeCellRenderer extends DefaultTableCellRenderer {

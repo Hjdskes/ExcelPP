@@ -50,6 +50,7 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 		tabel.setSelectionBackground (new Color(200, 221, 242));
 		tabel.setColumnSelectionAllowed(true);
 		tabel.setDefaultRenderer(String.class, new AwesomeCellRenderer());
+
 		rowTabel = new RowNumberTable(tabel);
 		
 		scrollPane = new JScrollPane(tabel);
@@ -137,20 +138,16 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 		return cellSelected;
 	}
 
-	public final void setCellBold() {
+	public final void setCellBold(int bold) {
 		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-		if (current != null) {
-			int bold = current.getBold();
-			current.setBold(bold == 0 ? 1 : 0);
-		}
+		if (current != null)
+			current.setBold(bold);
 	}
 
-	public final void setCellItalic() {
+	public final void setCellItalic(int italic) {
 		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-		if (current != null) {
-			int italic = current.getItalic();
-			current.setItalic(italic == 0 ? 2 : 0);
-		}
+		if (current != null)
+			current.setItalic(italic);
 	}
 
 	public final void setCellForeground(Cell cell, Color foreground) {
@@ -351,6 +348,13 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 * Observes changes in the table
 	 */
 	public final void update(Observable o, Object arg) {
+		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+		/*if (current != null) {
+			int bold = current.getBold();
+			current.setBold(!bold);
+			current.setBold(bold);
+			current.setItalic(current.getItalic() == 0 ? 0 : 2);
+		}*/
 		tabel.repaint();
 	}
 
