@@ -51,6 +51,10 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	public final File getFile() {
 		return file;
 	}
+	
+	public void setFile(File file) {
+		this.file = file;
+	}
 
 	/**
 	 * Returns a String representation of the opened file

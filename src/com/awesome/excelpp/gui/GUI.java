@@ -2,6 +2,7 @@
 package com.awesome.excelpp.gui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
@@ -37,6 +38,7 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.readers.XML;
 import com.awesome.excelpp.writers.SysOutWriter;
+import com.awesome.excelpp.writers.XMLWriter;
 
 /**
  * Class that constructs everything needed for and by the GUI
@@ -199,14 +201,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Creates a new tab with a new SpreadSheetTable inside it
 	 * @return void
 	 */
-	private final void createNewTab(File file) {
+	public final void createNewTab(File file) {
 		SpreadSheet sheet;
 		String tabTitle;
 		
 		try {
 			Document doc = XML.parse(file);
 			sheet = XML.print(doc);
-			sheet.write(new SysOutWriter());  //TODO: REMOVE DEBUG
+			sheet.write(new SysOutWriter());
 			tabTitle = file.getName();
 		} catch (Exception e) {
 			sheet = new SpreadSheet();
@@ -227,12 +229,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Removes the currently active tab. Makes sure there is always one tab remaining.
 	 * @return void
 	 */
-	final static void removeTab() {
+	public static final void removeTab() {
 		int index = mainTabs.getSelectedIndex();
-		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
-			mainTabs.remove(index);
-			panes.remove(index);
-		}
+		mainTabs.remove(index);
+		panes.remove(index);
 	}
 
 	/**
@@ -260,21 +260,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		int index = mainTabs.getSelectedIndex();
 
 		if (e.getSource().equals(buttonOpen)) {
-				openFileDialog();
+			openFile();
 		} else if (e.getSource().equals(buttonNew)) {
-			//TODO: New file
-			//if(panes.get(index).newFile() == 0)
-				//updateTabTitle(index, panes.get(index).getFileString());
+			newFile();
 		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab(null);
 		else if (e.getSource().equals(buttonSave)) {
-			//TODO: Save file
-			//if(panes.get(index).saveFile() == 0)
-				//updateTabTitle(index, panes.get(index).getFileString());
+			//TODO: tabTitle
+			saveFile(false);
 		} else if (e.getSource().equals(buttonSaveAs)) {
-			//TODO: Save as
-			//if(panes.get(index).openSaveDialog() == 0)
-				//updateTabTitle(index, panes.get(index).getFileString());
+			//TODO: tabTitle
+			saveFile(true);
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
@@ -334,122 +330,49 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Opens a file dialog in which the user can select the file to open
 	 * @return int - choice made: 0 for opened, 1 for cancel.
 	 */
-	public final int openFileDialog() {
-		int opened = 1;
+	public final void openFile() {
+		//TODO: return value
 		final JFileChooser fc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
 		fc.setFileFilter(filter);
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			createNewTab(fc.getSelectedFile());
 		}
-		return opened;
 	}
 
 	/**
 	 * Properly handles opening a new file - spawns a dialog if changes will be lost
 	 * @return int - 0 for OK, 1 for cancel.
-	 *
+	 */
 	public final int newFile () {
-		int res = 1;
-		if(closeFile() == 0) {
-			try {
-				removeTempFile(file);
-				file = File.createTempFile("excelpp_temp", ".xml");
-				res = 0;
-				this.setModel (new SpreadSheet());
-				this.updateUI();
-			} catch (IOException ex) {
-				JOptionPane.showMessageDialog(this, "Can't open a temporary file.", "Warning", JOptionPane.WARNING_MESSAGE);
-			}
-		}
-		return res;
-	}*/
+		//TODO: return value
+		GUI.removeTab();
+		this.createNewTab(null);
+		return 0;
+	}
 
 	/**
 	 * Saves the currently opened file
 	 * @return int - choice made: 0 for saved, 1 for cancel.
-	 *
-	public final int saveFile () {
-		int saved = 1;
-		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
-			saved = openSaveDialog();
-		else {
-			//try {
-				//sheet.write(new XMLWriter(file));
-				saved = 0;
-			//} catch (FileNotFoundException ex) {
-				//JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
-				//ex.printStackTrace();
-			//}
-		}
-		return saved;
-	}*/
-
-	/**
-	 * Properly handles closing of a file - spawns a dialog if changes will be lost
-	 * @return int - choice made: 0 for OK, 1 for cancel.
-	 *
-	public final int closeFile () {
-		int close = 1;
-		try {
-			if (file.toString().contains(System.getProperty("java.io.tmpdir")) == false) {
-				Document doc = XML.parse(file);
-				SpreadSheet fileSheet = XML.print(doc);
-				if(!this.getModel().equals(fileSheet))
-					close = JOptionPane.showConfirmDialog(this, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
-			} else {
-				//if(sheet.isEmpty() == false) {
-					//close = JOptionPane.showConfirmDialog(tabel, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
-					//if(close == 0) {
-						//if(file.delete() != true)
-							//JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
-					//}
-				//} else {
-					//if(file.delete() != true)
-						//JOptionPane.showMessageDialog(tabel, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
-					//else
-						//close = 0;
-				//}
+	 */
+	public final void saveFile (boolean saveAs) {
+		//TODO: fix return value
+		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
+		SpreadSheetTable table = pane.getTable();
+		File file;
+		if (table.getFile() == null || saveAs == true) {
+			final JFileChooser fc = new JFileChooser();
+			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+				file = fc.getSelectedFile();
+				table.setFile(file);
 			}
-		} catch (Exception ex) {
-			System.err.println (ex.getMessage());
 		}
-		return close;
-	}*/
-
-	/**
-	 * Opens a file dialog in which the user can select where to save the current SpreadSheet
-	 * @return int - choice made: 0 for saved, 1 for cancel.
-	 *
-	public final int openSaveDialog() {
-		int saved = 1;
-		final JFileChooser fc = new JFileChooser();
-		if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-			String fileString = fc.getSelectedFile().getPath();
-			fileString = fileString.replaceAll("\\...*", "");
-			fileString += ".xml";
-			removeTempFile(file);
-			file = new File(fileString);
-			//try {
-				//file.getParentFile().mkdirs();
-				//sheet.write(new XMLWriter(file));
-				saved = 0;
-			//} catch (FileNotFoundException ex) {
-				//JOptionPane.showMessageDialog(tabel, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
-				//ex.printStackTrace();
-			//}
+		
+		try {
+			((SpreadSheet)table.getModel()).write(new XMLWriter(table.getFile()));
+		} catch (FileNotFoundException ex) {
+			JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
 		}
-		return saved;
-	}*/
-
-	/**
-	 * Checks if parameter file is a temporary file and if so, tries to delete it
-	 * @param file
-	 * @return void
-	 *
-	private final void removeTempFile(File file) {
-		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
-			if(file.delete() != true)
-				JOptionPane.showMessageDialog(this, "Can not delete temporary file", "Warning", JOptionPane.WARNING_MESSAGE);
-	}*/
+	}
 }
