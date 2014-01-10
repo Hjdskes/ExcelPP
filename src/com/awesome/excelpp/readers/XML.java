@@ -82,7 +82,7 @@ public class XML {
 		      int row_out = Integer.parseInt(row);
 		      int col_out = Integer.parseInt(column);
 		      
-		      sheet.setValueAt(data, row_out, col_out);
+		      sheet.setValueAt(data, row_out - 1, col_out - 1);
 		    }
 		    return sheet;
 		  }
