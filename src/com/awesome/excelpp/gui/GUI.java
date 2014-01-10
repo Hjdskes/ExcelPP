@@ -28,8 +28,14 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.undo.UndoManager;
 
+import com.awesome.excelpp.models.Cell;
+
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo: fix color buttons
+ *         make them more distinct
+ *         have them display current cell's colors
+ *       even display color when cell is selected?
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -41,7 +47,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
-	private static JButton buttonColor;
+	private static JButton buttonBackgroundColor;
+	private static JButton buttonForegroundColor;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
@@ -85,7 +92,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(30);
-		buttonColor = new JButton();
+		buttonForegroundColor = new JButton();
+		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
@@ -108,7 +116,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
-		buttonColor.setIcon(colorIcon);
+		buttonForegroundColor.setIcon(colorIcon);
+		buttonBackgroundColor.setIcon(colorIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -118,7 +127,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setToolTipText("Save as");
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
-		buttonColor.setToolTipText("Set this cell's colors");
+		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
+		buttonBackgroundColor.setToolTipText("Set this cell's background color");
 		buttonAbout.setToolTipText("About");
 
 		panel.add(buttonNew);
@@ -130,7 +140,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
-		panel.add(buttonColor);
+		panel.add(buttonForegroundColor);
+		panel.add(buttonBackgroundColor);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -149,7 +160,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
-		buttonColor.addActionListener(this);
+		buttonForegroundColor.addActionListener(this);
+		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
 		return panel;
@@ -271,12 +283,26 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			if(panes.get(index).openSaveDialog() == 0)
 				updateTabTitle(index, panes.get(index).getFileString());
-		 } else if (e.getSource().equals(buttonColor)) {
-			 Color initialBackground = Color.WHITE;
-			 Color background = null;
-			 background = JColorChooser.showDialog(mainFrame, "Choose a background color", initialBackground);
-			 if(background != null)
-				 panes.get(index).setCellBackground(background);
+		} else if (e.getSource().equals(buttonForegroundColor)) {
+			Color foreground = null;
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			foreground = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getForegroundColor());
+			if(foreground != null) {
+				panes.get(index).setCellForeground(foreground);
+				buttonForegroundColor.setBackground(foreground);
+			}
+		} else if (e.getSource().equals(buttonBackgroundColor)) {
+			Color background = null;
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			background = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getBackgroundColor());
+			if(background != null) {
+				panes.get(index).setCellBackground(background);
+				buttonBackgroundColor.setBackground(background);
+			}
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {

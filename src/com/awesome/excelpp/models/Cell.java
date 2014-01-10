@@ -13,11 +13,11 @@ import java.util.Observable;
 
 /**
  * Class that represents a cell
- *
  */
 public class Cell extends Observable {
 	private String content; // =2+2
 	private SpreadSheet sheet;
+	private Color foregroundColor;
 	private Color backgroundColor;
 	
 	/**
@@ -27,18 +27,29 @@ public class Cell extends Observable {
 	public Cell(SpreadSheet sheet, String content) {
 		this.sheet = sheet;
 		this.content = content;
+		this.foregroundColor = Color.black;
 		this.backgroundColor = Color.white;
 	}
 
 	/**
 	 * Constructs a new Cell with the specified background Color
 	 * @param content  String with an unevaluated expression
-	 * @param backgroundColor    The new background Color of this Cell
+	 * @param foregroundColor    The foreground Color of this Cell. Can be null.
+	 * @param backgroundColor    The background Color of this Cell. Can be null.
 	 */
-	public Cell(SpreadSheet sheet, String content, Color backgroundColor) {
+	public Cell(SpreadSheet sheet, String content, Color foregroundColor, Color backgroundColor) {
 		this.sheet = sheet;
 		this.content = content;
-		this.backgroundColor = backgroundColor;
+
+		if (foregroundColor != null)
+			this.foregroundColor = foregroundColor;
+		else
+			this.foregroundColor = Color.BLACK;
+
+		if (backgroundColor != null)
+			this.backgroundColor = backgroundColor;
+		else
+			this.backgroundColor = Color.WHITE;
 	}
 
 	@Override
@@ -62,6 +73,22 @@ public class Cell extends Observable {
 	 */
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	/**
+	 * Gets the foreground Color of this Cell
+	 * @return      The new foreground Color of this Cell
+	 */
+	public void setForegroundColor(Color newForegroundColor) {
+		this.foregroundColor = newForegroundColor;
+	}
+
+	/**
+	 * Sets the foreground Color of this Cell
+	 * @return      The foreground Color of this Cell
+	 */
+	public Color getForegroundColor() {
+		return foregroundColor;
 	}
 
 	/**
