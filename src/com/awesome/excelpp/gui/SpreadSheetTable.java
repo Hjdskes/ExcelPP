@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.undo.UndoManager;
 
 /**
@@ -54,6 +55,9 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 		scrollPane = new JScrollPane(tabel);
 		scrollPane.setRowHeaderView(rowTabel);
 		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTabel.getTableHeader());
+
+		tabel.setDefaultRenderer(Cell.class, new DefaultTableCellRenderer());
+		tabel.getColumnModel().getColumn(0).setCellRenderer(new AwesomeCellRenderer());
 
 		tabel.addMouseListener(this);
 		sheet.addObserver(this);
@@ -134,6 +138,13 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	 */
 	public final boolean getCellSelected(){
 		return cellSelected;
+	}
+
+	public final void setCellBackground(Color background) {
+		Cell current = null;
+		current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+		if(current != null)
+			current.setBackgroundColor(background);
 	}
 
 	/**

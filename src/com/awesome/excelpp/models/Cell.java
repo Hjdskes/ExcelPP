@@ -8,6 +8,7 @@ import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
+import java.awt.Color;
 import java.util.Observable;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Observable;
 public class Cell extends Observable {
 	private String content; // =2+2
 	private SpreadSheet sheet;
+	private Color backgroundColor;
 	
 	/**
 	 * Constructs a new Cell
@@ -25,8 +27,20 @@ public class Cell extends Observable {
 	public Cell(SpreadSheet sheet, String content) {
 		this.sheet = sheet;
 		this.content = content;
+		this.backgroundColor = Color.white;
 	}
-	
+
+	/**
+	 * Constructs a new Cell with the specified background Color
+	 * @param content  String with an unevaluated expression
+	 * @param backgroundColor    The new background Color of this Cell
+	 */
+	public Cell(SpreadSheet sheet, String content, Color backgroundColor) {
+		this.sheet = sheet;
+		this.content = content;
+		this.backgroundColor = backgroundColor;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
@@ -49,7 +63,23 @@ public class Cell extends Observable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+
+	/**
+	 * Gets the background Color of this Cell
+	 * @return      The new background Color of this Cell
+	 */
+	public void setBackgroundColor(Color newBackgroundColor) {
+		this.backgroundColor = newBackgroundColor;
+	}
+
+	/**
+	 * Sets the background Color of this Cell
+	 * @return      The background Color of this Cell
+	 */
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
 	/**
 	 * Gets the evaluated content of this Cell
 	 * Suppose the content of this Cell is "=4+4"

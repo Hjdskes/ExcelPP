@@ -4,6 +4,7 @@ package com.awesome.excelpp.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -39,6 +41,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
+	private static JButton buttonColor;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
@@ -82,6 +85,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(30);
+		buttonColor = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
@@ -94,6 +98,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
 		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon colorIcon = new ImageIcon("data/icons/gnome-colors.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		buttonNew.setIcon(newIcon);
@@ -103,6 +108,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
+		buttonColor.setIcon(colorIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -112,6 +118,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setToolTipText("Save as");
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
+		buttonColor.setToolTipText("Set this cell's colors");
 		buttonAbout.setToolTipText("About");
 
 		panel.add(buttonNew);
@@ -123,6 +130,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
+		panel.add(buttonColor);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -141,6 +149,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
+		buttonColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
 		return panel;
@@ -262,6 +271,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			if(panes.get(index).openSaveDialog() == 0)
 				updateTabTitle(index, panes.get(index).getFileString());
+		 } else if (e.getSource().equals(buttonColor)) {
+			 Color initialBackground = Color.WHITE;
+			 Color background = null;
+			 background = JColorChooser.showDialog(mainFrame, "Choose a background color", initialBackground);
+			 if(background != null)
+				 panes.get(index).setCellBackground(background);
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
