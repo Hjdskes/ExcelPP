@@ -37,7 +37,7 @@ import com.awesome.excelpp.models.Cell;
  * Class that constructs everything needed for and by the GUI
  * ToDo: fix color buttons
  *         make them more distinct
- *         have them display current cell's colors
+ *         coloring whole button with last selected color is a bit too much?
  *       even display color when cell is selected?
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {

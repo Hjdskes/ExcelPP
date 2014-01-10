@@ -39,9 +39,6 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 	}
 
     /**
-    *
-    * Returns the default table cell renderer.
-    * <p>
     * During a printing operation, this method will be called with
     * <code>isSelected</code> and <code>hasFocus</code> values of
     * <code>false</code> to prevent selection and focus from appearing
@@ -56,7 +53,7 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
     * @param hasFocus true if cell has focus
     * @param row  the row of the cell to render
     * @param column the column of the cell to render
-    * @return the default table cell renderer
+    * @return the custom awesome table cell renderer
     * @see javax.swing.JComponent#isPaintingForPrint()
     */
 	@Override
