@@ -5,7 +5,6 @@ import javax.swing.JTable;
 
 public class SpreadSheetScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 1L;
-	
 	private SpreadSheetTable table;
 
 	public SpreadSheetScrollPane(SpreadSheetTable table) {
@@ -21,7 +20,11 @@ public class SpreadSheetScrollPane extends JScrollPane {
 	public SpreadSheetScrollPane() {
 		this(new SpreadSheetTable());
 	}
-	
+
+	public void setTable(SpreadSheetTable table) { //ToDo: nodig? Tabel wordt hier niet door bijgewerkt
+		this.table = table;
+	}
+
 	public SpreadSheetTable getTable() {
 		return this.table;
 	}

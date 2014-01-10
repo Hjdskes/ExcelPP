@@ -34,7 +34,6 @@ import javax.imageio.ImageIO;
 
 import org.w3c.dom.Document;
 
-import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.readers.XML;
 import com.awesome.excelpp.writers.SysOutWriter;
@@ -42,6 +41,9 @@ import com.awesome.excelpp.writers.XMLWriter;
 
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo: newFile and openFile do not replace current table
+ *       popups when files are not saved
+ *       saveFile does not save Cell contents
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -202,27 +204,16 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	public final void createNewTab(File file) {
-		SpreadSheet sheet;
-		String tabTitle;
-		
-		try {
-			Document doc = XML.parse(file);
-			sheet = XML.print(doc);
-			sheet.write(new SysOutWriter());
-			tabTitle = file.getName();
-		} catch (Exception e) {
-			sheet = new SpreadSheet();
-			tabTitle = "New File";
-		}
-		
+		SpreadSheet sheet = newFile(file);
 		SpreadSheetTable table = new SpreadSheetTable(sheet, file);
 		SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
-		
 		int last = panes.size();
 		panes.add(pane);
+		String tabTitle = "Temporary file";
 		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
 		mainTabs.setTabComponentAt(last, new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
 		mainTabs.setSelectedIndex(last);
+		//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
 	}
 
 	/**
@@ -230,9 +221,21 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	public static final void removeTab() {
-		int index = mainTabs.getSelectedIndex();
-		mainTabs.remove(index);
-		panes.remove(index);
+		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
+			int index = mainTabs.getSelectedIndex();
+			mainTabs.remove(index);
+			panes.remove(index);
+		}
+	}
+
+	/**
+	 * Updates the tab's title.
+	 * @param newTitle - the new title to set.
+	 * @return void
+	 */
+	private final void updateTabTitle(int index, String newTitle) {
+		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
+		currentComponent.setTitle(newTitle);
 	}
 
 	/**
@@ -259,19 +262,21 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
 
-		if (e.getSource().equals(buttonOpen)) {
+		if (e.getSource().equals(buttonOpen))
 			openFile();
-		} else if (e.getSource().equals(buttonNew)) {
-			newFile();
+		else if (e.getSource().equals(buttonNew)) {
+			SpreadSheet newSheet = newFile(null);
+			SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
+			SpreadSheetScrollPane newPane = new SpreadSheetScrollPane(newTable);
+			panes.set(index, newPane);
+			updateTabTitle(index, "Temporary file");
 		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab(null);
-		else if (e.getSource().equals(buttonSave)) {
-			//TODO: tabTitle
+		else if (e.getSource().equals(buttonSave))
 			saveFile(false);
-		} else if (e.getSource().equals(buttonSaveAs)) {
-			//TODO: tabTitle
+		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
-		} else if (e.getSource().equals(buttonAbout))
+		else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
@@ -305,14 +310,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e) {
-		for(int i = 0; i < panes.size(); i++) {
+		/*for(int i = 0; i < panes.size(); i++) {
 			SpreadSheetTable currentSheet = panes.get(i).getTable();
 			//TODO:
 			//if(currentPane.closeFile() == 1) {
 				//JOptionPane.showMessageDialog(mainFrame, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
 				//return;
 			//}
-		}
+		}*/
 		System.exit(0); //ToDo: niet de beste oplossing?
 	}
 
@@ -328,35 +333,47 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Opens a file dialog in which the user can select the file to open
-	 * @return int - choice made: 0 for opened, 1 for cancel.
+	 * @return void
 	 */
 	public final void openFile() {
-		//TODO: return value
 		final JFileChooser fc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
 		fc.setFileFilter(filter);
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			createNewTab(fc.getSelectedFile());
+			int index = mainTabs.getSelectedIndex();
+			File file = fc.getSelectedFile();
+			SpreadSheet sheet = new SpreadSheet();
+			SpreadSheetTable table = new SpreadSheetTable(sheet, file);
+			panes.get(index).setTable(table);
+			//panes.set(index, pane);
+			//table.repaint();
+			updateTabTitle(index, file.getName());
 		}
 	}
 
 	/**
 	 * Properly handles opening a new file - spawns a dialog if changes will be lost
-	 * @return int - 0 for OK, 1 for cancel.
+	 * @return sheet
 	 */
-	public final int newFile () {
-		//TODO: return value
-		GUI.removeTab();
-		this.createNewTab(null);
-		return 0;
+	public final SpreadSheet newFile (File file) {
+		SpreadSheet sheet;
+
+		try {
+			Document doc = XML.parse(file);
+			sheet = XML.print(doc);
+			sheet.write(new SysOutWriter());
+		} catch (Exception e) {
+			sheet = new SpreadSheet();
+		}
+
+		return sheet;
 	}
 
 	/**
 	 * Saves the currently opened file
-	 * @return int - choice made: 0 for saved, 1 for cancel.
+	 * @return void
 	 */
 	public final void saveFile (boolean saveAs) {
-		//TODO: fix return value
 		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
 		SpreadSheetTable table = pane.getTable();
 		File file;
@@ -365,6 +382,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				file = fc.getSelectedFile();
 				table.setFile(file);
+				updateTabTitle(mainTabs.getSelectedIndex(), file.getName());
 			}
 		}
 		
