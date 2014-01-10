@@ -1,10 +1,12 @@
 
 package com.awesome.excelpp.gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,6 +27,7 @@ import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.undo.UndoManager;
+import javax.imageio.ImageIO;
 
 /**
  * Class that constructs everything needed for and by the GUI
@@ -49,11 +52,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-
+		BufferedImage mainImage = ImageIO.read(new File("data/icons/stock_new-spreadsheet.svg"));
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
+		mainFrame.setIconImage(mainImage);
 		mainFrame.setSize (900, 400);
-		mainFrame.setMinimumSize(buttonPanel.getPreferredSize());
+		mainFrame.setMinimumSize(buttonPanel.getPreferredSize()); //ToDo: andere oplossing?
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(this);
@@ -71,9 +75,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return JPanel
 	 */
 	private final JPanel createButtonPanel() {
-		final JPanel panel = new JPanel();
+		FlowLayout layout = new FlowLayout();
+		layout.setAlignment(FlowLayout.CENTER);
+		layout.setAlignOnBaseline(true);
+		final JPanel panel = new JPanel(layout);
 
-		panel.setLayout(new FlowLayout());
 		buttonNew = new JButton();
 		buttonNewTab = new JButton();
 		buttonOpen = new JButton();
@@ -81,7 +87,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs = new JButton();
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
-		functionField = new JTextField(30);
+		functionField = new JTextField(50);
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
