@@ -24,11 +24,11 @@ public class Cell extends Observable {
 	 * Constructs a new Cell
 	 * @param content	String with an unevaluated expression
 	 */
-	public Cell(SpreadSheet sheet, String content) {
+	public Cell(SpreadSheet sheet, String content, Color foregroundColor, Color backgroundColor) {
 		this.sheet = sheet;
 		this.content = content;
-		this.foregroundColor = Color.black;
-		this.backgroundColor = Color.white;
+		this.foregroundColor = foregroundColor;
+		this.backgroundColor = backgroundColor;
 	}
 
 	/**
@@ -37,19 +37,8 @@ public class Cell extends Observable {
 	 * @param foregroundColor    The foreground Color of this Cell. Can be null.
 	 * @param backgroundColor    The background Color of this Cell. Can be null.
 	 */
-	public Cell(SpreadSheet sheet, String content, Color foregroundColor, Color backgroundColor) {
-		this.sheet = sheet;
-		this.content = content;
-
-		if (foregroundColor != null)
-			this.foregroundColor = foregroundColor;
-		else
-			this.foregroundColor = Color.BLACK;
-
-		if (backgroundColor != null)
-			this.backgroundColor = backgroundColor;
-		else
-			this.backgroundColor = Color.WHITE;
+	public Cell(SpreadSheet sheet, String content) {
+		this(sheet, content, Color.BLACK, Color.WHITE);
 	}
 
 	@Override
