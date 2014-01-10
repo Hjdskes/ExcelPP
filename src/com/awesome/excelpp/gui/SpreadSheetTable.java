@@ -148,8 +148,8 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 	public final void setCellItalic() {
 		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
 		if (current != null) {
-			int italics = current.getItalics();
-			current.setItalics(italics == 0 ? 2 : 0);
+			int italic = current.getItalic();
+			current.setItalic(italic == 0 ? 2 : 0);
 		}
 	}
 

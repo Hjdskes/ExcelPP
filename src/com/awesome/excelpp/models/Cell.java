@@ -18,7 +18,7 @@ public class Cell extends Observable {
 	private String content; // =2+2
 	private SpreadSheet sheet;
 	private int fontBold; // 1 = bold, 0 = niet bold
-	private int fontItalics; // 2 = italics, 0 = niet italics
+	private int fontItalic; // 2 = italic, 0 = niet italic
 	private Color foregroundColor;
 	private Color backgroundColor;
 	
@@ -26,11 +26,11 @@ public class Cell extends Observable {
 	 * Constructs a new Cell
 	 * @param content	String with an unevaluated expression
 	 */
-	public Cell(SpreadSheet sheet, String content, int bold, int italics, Color foregroundColor, Color backgroundColor) {
+	public Cell(SpreadSheet sheet, String content, int bold, int italic, Color foregroundColor, Color backgroundColor) {
 		this.sheet = sheet;
 		this.content = content;
 		this.fontBold = bold;
-		this.fontItalics = italics;
+		this.fontItalic = italic;
 		this.foregroundColor = foregroundColor;
 		this.backgroundColor = backgroundColor;
 	}
@@ -39,7 +39,7 @@ public class Cell extends Observable {
 	 * Constructs a new Cell with the specified background Color
 	 * @param content  String with an unevaluated expression
 	 * @param bold     Whether or not the text in this Cell is bold
-	 * @param italics  Whether or not the text in this Cell is in italics
+	 * @param italic  Whether or not the text in this Cell is in italic
 	 * @param foregroundColor    The foreground Color of this Cell. Can be null.
 	 * @param backgroundColor    The background Color of this Cell. Can be null.
 	 */
@@ -70,22 +70,38 @@ public class Cell extends Observable {
 		this.content = content;
 	}
 
+	/**
+	 * Sets the bold state of the font in this Cell
+	 * @param bold    Whether or not font is bold: 1 for bold, 0 for plain
+	 */
 	public void setBold(int bold) {
 		if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
 			this.fontBold = bold;
 	}
 
+	/**
+	 * Gets the current bold state of the font in this Cell
+	 * @return     The current bold state of the font in this Cell
+	 */
 	public int getBold() {
 		return fontBold;
 	}
 
-	public void setItalics(int italics) {
-		if (italics == 0 || italics == 2) //italics mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
-			this.fontItalics = italics;
+	/**
+	 * Sets the italic state of the font in this Cell
+	 * @param bold    Whether or not font is italic: 2 for italic, 0 for plain
+	 */
+	public void setItalic(int italic) {
+		if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
+			this.fontItalic = italic;
 	}
 
-	public int getItalics() {
-		return fontItalics;
+	/**
+	 * Gets the current italic state of the font in this Cell
+	 * @return     The current italic state of the font in this Cell
+	 */
+	public int getItalic() {
+		return fontItalic;
 	}
 
 	/**

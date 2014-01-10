@@ -94,8 +94,8 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		Font currentFont = table.getFont();
-		if(currentFont != null && current != null) {
-			Font newFont = new Font(currentFont.getName(), current.getItalics() | current.getBold(), currentFont.getSize());
+		if(current != null) {
+			Font newFont = new Font(currentFont.getName(), current.getItalic() | current.getBold(), currentFont.getSize());
 			setFont(newFont);
 		} else {
 			setFont(currentFont);
