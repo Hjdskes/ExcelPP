@@ -2,6 +2,7 @@ package com.awesome.excelpp.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JTable;
 import javax.swing.border.Border;
@@ -61,6 +62,7 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 		if (table == null)
 			return this;
 
+		Cell current = (Cell)table.getValueAt(row, column);
 		Color fg = null;
 		Color bg = null;
 
@@ -75,19 +77,11 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 			super.setForeground(fg == null ? table.getSelectionForeground() : fg);
 			super.setBackground(bg == null ? table.getSelectionBackground() : bg);
 		} else {
-			Cell current = (Cell)table.getValueAt(row, column);
-
 			Color background;
 			if (current != null)
 				background = current.getBackgroundColor();
 			else
 				background = table.getBackground(); 
-
-			if (background == null || background instanceof javax.swing.plaf.UIResource) {
-				Color alternateColor = DefaultLookup.getColor(this, ui, "Table.alternateRowColor");
-				if (alternateColor != null && row % 2 != 0)
-					background = alternateColor;
-			}
 
 			Color foreground;
 			if (current != null)
@@ -99,7 +93,13 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 			super.setBackground(background);
 		}
 
-		setFont(table.getFont());
+		Font currentFont = table.getFont();
+		if(currentFont != null && current != null) {
+			Font newFont = new Font(currentFont.getName(), current.getItalics() | current.getBold(), currentFont.getSize());
+			setFont(newFont);
+		} else {
+			setFont(currentFont);
+		}
 
 		if (hasFocus) {
 			Border border = null;

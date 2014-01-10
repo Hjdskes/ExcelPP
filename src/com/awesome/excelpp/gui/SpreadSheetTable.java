@@ -137,18 +137,30 @@ public class SpreadSheetTable implements MouseListener, Observer, UndoableEditLi
 		return cellSelected;
 	}
 
-	public final void setCellForeground(Color foreground) {
-		Cell current = null;
-		current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-		if(current != null)
-			current.setForegroundColor(foreground);
+	public final void setCellBold() {
+		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+		if (current != null) {
+			int bold = current.getBold();
+			current.setBold(bold == 0 ? 1 : 0);
+		}
 	}
 
-	public final void setCellBackground(Color background) {
-		Cell current = null;
-		current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
-		if(current != null)
-			current.setBackgroundColor(background);
+	public final void setCellItalic() {
+		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+		if (current != null) {
+			int italics = current.getItalics();
+			current.setItalics(italics == 0 ? 2 : 0);
+		}
+	}
+
+	public final void setCellForeground(Cell cell, Color foreground) {
+		if(cell != null)
+			cell.setForegroundColor(foreground);
+	}
+
+	public final void setCellBackground(Cell cell, Color background) {
+		if(cell != null)
+			cell.setBackgroundColor(background);
 	}
 
 	/**

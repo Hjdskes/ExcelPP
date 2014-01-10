@@ -39,6 +39,7 @@ import com.awesome.excelpp.models.Cell;
  *         make them more distinct
  *         coloring whole button with last selected color is a bit too much?
  *       even display color when cell is selected?
+ *       color multiple cells at the same time
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -52,6 +53,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonAbout;
 	private static JButton buttonBackgroundColor;
 	private static JButton buttonForegroundColor;
+	private static JButton buttonItalics;
+	private static JButton buttonBold;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
@@ -98,6 +101,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(50);
+		buttonBold = new JButton("Bold");
+		buttonItalics = new JButton("Italics");
 		buttonForegroundColor = new JButton();
 		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
@@ -133,6 +138,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setToolTipText("Save as");
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
+		buttonBold.setToolTipText("Make this cell's text bold");
+		buttonItalics.setToolTipText("Make this cell's text italic");
 		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
 		buttonBackgroundColor.setToolTipText("Set this cell's background color");
 		buttonAbout.setToolTipText("About");
@@ -146,6 +153,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
+		panel.add(buttonBold);
+		panel.add(buttonItalics);
 		panel.add(buttonForegroundColor);
 		panel.add(buttonBackgroundColor);
 		panel.add(buttonAbout);
@@ -166,6 +175,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.SHIFT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
+		buttonBold.addActionListener(this);
+		buttonItalics.addActionListener(this);
 		buttonForegroundColor.addActionListener(this);
 		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
@@ -289,6 +300,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		} else if (e.getSource().equals(buttonSaveAs)) {
 			if(panes.get(index).openSaveDialog() == 0)
 				updateTabTitle(index, panes.get(index).getFileString());
+		} else if (e.getSource().equals(buttonBold)) {
+			panes.get(index).setCellBold();
+		} else if (e.getSource().equals(buttonItalics)) {
+			panes.get(index).setCellItalic();
 		} else if (e.getSource().equals(buttonForegroundColor)) {
 			Color foreground = null;
 			int row = panes.get(index).getSelectedRow();
@@ -296,7 +311,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
 			foreground = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getForegroundColor());
 			if(foreground != null) {
-				panes.get(index).setCellForeground(foreground);
+				panes.get(index).setCellForeground(current, foreground);
 				buttonForegroundColor.setBackground(foreground);
 			}
 		} else if (e.getSource().equals(buttonBackgroundColor)) {
@@ -306,7 +321,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
 			background = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getBackgroundColor());
 			if(background != null) {
-				panes.get(index).setCellBackground(background);
+				panes.get(index).setCellBackground(current, background);
 				buttonBackgroundColor.setBackground(background);
 			}
 		} else if (e.getSource().equals(buttonAbout))
