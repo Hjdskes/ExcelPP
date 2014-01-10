@@ -120,6 +120,7 @@ public class Cell extends Observable {
 				parse.toPostfix();
 				return String.valueOf(parse.eval());
 			} catch (ParserException e) {
+				backgroundColor = Color.red;
 				if (e instanceof MissingRBracketException ||
 						e instanceof MissingLBracketException ||
 						e instanceof MissingArgException)
