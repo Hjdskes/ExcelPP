@@ -22,7 +22,6 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 	private static final ImageIcon tabIcon = new ImageIcon("data/icons/stock_edit.png");
 	private static final ImageIcon closeTabIcon = new ImageIcon ("data/icons/tab_close_gray.png");
 	private static final ImageIcon closeTabIconRollover = new ImageIcon ("data/icons/tab_close.png");
-	private JPanel tabPanel;
 	private JLabel tabTitle;
 	private JButton buttonClose;
 
@@ -32,9 +31,9 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 	 * @param title - the title to be displayed by the tab.
 	 */
 	public CloseableTabComponent (String title) {
+		super(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		// Make a small JPanel with the flow layout, spacing things 5px apart, and make it non-opaque
-		tabPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-		tabPanel.setOpaque(false);
+		setOpaque(false);
 
 		// Add a JLabel with title and the left-side tab icon
 		tabTitle = new JLabel(title);
@@ -63,9 +62,9 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 		buttonClose.addActionListener(this);
 		buttonClose.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-		tabPanel.add(tabTitle);
-		tabPanel.add(buttonClose);
-		tabPanel.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0)); // Add a thin border to keep the image below the top edge of the tab when the tab is selected
+		add(tabTitle);
+		add(buttonClose);
+		setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0)); // Add a thin border to keep the image below the top edge of the tab when the tab is selected
 	}
 
 	public void setTitle(String newTitle) {
