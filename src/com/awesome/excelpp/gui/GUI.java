@@ -52,7 +52,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-		BufferedImage mainImage = ImageIO.read(new File("data/icons/stock_new-spreadsheet.svg"));
+		BufferedImage mainImage = ImageIO.read(new File("data/icons/gnumeric.png"));
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
 		mainFrame.setIconImage(mainImage);
