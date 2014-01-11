@@ -115,9 +115,13 @@ public class Cell {
 	 * Sets the foreground Color of this Cell
 	 * @return      The foreground Color of this Cell
 	 */
-	public String getForegroundColor() {
-		String hexColor = Integer.toHexString(foregroundColor.getRGB());
-		return hexColor;
+	public Color getForegroundColor() {
+		return foregroundColor;
+	}
+	
+	public String getForegroundColorHex() {
+		String hex = "#" + Integer.toHexString(foregroundColor.getRGB()).substring(2);
+		return hex;
 	}
 
 	/**
@@ -134,6 +138,11 @@ public class Cell {
 	 */
 	public Color getBackgroundColor() {
 		return backgroundColor;
+	}
+	
+	public String getBackgroundColorHex() {
+		String hex = "#"+Integer.toHexString(backgroundColor.getRGB()).substring(2);
+		return hex;
 	}
 
 	/**

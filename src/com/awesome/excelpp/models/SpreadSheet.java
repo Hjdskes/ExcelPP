@@ -129,7 +129,7 @@ public class SpreadSheet extends AbstractTableModel {
 	public void write(Writer writer) {
 		for (Integer cell : cells.keySet()) {
 			int[] xy = getXYCell(cell);
-			writer.addCell(cells.get(cell), xy[0] + 1, xy[1] + 1, cells.get(cell).getBold(), cells.get(cell).getForegroundColor());
+			writer.addCell(cells.get(cell), xy[0] + 1, xy[1] + 1, cells.get(cell).getBold(), cells.get(cell).getItalic(), cells.get(cell).getForegroundColorHex(), cells.get(cell).getBackgroundColorHex());
 		}
 		writer.close();
 	}

@@ -12,7 +12,7 @@ public class SysOutWriter implements Writer {
 	}
 
 	@Override
-	public void addCell(Cell cell, int row, int col, int bold, String fontColor) {
+	public void addCell(Cell cell, int row, int col, int bold, int italic, String fontColor, String bgColor) {
 		pw.write("row=" + row + ", col=" + col + ", content=" + cell.getContent() + "\n");
 	}
 	
