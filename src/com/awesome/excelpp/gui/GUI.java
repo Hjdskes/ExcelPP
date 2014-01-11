@@ -448,21 +448,26 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void saveFile (boolean saveAs) {
 		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
 		SpreadSheetTable table = pane.getTable();
+		File file = null;
 		if (table.getFile() == null || saveAs == true) {
-			File file;
 			final JFileChooser fc = new JFileChooser();
-			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			int choice = fc.showSaveDialog(this);
+			if (choice == JFileChooser.APPROVE_OPTION) {
 				String fileString = fc.getSelectedFile().getPath();
                 fileString = fileString.replaceAll("\\...*", "");
                 fileString += ".xml";
 				file = new File(fileString);
 				table.setFile(file);
 				updateTabTitle(mainTabs.getSelectedIndex(), file.getName());
-			}
+			} else if(choice == JFileChooser.CANCEL_OPTION)
+				return;
 		}
 		
 		try {
-			((SpreadSheet)table.getModel()).write(new XMLWriter(table.getFile()));
+			if(file != null)
+				((SpreadSheet)table.getModel()).write(new XMLWriter(file));
+			else
+				System.err.println("File is null");
 		} catch (FileNotFoundException ex) {
 			JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
