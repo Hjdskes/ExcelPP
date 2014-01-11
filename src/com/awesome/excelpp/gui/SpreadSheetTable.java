@@ -21,7 +21,6 @@ import javax.swing.undo.UndoManager;
  */
 public class SpreadSheetTable extends JTable implements MouseListener, UndoableEditListener {
 	private static final long serialVersionUID = 1L;
-	
 	private File file;
 	private int selectedColumn;
 	private int selectedRow;
@@ -35,7 +34,7 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		this.setSelectionBackground (new Color(200, 221, 242));
 		this.setColumnSelectionAllowed(true);
 		this.addMouseListener(this);
-		
+
 		sheet.addTableModelListener(this);
 		//sheet.addUndoableEditListener(this);
 	}
@@ -51,19 +50,13 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	public final File getFile() {
 		return file;
 	}
-	
-	public void setFile(File file) {
-		this.file = file;
-	}
 
 	/**
-	 * Returns a String representation of the opened file
-	 * @return String
+	 * Sets the currently opened file
+	 * @param void
 	 */
-	public final String getFileString () {
-		if (file.getAbsolutePath().contains(System.getProperty("java.io.tmpdir")) == true)
-			return "Temporary file";
-		return file.getName();
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 	/**

@@ -30,20 +30,19 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.imageio.ImageIO;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.readers.XML;
-import com.awesome.excelpp.writers.SysOutWriter;
 import com.awesome.excelpp.writers.XMLWriter;
 
 /**
  * Class that constructs everything needed for and by the GUI
- * ToDo: newFile and openFile do not replace current table
- *       popups when files are not saved
- *       saveFile does not save Cell contents
+ * ToDo: popups when files are not saved
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -204,12 +203,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	public final void createNewTab(File file) {
-		SpreadSheet sheet = newFile(file);
+		SpreadSheet sheet = new SpreadSheet();
 		SpreadSheetTable table = new SpreadSheetTable(sheet, file);
 		SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
 		int last = panes.size();
 		panes.add(pane);
-		String tabTitle = "Temporary file";
+		String tabTitle = "New file";
 		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
 		mainTabs.setTabComponentAt(last, new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
 		mainTabs.setSelectedIndex(last);
@@ -265,11 +264,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		if (e.getSource().equals(buttonOpen))
 			openFile();
 		else if (e.getSource().equals(buttonNew)) {
-			SpreadSheet newSheet = newFile(null);
+			SpreadSheet newSheet = new SpreadSheet();
 			SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
-			SpreadSheetScrollPane newPane = new SpreadSheetScrollPane(newTable);
-			panes.set(index, newPane);
-			updateTabTitle(index, "Temporary file");
+			panes.get(index).setTable(newTable);
+			updateTabTitle(index, "New file");
 		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab(null);
 		else if (e.getSource().equals(buttonSave))
@@ -342,31 +340,26 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			int index = mainTabs.getSelectedIndex();
 			File file = fc.getSelectedFile();
-			SpreadSheet sheet = new SpreadSheet();
-			SpreadSheetTable table = new SpreadSheetTable(sheet, file);
+			SpreadSheetTable table;
+			SpreadSheet sheet;
+			try {
+				Document doc = XML.parse(file);
+				sheet = XML.print(doc);
+				table = new SpreadSheetTable(sheet, file);
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+				sheet = new SpreadSheet();
+				table = new SpreadSheetTable(sheet, null);
+				ex.printStackTrace();
+			} catch (ParserConfigurationException | SAXException ex) {
+				JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+				sheet = new SpreadSheet();
+				table = new SpreadSheetTable(sheet, file);
+				ex.printStackTrace();
+			}
 			panes.get(index).setTable(table);
-			//panes.set(index, pane);
-			//table.repaint();
 			updateTabTitle(index, file.getName());
 		}
-	}
-
-	/**
-	 * Properly handles opening a new file - spawns a dialog if changes will be lost
-	 * @return sheet
-	 */
-	public final SpreadSheet newFile (File file) {
-		SpreadSheet sheet;
-
-		try {
-			Document doc = XML.parse(file);
-			sheet = XML.print(doc);
-			sheet.write(new SysOutWriter());
-		} catch (Exception e) {
-			sheet = new SpreadSheet();
-		}
-
-		return sheet;
 	}
 
 	/**

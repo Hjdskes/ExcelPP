@@ -1,6 +1,5 @@
 package com.awesome.excelpp.models;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import javax.swing.event.UndoableEditListener;
@@ -121,9 +120,8 @@ public class SpreadSheet extends AbstractTableModel {
 	/**
 	 * Outputs the assigned spreadsheet map to a normalized XML file
 	 * @param file		the output file
-	 * @throws FileNotFoundException
 	 */
-	public void write(Writer writer) throws FileNotFoundException {
+	public void write(Writer writer) {
 		for (Integer cell : cells.keySet()) {
 			int[] xy = getXYCell(cell);
 			writer.addCell(cells.get(cell), xy[0] + 1, xy[1] + 1);
