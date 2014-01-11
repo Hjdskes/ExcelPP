@@ -315,7 +315,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			if (current != null) {
 				int bold = current.getBold()  == 0 ? 1 : 0;
 				current.setBold(bold);
-			}
+			} else
+				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
 			panes.get(index).getTable().grabFocus();
 		} else if (e.getSource().equals(buttonItalic)) {
 			int row = panes.get(index).getTable().getSelectedRow();
@@ -324,7 +325,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			if (current != null) {
 				int italic = current.getItalic() == 0 ? 2 : 0;
 				current.setItalic(italic);
-			}
+			} else
+				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
 			panes.get(index).getTable().grabFocus();
 		} else if (e.getSource().equals(buttonForegroundColor)) {
 			Color foreground = null;
