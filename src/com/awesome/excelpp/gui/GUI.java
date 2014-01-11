@@ -50,6 +50,7 @@ import com.awesome.excelpp.writers.XMLWriter;
  *         coloring whole button with last selected color is a bit too much?
  *       even display color when cell is selected?
  *       color multiple cells at the same time
+ *       popups when files are not saved
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -431,11 +432,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void saveFile (boolean saveAs) {
 		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
 		SpreadSheetTable table = pane.getTable();
-		File file;
 		if (table.getFile() == null || saveAs == true) {
+			File file;
 			final JFileChooser fc = new JFileChooser();
 			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				file = fc.getSelectedFile();
+				String fileString = fc.getSelectedFile().getPath();
+                fileString = fileString.replaceAll("\\...*", "");
+                fileString += ".xml";
+				file = new File(fileString);
 				table.setFile(file);
 				updateTabTitle(mainTabs.getSelectedIndex(), file.getName());
 			}
