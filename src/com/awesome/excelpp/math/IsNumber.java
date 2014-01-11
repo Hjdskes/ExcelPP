@@ -1,7 +1,7 @@
 package com.awesome.excelpp.math;
 
 public class IsNumber extends Formula {
-	public static double getValue(String str) {
+	public double getValue(String str) {
 		double res = 0.0;
 		try {
 			Double.parseDouble(str);
