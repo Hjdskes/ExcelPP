@@ -1,5 +1,6 @@
 package com.awesome.excelpp.models;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import javax.swing.event.UndoableEditListener;
@@ -49,7 +50,12 @@ public class SpreadSheet extends AbstractTableModel {
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
-		return cells.get(getNumCell(row, col));
+		Cell cell = cells.get(getNumCell(row, col));
+		if (cell == null) {
+			cell = new Cell(this, null);
+			cells.put(getNumCell(row, col), cell);
+		}
+		return cell;
 	}
 	
 	@Override
@@ -68,15 +74,8 @@ public class SpreadSheet extends AbstractTableModel {
 		Cell oldValue = (Cell)this.getValueAt(row, col);
 		Cell newValue = new Cell(this, (String)aValue);
 		
-		if (newValue.getContent() == null
-				|| newValue.getContent().length() == 0) {
-			cells.remove(getNumCell(row, col));
-		} else {
+		if (!oldValue.equals(newValue)) {
 			cells.put(getNumCell(row, col), newValue);
-		}
-		
-		if (oldValue != null && oldValue.getContent().length() > 0 && !oldValue.equals(newValue)
-				|| newValue.getContent() != null && newValue.getContent().length() > 0 && !newValue.equals(oldValue)) {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
 			undoSupport.postEdit(e);
 		}
@@ -92,15 +91,23 @@ public class SpreadSheet extends AbstractTableModel {
 	 * @param postEdit when true an edit is posted so that it can be undone/redone
 	 */
 	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
-		Cell newValue = (Cell)aValue;
-		
-		if (newValue == null || newValue.getContent() == null || newValue.getContent().length() == 0){			
-			cells.remove(getNumCell(row, col));
-		} else {
-			cells.put(getNumCell(row, col), (Cell)aValue);
-		}
-		
+		cells.put(getNumCell(row, col), (Cell)aValue);
 		fireTableDataChanged();
+	}
+	
+	/**
+	 * Sets a Cell with all it's styles from the XML Parser 
+	 * @param aValue
+	 * @param row
+	 * @param col
+	 * @param bold
+	 * @param italic
+	 * @param foregroundColor
+	 * @param backgroundColor
+	 */
+	public void setValueAt(Object aValue, int row, int col, int bold, int italic, Color foregroundColor, Color backgroundColor) {
+		Cell newValue = new Cell(this, (String)aValue, bold, italic, foregroundColor, backgroundColor);
+		cells.put(getNumCell(row, col), newValue);
 	}
 	
 	/* LISTENERS */	
@@ -127,9 +134,13 @@ public class SpreadSheet extends AbstractTableModel {
 	 * @param file		the output file
 	 */
 	public void write(Writer writer) {
-		for (Integer cell : cells.keySet()) {
-			int[] xy = getXYCell(cell);
-			writer.addCell(cells.get(cell), xy[0] + 1, xy[1] + 1, cells.get(cell).getBold(), cells.get(cell).getItalic(), cells.get(cell).getForegroundColorHex(), cells.get(cell).getBackgroundColorHex());
+		for (Integer cellnr : cells.keySet()) {
+			Cell cell = cells.get(cellnr);
+					 
+			if (!cell.isEmpty()) {
+				int[] xy = getXYCell(cellnr);
+				writer.addCell(cell, xy[0] + 1, xy[1] + 1, cell.getBold(), cell.getItalic(), cell.getForegroundColorHex(), cell.getBackgroundColorHex());
+			}
 		}
 		writer.close();
 	}

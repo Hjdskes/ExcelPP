@@ -144,6 +144,12 @@ public class Cell {
 		String hex = "#"+Integer.toHexString(backgroundColor.getRGB()).substring(2);
 		return hex;
 	}
+	
+	public boolean isEmpty() {
+		return (fontBold == 0 && fontItalic == 0 &&
+				(foregroundColor == null || foregroundColor == Color.BLACK) &&
+				(backgroundColor == null || backgroundColor == Color.WHITE));
+	}
 
 	/**
 	 * Gets the evaluated content of this Cell
