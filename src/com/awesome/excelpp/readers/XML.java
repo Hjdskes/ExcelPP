@@ -108,8 +108,9 @@ public class XML {
 		      int row_out = Integer.parseInt(row);
 		      int col_out = Integer.parseInt(column);
 		      
-	        System.out.println("bold: " + bold + " Italic: "+ italic + " FontColor: " + fontColor + " BackgroundColor: " + bgColor);
+		      System.out.println("bold: " + bold + " Italic: "+ italic + " FontColor: " + fontColor + " BackgroundColor: " + bgColor);
 		      
+	        	//Word dit de nieuwe constructor?
 		      /*sheet.setValueAt(data, row_out - 1, col_out - 1, bold, italic, fontColor, bgColor);*/
 		      sheet.setValueAt(data, row_out - 1, col_out - 1);
 		    }
