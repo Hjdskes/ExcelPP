@@ -110,7 +110,8 @@ public class XML {
 		      
 	        System.out.println("bold: " + bold + " Italic: "+ italic + " FontColor: " + fontColor + " BackgroundColor: " + bgColor);
 		      
-		      sheet.setValueAt(data, row_out - 1, col_out - 1, bold, italic, fontColor, bgColor);
+		      /*sheet.setValueAt(data, row_out - 1, col_out - 1, bold, italic, fontColor, bgColor);*/
+		      sheet.setValueAt(data, row_out - 1, col_out - 1);
 		    }
 		    return sheet;
 		  }
