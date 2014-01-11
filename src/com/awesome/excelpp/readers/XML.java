@@ -1,5 +1,6 @@
 package com.awesome.excelpp.readers;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,6 +54,11 @@ public class XML {
 		    String data = "";
 
 		    for (int i = 0; i < list.getLength(); i++) {
+		    /*Basic settings for styles*/
+			int bold = 0;
+			int italic = 0;
+			Color bgColor = Color.WHITE;
+			Color fontColor = Color.WHITE;
 
 		      Node node = list.item(i);
 		      
@@ -73,6 +79,26 @@ public class XML {
 		        else if(temp.equals("column")) {
 		        	column = data_temp;
 		        }
+		        else if (temp.equals("style")) {
+		        	String[] styles = data_temp.split(";");
+		        	for(int s = 0; s < styles.length; s++) {
+		        		
+		        		String[] styles_attrib = styles[s].split(":");
+		        		
+		        		if(styles_attrib[0].equals("bold")) {
+		        			bold = Integer.parseInt(styles_attrib[1]);
+		        		}
+		        		if(styles_attrib[0].equals("italic")) {
+		        			italic = Integer.parseInt(styles_attrib[1]);
+		        		}
+		        		if(styles_attrib[0].equals("bgColor")) {
+		        			bgColor = Color.decode(styles_attrib[1]);
+		        		}
+		        		if(styles_attrib[0].equals("fontColor")) {
+		        			fontColor = Color.decode(styles_attrib[1]);
+		        		}
+		        	}
+		        }
 		        else {
 		        	System.out.println("Row not found");
 		        }
@@ -82,7 +108,9 @@ public class XML {
 		      int row_out = Integer.parseInt(row);
 		      int col_out = Integer.parseInt(column);
 		      
-		      sheet.setValueAt(data, row_out - 1, col_out - 1);
+	        System.out.println("bold: " + bold + " Italic: "+ italic + " FontColor: " + fontColor + " BackgroundColor: " + bgColor);
+		      
+		      sheet.setValueAt(data, row_out - 1, col_out - 1, bold, italic, fontColor, bgColor);
 		    }
 		    return sheet;
 		  }
