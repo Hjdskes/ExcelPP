@@ -111,8 +111,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(40);
-		buttonBold = new JButton("Bold");
-		buttonItalic = new JButton("Italic");
+		buttonBold = new JButton();
+		buttonItalic = new JButton();
 		buttonForegroundColor = new JButton();
 		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
@@ -130,6 +130,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
 		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon boldIcon = new ImageIcon("data/icons/format-text-bold.png");
+		final ImageIcon italicIcon = new ImageIcon("data/icons/format-text-italic.png");
 		final ImageIcon colorIcon = new ImageIcon("data/icons/gnome-colors.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
@@ -140,6 +142,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
+		buttonBold.setIcon(boldIcon);
+		buttonItalic.setIcon(italicIcon);
 		buttonForegroundColor.setIcon(colorIcon);
 		buttonBackgroundColor.setIcon(colorIcon);
 		buttonAbout.setIcon(aboutIcon);
@@ -189,7 +193,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
 		buttonBold.addActionListener(this);
+		buttonBold.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonItalic.addActionListener(this);
+		buttonItalic.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonForegroundColor.addActionListener(this);
 		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
@@ -219,6 +225,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "Close tab - Control + W<br>"
 				+ "Undo last change - Control + Z<br>"
 				+ "Redo last change - Control + Shift + Z<br>"
+				+ "Set current Cell's text bold - Control + B<br>"
+				+ "Set current Cell's text italic - Control + I<br>"
 				+ "<hr>"
 				+ "Cel contents to textfield - Left mouse button<br>"
 				+ "Cel position to textfield - Alt + right mouse button</html>");
