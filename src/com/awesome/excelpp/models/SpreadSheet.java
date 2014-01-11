@@ -25,6 +25,11 @@ public class SpreadSheet extends AbstractTableModel {
 		cells = new HashMap<Integer, Cell>();
 		undoSupport = new UndoableEditSupport();
 	}
+	
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		return String.class;
+	};
 
 	@Override
 	public int getColumnCount() {
