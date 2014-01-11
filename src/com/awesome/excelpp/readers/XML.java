@@ -58,7 +58,7 @@ public class XML {
 			int bold = 0;
 			int italic = 0;
 			Color bgColor = Color.WHITE;
-			Color fontColor = Color.WHITE;
+			Color fontColor = Color.BLACK;
 
 		      Node node = list.item(i);
 		      
@@ -109,6 +109,7 @@ public class XML {
 		      int col_out = Integer.parseInt(column);
 		      
 		      System.out.println("bold: " + bold + " Italic: "+ italic + " FontColor: " + fontColor + " BackgroundColor: " + bgColor);
+		      
 		      
 	        	//Word dit de nieuwe constructor?
 		      /*sheet.setValueAt(data, row_out - 1, col_out - 1, bold, italic, fontColor, bgColor);*/
