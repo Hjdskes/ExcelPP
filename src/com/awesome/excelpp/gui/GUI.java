@@ -22,9 +22,9 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
@@ -56,6 +56,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static final int screenWidth = (int)Utils.getScreenWidth();
 	private static final int screenHeight = (int)Utils.getScreenHeight();
 	private static final ArrayList<SpreadSheetScrollPane> panes = new ArrayList<SpreadSheetScrollPane>();
+	private static BufferedImage mainImage;
 	private static JFrame mainFrame;
 	private static JTextField functionField;
 	private static JTabbedPane mainTabs;
@@ -75,7 +76,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
-		BufferedImage mainImage = ImageIO.read(new File("data/icons/gnumeric.png"));
+		mainImage = ImageIO.read(new File("data/icons/gnumeric.png"));
+
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
 		mainFrame.setIconImage(mainImage);
@@ -98,7 +100,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return JPanel
 	 */
 	private final JPanel createButtonPanel() {
-		FlowLayout layout = new FlowLayout();
+		final FlowLayout layout = new FlowLayout();
 		layout.setAlignment(FlowLayout.CENTER);
 		layout.setAlignOnBaseline(true);
 		final JPanel panel = new JPanel(layout);
@@ -121,7 +123,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 								 "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign",
 								 "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
-		functions.setSelectedIndex(0);
 
 		final ImageIcon newIcon = new ImageIcon("data/icons/window-new.png");
 		final ImageIcon newTabIcon = new ImageIcon("data/icons/stock_new-tab.png");
@@ -208,42 +209,55 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	private final void openHelpDialog() {
-		JDialog helpDialog = new JDialog(this, "Help");
-		JPanel helpPanel = new JPanel();
-		JTabbedPane helpTabbedPane = new JTabbedPane();
-		
-		/*JPanel formulaPanel = new JPanel();
-		JLabel formulaText = new JLabel("<html>Help for formulas<br>Alt + left mouse click to get cel content into entry</html>");
-		formulaPanel.add(formulaText);*/
-		
-		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>New file - Control + N<br>"
-				+ "Open file - Control + O<br>"
-				+ "Save file - Control + S<br>"
-				+ "Save file as - Control + Shift + S<br>"
-				+ "New tab - Control + T<br>"
-				+ "Close tab - Control + W<br>"
-				+ "Undo last change - Control + Z<br>"
-				+ "Redo last change - Control + Shift + Z<br>"
-				+ "Set current Cell's text bold - Control + B<br>"
-				+ "Set current Cell's text italic - Control + I<br>"
-				+ "<hr>"
-				+ "Cel contents to textfield - Left mouse button<br>"
-				+ "Cel position to textfield - Alt + right mouse button</html>");
-		hotkeyPanel.add(hotkeyText);
+		final JDialog helpDialog = new JDialog(this, "Help", true);
+		final JPanel helpPanel = new JPanel();
+		final JTabbedPane helpTabbedPane = new JTabbedPane();
 
-		JPanel aboutPanel = new JPanel();
-		JLabel aboutText = new JLabel("<html>Excel++ is a TU Delft project.<br>Copyright 2013 Team Awesome.</html>");
-		aboutPanel.add(aboutText);
+		final String formulaText = "Implemented are the 25 formules one can see inside the combobox. "
+				+ "We adhere to the implementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
+				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
+				+ " this, we are very curious to hear about your results!\n\n"
+				+ "The syntax is as follows: =Add(2+2)\n"
+				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
+				+ "Arguments are provided between brackets and are separated by commas. Below is a more complicated example:\n"
+				+ "=Add(=Average(2,4,6), 5, =Power(2,4))\n\n"
+				+ "Regular math notation, such as =(2+2)*3, is also supported. One can also make Cell references from other Cells: =A1.\n"
+				+ "Cell ranges are not yet supported.";
+		final JTextArea formulaPanel = new JTextArea(formulaText);
+		formulaPanel.setEditable(false);
+		formulaPanel.setLineWrap(true);
+		formulaPanel.setWrapStyleWord(true);
+
+		final String hotkeyText = "New file - Control + N\n"
+				+ "Open file - Control + O\n"
+				+ "Save file - Control + S\n"
+				+ "Save file as - Control + Shift + S\n"
+				+ "New tab - Control + T\n"
+				+ "Close tab - Control + W\n"
+				+ "Undo last change - Control + Z\n"
+				+ "Redo last change - Control + Shift + Z\n"
+				+ "Set current Cell's text bold - Control + B\n"
+				+ "Set current Cell's text italic - Control + I\n\n"
+				+ "Cel contents to textfield - Left mouse button\n"
+				+ "Cel position to textfield - Alt + right mouse button";
+		final JTextArea hotkeyPanel = new JTextArea(hotkeyText);
+		hotkeyPanel.setEditable(false);
+		hotkeyPanel.setLineWrap(false);
+
+		final String aboutText = "Excel++ is a TU Delft project.\nCopyright 2013 Team Awesome.";
+		final JTextArea aboutPanel = new JTextArea(aboutText);
+		aboutPanel.setEditable(false);
+		aboutPanel.setLineWrap(false);
 
 		helpPanel.add(helpTabbedPane);
-		//helpTabbedPane.addTab("Formula Help", formulaPanel);
+		helpTabbedPane.addTab("Formula Help", formulaPanel);
 		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
 		helpTabbedPane.addTab("About", aboutPanel);
 
 		helpDialog.add(helpPanel);
-		helpDialog.setSize(helpPanel.getPreferredSize().width, helpPanel.getPreferredSize().height);
-		helpDialog.setMinimumSize(helpPanel.getPreferredSize());
+		helpDialog.setIconImage(mainImage);
+		helpDialog.setSize(292, 450);
+		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);
