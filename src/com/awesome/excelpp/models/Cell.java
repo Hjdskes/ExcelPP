@@ -8,25 +8,44 @@ import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
-import java.util.Observable;
+import java.awt.Color;
 
 /**
  * Class that represents a cell
- *
  */
-public class Cell extends Observable {
+public class Cell {
 	private String content; // =2+2
 	private SpreadSheet sheet;
+	private int fontBold; // 1 = bold, 0 = niet bold
+	private int fontItalic; // 2 = italic, 0 = niet italic
+	private Color foregroundColor;
+	private Color backgroundColor;
 	
 	/**
 	 * Constructs a new Cell
 	 * @param content	String with an unevaluated expression
 	 */
-	public Cell(SpreadSheet sheet, String content) {
+	public Cell(SpreadSheet sheet, String content, int bold, int italic, Color foregroundColor, Color backgroundColor) {
 		this.sheet = sheet;
 		this.content = content;
+		this.fontBold = bold;
+		this.fontItalic = italic;
+		this.foregroundColor = foregroundColor;
+		this.backgroundColor = backgroundColor;
 	}
-	
+
+	/**
+	 * Constructs a new Cell with the specified background Color
+	 * @param content  String with an unevaluated expression
+	 * @param bold     Whether or not the text in this Cell is bold
+	 * @param italic  Whether or not the text in this Cell is in italic
+	 * @param foregroundColor    The foreground Color of this Cell. Can be null.
+	 * @param backgroundColor    The background Color of this Cell. Can be null.
+	 */
+	public Cell(SpreadSheet sheet, String content) {
+		this(sheet, content, 0, 0, Color.BLACK, Color.WHITE);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
@@ -49,7 +68,73 @@ public class Cell extends Observable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+
+	/**
+	 * Sets the bold state of the font in this Cell
+	 * @param bold    Whether or not font is bold: 1 for bold, 0 for plain
+	 */
+	public void setBold(int bold) {
+		if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
+			this.fontBold = bold;
+	}
+
+	/**
+	 * Gets the current bold state of the font in this Cell
+	 * @return     The current bold state of the font in this Cell
+	 */
+	public int getBold() {
+		return fontBold;
+	}
+
+	/**
+	 * Sets the italic state of the font in this Cell
+	 * @param bold    Whether or not font is italic: 2 for italic, 0 for plain
+	 */
+	public void setItalic(int italic) {
+		if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
+			this.fontItalic = italic;
+	}
+
+	/**
+	 * Gets the current italic state of the font in this Cell
+	 * @return     The current italic state of the font in this Cell
+	 */
+	public int getItalic() {
+		return fontItalic;
+	}
+
+	/**
+	 * Gets the foreground Color of this Cell
+	 * @return      The new foreground Color of this Cell
+	 */
+	public void setForegroundColor(Color newForegroundColor) {
+		this.foregroundColor = newForegroundColor;
+	}
+
+	/**
+	 * Sets the foreground Color of this Cell
+	 * @return      The foreground Color of this Cell
+	 */
+	public Color getForegroundColor() {
+		return foregroundColor;
+	}
+
+	/**
+	 * Gets the background Color of this Cell
+	 * @return      The new background Color of this Cell
+	 */
+	public void setBackgroundColor(Color newBackgroundColor) {
+		this.backgroundColor = newBackgroundColor;
+	}
+
+	/**
+	 * Sets the background Color of this Cell
+	 * @return      The background Color of this Cell
+	 */
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
 	/**
 	 * Gets the evaluated content of this Cell
 	 * Suppose the content of this Cell is "=4+4"
@@ -63,6 +148,7 @@ public class Cell extends Observable {
 				parse.toPostfix();
 				return String.valueOf(parse.eval());
 			} catch (ParserException e) {
+				backgroundColor = Color.red;
 				if (e instanceof MissingRBracketException ||
 						e instanceof MissingLBracketException ||
 						e instanceof MissingArgException)

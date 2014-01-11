@@ -2,9 +2,11 @@
 package com.awesome.excelpp.gui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
@@ -14,8 +16,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,22 +30,41 @@ import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.imageio.ImageIO;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import com.awesome.excelpp.models.Cell;
+import com.awesome.excelpp.models.SpreadSheet;
+import com.awesome.excelpp.readers.XML;
+import com.awesome.excelpp.writers.XMLWriter;
 
 /**
  * Class that constructs everything needed for and by the GUI
+ * ToDo: fix color buttons
+ *         make them more distinct
+ *         coloring whole button with last selected color is a bit too much?
+ *       even display color when cell is selected?
+ *       color multiple cells at the same time
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static final int screenWidth = (int)Utils.getScreenWidth();
 	private static final int screenHeight = (int)Utils.getScreenHeight();
-	private static final ArrayList<SpreadSheetTable> panes = new ArrayList<SpreadSheetTable>();
+	private static final ArrayList<SpreadSheetScrollPane> panes = new ArrayList<SpreadSheetScrollPane>();
 	private static JFrame mainFrame;
 	private static JTextField functionField;
 	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
+	private static JButton buttonBackgroundColor;
+	private static JButton buttonForegroundColor;
+	private static JButton buttonItalic;
+	private static JButton buttonBold;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
@@ -63,7 +86,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		mainFrame.addWindowListener(this);
 
 		mainTabs = new JTabbedPane();
-		createNewTab(); //open altijd één tab
+		createNewTab(null); //open altijd één tab
 
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
@@ -88,6 +111,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(50);
+		buttonBold = new JButton("Bold");
+		buttonItalic = new JButton("Italic");
+		buttonForegroundColor = new JButton();
+		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
@@ -100,6 +127,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
 		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon colorIcon = new ImageIcon("data/icons/gnome-colors.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		buttonNew.setIcon(newIcon);
@@ -109,6 +137,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
+		buttonForegroundColor.setIcon(colorIcon);
+		buttonBackgroundColor.setIcon(colorIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -118,6 +148,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setToolTipText("Save as");
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
+		buttonBold.setToolTipText("Make this cell's text bold");
+		buttonItalic.setToolTipText("Make this cell's text italic");
+		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
+		buttonBackgroundColor.setToolTipText("Set this cell's background color");
 		buttonAbout.setToolTipText("About");
 
 		panel.add(buttonNew);
@@ -129,6 +163,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
+		panel.add(buttonBold);
+		panel.add(buttonItalic);
+		panel.add(buttonForegroundColor);
+		panel.add(buttonBackgroundColor);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -147,6 +185,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.SHIFT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
+		buttonBold.addActionListener(this);
+		buttonItalic.addActionListener(this);
+		buttonForegroundColor.addActionListener(this);
+		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
 		return panel;
@@ -187,21 +229,33 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a new tab with a new SpreadSheetTable inside it
+	 * Creates a new tab with everything setup inside it
 	 * @return void
 	 */
-	private final void createNewTab() {
-		try {
-			SpreadSheetTable table = new SpreadSheetTable();
-			panes.add(table);
-			int last = panes.size() - 1;
-			mainTabs.addTab(null, null, panes.get(last).getScrollPane(), panes.get(last).getFile().toString()); // Add tab to pane without label or icon but with tooltip
-			mainTabs.setTabComponentAt(last, new CloseableTabComponent(panes.get(last).getFileString())); // Now assign the component for the tab
-			mainTabs.setSelectedIndex(last);
-			//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
-		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
-			ex.printStackTrace();
+	public final void createNewTab(File file) {
+		SpreadSheet sheet = new SpreadSheet();
+		SpreadSheetTable table = new SpreadSheetTable(sheet, file);
+		SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
+		int last = panes.size();
+		panes.add(pane);
+		String tabTitle = "New file";
+		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
+		mainTabs.setTabComponentAt(last, new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
+		mainTabs.setSelectedIndex(last);
+		//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
+	}
+
+	/**
+	 * Removes the currently active tab. Makes sure there is always one tab remaining.
+	 * @return void
+	 */
+	public static final void removeTab() {
+		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
+			int index = mainTabs.getSelectedIndex();
+			if (closeFile(index) == 0) {
+				mainTabs.remove(index);
+				panes.remove(index);
+			}
 		}
 	}
 
@@ -213,21 +267,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private final void updateTabTitle(int index, String newTitle) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
 		currentComponent.setTitle(newTitle);
-	}
-
-	/**
-	 * Removes the currently active tab. Makes sure there is always one tab remaining.
-	 * @return void
-	 */
-	final static void removeTab() {
-		int index = mainTabs.getSelectedIndex();
-		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
-			int close = panes.get(index).closeFile();
-			if (close == 0) {
-				mainTabs.remove(index);
-				panes.remove(index);
-			}
-		}
 	}
 
 	/**
@@ -254,31 +293,64 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
 
-		if (e.getSource().equals(buttonOpen)) {
-			if(panes.get(index).openFileDialog() == 0)
-				updateTabTitle(index, panes.get(index).getFileString());
-		} else if (e.getSource().equals(buttonNew)) {
-			if(panes.get(index).newFile() == 0)
-				updateTabTitle(index, panes.get(index).getFileString());
+		if (e.getSource().equals(buttonOpen))
+			openFile();
+		else if (e.getSource().equals(buttonNew)) {
+			if(closeFile(index) == 0) {
+				SpreadSheet newSheet = new SpreadSheet();
+				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
+				panes.get(index).setTable(newTable);
+				updateTabTitle(index, "New file");
+			}
 		} else if (e.getSource().equals(buttonNewTab))
-			createNewTab();
-		else if (e.getSource().equals(buttonSave)) {
-			if(panes.get(index).saveFile() == 0)
-				updateTabTitle(index, panes.get(index).getFileString());
-		} else if (e.getSource().equals(buttonSaveAs)) {
-			if(panes.get(index).openSaveDialog() == 0)
-				updateTabTitle(index, panes.get(index).getFileString());
+			createNewTab(null);
+		else if (e.getSource().equals(buttonSave))
+			saveFile(false);
+		else if (e.getSource().equals(buttonSaveAs))
+			saveFile(true);
+		else if (e.getSource().equals(buttonBold)) {
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			int bold = current.getBold()  == 0 ? 1 : 0;
+			current.setBold(bold);
+		} else if (e.getSource().equals(buttonItalic)) {
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			int italic = current.getItalic() == 0 ? 2 : 0;
+			current.setItalic(italic);
+		} else if (e.getSource().equals(buttonForegroundColor)) {
+			Color foreground = null;
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			foreground = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getForegroundColor());
+			if(foreground != null) {
+				panes.get(index).getTable().setCellForeground(current, foreground);
+				buttonForegroundColor.setBackground(foreground);
+			}
+		} else if (e.getSource().equals(buttonBackgroundColor)) {
+			Color background = null;
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			background = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getBackgroundColor());
+			if(background != null) {
+				panes.get(index).getTable().setCellBackground(current, background);
+				buttonBackgroundColor.setBackground(background);
+			}
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
 		} else if (e.getSource().equals(buttonUndo)) {
-			UndoManager manager = panes.get(index).getUndoManager();
+			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canUndo() == true)
 				manager.undo();
 		} else if (e.getSource().equals(buttonRedo)) {
-			UndoManager manager = panes.get(index).getUndoManager();
+			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
 		}
@@ -292,10 +364,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			int index = mainTabs.getSelectedIndex();
-			if(panes.get(index).getCellSelected() == false)
-				JOptionPane.showMessageDialog(mainFrame, "Select a cell first.", "Oops!", JOptionPane.INFORMATION_MESSAGE);
-			if(panes.get(index).getCellSelected() == true)
-				panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getSelectedRow(), panes.get(index).getSelectedColumn());
+			panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getTable().getSelectedRow(), panes.get(index).getTable().getSelectedColumn());
 		}
 	}
 
@@ -306,9 +375,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	@Override
 	public final void windowClosing(WindowEvent e) {
 		for(int i = 0; i < panes.size(); i++) {
-			SpreadSheetTable currentPane = panes.get(i);
-			if(currentPane.closeFile() == 1) {
-				JOptionPane.showMessageDialog(mainFrame, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
+			if(closeFile(i) == 1) {
+				JOptionPane.showMessageDialog(this, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 		}
@@ -323,4 +391,77 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public void windowDeiconified(WindowEvent e) {}
 	public void windowActivated(WindowEvent e) {}
 	public void windowDeactivated(WindowEvent e) {}
+
+	/**
+	 * Opens a file dialog in which the user can select the file to open
+	 * @return void
+	 */
+	public final void openFile() {
+		final JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML", "xml");
+		fc.setFileFilter(filter);
+		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			int index = mainTabs.getSelectedIndex();
+			File file = fc.getSelectedFile();
+			SpreadSheetTable table;
+			SpreadSheet sheet;
+			try {
+				Document doc = XML.parse(file);
+				sheet = XML.print(doc);
+				table = new SpreadSheetTable(sheet, file);
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+				sheet = new SpreadSheet();
+				table = new SpreadSheetTable(sheet, null);
+				ex.printStackTrace();
+			} catch (ParserConfigurationException | SAXException ex) {
+				JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+				sheet = new SpreadSheet();
+				table = new SpreadSheetTable(sheet, file);
+				ex.printStackTrace();
+			}
+			panes.get(index).setTable(table);
+			updateTabTitle(index, file.getName());
+		}
+	}
+
+	/**
+	 * Saves the currently opened file
+	 * @return void
+	 */
+	public final void saveFile (boolean saveAs) {
+		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
+		SpreadSheetTable table = pane.getTable();
+		if (table.getFile() == null || saveAs == true) {
+			File file;
+			final JFileChooser fc = new JFileChooser();
+			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+				String fileString = fc.getSelectedFile().getPath();
+                fileString = fileString.replaceAll("\\...*", "");
+                fileString += ".xml";
+				file = new File(fileString);
+				table.setFile(file);
+				updateTabTitle(mainTabs.getSelectedIndex(), file.getName());
+			}
+		}
+		
+		try {
+			((SpreadSheet)table.getModel()).write(new XMLWriter(table.getFile()));
+		} catch (FileNotFoundException ex) {
+			JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
+		}
+	}
+
+	/**
+	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
+	 * @param index
+	 * @return int - 0 for OK, 1 for cancel
+	 */
+	public static final int closeFile(int index) {
+		int close = 0;
+		if(panes.get(index).getTable().getUndoManager().canUndo() == true) //ToDo: misschien niet de beste oplossing
+			close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+		return close;
+	}
 }

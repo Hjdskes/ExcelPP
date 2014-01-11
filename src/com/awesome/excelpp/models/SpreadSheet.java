@@ -1,12 +1,9 @@
 package com.awesome.excelpp.models;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Observable;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.event.UndoableEditListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.undo.UndoableEditSupport;
 
 import com.awesome.excelpp.writers.Writer;
@@ -15,7 +12,8 @@ import com.awesome.excelpp.writers.Writer;
  * Class that represents a spreadsheet
  * 
  */
-public class SpreadSheet extends Observable implements TableModel {
+public class SpreadSheet extends AbstractTableModel {
+	private static final long serialVersionUID = 1L;
 	protected final short numberOfRows = 42;
 	protected final short numberOfCols = 26;
 	
@@ -23,24 +21,14 @@ public class SpreadSheet extends Observable implements TableModel {
 	private UndoableEditSupport undoSupport;
 	
 	public SpreadSheet() {
+		super();
 		cells = new HashMap<Integer, Cell>();
 		undoSupport = new UndoableEditSupport();
 	}
 
 	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		return String.class;
-	}
-
-	@Override
 	public int getColumnCount() {
 		return numberOfCols;
-	}
-	
-	@Override
-	public String getColumnName(int col) {
-		char a = (char) (col + 65);			//column + 65 yields the ASCII code, same as Unicode. Cast to char type.
-		return Character.toString(a);		//convert to String, return.
 	}
 	
 	@Override
@@ -63,10 +51,6 @@ public class SpreadSheet extends Observable implements TableModel {
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
-	
-	public boolean isEmpty() {
-		return cells.isEmpty();
-	}
 
 	/**
 	 * Sets a Cell with coordinates row, col in this SpreadSheet
@@ -86,15 +70,13 @@ public class SpreadSheet extends Observable implements TableModel {
 			cells.put(getNumCell(row, col), newValue);
 		}
 		
-		//voor de observers
-		setChanged();
-		notifyObservers();
-		
 		if (oldValue != null && oldValue.getContent().length() > 0 && !oldValue.equals(newValue)
 				|| newValue.getContent() != null && newValue.getContent().length() > 0 && !newValue.equals(oldValue)) {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
 			undoSupport.postEdit(e);
 		}
+		
+		fireTableDataChanged();
 	}
 	
 	/**
@@ -113,28 +95,16 @@ public class SpreadSheet extends Observable implements TableModel {
 			cells.put(getNumCell(row, col), (Cell)aValue);
 		}
 		
-		//voor de observers
-		setChanged();
-		notifyObservers();
+		fireTableDataChanged();
 	}
 	
-	/* LISTENERS */
-	@Override
-	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-	}
-	
+	/* LISTENERS */	
 	/**
 	 * Adds an UndoableEditListener to the SpreadSheet
 	 * @param l UndoableEditListener that is added
 	 */
 	public void addUndoableEditListener(UndoableEditListener l){
 		this.undoSupport.addUndoableEditListener(l);
-	}
-	
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
 	}
 	
 	/* OTHER */
@@ -150,12 +120,11 @@ public class SpreadSheet extends Observable implements TableModel {
 	/**
 	 * Outputs the assigned spreadsheet map to a normalized XML file
 	 * @param file		the output file
-	 * @throws FileNotFoundException
 	 */
-	public void write(Writer writer) throws FileNotFoundException {
+	public void write(Writer writer) {
 		for (Integer cell : cells.keySet()) {
 			int[] xy = getXYCell(cell);
-			writer.addCell(cells.get(cell), xy[0], xy[1]);
+			writer.addCell(cells.get(cell), xy[0] + 1, xy[1] + 1);
 		}
 		writer.close();
 	}
