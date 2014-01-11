@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
- * @author Tad Harrison, modified by us
+ * @author Tad Harrison, modified by Team Awesome
  * @source http://paperjammed.com/2012/11/22/adding-tab-close-buttons-to-a-jtabbedpane-in-java-swing/
  */
 public class CloseableTabComponent extends JPanel implements ActionListener {

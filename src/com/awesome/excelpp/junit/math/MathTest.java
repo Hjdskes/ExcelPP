@@ -5,27 +5,33 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.awesome.excelpp.math.*;
+import com.awesome.excelpp.math.exception.MathException;
 
 public class MathTest {
 
 	@Test
-	public void IsEven() {
-		assertTrue(IsEven.getValue(10));
+	public void IsEven() throws MathException {
+		assertEquals(1.0, new IsEven().getValue(10), 0.001);
 	}
 	
 	@Test
-	public void notEven(){
-		assertFalse(IsEven.getValue(11));
+	public void notEven() throws MathException{
+		assertEquals(0.0, new IsEven().getValue(11), 0.001);
+	}
+	
+	@Test(expected = Exception.class) 
+	public void EvenException() throws MathException{
+		assertEquals(0.0, new IsEven().getValue(11, 1), 0.001);
 	}
 	
 	@Test
 	public void isNumber() {
-		assertTrue(IsNumber.getValue("10"));
+		assertEquals(1.0, new IsNumber.getValue(10), 0.001);
 	}
 	
 	@Test 
 	public void isNotNumber() {
-		assertFalse(IsNumber.getValue("a"));
+		assertEquals(0.0, new IsNumber.getValue("a"), .001);
 	}
 	
 }
