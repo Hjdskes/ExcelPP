@@ -50,7 +50,6 @@ import com.awesome.excelpp.writers.XMLWriter;
  *         coloring whole button with last selected color is a bit too much?
  *       even display color when cell is selected?
  *       color multiple cells at the same time
- *       popups when files are not saved
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -230,7 +229,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a new tab with a new SpreadSheetTable inside it
+	 * Creates a new tab with everything setup inside it
 	 * @return void
 	 */
 	public final void createNewTab(File file) {
@@ -253,8 +252,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public static final void removeTab() {
 		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
 			int index = mainTabs.getSelectedIndex();
-			mainTabs.remove(index);
-			panes.remove(index);
+			if (closeFile(index) == 0) {
+				mainTabs.remove(index);
+				panes.remove(index);
+			}
 		}
 	}
 
@@ -295,10 +296,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		if (e.getSource().equals(buttonOpen))
 			openFile();
 		else if (e.getSource().equals(buttonNew)) {
-			SpreadSheet newSheet = new SpreadSheet();
-			SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
-			panes.get(index).setTable(newTable);
-			updateTabTitle(index, "New file");
+			if(closeFile(index) == 0) {
+				SpreadSheet newSheet = new SpreadSheet();
+				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
+				panes.get(index).setTable(newTable);
+				updateTabTitle(index, "New file");
+			}
 		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab(null);
 		else if (e.getSource().equals(buttonSave))
@@ -371,14 +374,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e) {
-		/*for(int i = 0; i < panes.size(); i++) {
-			SpreadSheetTable currentSheet = panes.get(i).getTable();
-			//TODO:
-			//if(currentPane.closeFile() == 1) {
-				//JOptionPane.showMessageDialog(mainFrame, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
-				//return;
-			//}
-		}*/
+		for(int i = 0; i < panes.size(); i++) {
+			if(closeFile(i) == 1) {
+				JOptionPane.showMessageDialog(this, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+		}
 		System.exit(0); //ToDo: niet de beste oplossing?
 	}
 
@@ -390,7 +391,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public void windowDeiconified(WindowEvent e) {}
 	public void windowActivated(WindowEvent e) {}
 	public void windowDeactivated(WindowEvent e) {}
-	
 
 	/**
 	 * Opens a file dialog in which the user can select the file to open
@@ -451,5 +451,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
 		}
+	}
+
+	/**
+	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
+	 * @param index
+	 * @return int - 0 for OK, 1 for cancel
+	 */
+	public static final int closeFile(int index) {
+		int close = 0;
+		if(panes.get(index).getTable().getUndoManager().canUndo() == true) //ToDo: misschien niet de beste oplossing
+			close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+		return close;
 	}
 }
