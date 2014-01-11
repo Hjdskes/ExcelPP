@@ -17,7 +17,7 @@ public class XMLWriter implements Writer {
 	
 	@Override
 	public void addCell(Cell cell, int row, int col, int bold) {
-		pw.write("<CELL row=\"" + row + "\" column=\"" + col + " style=\"bold:" + bold +   ">" + cell.getContent() + "</CELL>\n");
+		pw.write("<CELL row=\"" + row + "\" column=\"" + col + " style=\"bold:" + bold +  ";\">" + cell.getContent() + "</CELL>\n");
 
 	}
 
