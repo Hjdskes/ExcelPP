@@ -1,5 +1,6 @@
 package com.awesome.excelpp.models;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import javax.swing.event.UndoableEditListener;
@@ -82,6 +83,11 @@ public class SpreadSheet extends AbstractTableModel {
 		}
 		
 		fireTableDataChanged();
+	}
+	
+	public void setValueAt(Object aValue, int row, int col, int bold, int italic, Color foregroundColor, Color backgroundColor) {
+		Cell newValue = new Cell(this, (String)aValue, bold, italic, foregroundColor, backgroundColor);
+		cells.put(getNumCell(row, col), newValue);
 	}
 	
 	/**
