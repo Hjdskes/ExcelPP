@@ -44,6 +44,16 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		this(new SpreadSheet(), null);
 	}
 
+	@Override
+	public final int getSelectedRow() {
+		return selectedRow;
+	}
+
+	@Override
+	public final int getSelectedColumn() {
+		return selectedColumn;
+	}
+
 	/**
 	 * Returns the currently opened file
 	 * @return File

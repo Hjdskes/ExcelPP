@@ -110,7 +110,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs = new JButton();
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
-		functionField = new JTextField(50);
+		functionField = new JTextField(40);
 		buttonBold = new JButton("Bold");
 		buttonItalic = new JButton("Italic");
 		buttonForegroundColor = new JButton();
@@ -199,7 +199,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	private final void openHelpDialog() {
-		JDialog helpDialog = new JDialog(mainFrame, "Help");
+		JDialog helpDialog = new JDialog(this, "Help");
 		JPanel helpPanel = new JPanel();
 		JTabbedPane helpTabbedPane = new JTabbedPane();
 		
@@ -312,34 +312,48 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			int row = panes.get(index).getTable().getSelectedRow();
 			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			int bold = current.getBold()  == 0 ? 1 : 0;
-			current.setBold(bold);
+			if (current != null) {
+				int bold = current.getBold()  == 0 ? 1 : 0;
+				current.setBold(bold);
+			}
+			panes.get(index).getTable().grabFocus();
 		} else if (e.getSource().equals(buttonItalic)) {
 			int row = panes.get(index).getTable().getSelectedRow();
 			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			int italic = current.getItalic() == 0 ? 2 : 0;
-			current.setItalic(italic);
+			if (current != null) {
+				int italic = current.getItalic() == 0 ? 2 : 0;
+				current.setItalic(italic);
+			}
+			panes.get(index).getTable().grabFocus();
 		} else if (e.getSource().equals(buttonForegroundColor)) {
 			Color foreground = null;
 			int row = panes.get(index).getTable().getSelectedRow();
 			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			foreground = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getForegroundColor());
-			if(foreground != null) {
-				panes.get(index).getTable().setCellForeground(current, foreground);
-				buttonForegroundColor.setBackground(foreground);
-			}
+			if(current != null) {
+				foreground = JColorChooser.showDialog(this, "Choose a background color", current.getForegroundColor());
+				if(foreground != null) {
+					panes.get(index).getTable().setCellForeground(current, foreground);
+					buttonForegroundColor.setBackground(foreground);
+				}
+			} else
+				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
+			panes.get(index).getTable().grabFocus();
 		} else if (e.getSource().equals(buttonBackgroundColor)) {
 			Color background = null;
 			int row = panes.get(index).getTable().getSelectedRow();
 			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			background = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getBackgroundColor());
-			if(background != null) {
-				panes.get(index).getTable().setCellBackground(current, background);
-				buttonBackgroundColor.setBackground(background);
-			}
+			if (current != null) {
+				background = JColorChooser.showDialog(this, "Choose a background color", current.getBackgroundColor());
+				if(background != null) {
+					panes.get(index).getTable().setCellBackground(current, background);
+					buttonBackgroundColor.setBackground(background);
+				}
+			} else
+				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
+			panes.get(index).getTable().grabFocus();
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
