@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -36,13 +38,18 @@ import javax.imageio.ImageIO;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.readers.XML;
 import com.awesome.excelpp.writers.XMLWriter;
 
 /**
  * Class that constructs everything needed for and by the GUI
- * ToDo: popups when files are not saved
+ * ToDo: fix color buttons
+ *         make them more distinct
+ *         coloring whole button with last selected color is a bit too much?
+ *       even display color when cell is selected?
+ *       color multiple cells at the same time
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -54,6 +61,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JTabbedPane mainTabs;
 	private static JComboBox<String> functions;
 	private static JButton buttonAbout;
+	private static JButton buttonBackgroundColor;
+	private static JButton buttonForegroundColor;
+	private static JButton buttonItalic;
+	private static JButton buttonBold;
 	private static JButton buttonRedo;
 	private static JButton buttonUndo;
 	private static JButton buttonSaveAs;
@@ -100,6 +111,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
 		functionField = new JTextField(50);
+		buttonBold = new JButton("Bold");
+		buttonItalic = new JButton("Italic");
+		buttonForegroundColor = new JButton();
+		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
@@ -112,6 +127,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
 		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon colorIcon = new ImageIcon("data/icons/gnome-colors.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		buttonNew.setIcon(newIcon);
@@ -121,6 +137,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setIcon(saveIconAs);
 		buttonUndo.setIcon(undoIcon);
 		buttonRedo.setIcon(redoIcon);
+		buttonForegroundColor.setIcon(colorIcon);
+		buttonBackgroundColor.setIcon(colorIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -130,6 +148,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs.setToolTipText("Save as");
 		buttonUndo.setToolTipText("Undo last change");
 		buttonRedo.setToolTipText("Redo last change");
+		buttonBold.setToolTipText("Make this cell's text bold");
+		buttonItalic.setToolTipText("Make this cell's text italic");
+		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
+		buttonBackgroundColor.setToolTipText("Set this cell's background color");
 		buttonAbout.setToolTipText("About");
 
 		panel.add(buttonNew);
@@ -141,6 +163,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonRedo);
 		panel.add(functions);
 		panel.add(functionField);
+		panel.add(buttonBold);
+		panel.add(buttonItalic);
+		panel.add(buttonForegroundColor);
+		panel.add(buttonBackgroundColor);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -159,6 +185,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.SHIFT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		functions.addActionListener(this);
 		functionField.addKeyListener(this);
+		buttonBold.addActionListener(this);
+		buttonItalic.addActionListener(this);
+		buttonForegroundColor.addActionListener(this);
+		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
 		return panel;
@@ -274,7 +304,39 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			saveFile(false);
 		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
-		else if (e.getSource().equals(buttonAbout))
+		else if (e.getSource().equals(buttonBold)) {
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			int bold = current.getBold()  == 0 ? 1 : 0;
+			current.setBold(bold);
+		} else if (e.getSource().equals(buttonItalic)) {
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			int italic = current.getItalic() == 0 ? 2 : 0;
+			current.setItalic(italic);
+		} else if (e.getSource().equals(buttonForegroundColor)) {
+			Color foreground = null;
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			foreground = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getForegroundColor());
+			if(foreground != null) {
+				panes.get(index).setCellForeground(current, foreground);
+				buttonForegroundColor.setBackground(foreground);
+			}
+		} else if (e.getSource().equals(buttonBackgroundColor)) {
+			Color background = null;
+			int row = panes.get(index).getSelectedRow();
+			int column = panes.get(index).getSelectedColumn();
+			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+			background = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getBackgroundColor());
+			if(background != null) {
+				panes.get(index).setCellBackground(current, background);
+				buttonBackgroundColor.setBackground(background);
+			}
+		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();

@@ -34,9 +34,11 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		this.setSelectionBackground (new Color(200, 221, 242));
 		this.setColumnSelectionAllowed(true);
 		this.addMouseListener(this);
+		this.setDefaultRenderer(String.class, new AwesomeCellRenderer());
 
+		sheet.addObserver(this);
 		sheet.addTableModelListener(this);
-		//sheet.addUndoableEditListener(this);
+		sheet.addUndoableEditListener(this);
 	}
 	
 	public SpreadSheetTable() {
@@ -67,7 +69,29 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		return undoManager;
 	}
 
-	/**
+	public final void setCellBold(int bold) {
+		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+		if (current != null)
+			current.setBold(bold);
+	}
+
+	public final void setCellItalic(int italic) {
+		Cell current = (Cell)tabel.getValueAt(selectedRow, selectedColumn);
+		if (current != null)
+			current.setItalic(italic);
+	}
+
+	public final void setCellForeground(Cell cell, Color foreground) {
+		if(cell != null)
+			cell.setForegroundColor(foreground);
+	}
+
+	public final void setCellBackground(Cell cell, Color background) {
+		if(cell != null)
+			cell.setBackgroundColor(background);
+	}
+
+	/*
 	 * Listens for all mouseClicked events emitted by the elements of the tab
 	 * @return void
 	 */
