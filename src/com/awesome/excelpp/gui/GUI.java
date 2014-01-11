@@ -116,7 +116,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonForegroundColor = new JButton();
 		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
-		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical", "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign", "SQRT", "Sum", "SumIf"};
+		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical",
+								 "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not",
+								 "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign",
+								 "SQRT", "Sum", "SumIf"};
 		functions = new JComboBox<String>(functionList);
 		functions.setSelectedIndex(0);
 
@@ -203,12 +206,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		JPanel helpPanel = new JPanel();
 		JTabbedPane helpTabbedPane = new JTabbedPane();
 		
-		JPanel formulaPanel = new JPanel();
+		/*JPanel formulaPanel = new JPanel();
 		JLabel formulaText = new JLabel("<html>Help for formulas<br>Alt + left mouse click to get cel content into entry</html>");
-		formulaPanel.add(formulaText);
+		formulaPanel.add(formulaText);*/
 		
 		JPanel hotkeyPanel = new JPanel();
-		JLabel hotkeyText = new JLabel("<html>Open file - Control + O<br>New file - Control + N<br>Save file - Control + S<br>New tab - Control + T<br><hr>Cel contents to textfield - Alt + left mouse button<br>Cel position to textfield - Alt + right mouse button</html>");
+		JLabel hotkeyText = new JLabel("<html>New file - Control + N<br>"
+				+ "Open file - Control + O<br>"
+				+ "Save file - Control + S<br>"
+				+ "Save file as - Control + Shift + S<br>"
+				+ "New tab - Control + T<br>"
+				+ "Close tab - Control + W<br>"
+				+ "Undo last change - Control + Z<br>"
+				+ "Redo last change - Control + Shift + Z<br>"
+				+ "<hr>"
+				+ "Cel contents to textfield - Left mouse button<br>"
+				+ "Cel position to textfield - Alt + right mouse button</html>");
 		hotkeyPanel.add(hotkeyText);
 
 		JPanel aboutPanel = new JPanel();
@@ -216,7 +229,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		aboutPanel.add(aboutText);
 
 		helpPanel.add(helpTabbedPane);
-		helpTabbedPane.addTab("Formula Help", formulaPanel);
+		//helpTabbedPane.addTab("Formula Help", formulaPanel);
 		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
 		helpTabbedPane.addTab("About", aboutPanel);
 
@@ -380,7 +393,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 			int index = mainTabs.getSelectedIndex();
-			panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getTable().getSelectedRow(), panes.get(index).getTable().getSelectedColumn());
+			if (panes.get(index).getTable().getCellSelected() == false)
+				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
+			else
+				panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getTable().getSelectedRow(), panes.get(index).getTable().getSelectedColumn());
 		}
 	}
 

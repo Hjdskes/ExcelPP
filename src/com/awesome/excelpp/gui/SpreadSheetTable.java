@@ -24,11 +24,13 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	private File file;
 	private int selectedColumn;
 	private int selectedRow;
+	private boolean cellSelected;
 	private UndoManager undoManager;
 
 	public SpreadSheetTable (SpreadSheet sheet, File file) {
 		super(sheet);
 		this.file = file;
+		this.cellSelected = false;
 		undoManager = new UndoManager();
 		this.setFillsViewportHeight (true);
 		this.setSelectionBackground (new Color(200, 221, 242));
@@ -52,6 +54,10 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	@Override
 	public final int getSelectedColumn() {
 		return selectedColumn;
+	}
+
+	public final boolean getCellSelected() {
+		return cellSelected;
 	}
 
 	/**
@@ -100,55 +106,81 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 			cell.setBackgroundColor(background);
 	}
 
-	/*
+	/**
 	 * Listens for all mouseClicked events emitted by the elements of the tab
 	 * @return void
 	 */
 	public final void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(this)) {
+			cellSelected = true;
 			Point p = e.getPoint();
 			selectedRow = this.rowAtPoint(p);
 			selectedColumn = this.columnAtPoint(p);
 			this.changeSelection(selectedRow, selectedColumn, false, false);
 
 			String text = null;
+			int button = e.getButton();
+			boolean alt = e.isAltDown();
+			boolean formule = false; //of er al een formule in het tekstvak staat
+			String currentText = GUI.functionFieldGetText();
+
+			if (currentText != null && currentText.length() > 0) {
+				if (currentText.charAt(0) == '=')
+					formule = true;
+			}
+
 			if (this.getSelectedColumnCount() == 1 && this.getSelectedRowCount() == 1) {
-				if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON1)
-					text = GUI.functionFieldGetText() + "(" + this.getValueAt(this.getSelectedRow(), this.getSelectedColumn()) + ")";
-				else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3)
-					text = GUI.functionFieldGetText() + "(" + this.getColumnName(this.getSelectedColumn()) + (this.getSelectedRow() + 1) + ")";
-				else { //ToDo: moet hier nog een specifieke knop voor worden ingesteld, ipv alle mousebuttons?
+				if(button == MouseEvent.BUTTON3) {
+					if (formule)
+						text = currentText + "(" + this.getColumnName(selectedColumn) + (selectedRow + 1) + ")";
+					else
+						text = this.getColumnName(selectedColumn) + (selectedRow + 1);
+				} else {
 					Cell activeCell = (Cell)this.getValueAt(selectedRow, selectedColumn);
-					text = activeCell == null ? "" : activeCell.getContent();
+					if (activeCell != null) {
+						if(formule)
+							text = currentText + "(" + activeCell.getContent() + ")";
+						else
+							text = activeCell.getContent();
+					}
 				}
-				GUI.functionFieldSetText(text);
-			} else {
-				text = GUI.functionFieldGetText();
+				if (text != null && text.length() > 0)
+					GUI.functionFieldSetText(text);
+			} else { //ToDo: wordt overridden door bovenstaande, maar werkt wel als deze wordt veranderd naar bijv BUTTON2 (middlemouse button)
 				int selectedRows[] = this.getSelectedRows();
 				int selectedColumns[] = this.getSelectedColumns();
-				if (e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) { //ToDo: wordt overridden door bovenstaande, maar werkt wel als deze wordt veranderd naar bijv BUTTON2 (middlemouse button)
+				if (alt && button == MouseEvent.BUTTON1) {
 					for (int i = 0; i < selectedColumns.length; i++) {
 						for (int j = 0; j < selectedRows.length; j++) {
-							text += (String) this.getValueAt(selectedRows[j], selectedColumns[i]) + ",";
+							Cell activeCell = (Cell)this.getValueAt(selectedRows[j], selectedColumns[i]);
+							if (formule)
+								text += "(" + activeCell.getContent() + "),";
+							else
+								text += activeCell.getContent();
 						}
 					}
-				} else if(e.isAltDown() && e.getButton() == MouseEvent.BUTTON3) {
+				} else if(alt && button == MouseEvent.BUTTON3) {
 					for (int i = 0; i < selectedColumns.length; i++) {
 						for (int j = 0; j < selectedRows.length; j++) {
-							text += "(" + this.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1) + "),";
+							if (formule)
+								text += "(" + this.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1) + "),";
+							else
+								text += this.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1);
 						}
 					}
 				}
+				if (formule)
+					text = currentText + text;
 				text = text == null || text.length() == 0 ? "" : text.substring(0, text.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
 				GUI.functionFieldSetText(text);
 			}
 		}
 	}
 
-	@Override
 	/**
 	 * Listen for undoable edits and adds them to the undoManager
 	 */
+	@Override
 	public final void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
 	}
