@@ -305,35 +305,35 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
 		else if (e.getSource().equals(buttonBold)) {
-			int row = panes.get(index).getSelectedRow();
-			int column = panes.get(index).getSelectedColumn();
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
 			int bold = current.getBold()  == 0 ? 1 : 0;
 			current.setBold(bold);
 		} else if (e.getSource().equals(buttonItalic)) {
-			int row = panes.get(index).getSelectedRow();
-			int column = panes.get(index).getSelectedColumn();
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
 			int italic = current.getItalic() == 0 ? 2 : 0;
 			current.setItalic(italic);
 		} else if (e.getSource().equals(buttonForegroundColor)) {
 			Color foreground = null;
-			int row = panes.get(index).getSelectedRow();
-			int column = panes.get(index).getSelectedColumn();
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
 			foreground = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getForegroundColor());
 			if(foreground != null) {
-				panes.get(index).setCellForeground(current, foreground);
+				panes.get(index).getTable().setCellForeground(current, foreground);
 				buttonForegroundColor.setBackground(foreground);
 			}
 		} else if (e.getSource().equals(buttonBackgroundColor)) {
 			Color background = null;
-			int row = panes.get(index).getSelectedRow();
-			int column = panes.get(index).getSelectedColumn();
+			int row = panes.get(index).getTable().getSelectedRow();
+			int column = panes.get(index).getTable().getSelectedColumn();
 			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
 			background = JColorChooser.showDialog(mainFrame, "Choose a background color", current.getBackgroundColor());
 			if(background != null) {
-				panes.get(index).setCellBackground(current, background);
+				panes.get(index).getTable().setCellBackground(current, background);
 				buttonBackgroundColor.setBackground(background);
 			}
 		} else if (e.getSource().equals(buttonAbout))
