@@ -5,8 +5,10 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import sun.swing.DefaultLookup;
@@ -71,6 +73,16 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 			fg = DefaultLookup.getColor(this, ui, "Table.dropCellForeground");
 			bg = DefaultLookup.getColor(this, ui, "Table.dropCellBackground");
 			isSelected = true;
+		}
+
+		if (!table.isCellEditable(row, column)) {
+			setBorder(new MatteBorder(1, 1, 0, 0, Color.WHITE));
+			setBackground(DefaultLookup.getColor(this, ui, "TableHeader.background"));
+			setFont(table.getFont());
+			setHorizontalAlignment(SwingConstants.CENTER);
+
+			setValue(value);
+			return this;
 		}
 
 		if (isSelected) {

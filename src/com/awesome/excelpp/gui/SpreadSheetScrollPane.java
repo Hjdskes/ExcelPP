@@ -9,7 +9,7 @@ public class SpreadSheetScrollPane extends JScrollPane {
 	public SpreadSheetScrollPane(SpreadSheetTable table) {
 		super(table);
 
-		JTable rowTabel = new RowNumberTable(table);
+		JTable rowTabel = new RowNumberTable(table.getDefaultRenderer(String.class), table);
 		this.setRowHeaderView(rowTabel);
 		this.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTabel.getTableHeader());
 	}
@@ -18,7 +18,7 @@ public class SpreadSheetScrollPane extends JScrollPane {
 		this(new SpreadSheetTable());
 	}
 
-	public void setTable(SpreadSheetTable table) { //ToDo: nodig? Tabel wordt hier niet door bijgewerkt
+	public void setTable(SpreadSheetTable table) {
 		this.setViewportView(table);
 	}
 

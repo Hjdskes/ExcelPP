@@ -9,25 +9,28 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
+import com.awesome.excelpp.models.Cell;
 
 /**
  * Use a JTable as a renderer for row numbers of a given main table.
  * This table must be added to the row header of the scrollpane that
  * contains the main table.
  *
- * @author Rob Camick, modified by us
+ * @author Rob Camick, modified by Team Awesome
  * @source http://tips4java.wordpress.com/2008/11/18/row-number-table/
  */
 public class RowNumberTable extends JTable implements ChangeListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 	private JTable main;
 
-	public RowNumberTable(JTable table) {
+	public RowNumberTable(TableCellRenderer renderer, JTable table) {
 		main = table;
 		main.addPropertyChangeListener (this);
 
-		setFocusable( false );
+		setFocusable(false);
 		setAutoCreateColumnsFromModel (false);
 		setModel(main.getModel());
 		setSelectionModel(main.getSelectionModel());
@@ -35,8 +38,8 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 		TableColumn column = new TableColumn();
 		column.setHeaderValue(" ");
 		addColumn(column);
-		
-		column.setCellRenderer(table.getTableHeader().getDefaultRenderer());
+
+		column.setCellRenderer(renderer);
 
 		getColumnModel().getColumn(0).setPreferredWidth(50);
 		setPreferredScrollableViewportSize(getPreferredSize());
@@ -73,8 +76,8 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	 * so just return a value based on the row parameter.
 	 */
 	@Override
-	public Object getValueAt(int row, int column) {
-		return Integer.toString(row + 1);
+	public Cell getValueAt(int row, int column) {
+		return (new Cell(null, Integer.toString(row + 1)));
 	}
 
 	/*
@@ -84,7 +87,7 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	public boolean isCellEditable(int row, int column) {
 		return false;
 	}
-	
+
 	/*
 	 * Implement the ChangeListener
 	 */
