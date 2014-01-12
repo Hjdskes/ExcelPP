@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
@@ -257,8 +258,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 		helpDialog.add(helpPanel);
 		helpDialog.setIconImage(mainImage);
-		helpDialog.setSize(292, 450);
-		helpDialog.setResizable(false);
+		helpDialog.setMinimumSize(new Dimension(292, 450));
+		helpDialog.setResizable(true);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);
