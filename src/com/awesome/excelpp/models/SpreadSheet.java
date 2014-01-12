@@ -91,8 +91,14 @@ public class SpreadSheet extends AbstractTableModel {
 	 * @param postEdit when true an edit is posted so that it can be undone/redone
 	 */
 	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
-		cells.put(getNumCell(row, col), (Cell)aValue);
-		fireTableDataChanged();
+		if(postEdit == true){
+			setValueAt(aValue, row, col);
+		}
+		
+		else{
+			cells.put(getNumCell(row, col), (Cell)aValue);
+			fireTableDataChanged();
+		}
 	}
 	
 	/**
@@ -117,6 +123,10 @@ public class SpreadSheet extends AbstractTableModel {
 	 */
 	public void addUndoableEditListener(UndoableEditListener l){
 		this.undoSupport.addUndoableEditListener(l);
+	}
+	
+	public UndoableEditSupport getUndoSupport(){
+		return undoSupport;
 	}
 	
 	/* OTHER */

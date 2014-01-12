@@ -145,6 +145,14 @@ public class Cell {
 		return hex;
 	}
 	
+	/**
+	 * Gets the sheet of this cell
+	 * @return The sheet of this cell
+	 */
+	public SpreadSheet getSheet(){
+		return sheet;
+	}
+	
 	public boolean isEmpty() {
 		return (fontBold == 0 && fontItalic == 0 &&
 				(foregroundColor == null || foregroundColor == Color.BLACK) &&
