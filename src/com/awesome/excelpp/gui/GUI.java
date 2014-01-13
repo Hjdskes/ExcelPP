@@ -524,7 +524,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			if (choice == JFileChooser.APPROVE_OPTION) {
 				String fileString = fc.getSelectedFile().getPath();
 				fileString = fileString.substring(0, fileString.lastIndexOf("."));
-                fileString += ".xml";
+				fileString += ".xml";
 				file = new File(fileString);
 				table.setFile(file);
 				updateTabTitle(mainTabs.getSelectedIndex(), file.getName());
