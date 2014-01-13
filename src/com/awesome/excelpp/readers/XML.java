@@ -61,8 +61,12 @@ public class XML {
 			Color fontColor = Color.BLACK;
 
 		      Node node = list.item(i);
-		      
+		      try{
 		      data = node.getFirstChild().getNodeValue();
+		      }catch(NullPointerException e) {
+		    	  System.out.println("Empty cell");
+		    	  data = "";
+		      }
 		      NamedNodeMap attributes = node.getAttributes();
 
 		      for (int a = 0; a < attributes.getLength(); a++) {

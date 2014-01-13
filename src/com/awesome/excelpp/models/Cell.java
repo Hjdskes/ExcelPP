@@ -156,7 +156,8 @@ public class Cell {
 	public boolean isEmpty() {
 		return (fontBold == 0 && fontItalic == 0 &&
 				(foregroundColor == null || foregroundColor == Color.BLACK) &&
-				(backgroundColor == null || backgroundColor == Color.WHITE));
+				(backgroundColor == null || backgroundColor == Color.WHITE) && 
+				(content == null || content.equals("") || content == ""));
 	}
 
 	/**
