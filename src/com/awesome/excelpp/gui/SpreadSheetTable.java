@@ -41,21 +41,42 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		sheet.addTableModelListener(this);
 		sheet.addUndoableEditListener(this);
 	}
-	
+
 	public SpreadSheetTable() {
 		this(new SpreadSheet(), null);
 	}
 
+	/**
+	 * Returns the currently selected row.
+	 * This is different from the regular JTable's method
+	 * because this value is kept even when the JTable is
+	 * not focused.
+	 * @return int	the selected row
+	 */
 	@Override
 	public final int getSelectedRow() {
 		return selectedRow;
 	}
 
+	/**
+	 * Returns the currently selected column.
+	 * This is different from the regular JTable's method
+	 * because this value is kept even when the JTable is
+	 * not focused.
+	 * @return int	the selected column
+	 */
 	@Override
 	public final int getSelectedColumn() {
 		return selectedColumn;
 	}
 
+	/**
+	 * Returns true if a Cell has been selected ever since
+	 * the application was started.
+	 * (Otherwise, text typed into the text field will
+	 * always replace Cell A1's content).
+	 * @return true	if a Cell has ever been selected
+	 */
 	public final boolean getCellSelected() {
 		return cellSelected;
 	}

@@ -9,7 +9,6 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import com.awesome.excelpp.models.Cell;
@@ -26,7 +25,7 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 	private static final long serialVersionUID = 1L;
 	private JTable main;
 
-	public RowNumberTable(TableCellRenderer renderer, JTable table) {
+	public RowNumberTable(JTable table) {
 		main = table;
 		main.addPropertyChangeListener (this);
 
@@ -39,6 +38,7 @@ public class RowNumberTable extends JTable implements ChangeListener, PropertyCh
 		column.setHeaderValue(" ");
 		addColumn(column);
 
+		RowNumberTableRenderer renderer = new RowNumberTableRenderer();
 		column.setCellRenderer(renderer);
 
 		getColumnModel().getColumn(0).setPreferredWidth(50);

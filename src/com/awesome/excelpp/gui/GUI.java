@@ -545,7 +545,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @param index
 	 * @return int - 0 for OK, 1 for cancel
 	 */
-	public static final int closeFile(int index) {
+	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;
 		if(panes.get(index).getTable().getUndoManager().canUndo() == true) //ToDo: misschien niet de beste oplossing
 			close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
