@@ -84,23 +84,41 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		return undoManager;
 	}
 
+	/**
+	 * Sets the bold attribute of the selected Cell.
+	 * @param bold	Value to give to the attribute. Can be 0 (plain text), or 1 (bold).
+	 */
 	public final void setCellBold(int bold) {
 		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
 		if (current != null)
 			current.setBold(bold);
 	}
 
+	/**
+	 * Sets the italic attribute of the selected Cell.
+	 * @param italic	Value to give to the attribute. Can be 0 (plain text), or 2 (italic).
+	 */
 	public final void setCellItalic(int italic) {
 		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
 		if (current != null)
 			current.setItalic(italic);
 	}
 
+	/**
+	 * Sets the foreground color of a Cell.
+	 * @param cell	Which Cell to change the color for.
+	 * @param foreground	The new foreground color.
+	 */
 	public final void setCellForeground(Cell cell, Color foreground) {
 		if(cell != null)
 			cell.setForegroundColor(foreground);
 	}
 
+	/**
+	 * Sets the background color of a Cell.
+	 * @param cell	Which Cell to change the color for.
+	 * @param background	The new background color.
+	 */
 	public final void setCellBackground(Cell cell, Color background) {
 		if(cell != null)
 			cell.setBackgroundColor(background);
@@ -121,11 +139,11 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 			String text = null;
 			int button = e.getButton();
 			boolean alt = e.isAltDown();
-			boolean formule = false; //of er al een formule in het tekstvak staat
+			boolean formule = false; //of er al een (nog niet afgeronde) formule in het tekstvak staat
 			String currentText = GUI.functionFieldGetText();
 
 			if (currentText != null && currentText.length() > 0) {
-				if (currentText.charAt(0) == '=')
+				if (currentText.charAt(0) == '=' && currentText.charAt(currentText.length() - 1) != ';')
 					formule = true;
 			}
 
