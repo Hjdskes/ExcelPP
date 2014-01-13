@@ -26,7 +26,7 @@ public class MathTest {
 	
 	@Test
 	public void isNumber() {
-		assertEquals(1.0, new IsNumber.getValue(10), 0.001);
+		assertEquals(1.0, new IsNumber.getValue("a"), 0.001);
 	}
 	
 	@Test 
