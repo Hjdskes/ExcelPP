@@ -149,7 +149,7 @@ public class SpreadSheet extends AbstractTableModel {
 					 
 			if (!cell.isEmpty()) {
 				int[] xy = getXYCell(cellnr);
-				writer.addCell(cell, xy[0] + 1, xy[1] + 1, cell.getBold(), cell.getItalic(), cell.getForegroundColorHex(), cell.getBackgroundColorHex());
+				writer.addCell(cell, xy[1] + 1, xy[0] + 1, cell.getBold(), cell.getItalic(), cell.getForegroundColorHex(), cell.getBackgroundColorHex());
 			}
 		}
 		writer.close();

@@ -17,8 +17,11 @@ public class XMLWriter implements Writer {
 	
 	@Override
 	public void addCell(Cell cell, int row, int col, int bold, int italic, String fontColor, String bgColor) {
-		pw.write("<CELL row=\"" + row + "\" column=\"" + col + "\" style=\"bold:" + bold + ";italic:" + italic + ";fontColor:" + fontColor + ";bgColor:" + bgColor + "\">" + cell.getContent() + "</CELL>\n");
-	}
+
+			System.out.println(cell.getContent());
+			pw.write("<CELL row=\"" + row + "\" column=\"" + col + "\" style=\"bold:" + bold + ";italic:" + italic + ";fontColor:" + fontColor + ";bgColor:" + bgColor + "\">" + cell.getContent() + "</CELL>\n");
+			
+		}
 
 	public void close() {
 		pw.write("</SPREADSHEET>");
