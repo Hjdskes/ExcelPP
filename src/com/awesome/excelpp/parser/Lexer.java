@@ -40,10 +40,12 @@ public class Lexer {
 	    		tokens.add(new Token(TokenType.RBRACKET, Character.toString(ch)));
 	    		break;
 	    	case ',':
-	    	case ';':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(TokenType.DELIM,Character.toString(ch)));
+	    		tokens.add(new Token(TokenType.DELIM, Character.toString(ch)));
 	    		break;
+	    	case ':':
+	    		setState(State.CELLRANGE);
+	    		tokens.add(new Token(TokenType.CELLDELIM, Character.toString(ch)));
 	    	case '.':
 	    		setState(State.NUMBER);
 	    		token.append(ch);
