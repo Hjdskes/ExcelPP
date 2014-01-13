@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -39,6 +40,7 @@ import javax.imageio.ImageIO;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.awesome.excelpp.graph.PieChart;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.models.TableCellEdit;
@@ -75,6 +77,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonOpen;
 	private static JButton buttonNewTab;
 	private static JButton buttonNew;
+	private static JButton buttonGraphs;
 
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
@@ -120,6 +123,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonForegroundColor = new JButton();
 		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
+		buttonGraphs = new JButton("Graphs");
+		
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical",
 								 "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not",
 								 "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign",
@@ -163,6 +168,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
 		buttonBackgroundColor.setToolTipText("Set this cell's background color");
 		buttonAbout.setToolTipText("About");
+		buttonGraphs.setToolTipText("Graphs");
 
 		panel.add(buttonNew);
 		panel.add(buttonNewTab);
@@ -177,6 +183,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonItalic);
 		panel.add(buttonForegroundColor);
 		panel.add(buttonBackgroundColor);
+		panel.add(buttonGraphs);
 		panel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
@@ -202,6 +209,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonForegroundColor.addActionListener(this);
 		buttonBackgroundColor.addActionListener(this);
 		buttonAbout.addActionListener(this);
+		buttonGraphs.addActionListener(this);
 
 		return panel;
 	}
@@ -263,6 +271,67 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);
+	}
+	
+	public final void openGraphsDialog(){
+		final int index = mainTabs.getSelectedIndex();
+		
+		final JDialog graphsDialog = new JDialog(this, "Charts", true);
+		final JPanel graphsPanel = new JPanel();
+		final JTabbedPane graphsTabbedPane = new JTabbedPane();
+		final JTextField firstCell = new JTextField();
+		final JTextField lastCell = new JTextField();
+		JPanel pieChartPanel = new JPanel();
+		JTextArea pieChartText1 = new JTextArea("Enter the first cell: \n(example: A1)");
+		JTextArea pieChartText2 = new JTextArea("Enter the last cell: \n(example: H2)");
+		final JButton pieChartButton = new JButton("Draw the chart");
+		
+		pieChartText1.setEditable(false);
+		pieChartText2.setEditable(false);
+		
+		firstCell.setPreferredSize(new Dimension(25, 20));
+		lastCell.setPreferredSize(new Dimension(25, 20));
+		
+		pieChartPanel.add(pieChartText1);
+		pieChartPanel.add(firstCell);
+		pieChartPanel.add(pieChartText2);
+		pieChartPanel.add(lastCell);
+		pieChartPanel.add(pieChartButton);
+		
+		ActionListener graphsAction = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource().equals(pieChartButton)){
+					String first = firstCell.getText();
+					String last = lastCell.getText();
+					ArrayList<String> names = PieChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+					ArrayList<Double> values = PieChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+					PieChart chart = new PieChart(names, values, "Titel");
+					chart.pack();
+					chart.setVisible(true);
+				}
+				
+			}
+			
+		};
+		
+		pieChartButton.addActionListener(graphsAction);
+
+		
+		graphsPanel.add(graphsTabbedPane);
+		graphsTabbedPane.addTab("PieChart", pieChartPanel);
+		
+		graphsDialog.add(graphsPanel);
+		graphsDialog.setIconImage(mainImage);
+		graphsDialog.setMinimumSize(new Dimension(550, 150));
+		graphsDialog.setResizable(true);
+		graphsDialog.setLocation ((screenWidth / 2) - (graphsPanel.getPreferredSize().width / 2), (screenHeight / 2) - (graphsPanel.getPreferredSize().height / 2)); //center in het midden
+		
+		graphsDialog.setVisible(true);
+		
+		
+
 	}
 
 	/**
@@ -435,6 +504,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
+		} else if(e.getSource().equals(buttonGraphs)){
+			openGraphsDialog();
 		}
 	}
 
