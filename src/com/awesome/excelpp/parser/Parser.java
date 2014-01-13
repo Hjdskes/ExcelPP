@@ -138,6 +138,8 @@ public class Parser {
 					throw new MissingLBracketException();
 				}
 				break;
+			case CELLDELIM:
+				//TODO:
 			case WORD:
 				numargsStack.push(1);
 				operators.push(currentToken);
