@@ -219,11 +219,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "We adhere to the implementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
 				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
 				+ " this, we are very curious to hear about your results!\n\n"
-				+ "The syntax is as follows: =Add(2+2)\n"
-				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
-				+ "Arguments are provided between brackets and are separated by commas. Below is a more complicated example:\n"
-				+ "=Add(=Average(2,4,6), 5, =Power(2,4))\n\n"
-				+ "Regular math notation, such as =(2+2)*3, is also supported. One can also make Cell references from other Cells: =A1.\n"
+				+ "The syntax is as follows: =Add(2+2);\n"
+				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox. "
+				+ "Arguments are provided between brackets and are separated by commas. Formulas are ended by a semicolon."
+				+ "Here is a more complicated example: =Add(Average(2,4,6), 5, Power(2,4));\n\n"
+				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1.\n"
 				+ "Cell ranges are not yet supported.";
 		final JTextArea formulaPanel = new JTextArea(formulaText);
 		formulaPanel.setEditable(false);
