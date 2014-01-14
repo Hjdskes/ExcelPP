@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -283,22 +284,45 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JTabbedPane graphsTabbedPane = new JTabbedPane();
 		final JTextField firstCell = new JTextField();
 		final JTextField lastCell = new JTextField();
+		final JTextField titel = new JTextField();
 		JPanel pieChartPanel = new JPanel();
-		JTextArea pieChartText1 = new JTextArea("Enter the first cell: \n(example: A1)");
-		JTextArea pieChartText2 = new JTextArea("Enter the last cell: \n(example: H2)");
+		JPanel pieChartPanel1 = new JPanel();
+		JPanel pieChartPanel2 = new JPanel();
+		JPanel pieChartPanel3 = new JPanel();
+		JTextArea pieChartText1 = new JTextArea("Enter the first cell:\n(example: A1)");
+		JTextArea pieChartText2 = new JTextArea("Enter the last cell:\n(example: H2)");
+		JTextArea titelText = new JTextArea("Enter the title of the chart:");
 		final JButton pieChartButton = new JButton("Draw the chart");
+		
+		pieChartPanel.setLayout(new BoxLayout(pieChartPanel,BoxLayout.Y_AXIS));
+		
+		pieChartPanel.add(pieChartPanel1);
+		pieChartPanel.add(pieChartPanel2);
+		pieChartPanel.add(pieChartPanel3);
+		pieChartPanel.add(pieChartButton);
+		pieChartPanel1.add(pieChartText1);
+		pieChartPanel1.add(firstCell);
+		
+		pieChartPanel2.add(pieChartText2);
+		pieChartPanel2.add(lastCell);
+		
+		pieChartPanel3.add(titelText);
+		pieChartPanel3.add(titel);
+		pieChartPanel3.setLayout(new BoxLayout(pieChartPanel3, BoxLayout.Y_AXIS));
 		
 		pieChartText1.setEditable(false);
 		pieChartText2.setEditable(false);
+		titelText.setEditable(false);
 		
 		firstCell.setPreferredSize(new Dimension(25, 20));
 		lastCell.setPreferredSize(new Dimension(25, 20));
 		
-		pieChartPanel.add(pieChartText1);
-		pieChartPanel.add(firstCell);
-		pieChartPanel.add(pieChartText2);
-		pieChartPanel.add(lastCell);
-		pieChartPanel.add(pieChartButton);
+		
+		pieChartText1.setAlignmentX(RIGHT_ALIGNMENT);
+		firstCell.setAlignmentX(LEFT_ALIGNMENT);
+		lastCell.setAlignmentX(RIGHT_ALIGNMENT);
+		pieChartButton.setAlignmentX(CENTER_ALIGNMENT);
+		
 		
 		ActionListener graphsAction = new ActionListener(){
 
@@ -307,10 +331,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				if(e.getSource().equals(pieChartButton)){
 					String first = firstCell.getText();
 					String last = lastCell.getText();
+					String titelString = titel.getText();
 					try{
 						ArrayList<String> names = PieChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
 						ArrayList<Double> values = PieChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
-						PieChart chart = new PieChart(names, values, "Titel");
+						PieChart chart = new PieChart(names, values, titelString);
 						chart.pack();
 						chart.setVisible(true);
 						graphsDialog.dispose();
@@ -333,7 +358,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		
 		graphsDialog.add(graphsPanel);
 		graphsDialog.setIconImage(mainImage);
-		graphsDialog.setMinimumSize(new Dimension(550, 150));
+		graphsDialog.setMinimumSize(new Dimension(270, 250));
 		graphsDialog.setResizable(true);
 		graphsDialog.setLocation ((screenWidth / 2) - (graphsPanel.getPreferredSize().width / 2), (screenHeight / 2) - (graphsPanel.getPreferredSize().height / 2)); //center in het midden
 		
