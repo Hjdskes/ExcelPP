@@ -12,6 +12,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
+import com.awesome.excelpp.graph.exception.CellDataException;
+import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
@@ -56,39 +58,65 @@ public class PieChart extends JFrame{
 		
 	
 	
-	public static ArrayList<String> getNames(SpreadSheet sheet, String startCell, String endCell){
-		char start = startCell.charAt(0);
-		char end = endCell.charAt(0);
-		int firstRow = Integer.parseInt(startCell.substring(1))-1;
-		int startInt = Character.toUpperCase(start) - 65;
-		int endInt = Character.toUpperCase(end) - 65;
+	public static ArrayList<String> getNames(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
+		char start; char end; int firstRow; int secondRow; int startInt; int endInt;
+		try{
+			start = startCell.charAt(0);
+			end = endCell.charAt(0);
+			firstRow = Integer.parseInt(startCell.substring(1))-1;
+			secondRow = Integer.parseInt(endCell.substring(1))-1;
+			startInt = Character.toUpperCase(start) - 65;
+			endInt = Character.toUpperCase(end) - 65;
+		} catch(Exception e){
+			throw new CellInputException();
+		}
 		
 		ArrayList<String> res = new ArrayList<String>();
 		
-		for(int i = 0; i<=endInt-startInt; i++){
-			res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
+		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0 && startInt <=25 && endInt >= 0 && endInt <=25){
+			for(int i = 0; i<=endInt-startInt; i++){
+				if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null){
+					res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
+				} else{
+					throw new CellDataException();
+				}
+			}
+		} else{
+			throw new CellInputException();
 		}
 		
 		return res;
 	}
 	
-	public static ArrayList<Double> getValues(SpreadSheet sheet, String startCell, String endCell){
-		char start = startCell.charAt(0);
-		char end = endCell.charAt(0);
-		int secondRow = Integer.parseInt(endCell.substring(1))-1;
-		int startInt = Character.toUpperCase(start) - 65;
-		int endInt = Character.toUpperCase(end) - 65;
+	public static ArrayList<Double> getValues(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
+		char start; char end; int firstRow; int secondRow; int startInt; int endInt; Double add;
+		try{
+			start = startCell.charAt(0);
+			end = endCell.charAt(0);
+			firstRow = Integer.parseInt(startCell.substring(1))-1;
+			secondRow = Integer.parseInt(endCell.substring(1))-1;
+			startInt = Character.toUpperCase(start) - 65;
+			endInt = Character.toUpperCase(end) - 65;
+		} catch(Exception e){
+			throw new CellInputException();
+		}
 		
 		ArrayList<Double> res = new ArrayList<Double>();
-	
+		
+		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt>=0 && startInt<=25 && endInt >= 0 && endInt <=25){
 		for(int i = 0; i<=endInt-startInt; i++){
-			if(!((Cell) sheet.getValueAt(secondRow, startInt + i)).getContent().toString().startsWith("#")){
-				System.out.println(((Cell) sheet.getValueAt(secondRow, startInt + i)).toString());
-				res.add(Double.parseDouble(((Cell) sheet.getValueAt(secondRow, startInt + i)).toString()));
-			} else{
-				System.err.println("Couldn't parse to cell");
-			}
+				
+				try{
+					add = Double.parseDouble(((Cell) sheet.getValueAt(secondRow, startInt + i)).toString());
+					res.add(add);
+				} catch(Exception e){
+					throw new CellDataException();
+				}
+			} 
+		} else{
+			throw new CellInputException();
 		}
+		
 		return res;
 		
 		

@@ -41,6 +41,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.awesome.excelpp.graph.PieChart;
+import com.awesome.excelpp.graph.exception.CellDataException;
+import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.models.TableCellEdit;
@@ -305,14 +307,20 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				if(e.getSource().equals(pieChartButton)){
 					String first = firstCell.getText();
 					String last = lastCell.getText();
-					graphsDialog.dispose();
-					ArrayList<String> names = PieChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
-					ArrayList<Double> values = PieChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
-					PieChart chart = new PieChart(names, values, "Titel");
-					chart.pack();
-					chart.setVisible(true);
-				}
-				
+					try{
+						ArrayList<String> names = PieChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						ArrayList<Double> values = PieChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						PieChart chart = new PieChart(names, values, "Titel");
+						chart.pack();
+						chart.setVisible(true);
+						graphsDialog.dispose();
+					} catch(CellInputException c){
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure your input for the first cell and the last cell is correct");
+					} catch(CellDataException d){
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a piechart");
+					}
+					
+				}				
 			}
 			
 		};
