@@ -64,7 +64,6 @@ public class XML {
 		      try{
 		      data = node.getFirstChild().getNodeValue();
 		      }catch(NullPointerException e) {
-		    	  System.out.println("Empty cell");
 		    	  data = "";
 		      }
 		      NamedNodeMap attributes = node.getAttributes();
