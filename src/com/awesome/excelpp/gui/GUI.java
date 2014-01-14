@@ -298,12 +298,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Updates the tab's title.
-	 * @param newTitle - the new title to set.
+	 * @param newTitle	the new title to set.
 	 * @return void
 	 */
 	private final void updateTabTitle(int index, String newTitle) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
 		currentComponent.setTitle(newTitle);
+	}
+
+	/**
+	 * Gets the a tab's title
+	 * @param index		Tab to get the title from
+	 * @return String	The title
+	 */
+	private static final String getTabTitle(int index) {
+		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
+		return currentComponent.getTitle();
 	}
 
 	/**
@@ -387,7 +397,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
 									  current.getForegroundColor(), current.getBackgroundColor());
 
-			foreground = JColorChooser.showDialog(this, "Choose a background color", current.getForegroundColor());
+			foreground = JColorChooser.showDialog(this, "Choose a foreground color", current.getForegroundColor());
 			if(foreground != null) {
 				panes.get(index).getTable().setCellForeground(current, foreground);
 				buttonForegroundColor.setBackground(foreground);
@@ -543,12 +553,25 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	/**
 	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
 	 * @param index
-	 * @return int - 0 for OK, 1 for cancel
+	 * @return integer 	0 for OK, 1 for cancel
 	 */
 	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;
-		if(panes.get(index).getTable().getUndoManager().canUndo() == true) //ToDo: misschien niet de beste oplossing
-			close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+		SpreadSheetTable table = panes.get(index).getTable();
+		if(getTabTitle(index).equals("New file")) {
+			if(table.getSheet().isEmpty() == true)
+				close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+		} else {
+			try {
+				Document doc = XML.parse(table.getFile());
+				SpreadSheet fileSheet = XML.print(doc);
+				if(!table.getSheet().equals(fileSheet))
+					close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+			}
+		}
 		return close;
 	}
 }

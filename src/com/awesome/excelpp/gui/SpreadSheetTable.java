@@ -22,6 +22,7 @@ import javax.swing.undo.UndoManager;
 public class SpreadSheetTable extends JTable implements MouseListener, UndoableEditListener {
 	private static final long serialVersionUID = 1L;
 	private File file;
+	private SpreadSheet sheet;
 	private int selectedColumn;
 	private int selectedRow;
 	private boolean cellSelected;
@@ -29,7 +30,9 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 
 	public SpreadSheetTable (SpreadSheet sheet, File file) {
 		super(sheet);
+
 		this.file = file;
+		this.sheet = sheet;
 		this.cellSelected = false;
 		undoManager = new UndoManager();
 		this.setFillsViewportHeight (true);
@@ -44,6 +47,14 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 
 	public SpreadSheetTable() {
 		this(new SpreadSheet(), null);
+	}
+
+	/**
+	 * Returns the sheet used in this SpreadSheetTable
+	 * @return SpreadSheet
+	 */
+	public final SpreadSheet getSheet() {
+		return sheet;
 	}
 
 	/**
