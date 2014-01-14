@@ -332,6 +332,60 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		return functionField.getText();
 	}
 
+	public final void changeMarkup(int index, boolean bold) {
+		int row = panes.get(index).getTable().getSelectedRow();
+		int column = panes.get(index).getTable().getSelectedColumn();
+		Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+		Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
+								  current.getForegroundColor(), current.getBackgroundColor());
+
+		if(bold == true) {
+			int bolde = current.getBold()  == 0 ? 1 : 0;
+			current.setBold(bolde);
+		} else if(bold == false) {
+			int italic = current.getItalic() == 0 ? 2 : 0;
+			current.setItalic(italic);
+		}
+
+		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
+		if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
+			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
+			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
+		}
+
+		panes.get(index).getTable().grabFocus();
+	}
+
+	public final void changeColors(int index, boolean foreground) {
+		Color newColor = null;
+		int row = panes.get(index).getTable().getSelectedRow();
+		int column = panes.get(index).getTable().getSelectedColumn();
+		Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+		Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
+								  current.getForegroundColor(), current.getBackgroundColor());
+
+		if(foreground == false)
+			newColor = JColorChooser.showDialog(this, "Choose a background color", current.getBackgroundColor());
+		else if(foreground == true)
+			newColor = JColorChooser.showDialog(this, "Choose a foreground color", current.getForegroundColor());
+
+		if(newColor != null && foreground == false) {
+			panes.get(index).getTable().setCellBackground(current, newColor);
+			buttonBackgroundColor.setBackground(newColor);
+		} else if(newColor != null && foreground == true) {
+			panes.get(index).getTable().setCellForeground(current, newColor);
+			buttonForegroundColor.setBackground(newColor);
+		}
+
+		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
+		if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
+			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
+			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
+		}
+
+		panes.get(index).getTable().grabFocus();
+	}
+
 	/**
 	 * Listens for all events emitted by the elements of the GUI
 	 * Calls other functions
@@ -356,82 +410,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
 		else if (e.getSource().equals(buttonBold)) {
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-
-			int bold = current.getBold()  == 0 ? 1 : 0;
-			current.setBold(bold);
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
+			changeMarkup(index, true);
 		} else if (e.getSource().equals(buttonItalic)) {
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-
-			int italic = current.getItalic() == 0 ? 2 : 0;
-			current.setItalic(italic);
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(oldValue.getItalic() != newValue.getItalic()) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
+			changeMarkup(index, false);
 		} else if (e.getSource().equals(buttonForegroundColor)) {
-			Color foreground = null;
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-
-			foreground = JColorChooser.showDialog(this, "Choose a foreground color", current.getForegroundColor());
-			if(foreground != null) {
-				panes.get(index).getTable().setCellForeground(current, foreground);
-				buttonForegroundColor.setBackground(foreground);
-			}
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(!oldValue.getForegroundColor().equals(newValue.getForegroundColor())) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
+			changeColors(index, true);
 		} else if (e.getSource().equals(buttonBackgroundColor)) {
-			Color background = null;
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-			
-			background = JColorChooser.showDialog(this, "Choose a background color", current.getBackgroundColor());
-			if(background != null) {
-				panes.get(index).getTable().setCellBackground(current, background);
-				buttonBackgroundColor.setBackground(background);
-			}
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
+			changeColors(index, false);
 		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
