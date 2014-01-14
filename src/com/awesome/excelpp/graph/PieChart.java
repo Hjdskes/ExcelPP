@@ -12,11 +12,16 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
-import com.awesome.excelpp.gui.SpreadSheetTable;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
 public class PieChart extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	public PieChart(ArrayList<String> names, ArrayList<Double> values, String title){
 		super("PieChart");
 		PieDataset data = createData(names, values);
@@ -48,6 +53,8 @@ public class PieChart extends JFrame{
 		JFreeChart chart = ChartFactory.createPieChart3D(title, data, true, true, false);
 		return chart;
 	}
+		
+	
 	
 	public static ArrayList<String> getNames(SpreadSheet sheet, String startCell, String endCell){
 		char start = startCell.charAt(0);
@@ -73,7 +80,7 @@ public class PieChart extends JFrame{
 		int endInt = Character.toUpperCase(end) - 65;
 		
 		ArrayList<Double> res = new ArrayList<Double>();
-		
+	
 		for(int i = 0; i<=endInt-startInt; i++){
 			if(!((Cell) sheet.getValueAt(secondRow, startInt + i)).getContent().toString().startsWith("#")){
 				System.out.println(((Cell) sheet.getValueAt(secondRow, startInt + i)).toString());
@@ -86,25 +93,5 @@ public class PieChart extends JFrame{
 		
 		
 	}
-	
-	
-	 public static void main(String[] args) {
-        ArrayList<String> names = new ArrayList<String>();
-        ArrayList<Double> values = new ArrayList<Double>();
-        names.add("hurr");
-        
-        names.add("durr");
-        names.add("test");
-        names.add("dfegf");
-        
-        values.add(1.0);
-        values.add(5.0);
-        values.add(10.0);
-        values.add(6.0);
-        
-        PieChart test = new PieChart(names, values, "test");
-        test.pack();
-        test.setVisible(true);
-     }
 	
 }

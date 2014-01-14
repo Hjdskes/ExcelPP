@@ -305,6 +305,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				if(e.getSource().equals(pieChartButton)){
 					String first = firstCell.getText();
 					String last = lastCell.getText();
+					graphsDialog.dispose();
 					ArrayList<String> names = PieChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
 					ArrayList<Double> values = PieChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
 					PieChart chart = new PieChart(names, values, "Titel");
