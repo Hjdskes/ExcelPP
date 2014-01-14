@@ -393,40 +393,41 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
+		JButton source = (JButton)e.getSource();
 
-		if (e.getSource().equals(buttonOpen))
+		if (source.equals(buttonOpen))
 			openFile();
-		else if (e.getSource().equals(buttonNew)) {
+		else if (source.equals(buttonNew)) {
 			if(closeFile(index) == 0) {
 				SpreadSheet newSheet = new SpreadSheet();
 				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
 				panes.get(index).setTable(newTable);
 				updateTabTitle(index, "New file");
 			}
-		} else if (e.getSource().equals(buttonNewTab))
+		} else if (source.equals(buttonNewTab))
 			createNewTab(null);
-		else if (e.getSource().equals(buttonSave))
+		else if (source.equals(buttonSave))
 			saveFile(false);
-		else if (e.getSource().equals(buttonSaveAs))
+		else if (source.equals(buttonSaveAs))
 			saveFile(true);
-		else if (e.getSource().equals(buttonBold)) {
+		else if (source.equals(buttonBold)) {
 			changeMarkup(index, true);
-		} else if (e.getSource().equals(buttonItalic)) {
+		} else if (source.equals(buttonItalic)) {
 			changeMarkup(index, false);
-		} else if (e.getSource().equals(buttonForegroundColor)) {
+		} else if (source.equals(buttonForegroundColor)) {
 			changeColors(index, true);
-		} else if (e.getSource().equals(buttonBackgroundColor)) {
+		} else if (source.equals(buttonBackgroundColor)) {
 			changeColors(index, false);
-		} else if (e.getSource().equals(buttonAbout))
+		} else if (source.equals(buttonAbout))
 			openHelpDialog();
-		else if (e.getSource().equals(functions)) {
+		else if (source.equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
-		} else if (e.getSource().equals(buttonUndo)) {
+		} else if (source.equals(buttonUndo)) {
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canUndo() == true)
 				manager.undo();
-		} else if (e.getSource().equals(buttonRedo)) {
+		} else if (source.equals(buttonRedo)) {
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
