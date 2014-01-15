@@ -17,6 +17,7 @@ import com.awesome.excelpp.junit.parser.ParserTest;
 				LexerTest.class,
 				ParserTest.class,
 				MathTest.class })
+				
 public class AllTests {
 
 }
