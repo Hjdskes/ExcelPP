@@ -221,12 +221,10 @@ public class Parser {
 				}
 				break;
 			case WORD:
-				int numArgs = 0;
-				double[] args;
-				numArgs = arityStack.removeLast();
-				args = new double[numArgs];
+				int numArgs = arityStack.removeLast();
+				Object args[] = new Object[numArgs];
 				for (int i = numArgs - 1; i >= 0; i--) {
-					args[i] = (Double)evalStack.pop();
+					args[i] = evalStack.pop();
 				}
 				evalStack.push(evalFunction(output.removeLast().data, args));
 				break;
@@ -249,7 +247,7 @@ public class Parser {
 	 * @return				the evaluated {@link Formula}
 	 * @throws FormulaException
 	 */
-	private double evalFunction(String function, double ... args) throws FormulaException {
+	private double evalFunction(String function, Object ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
 		Formula formula;

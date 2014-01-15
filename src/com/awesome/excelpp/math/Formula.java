@@ -7,5 +7,5 @@ import com.awesome.excelpp.math.exception.MathException;
  *
  */
 public abstract class Formula {
-	public abstract double  getValue(double ... numbers) throws MathException;
+	public abstract double  getValue(Object ... args) throws MathException;
 }
