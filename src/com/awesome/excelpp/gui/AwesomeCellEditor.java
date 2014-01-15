@@ -3,17 +3,14 @@ package com.awesome.excelpp.gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
+
+import java.util.EventObject;
 
 import com.awesome.excelpp.models.Cell;
 
@@ -25,20 +22,16 @@ import com.awesome.excelpp.models.Cell;
  *
  * ToDo: sla tekst op ook als er NIET op enter wordt gedrukt
  */
-public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEditor, KeyListener, ActionListener {
+public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEditor {
 	private static final long serialVersionUID = 1L;
 	private JTextField textfield;
 	private Cell currentCell;
-	private int clickCountToStart;
+	private int clickCount;
 
 	public AwesomeCellEditor () {
+		this.clickCount = 2;
 		this.textfield = new JTextField("");
-		textfield.setActionCommand("Edit");
-		textfield.addActionListener(this);
-		textfield.addKeyListener(this);
 		textfield.setBorder(null);
-
-		this.clickCountToStart = 2;
 	}
 
 	/**
@@ -66,71 +59,18 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 		textfield.setText(currentCell.getContent());
         return textfield;
 	}
-
-	/**
-	 * Returns true to indicate that the editing cell may be selected.
-	 * @param anEvent	the event
-	 */
-	public boolean  isCellEditable(EventObject anEvent) {
-		if (anEvent instanceof MouseEvent)
-			return ((MouseEvent)anEvent).getClickCount() >= clickCountToStart;
+	
+	@Override
+	public boolean isCellEditable(EventObject evt) {
+		if (evt instanceof MouseEvent) {
+			return ((MouseEvent)evt).getClickCount() >= clickCount;
+		}
 		return true;
 	}
-
-	/**
-	 * When the "Edit" action is performed, editing is started.
-	 */
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Edit")) { //begin met edit
-			String newText = currentCell.getContent() == null ? "" : currentCell.getContent();
-			Font currentFont = textfield.getFont();
-
-			Font newFont = new Font(currentFont.getName(), currentCell.getItalic() | currentCell.getBold(), currentFont.getSize());
-			textfield.setFont(newFont);
-
-			Color background = currentCell.getBackgroundColor();
-			Color foreground = currentCell.getForegroundColor();
-
-			textfield.setForeground(foreground);
-			textfield.setBackground(background);
-
-			textfield.setText(newText);
-			fireEditingStopped(); //Renderer weer laten tekenen
-		} /*else
-			currentCell.setContent(textfield.getText());*/
+	public boolean stopCellEditing() {
+		currentCell.setContent(textfield.getText());
+		return super.stopCellEditing();
 	}
-
-	/**
-	 * When the ENTER key is pressed, editing is ended
-	 */
-	@Override
-	public final void keyPressed(KeyEvent e) {
-		if (e.getKeyChar() == KeyEvent.VK_ENTER)
-			currentCell.setContent(textfield.getText());
-	}
-
-	/**
-	 * clickCountToStart controls the number of clicks required to start
-	 * editing if the event passed to isCellEditable() or startCellEditing() is
-	 * a MouseEvent.  For example, by default the clickCountToStart for
-	 * a JTextField is set to 2, so in a JTable the user will need to
-	 * double click to begin editing a cell.
-	 */
-	public int getClickCountToStart() {
-		return clickCountToStart;
-	}
-
-	/**
-	 * Specifies the number of clicks needed to start editing.
-	 *
-	 * @param count an int specifying the number of clicks needed to start editing
-	 * @see #getClickCountToStart
-	 */
-	public void setClickCountToStart(int count) {
-		this.clickCountToStart = count;
-	}
-
-	public void keyTyped(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) {}
 }
