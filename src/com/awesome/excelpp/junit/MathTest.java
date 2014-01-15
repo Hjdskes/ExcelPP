@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import stringmath.IsNumber;
+
 import com.awesome.excelpp.math.*;
 import com.awesome.excelpp.math.exception.MathException;
 
@@ -21,17 +23,17 @@ public class MathTest {
 		
 	@Test
 	public void isNumber() {
-		assertEquals(1.0,new IsNumber().getValue("10"),.001);
+		assertEquals("true",new IsNumber().getValue("10"));
+		assertEquals("false",new IsNumber().getValue("a"));
 	}
 	
 	@Test
 	public void Add() {
 		assertEquals(14.0,new Add().getValue(2,4,8),.001);
 	}
-	
-<<<<<<< HEAD
+
 	@Test
-	public void Power() {
+	public void Power() throws MathException {
 		assertEquals(81.0, new Power().getValue(3,4), 0.001);
 	}
 	
@@ -40,6 +42,4 @@ public class MathTest {
 		System.out.println(new IsNumber().getValue("a"));
 	}
 	 
-=======
->>>>>>> ba6f6274d725b4f4128e553b608c08cff9f632e4
 }
