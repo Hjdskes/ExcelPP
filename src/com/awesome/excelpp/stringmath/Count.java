@@ -1,4 +1,6 @@
-package com.awesome.excelpp.math;
+package com.awesome.excelpp.stringmath;
+
+import com.awesome.excelpp.math.Formula;
 
 public class Count extends Formula {
 	public double getValue(double... numbers) {

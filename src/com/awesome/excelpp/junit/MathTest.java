@@ -1,12 +1,18 @@
 package com.awesome.excelpp.junit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.awesome.excelpp.math.*;
+import com.awesome.excelpp.math.Add;
+import com.awesome.excelpp.math.IsEven;
+import com.awesome.excelpp.math.Min;
+import com.awesome.excelpp.math.Power;
+import com.awesome.excelpp.math.Sqrt;
 import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.stringmath.Int;
 import com.awesome.excelpp.stringmath.IsNumber;
+import com.awesome.excelpp.stringmath.Lower;
 import com.awesome.excelpp.stringmath.Upper;
 
 public class MathTest {
@@ -14,6 +20,11 @@ public class MathTest {
 	@Test
 	public void IsEven() throws MathException {
 		assertEquals(1.0,new IsEven().getValue(10),.001);
+	}
+	
+	@Test(expected = MathException.class)
+	public void IsEvenError() throws MathException {
+		assertEquals(1.0,new IsEven().getValue(10, 20),.001);
 	}
 	
 	@Test
@@ -38,8 +49,37 @@ public class MathTest {
 	}
 	
 	@Test
-	public void Count() {
-		System.out.println(new Upper().getValue("Test", "test"));
+	public void Upper() {
+		assertEquals("TEST", new Upper().getValue("Test"));
 	}
+	
+	@Test
+	public void Lower() {
+		assertEquals("test", new Lower().getValue("TEST"));
+	}
+	
+	
+	@Test
+	public void Int() throws MathException {
+		assertEquals("1", new Int().getValue("1.0"));
+		assertEquals("2", new Int().getValue("2"));
+	}
+	
+	@Test(expected = MathException.class)
+	public void IntFalse() throws MathException {
+		assertEquals("1", new Int().getValue("a"));
+	} 
+	
+	@Test
+	public void sqrt() {
+		assertEquals(Math.sqrt(10), new Sqrt().getValue(10), .001);
+	} 
+	
+	@Test
+	public void Min() {
+		assertEquals(20, new Min().getValue(10, 11, 10, 20, 15), .001);
+	} 
+	
+	
 	 
 }
