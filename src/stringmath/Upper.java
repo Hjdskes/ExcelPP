@@ -1,4 +1,6 @@
-package com.awesome.excelpp.math;
+package stringmath;
+
+import com.awesome.excelpp.math.Formula;
 
 public class Upper extends Formula{
 	public String upper() {
