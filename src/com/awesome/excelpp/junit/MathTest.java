@@ -5,9 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.awesome.excelpp.math.Add;
+import com.awesome.excelpp.math.Average;
 import com.awesome.excelpp.math.IsEven;
+import com.awesome.excelpp.math.Max;
 import com.awesome.excelpp.math.Min;
 import com.awesome.excelpp.math.Power;
+import com.awesome.excelpp.math.Rounddown;
+import com.awesome.excelpp.math.Roundup;
 import com.awesome.excelpp.math.Sqrt;
 import com.awesome.excelpp.math.exception.MathException;
 import com.awesome.excelpp.stringmath.Int;
@@ -77,9 +81,26 @@ public class MathTest {
 	
 	@Test
 	public void Min() {
-		assertEquals(20, new Min().getValue(10, 11, 10, 20, 15), .001);
+		assertEquals(9, new Min().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	
+	@Test
+	public void Max() {
+		assertEquals(20, new Max().getValue(10, 11, 9, 20, 15), .001);
+	} 
 	
-	 
+	@Test
+	public void Average() {
+		assertEquals(13, new Average().getValue(10, 11, 9, 20, 15), .001);
+	} 
+	
+	@Test
+	public void Roundup() {
+		assertEquals(11, new Roundup().getValue(10.2), .001);
+	} 	
+	
+	@Test
+	public void Rounddown() {
+		assertEquals(10, new Rounddown().getValue(10.2), .001);
+	} 
 }

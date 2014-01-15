@@ -28,11 +28,4 @@ public class LogicInt extends Logic  {
 			res = 1.0;
 		return res;
 	}
-
-	@Override
-	public double getValue(double... numbers) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

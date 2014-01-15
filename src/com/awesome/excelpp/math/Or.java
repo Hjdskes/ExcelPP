@@ -3,7 +3,7 @@ package com.awesome.excelpp.math;
 import java.util.ArrayList;
 
 
-public class Or extends Logic {
+public class Or {
 	public double or(ArrayList<Logic> arguments) {
 		double res = 0.0;
 		for(int i = 0; i< arguments.size()-1; i++) {
@@ -20,17 +20,5 @@ public class Or extends Logic {
 			}
 		}
 		return res;
-	}
-
-	@Override
-	public double equality() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getValue(double... numbers) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }
