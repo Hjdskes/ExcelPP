@@ -139,8 +139,6 @@ public class Parser {
 					throw new MissingLBracketException();
 				}
 				break;
-			case CELLDELIM:
-				//TODO:
 			case WORD:
 				numargsStack.push(1);
 				operators.push(currentToken);
@@ -171,12 +169,8 @@ public class Parser {
 		while(!output.isEmpty()){
 			switch (output.getLast().type) {
 			case UNARYMINUS:
-				try {
-					output.removeLast();
-					evalStack.push(new Double(-((Double)evalStack.pop()).doubleValue()));
-				} catch (NoSuchElementException e) {
-					throw new MissingArgException();
-				}
+				output.removeLast();
+				evalStack.push(new Double(-((Double)evalStack.pop()).doubleValue()));
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
@@ -190,74 +184,52 @@ public class Parser {
 				int endCol = (int) range[1].charAt(0);
 				endCol -= 65;
 
-				try {
-					arityStack.add(arityStack.removeLast() - 1);
-					for(int row = startRow; row <= endRow; row++){
-						for(int col = startCol; col <= endCol; col++){
-							arityStack.add(arityStack.removeLast() + 1);
-							System.out.println(arityStack);
-							String temp = sheet.getValueAt(row - 1, col).toString();
-							System.out.println(temp);
-							evalStack.push(Double.parseDouble(temp));
-						}
+				arityStack.add(arityStack.removeLast() - 1);
+				for(int row = startRow; row <= endRow; row++){
+					for(int col = startCol; col <= endCol; col++){
+						arityStack.add(arityStack.removeLast() + 1);
+						System.out.println(arityStack);
+						String temp = sheet.getValueAt(row - 1, col).toString();
+						System.out.println(temp);
+						evalStack.push(Double.parseDouble(temp));
 					}
-				} catch (NoSuchElementException e) {
-					throw new ReferenceException();
 				}
 				break;
 			case CELL:
-				try {
-					String ref = output.removeLast().data;
-					int row = Integer.parseInt(ref.substring(1));
-					int col = (int) ref.charAt(0);
-					col -= 65;
-					evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
-				} catch (NumberFormatException | NullPointerException e) {
-					throw new ReferenceException();
-				}
+				String ref = output.removeLast().data;
+				int row = Integer.parseInt(ref.substring(1));
+				int col = (int) ref.charAt(0);
+				col -= 65;
+				evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
-				try {
-					Double b = (Double)evalStack.pop();
-					Double a = (Double)evalStack.pop();
-					if(output.getLast().data.equals("+")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
-					}else if(output.getLast().data.equals("-")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
-					}else if(output.getLast().data.equals("*")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
-					}else{
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
-					}
-				} catch (NoSuchElementException e) {
-					throw new MissingArgException();
+				Double b = (Double)evalStack.pop();
+				Double a = (Double)evalStack.pop();
+				if(output.getLast().data.equals("+")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
+				}else if(output.getLast().data.equals("-")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
+				}else if(output.getLast().data.equals("*")){
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
+				}else{
+					output.removeLast();
+					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
 				}
 				break;
 			case WORD:
 				int numArgs = 0;
 				double[] args;
-				try {
-					numArgs = arityStack.removeLast();
-					args = new double[numArgs];
-				} catch (NoSuchElementException e) {
-					throw new MissingLBracketException();
+				numArgs = arityStack.removeLast();
+				args = new double[numArgs];
+				for (int i = numArgs - 1; i >= 0; i--) {
+					args[i] = (Double)evalStack.pop();
 				}
-				try {
-					for (int i = numArgs - 1; i >= 0; i--) {
-						args[i] = (Double)evalStack.pop();
-					}
-					evalStack.push(evalFunction(output.removeLast().data, args));
-				} catch (NoSuchElementException e) {
-					throw new MissingArgException();
-				}
+				evalStack.push(evalFunction(output.removeLast().data, args));
 				break;
-			case LBRACKET:
-				throw new MissingRBracketException();
 			}
 		}
 		
