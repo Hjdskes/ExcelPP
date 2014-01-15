@@ -134,7 +134,7 @@ public class ParserTest {
 	}
 	
 	@Test
-	public void test_cellrange() throws ParserException {
+	public void test_cellrange1() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
 		testSheet.setValueAt("=4", 1, 0);
@@ -145,10 +145,21 @@ public class ParserTest {
 	}
 	
 	@Test
+	public void test_cellrange2() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		expected = 10.0;
+		result = new Parser("=Add(A1:A2, 2)", testSheet).eval();
+		assertEquals(expected, result, .001);
+	}
+	
+	@Test
 	public void test_cellrange_invalid1() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 0, 1);
+		testSheet.setValueAt("=4", 1, 0);
 		
 		exception.expect(ReferenceException.class);
 		result = new Parser("=A1:A2", testSheet).eval();
@@ -158,7 +169,7 @@ public class ParserTest {
 	public void test_cellrange_invalid2() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 0, 1);
+		testSheet.setValueAt("=4", 1, 0);
 		
 		exception.expect(ReferenceException.class);
 		result = new Parser("=Add(2, 2) + A1:A2", testSheet).eval();

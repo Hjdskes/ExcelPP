@@ -190,15 +190,19 @@ public class Parser {
 				int endCol = (int) range[1].charAt(0);
 				endCol -= 65;
 
-				arityStack.add(arityStack.removeLast() - 1);
-				for(int row = startRow; row <= endRow; row++){
-					for(int col = startCol; col <= endCol; col++){
-						arityStack.add(arityStack.removeLast() + 1);
-						System.out.println(arityStack);
-						String temp = sheet.getValueAt(row - 1, col).toString();
-						System.out.println(temp);
-						evalStack.push(Double.parseDouble(temp));
+				try {
+					arityStack.add(arityStack.removeLast() - 1);
+					for(int row = startRow; row <= endRow; row++){
+						for(int col = startCol; col <= endCol; col++){
+							arityStack.add(arityStack.removeLast() + 1);
+							System.out.println(arityStack);
+							String temp = sheet.getValueAt(row - 1, col).toString();
+							System.out.println(temp);
+							evalStack.push(Double.parseDouble(temp));
+						}
 					}
+				} catch (NoSuchElementException e) {
+					throw new ReferenceException();
 				}
 				break;
 			case CELL:
