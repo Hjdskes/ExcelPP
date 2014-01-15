@@ -29,6 +29,7 @@ public class MathTest {
 		assertEquals(14.0,new Add().getValue(2,4,8),.001);
 	}
 	
+<<<<<<< HEAD
 	@Test
 	public void Power() {
 		assertEquals(81.0, new Power().getValue(3,4), 0.001);
@@ -39,4 +40,6 @@ public class MathTest {
 		System.out.println(new IsNumber().getValue("a"));
 	}
 	 
+=======
+>>>>>>> ba6f6274d725b4f4128e553b608c08cff9f632e4
 }
