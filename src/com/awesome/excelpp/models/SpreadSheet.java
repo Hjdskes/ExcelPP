@@ -29,7 +29,7 @@ public class SpreadSheet extends AbstractTableModel {
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return String.class;
+		return Cell.class;
 	};
 
 	@Override
@@ -80,7 +80,7 @@ public class SpreadSheet extends AbstractTableModel {
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
 		Cell oldValue = (Cell)this.getValueAt(row, col);
-		Cell newValue = new Cell(this, (String)aValue);
+		Cell newValue = (Cell)aValue;
 		
 		if (!oldValue.equals(newValue)) {
 			cells.put(getNumCell(row, col), newValue);

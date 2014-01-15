@@ -27,6 +27,7 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 
 	public AwesomeCellEditor () {
 		textfield = new JTextField();
+		textfield.setText("");
 		textfield.setActionCommand("Edit");
 		textfield.addActionListener(this);
 		//textfield.setBorderPainted(false);
@@ -35,7 +36,8 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 
 	@Override
 	public Object getCellEditorValue() {
-		return currentCell.getContent();
+		System.out.println(currentCell);
+		return currentCell;
 	}
 
 	@Override

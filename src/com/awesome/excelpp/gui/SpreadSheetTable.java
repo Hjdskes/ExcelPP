@@ -39,8 +39,8 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		this.setSelectionBackground (new Color(200, 221, 242));
 		this.setColumnSelectionAllowed(true);
 		this.addMouseListener(this);
-		this.setDefaultRenderer(String.class, new AwesomeCellRenderer());
-		this.setDefaultEditor(String.class, new AwesomeCellEditor());
+		this.setDefaultRenderer(Cell.class, new AwesomeCellRenderer());
+		this.setDefaultEditor(Cell.class, new AwesomeCellEditor());
 
 		sheet.addTableModelListener(this);
 		sheet.addUndoableEditListener(this);
