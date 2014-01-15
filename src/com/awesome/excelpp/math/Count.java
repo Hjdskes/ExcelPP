@@ -1,10 +1,12 @@
 package com.awesome.excelpp.math;
 
-public class Count extends Formula {
-	public double getValue(double...numbers) {
+public class Count {
+	public double getValue(Object...vars) {
 		double count = 0;
-		for(int i=0; i < numbers.length; i++) 
+		for(int i=0; i < vars.length; i++) {
+			
 			count = i;
+		}
 		return count;
 	}
 	
