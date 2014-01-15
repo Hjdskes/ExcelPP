@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.awesome.excelpp.math.exception.MathException;
+
 public class Median extends Formula {
-	public double getValue(double...numbers) {
+	public double getValue(Object ... args) throws MathException {
 		double median = 0;
+		
 		List<Double> doubles = new ArrayList<Double>();	
-		for(double s : numbers) {
-			doubles.add(s);
+		for(Object o : args) {
+			if (!(o instanceof Double))
+				throw new MathException();
+			
+			doubles.add((Double)o);
 		}
+		
 		Collections.sort(doubles);
+		
 		if(doubles.size() % 2 == 0) {
 			double maxmedian = 0;
 			double minmedian = 0;

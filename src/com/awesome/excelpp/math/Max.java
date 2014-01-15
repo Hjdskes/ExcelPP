@@ -1,11 +1,17 @@
 package com.awesome.excelpp.math;
 
+import com.awesome.excelpp.math.exception.MathException;
+
 public class Max extends Formula {
-	public double getValue(double...numbers) {
-		double maximum = 0;
-		for(int i=0; i < numbers.length; i++) {
-			if(maximum < numbers[i])
-				maximum = numbers[i];
+	public double getValue(Object ... args) throws MathException {
+		double maximum = Double.MIN_VALUE;
+		
+		for(Object o : args) {
+			if (!(o instanceof Double))
+				throw new MathException();
+			
+			if (maximum < (Double)o)
+				maximum = (Double)o;
 		}
 		return maximum;	
 	}

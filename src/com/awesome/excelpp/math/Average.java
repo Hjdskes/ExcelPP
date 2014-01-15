@@ -7,11 +7,11 @@ public class Average extends Formula {
 		double sum = 0;
 		int total = 0;
 		
-		for (int i = 0; i < args.length; i++) {
-			if (!(args[i] instanceof Double))
+		for (Object o : args) {
+			if (!(o instanceof Double))
 				throw new MathException();
 			
-			sum += (Double)args[i];
+			sum += (Double)o;
 			total++;
 		}
 		return sum / total;	
