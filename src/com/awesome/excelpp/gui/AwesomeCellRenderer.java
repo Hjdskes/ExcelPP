@@ -74,8 +74,8 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		if (isSelected) {
-			super.setForeground(fg == null ? table.getSelectionForeground() : fg);
-			super.setBackground(bg == null ? table.getSelectionBackground() : bg);
+			super.setForeground(fg == null ? current.getForegroundColor() : fg);
+			super.setBackground(bg == null ? current.getBackgroundColor().brighter() : bg);
 		} else {
 			Color background;
 			if (current != null)

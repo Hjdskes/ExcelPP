@@ -19,7 +19,9 @@ import com.awesome.excelpp.models.Cell;
 
 /**
  * Custom CellEditor to preserve text markup and colors upon editing a Cell.
- * @author Team Awesome
+ * @author Team Awesome. The isCellEditable method is copied from the DefaultCellEditor source code, taken from
+ * http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/javax/swing/DefaultCellEditor.java
+ * This code is written by Alan Chung and Philip Milne.
  * ToDo: sla tekst op ook als er NIET op enter wordt gedrukt
  */
 public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEditor, KeyListener, ActionListener {
@@ -36,9 +38,11 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 		textfield.setBorder(null);
 
 		this.clickCountToStart = 2;
-		System.out.println("constructor");
 	}
 
+	/**
+	 * Sets the value of this cell.
+	 */
 	@Override
 	public Object getCellEditorValue() {
 		return currentCell;
@@ -62,13 +66,19 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
         return textfield;
 	}
 
+	/**
+	 * Returns true to indicate that the editing cell may be selected.
+	 * @param anEvent	the event
+	 */
 	public boolean  isCellEditable(EventObject anEvent) {
-		if (anEvent instanceof MouseEvent) {
+		if (anEvent instanceof MouseEvent)
 			return ((MouseEvent)anEvent).getClickCount() >= clickCountToStart;
-		}
 		return true;
 	}
 
+	/**
+	 * When the "Edit" action is performed, editing is started.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Edit")) { //begin met edit
@@ -90,6 +100,9 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 			currentCell.setContent(textfield.getText());*/
 	}
 
+	/**
+	 * When the ENTER key is pressed, editing is ended
+	 */
 	@Override
 	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER)
