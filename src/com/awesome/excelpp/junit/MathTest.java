@@ -10,7 +10,7 @@ import com.awesome.excelpp.math.exception.MathException;
 public class MathTest {
 
 	@Test
-	public static void IsEven() throws MathException {
+	public void IsEven() throws MathException {
 		assertEquals(1.0,new IsEven().getValue(10),.001);
 	}
 	
@@ -28,4 +28,5 @@ public class MathTest {
 	public void Add() {
 		assertEquals(14.0,new Add().getValue(2,4,8),.001);
 	}
+	
 }
