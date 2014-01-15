@@ -7,6 +7,9 @@ public class Max extends Formula {
 		double maximum = Double.MIN_VALUE;
 		
 		for(Object o : args) {
+			if (o instanceof Integer)
+				o = new Double((Integer)o);
+			
 			if (!(o instanceof Double))
 				throw new MathException();
 			

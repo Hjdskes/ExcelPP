@@ -43,7 +43,7 @@ public class MathTest {
 	}
 	
 	@Test
-	public void Add() {
+	public void Add() throws MathException {
 		assertEquals(14.0,new Add().getValue(2,4,8),.001);
 	}
 
@@ -80,17 +80,17 @@ public class MathTest {
 	} 
 	
 	@Test
-	public void Min() {
+	public void Min() throws MathException {
 		assertEquals(9, new Min().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	
 	@Test
-	public void Max() {
+	public void Max() throws MathException {
 		assertEquals(20, new Max().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	
 	@Test
-	public void Average() {
+	public void Average() throws MathException {
 		assertEquals(13, new Average().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	

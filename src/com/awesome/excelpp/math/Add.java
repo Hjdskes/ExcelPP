@@ -11,6 +11,9 @@ public class Add extends Formula {
 		double sum = 0;
 		
 		for (Object o : args) {
+			if (o instanceof Integer)
+				o = new Double((Integer)o);
+			
 			if (!(o instanceof Double))
 				throw new MathException();
 			
