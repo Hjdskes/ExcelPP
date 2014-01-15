@@ -52,6 +52,12 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 		Font newFont = new Font(currentFont.getName(), currentCell.getItalic() | currentCell.getBold(), currentFont.getSize());
 		textfield.setFont(newFont);
 
+		Color background = currentCell.getBackgroundColor();
+		Color foreground = currentCell.getForegroundColor();
+
+		textfield.setForeground(foreground);
+		textfield.setBackground(background);
+
 		textfield.setText(currentCell.getContent());
         return textfield;
 	}
