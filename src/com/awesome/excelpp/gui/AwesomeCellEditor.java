@@ -22,6 +22,7 @@ import com.awesome.excelpp.models.Cell;
  * @author Team Awesome. The isCellEditable method is copied from the DefaultCellEditor source code, taken from
  * http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/javax/swing/DefaultCellEditor.java
  * This code is written by Alan Chung and Philip Milne.
+ *
  * ToDo: sla tekst op ook als er NIET op enter wordt gedrukt
  */
 public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEditor, KeyListener, ActionListener {

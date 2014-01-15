@@ -101,9 +101,14 @@ public class Lexer {
 				(state != State.CELL && state != State.CELLRANGE)) {
 			if (this.state == State.NUMBER){
 				tokens.add(new Token(TokenType.NUMBER, token.toString()));
-			} else if(this.state == State.CELL) {
-				tokens.add(new Token(TokenType.CELL, token.toString()));
-			} else if (this.state == State.WORD) {
+			}else if(this.state == State.CELL){
+				String temp = token.toString();
+				if(temp.indexOf(':') == -1){					
+					tokens.add(new Token(TokenType.CELL, temp));
+				}else{					
+					tokens.add(new Token(TokenType.CELLRANGE, temp));
+				}
+			}else if (this.state == State.WORD){
 				tokens.add(new Token(TokenType.WORD, token.toString()));
 			}
 			token = new StringBuilder();
