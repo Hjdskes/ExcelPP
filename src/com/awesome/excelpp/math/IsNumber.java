@@ -1,6 +1,8 @@
 package com.awesome.excelpp.math;
 
-public class IsNumber  {
+import com.awesome.excelpp.math.exception.MathException;
+
+public class IsNumber extends Formula {
 	public double getValue(String str) {
 		double res = 0.0;
 		try {
@@ -10,5 +12,11 @@ public class IsNumber  {
 			
 		}
 		return res;
+	}
+
+	@Override
+	public double getValue(double... numbers) throws MathException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

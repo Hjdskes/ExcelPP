@@ -34,9 +34,13 @@ public enum TokenType {
 	 */
 	RBRACKET,
 	/**
-	 * Token representing a DELIM: <code>,;</code>
+	 * Token representing a DELIM: <code>,</code>
 	 */
 	DELIM,
+	/**
+	 * Token representing a CELLDELIM: <code>:</code>
+	 */
+	CELLDELIM,
 	/**
 	 * Token representing LOGIC: <code><>=</code>
 	 */

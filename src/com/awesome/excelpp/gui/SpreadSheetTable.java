@@ -22,6 +22,7 @@ import javax.swing.undo.UndoManager;
 public class SpreadSheetTable extends JTable implements MouseListener, UndoableEditListener {
 	private static final long serialVersionUID = 1L;
 	private File file;
+	private SpreadSheet sheet;
 	private int selectedColumn;
 	private int selectedRow;
 	private boolean cellSelected;
@@ -29,7 +30,9 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 
 	public SpreadSheetTable (SpreadSheet sheet, File file) {
 		super(sheet);
+
 		this.file = file;
+		this.sheet = sheet;
 		this.cellSelected = false;
 		undoManager = new UndoManager();
 		this.setFillsViewportHeight (true);
@@ -41,21 +44,50 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		sheet.addTableModelListener(this);
 		sheet.addUndoableEditListener(this);
 	}
-	
+
 	public SpreadSheetTable() {
 		this(new SpreadSheet(), null);
 	}
 
+	/**
+	 * Returns the sheet used in this SpreadSheetTable
+	 * @return SpreadSheet
+	 */
+	public final SpreadSheet getSheet() {
+		return sheet;
+	}
+
+	/**
+	 * Returns the currently selected row.
+	 * This is different from the regular JTable's method
+	 * because this value is kept even when the JTable is
+	 * not focused.
+	 * @return int	the selected row
+	 */
 	@Override
 	public final int getSelectedRow() {
 		return selectedRow;
 	}
 
+	/**
+	 * Returns the currently selected column.
+	 * This is different from the regular JTable's method
+	 * because this value is kept even when the JTable is
+	 * not focused.
+	 * @return int	the selected column
+	 */
 	@Override
 	public final int getSelectedColumn() {
 		return selectedColumn;
 	}
 
+	/**
+	 * Returns true if a Cell has been selected ever since
+	 * the application was started.
+	 * (Otherwise, text typed into the text field will
+	 * always replace Cell A1's content).
+	 * @return true	if a Cell has ever been selected
+	 */
 	public final boolean getCellSelected() {
 		return cellSelected;
 	}
@@ -84,23 +116,41 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		return undoManager;
 	}
 
+	/**
+	 * Sets the bold attribute of the selected Cell.
+	 * @param bold	Value to give to the attribute. Can be 0 (plain text), or 1 (bold).
+	 */
 	public final void setCellBold(int bold) {
 		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
 		if (current != null)
 			current.setBold(bold);
 	}
 
+	/**
+	 * Sets the italic attribute of the selected Cell.
+	 * @param italic	Value to give to the attribute. Can be 0 (plain text), or 2 (italic).
+	 */
 	public final void setCellItalic(int italic) {
 		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
 		if (current != null)
 			current.setItalic(italic);
 	}
 
+	/**
+	 * Sets the foreground color of a Cell.
+	 * @param cell	Which Cell to change the color for.
+	 * @param foreground	The new foreground color.
+	 */
 	public final void setCellForeground(Cell cell, Color foreground) {
 		if(cell != null)
 			cell.setForegroundColor(foreground);
 	}
 
+	/**
+	 * Sets the background color of a Cell.
+	 * @param cell	Which Cell to change the color for.
+	 * @param background	The new background color.
+	 */
 	public final void setCellBackground(Cell cell, Color background) {
 		if(cell != null)
 			cell.setBackgroundColor(background);
@@ -121,11 +171,11 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 			String text = null;
 			int button = e.getButton();
 			boolean alt = e.isAltDown();
-			boolean formule = false; //of er al een formule in het tekstvak staat
+			boolean formule = false; //of er al een (nog niet afgeronde) formule in het tekstvak staat
 			String currentText = GUI.functionFieldGetText();
 
 			if (currentText != null && currentText.length() > 0) {
-				if (currentText.charAt(0) == '=')
+				if (currentText.charAt(0) == '=' && currentText.charAt(currentText.length() - 1) != ';')
 					formule = true;
 			}
 

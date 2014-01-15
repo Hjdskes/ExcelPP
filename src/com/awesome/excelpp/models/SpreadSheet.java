@@ -64,6 +64,14 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 
 	/**
+	 * Returns true if this sheet is empty
+	 * @return boolean	true if this sheet is empty
+	 */
+	public boolean isEmpty() {
+		return cells.isEmpty();
+	}
+
+	/**
 	 * Sets a Cell with coordinates row, col in this SpreadSheet
 	 * @param aValue	String object to store in the Cell object
 	 * @param row		int representing x-coordinate

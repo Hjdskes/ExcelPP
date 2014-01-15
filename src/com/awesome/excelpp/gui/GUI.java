@@ -230,11 +230,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "We adhere to the implementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
 				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
 				+ " this, we are very curious to hear about your results!\n\n"
-				+ "The syntax is as follows: =Add(2+2)\n"
-				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
-				+ "Arguments are provided between brackets and are separated by commas. Below is a more complicated example:\n"
-				+ "=Add(=Average(2,4,6), 5, =Power(2,4))\n\n"
-				+ "Regular math notation, such as =(2+2)*3, is also supported. One can also make Cell references from other Cells: =A1.\n"
+				+ "The syntax is as follows: =Add(2+2);\n"
+				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox. "
+				+ "Arguments are provided between brackets and are separated by commas. Formulas are ended by a semicolon."
+				+ "Here is a more complicated example: =Add(Average(2,4,6), 5, Power(2,4));\n\n"
+				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1.\n"
 				+ "Cell ranges are not yet supported.";
 		final JTextArea formulaPanel = new JTextArea(formulaText);
 		formulaPanel.setEditable(false);
@@ -401,12 +401,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Updates the tab's title.
-	 * @param newTitle - the new title to set.
+	 * @param newTitle	the new title to set.
 	 * @return void
 	 */
 	private final void updateTabTitle(int index, String newTitle) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
 		currentComponent.setTitle(newTitle);
+	}
+
+	/**
+	 * Gets the a tab's title
+	 * @param index		Tab to get the title from
+	 * @return String	The title
+	 */
+	private static final String getTabTitle(int index) {
+		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
+		return currentComponent.getTitle();
 	}
 
 	/**
@@ -425,6 +435,60 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		return functionField.getText();
 	}
 
+	public final void changeMarkup(int index, boolean bold) {
+		int row = panes.get(index).getTable().getSelectedRow();
+		int column = panes.get(index).getTable().getSelectedColumn();
+		Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+		Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
+								  current.getForegroundColor(), current.getBackgroundColor());
+
+		if(bold == true) {
+			int bolde = current.getBold()  == 0 ? 1 : 0;
+			current.setBold(bolde);
+		} else if(bold == false) {
+			int italic = current.getItalic() == 0 ? 2 : 0;
+			current.setItalic(italic);
+		}
+
+		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
+		if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
+			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
+			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
+		}
+
+		panes.get(index).getTable().grabFocus();
+	}
+
+	public final void changeColors(int index, boolean foreground) {
+		Color newColor = null;
+		int row = panes.get(index).getTable().getSelectedRow();
+		int column = panes.get(index).getTable().getSelectedColumn();
+		Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
+		Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
+								  current.getForegroundColor(), current.getBackgroundColor());
+
+		if(foreground == false)
+			newColor = JColorChooser.showDialog(this, "Choose a background color", current.getBackgroundColor());
+		else if(foreground == true)
+			newColor = JColorChooser.showDialog(this, "Choose a foreground color", current.getForegroundColor());
+
+		if(newColor != null && foreground == false) {
+			panes.get(index).getTable().setCellBackground(current, newColor);
+			buttonBackgroundColor.setBackground(newColor);
+		} else if(newColor != null && foreground == true) {
+			panes.get(index).getTable().setCellForeground(current, newColor);
+			buttonForegroundColor.setBackground(newColor);
+		}
+
+		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
+		if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
+			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
+			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
+		}
+
+		panes.get(index).getTable().grabFocus();
+	}
+
 	/**
 	 * Listens for all events emitted by the elements of the GUI
 	 * Calls other functions
@@ -432,109 +496,41 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
+		JButton source = (JButton)e.getSource();
 
-		if (e.getSource().equals(buttonOpen))
+		if (source.equals(buttonOpen))
 			openFile();
-		else if (e.getSource().equals(buttonNew)) {
+		else if (source.equals(buttonNew)) {
 			if(closeFile(index) == 0) {
 				SpreadSheet newSheet = new SpreadSheet();
 				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
 				panes.get(index).setTable(newTable);
 				updateTabTitle(index, "New file");
 			}
-		} else if (e.getSource().equals(buttonNewTab))
+		} else if (source.equals(buttonNewTab))
 			createNewTab(null);
-		else if (e.getSource().equals(buttonSave))
+		else if (source.equals(buttonSave))
 			saveFile(false);
-		else if (e.getSource().equals(buttonSaveAs))
+		else if (source.equals(buttonSaveAs))
 			saveFile(true);
-		else if (e.getSource().equals(buttonBold)) {
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-
-			int bold = current.getBold()  == 0 ? 1 : 0;
-			current.setBold(bold);
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
-		} else if (e.getSource().equals(buttonItalic)) {
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-
-			int italic = current.getItalic() == 0 ? 2 : 0;
-			current.setItalic(italic);
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(oldValue.getItalic() != newValue.getItalic()) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
-		} else if (e.getSource().equals(buttonForegroundColor)) {
-			Color foreground = null;
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-
-			foreground = JColorChooser.showDialog(this, "Choose a background color", current.getForegroundColor());
-			if(foreground != null) {
-				panes.get(index).getTable().setCellForeground(current, foreground);
-				buttonForegroundColor.setBackground(foreground);
-			}
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(!oldValue.getForegroundColor().equals(newValue.getForegroundColor())) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
-		} else if (e.getSource().equals(buttonBackgroundColor)) {
-			Color background = null;
-			int row = panes.get(index).getTable().getSelectedRow();
-			int column = panes.get(index).getTable().getSelectedColumn();
-			Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-			
-			Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-									  current.getForegroundColor(), current.getBackgroundColor());
-			
-			background = JColorChooser.showDialog(this, "Choose a background color", current.getBackgroundColor());
-			if(background != null) {
-				panes.get(index).getTable().setCellBackground(current, background);
-				buttonBackgroundColor.setBackground(background);
-			}
-
-			Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-			if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
-				TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-				((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-			}
-
-			panes.get(index).getTable().grabFocus();
-		} else if (e.getSource().equals(buttonAbout))
+		else if (source.equals(buttonBold)) {
+			changeMarkup(index, true);
+		} else if (source.equals(buttonItalic)) {
+			changeMarkup(index, false);
+		} else if (source.equals(buttonForegroundColor)) {
+			changeColors(index, true);
+		} else if (source.equals(buttonBackgroundColor)) {
+			changeColors(index, false);
+		} else if (source.equals(buttonAbout))
 			openHelpDialog();
-		else if (e.getSource().equals(functions)) {
+		else if (source.equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
-		} else if (e.getSource().equals(buttonUndo)) {
+		} else if (source.equals(buttonUndo)) {
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canUndo() == true)
 				manager.undo();
-		} else if (e.getSource().equals(buttonRedo)) {
+		} else if (source.equals(buttonRedo)) {
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
@@ -628,8 +624,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			int choice = fc.showSaveDialog(this);
 			if (choice == JFileChooser.APPROVE_OPTION) {
 				String fileString = fc.getSelectedFile().getPath();
-                fileString = fileString.replaceAll("\\...*", "");
-                fileString += ".xml";
+				if (!fileString.endsWith(".xml"))
+					fileString += ".xml";
 				file = new File(fileString);
 				table.setFile(file);
 				updateTabTitle(mainTabs.getSelectedIndex(), file.getName());
@@ -648,12 +644,25 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	/**
 	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
 	 * @param index
-	 * @return int - 0 for OK, 1 for cancel
+	 * @return integer 	0 for OK, 1 for cancel
 	 */
-	public static final int closeFile(int index) {
+	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;
-		if(panes.get(index).getTable().getUndoManager().canUndo() == true) //ToDo: misschien niet de beste oplossing
-			close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+		SpreadSheetTable table = panes.get(index).getTable();
+		if(getTabTitle(index).equals("New file")) {
+			if(table.getSheet().isEmpty() == true)
+				close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+		} else {
+			try {
+				Document doc = XML.parse(table.getFile());
+				SpreadSheet fileSheet = XML.print(doc);
+				if(!table.getSheet().equals(fileSheet))
+					close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+			}
+		}
 		return close;
 	}
 }
