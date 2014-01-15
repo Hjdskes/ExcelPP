@@ -176,6 +176,17 @@ public class ParserTest {
 	}
 	
 	@Test
+	public void test_cellrange_invalid3() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		exception.expect(ReferenceException.class);
+		result = new Parser("=Add(2+A1:A2)", testSheet).eval();
+		System.out.println(result);
+	}
+	
+	@Test
 	public void test_invalid_function1() throws ParserException {
 		exception.expect(MissingRBracketException.class);
 		result = new Parser("=Add(").eval();
