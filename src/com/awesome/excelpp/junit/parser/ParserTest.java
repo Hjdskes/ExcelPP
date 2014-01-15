@@ -137,7 +137,7 @@ public class ParserTest {
 	public void test_cellrange() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 0, 1);
+		testSheet.setValueAt("=4", 1, 0);
 		
 		expected = 8.0;
 		result = new Parser("=Add(A1:A2)", testSheet).eval();

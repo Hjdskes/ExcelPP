@@ -181,6 +181,26 @@ public class Parser {
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
 				break;
+			case CELLRANGE:
+				String[] range = output.removeLast().data.split(":");
+				int startRow = Integer.parseInt(range[0].substring(1));
+				int startCol = (int) range[0].charAt(0);
+				startCol -= 65;
+				int endRow = Integer.parseInt(range[1].substring(1));
+				int endCol = (int) range[1].charAt(0);
+				endCol -= 65;
+
+				arityStack.add(arityStack.removeLast() - 1);
+				for(int row = startRow; row <= endRow; row++){
+					for(int col = startCol; col <= endCol; col++){
+						arityStack.add(arityStack.removeLast() + 1);
+						System.out.println(arityStack);
+						String temp = sheet.getValueAt(row - 1, col).toString();
+						System.out.println(temp);
+						evalStack.push(Double.parseDouble(temp));
+					}
+				}
+				break;
 			case CELL:
 				try {
 					String ref = output.removeLast().data;
