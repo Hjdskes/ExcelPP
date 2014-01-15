@@ -166,14 +166,14 @@ public class Parser {
 			toPostfix();
 		}
 		
-		LinkedList<Double> evalStack = new LinkedList<Double>();
+		LinkedList<Object> evalStack = new LinkedList<Object>();
 		
 		while(!output.isEmpty()){
 			switch (output.getLast().type) {
 			case UNARYMINUS:
 				try {
 					output.removeLast();
-					evalStack.push(new Double(-evalStack.pop().doubleValue()));
+					evalStack.push(new Double(-((Double)evalStack.pop()).doubleValue()));
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
 				}
@@ -219,8 +219,8 @@ public class Parser {
 			case MULTDIV:
 			case PLUSMINUS:
 				try {
-					Double b = evalStack.pop();
-					Double a = evalStack.pop();
+					Double b = (Double)evalStack.pop();
+					Double a = (Double)evalStack.pop();
 					if(output.getLast().data.equals("+")){
 						output.removeLast();
 						evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
@@ -249,7 +249,7 @@ public class Parser {
 				}
 				try {
 					for (int i = numArgs - 1; i >= 0; i--) {
-						args[i] = evalStack.pop();
+						args[i] = (Double)evalStack.pop();
 					}
 					evalStack.push(evalFunction(output.removeLast().data, args));
 				} catch (NoSuchElementException e) {
@@ -263,7 +263,7 @@ public class Parser {
 		
 		double retvalue = 0.0;
 		try {
-			retvalue = evalStack.pop().doubleValue();
+			retvalue = ((Double)evalStack.pop()).doubleValue();
 		} catch (NoSuchElementException e) {
 			throw new MissingArgException();
 		}
