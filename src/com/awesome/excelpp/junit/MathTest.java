@@ -4,10 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import stringmath.IsNumber;
-
 import com.awesome.excelpp.math.*;
 import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.stringmath.IsNumber;
 
 public class MathTest {
 

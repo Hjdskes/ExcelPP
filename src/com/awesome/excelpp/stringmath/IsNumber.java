@@ -1,4 +1,4 @@
-package stringmath;
+package com.awesome.excelpp.stringmath;
 
 
 public class IsNumber extends StringFormula {

@@ -1,11 +1,11 @@
-package stringmath;
+package com.awesome.excelpp.stringmath;
 
 import com.awesome.excelpp.math.Formula;
 
-public class Upper extends Formula{
-	public String upper() {
+public class Lower extends Formula {
+	public String lower() {
 		String string = "";
-		string.toUpperCase();
+		string.toLowerCase();
 		return string;
 	}
 
