@@ -110,13 +110,13 @@ public class LexerTest {
 		
 		Token next;
 		next = lex.next();
-		assertEquals(TokenType.CELL, next.type);
+		assertEquals(TokenType.CELLRANGE, next.type);
 		assertTrue(next.data.equals("B1:BB78"));
 		next = lex.next();
 		assertEquals(TokenType.PLUSMINUS, next.type);
 		assertTrue(next.data.equals("+"));
 		next = lex.next();
-		assertEquals(TokenType.CELL, next.type);
+		assertEquals(TokenType.CELLRANGE, next.type);
 		assertTrue(next.data.equals("B1:BB78"));
 	}
 	

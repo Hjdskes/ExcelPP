@@ -81,6 +81,7 @@ public class Parser {
 			switch (currentToken.type) {
 			case NUMBER:
 			case CELL:
+			case CELLRANGE:
 				output.push(currentToken);
 				lastWasNumber = true;
 				break;

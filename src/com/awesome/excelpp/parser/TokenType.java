@@ -13,6 +13,7 @@ public enum TokenType {
 	 * Token representing a CELL: <code>(A-Z)+(0-9)+</code>
 	 */
 	CELL,
+	CELLRANGE,
 	/**
 	 * Token representing a WORD: <code>a-zA-Z</code>
 	 */
