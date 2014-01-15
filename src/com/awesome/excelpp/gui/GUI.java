@@ -41,6 +41,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.awesome.excelpp.graph.BarChart;
+import com.awesome.excelpp.graph.LineChart;
 import com.awesome.excelpp.graph.PieChart;
 import com.awesome.excelpp.graph.exception.CellDataException;
 import com.awesome.excelpp.graph.exception.CellInputException;
@@ -293,6 +294,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JTextField barTitelX = new JTextField();
 		final JTextField barTitelY = new JTextField();
 		
+		final JTextField lineFirstCell = new JTextField();
+		final JTextField lineLastCell = new JTextField();
+		final JTextField lineMainTitel = new JTextField();
+		final JTextField lineTitelX = new JTextField();
+		final JTextField lineTitelY = new JTextField();
+		
 		JPanel pieChartPanel = new JPanel();
 		JPanel pieChartPanel1 = new JPanel();
 		JPanel pieChartPanel2 = new JPanel();
@@ -315,10 +322,24 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JTextArea barTitelYText = new JTextArea("Enter the title of the Y-axis");
 		final JButton barChartButton = new JButton("Draw the chart");
 		
+		JPanel lineChartPanel = new JPanel();
+		JPanel lineChartPanel1 = new JPanel();
+		JPanel lineChartPanel2 = new JPanel();
+		JPanel lineChartPanel3 = new JPanel();
+		JPanel lineChartPanel4 = new JPanel();
+		JPanel lineChartPanel5 = new JPanel();
+		JTextArea lineChartText1 = new JTextArea("Enter the first cell:\n(example: A1)");
+		JTextArea lineChartText2 = new JTextArea("Enter the last cell:\n(example: H2)");
+		JTextArea lineMainTitelText = new JTextArea("Enter the title of the chart (the header):");
+		final JTextArea lineTitelXText = new JTextArea("Enter the title of the X-axis");
+		final JTextArea lineTitelYText = new JTextArea("Enter the title of the Y-axis");
+		final JButton lineChartButton = new JButton("Draw the chart");
+		
 		
 		
 		pieChartPanel.setLayout(new BoxLayout(pieChartPanel,BoxLayout.Y_AXIS));
 		barChartPanel.setLayout(new BoxLayout(barChartPanel,BoxLayout.Y_AXIS));
+		lineChartPanel.setLayout(new BoxLayout(lineChartPanel,BoxLayout.Y_AXIS));
 		
 		pieChartPanel.add(pieChartPanel1);
 		pieChartPanel.add(pieChartPanel2);
@@ -336,11 +357,23 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		barChartPanel1.add(barChartText1);
 		barChartPanel1.add(barFirstCell);
 		
+		lineChartPanel.add(lineChartPanel1);
+		lineChartPanel.add(lineChartPanel2);
+		lineChartPanel.add(lineChartPanel3);
+		lineChartPanel.add(lineChartPanel4);
+		lineChartPanel.add(lineChartPanel5);
+		lineChartPanel.add(lineChartButton);
+		lineChartPanel1.add(lineChartText1);
+		lineChartPanel1.add(lineFirstCell);
+		
 		pieChartPanel2.add(pieChartText2);
 		pieChartPanel2.add(pieLastCell);
 		
 		barChartPanel2.add(barChartText2);
 		barChartPanel2.add(barLastCell);
+		
+		lineChartPanel2.add(lineChartText2);
+		lineChartPanel2.add(lineLastCell);
 		
 		pieChartPanel3.add(pieTitelText);
 		pieChartPanel3.add(pieTitel);
@@ -350,13 +383,25 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		barChartPanel3.add(barMainTitel);
 		barChartPanel3.setLayout(new BoxLayout(barChartPanel3, BoxLayout.Y_AXIS));
 		
+		lineChartPanel3.add(lineMainTitelText);
+		lineChartPanel3.add(lineMainTitel);
+		lineChartPanel3.setLayout(new BoxLayout(lineChartPanel3, BoxLayout.Y_AXIS));
+		
 		barChartPanel4.add(barTitelXText);
 		barChartPanel4.add(barTitelX);
 		barChartPanel4.setLayout(new BoxLayout(barChartPanel4, BoxLayout.Y_AXIS));
 		
+		lineChartPanel4.add(lineTitelXText);
+		lineChartPanel4.add(lineTitelX);
+		lineChartPanel4.setLayout(new BoxLayout(lineChartPanel4, BoxLayout.Y_AXIS));
+		
 		barChartPanel5.add(barTitelYText);
 		barChartPanel5.add(barTitelY);
 		barChartPanel5.setLayout(new BoxLayout(barChartPanel5, BoxLayout.Y_AXIS));
+		
+		lineChartPanel5.add(lineTitelYText);
+		lineChartPanel5.add(lineTitelY);
+		lineChartPanel5.setLayout(new BoxLayout(lineChartPanel5, BoxLayout.Y_AXIS));
 		
 		pieChartText1.setEditable(false);
 		pieChartText2.setEditable(false);
@@ -368,6 +413,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		barTitelXText.setEditable(false);
 		barTitelYText.setEditable(false);
 		
+		lineChartText1.setEditable(false);
+		lineChartText2.setEditable(false);
+		lineMainTitelText.setEditable(false);
+		lineTitelXText.setEditable(false);
+		lineTitelYText.setEditable(false);
+		
 		pieFirstCell.setPreferredSize(new Dimension(25, 20));
 		pieLastCell.setPreferredSize(new Dimension(25, 20));
 		pieChartPanel3.setPreferredSize(new Dimension(20,20));
@@ -375,6 +426,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		barFirstCell.setPreferredSize(new Dimension(25, 20));
 		barLastCell.setPreferredSize(new Dimension(25, 20));
 		
+		lineFirstCell.setPreferredSize(new Dimension(25, 20));
+		lineLastCell.setPreferredSize(new Dimension(25, 20));
 		
 		pieChartText1.setAlignmentX(RIGHT_ALIGNMENT);
 		pieFirstCell.setAlignmentX(LEFT_ALIGNMENT);
@@ -385,6 +438,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		barFirstCell.setAlignmentX(LEFT_ALIGNMENT);
 		barLastCell.setAlignmentX(RIGHT_ALIGNMENT);
 		barChartButton.setAlignmentX(CENTER_ALIGNMENT);
+		
+		lineChartText1.setAlignmentX(RIGHT_ALIGNMENT);
+		lineFirstCell.setAlignmentX(LEFT_ALIGNMENT);
+		lineLastCell.setAlignmentX(RIGHT_ALIGNMENT);
+		lineChartButton.setAlignmentX(CENTER_ALIGNMENT);
 		
 		
 		ActionListener graphsAction = new ActionListener(){
@@ -426,7 +484,29 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 					} catch(CellInputException c){
 						JOptionPane.showMessageDialog(mainFrame, "Please make sure your input for the first cell and the last cell is correct");
 					} catch(CellDataException d){
-						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a piechart");
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a barchart");
+					}
+					
+				}
+				
+				if(e.getSource().equals(lineChartButton)){
+					String first = lineFirstCell.getText();
+					String last = lineLastCell.getText();
+					String mainTitelString = lineMainTitel.getText();
+					String titelXString = lineTitelX.getText();
+					String titelYString = lineTitelY.getText();
+					try{
+						ArrayList<String> horizontalNames = LineChart.getHorizontalNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						ArrayList<String> verticalNames = LineChart.getVerticalNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						ArrayList<Double> values = LineChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						LineChart chart = new LineChart(horizontalNames, verticalNames, values, mainTitelString, titelXString, titelYString);
+						chart.pack();
+						chart.setVisible(true);
+						graphsDialog.dispose();
+					} catch(CellInputException c){
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure your input for the first cell and the last cell is correct");
+					} catch(CellDataException d){
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a linechart");
 					}
 					
 				}
@@ -436,11 +516,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		
 		pieChartButton.addActionListener(graphsAction);
 		barChartButton.addActionListener(graphsAction);
+		lineChartButton.addActionListener(graphsAction);
 
 		
 		graphsPanel.add(graphsTabbedPane);
 		graphsTabbedPane.addTab("PieChart", pieChartPanel);
 		graphsTabbedPane.addTab("BarChart", barChartPanel);
+		graphsTabbedPane.addTab("LineChart", lineChartPanel);
 		
 		graphsDialog.add(graphsPanel);
 		graphsDialog.setIconImage(mainImage);
