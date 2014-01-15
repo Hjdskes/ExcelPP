@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
@@ -24,13 +26,16 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 	private static final long serialVersionUID = 1L;
 	private JTextField textfield;
 	private Cell currentCell;
+	private int clickCountToStart;
 
 	public AwesomeCellEditor () {
-		textfield = new JTextField("");
+		this.textfield = new JTextField("");
 		textfield.setActionCommand("Edit");
 		textfield.addActionListener(this);
 		textfield.addKeyListener(this);
 		textfield.setBorder(null);
+
+		this.clickCountToStart = 2;
 		System.out.println("constructor");
 	}
 
@@ -49,6 +54,13 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 
 		textfield.setText(currentCell.getContent());
         return textfield;
+	}
+
+	public boolean  isCellEditable(EventObject anEvent) {
+		if (anEvent instanceof MouseEvent) {
+			return ((MouseEvent)anEvent).getClickCount() >= clickCountToStart;
+		}
+		return true;
 	}
 
 	@Override
@@ -76,6 +88,27 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER)
 			currentCell.setContent(textfield.getText());
+	}
+
+	/**
+	 * clickCountToStart controls the number of clicks required to start
+	 * editing if the event passed to isCellEditable() or startCellEditing() is
+	 * a MouseEvent.  For example, by default the clickCountToStart for
+	 * a JTextField is set to 2, so in a JTable the user will need to
+	 * double click to begin editing a cell.
+	 */
+	public int getClickCountToStart() {
+		return clickCountToStart;
+	}
+
+	/**
+	 * Specifies the number of clicks needed to start editing.
+	 *
+	 * @param count an int specifying the number of clicks needed to start editing
+	 * @see #getClickCountToStart
+	 */
+	public void setClickCountToStart(int count) {
+		this.clickCountToStart = count;
 	}
 
 	public void keyTyped(KeyEvent e) {}

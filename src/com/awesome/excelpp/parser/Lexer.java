@@ -44,7 +44,6 @@ public class Lexer {
 	    		tokens.add(new Token(TokenType.DELIM, Character.toString(ch)));
 	    		break;
 	    	case ':':
-	    		setState(State.CELLRANGE);
 	    		token.append(ch);
 	    		break;
 	    	case '.':
@@ -66,10 +65,10 @@ public class Lexer {
 	    				token.append(ch);
 	    			}
 	    		} else if (Character.isLetter(ch)) {
-	    			if (this.state == State.CELLRANGE) {
-	    				setState(State.WORD);
-	    				token.append(ch);
+	    			if (this.state != State.CELL) {
+		    			setState(State.WORD);
 	    			}
+	    			token.append(ch);
 	    		}
 	    	}
 	    }
