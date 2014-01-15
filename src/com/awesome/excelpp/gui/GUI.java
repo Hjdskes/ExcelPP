@@ -17,7 +17,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -41,6 +40,7 @@ import javax.imageio.ImageIO;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.awesome.excelpp.graph.BarChart;
 import com.awesome.excelpp.graph.PieChart;
 import com.awesome.excelpp.graph.exception.CellDataException;
 import com.awesome.excelpp.graph.exception.CellInputException;
@@ -282,46 +282,109 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JDialog graphsDialog = new JDialog(this, "Charts", true);
 		final JPanel graphsPanel = new JPanel();
 		final JTabbedPane graphsTabbedPane = new JTabbedPane();
-		final JTextField firstCell = new JTextField();
-		final JTextField lastCell = new JTextField();
-		final JTextField titel = new JTextField();
+		
+		final JTextField pieFirstCell = new JTextField();
+		final JTextField pieLastCell = new JTextField();
+		final JTextField pieTitel = new JTextField();
+		
+		final JTextField barFirstCell = new JTextField();
+		final JTextField barLastCell = new JTextField();
+		final JTextField barMainTitel = new JTextField();
+		final JTextField barTitelX = new JTextField();
+		final JTextField barTitelY = new JTextField();
+		
 		JPanel pieChartPanel = new JPanel();
 		JPanel pieChartPanel1 = new JPanel();
 		JPanel pieChartPanel2 = new JPanel();
 		JPanel pieChartPanel3 = new JPanel();
 		JTextArea pieChartText1 = new JTextArea("Enter the first cell:\n(example: A1)");
 		JTextArea pieChartText2 = new JTextArea("Enter the last cell:\n(example: H2)");
-		JTextArea titelText = new JTextArea("Enter the title of the chart:");
+		JTextArea pieTitelText = new JTextArea("Enter the title of the chart:");
 		final JButton pieChartButton = new JButton("Draw the chart");
 		
+		JPanel barChartPanel = new JPanel();
+		JPanel barChartPanel1 = new JPanel();
+		JPanel barChartPanel2 = new JPanel();
+		JPanel barChartPanel3 = new JPanel();
+		JPanel barChartPanel4 = new JPanel();
+		JPanel barChartPanel5 = new JPanel();
+		JTextArea barChartText1 = new JTextArea("Enter the first cell:\n(example: A1)");
+		JTextArea barChartText2 = new JTextArea("Enter the last cell:\n(example: H2)");
+		JTextArea barMainTitelText = new JTextArea("Enter the title of the chart (the header):");
+		final JTextArea barTitelXText = new JTextArea("Enter the title of the X-axis");
+		final JTextArea barTitelYText = new JTextArea("Enter the title of the Y-axis");
+		final JButton barChartButton = new JButton("Draw the chart");
+		
+		
+		
 		pieChartPanel.setLayout(new BoxLayout(pieChartPanel,BoxLayout.Y_AXIS));
+		barChartPanel.setLayout(new BoxLayout(barChartPanel,BoxLayout.Y_AXIS));
 		
 		pieChartPanel.add(pieChartPanel1);
 		pieChartPanel.add(pieChartPanel2);
 		pieChartPanel.add(pieChartPanel3);
 		pieChartPanel.add(pieChartButton);
 		pieChartPanel1.add(pieChartText1);
-		pieChartPanel1.add(firstCell);
+		pieChartPanel1.add(pieFirstCell);
+		
+		barChartPanel.add(barChartPanel1);
+		barChartPanel.add(barChartPanel2);
+		barChartPanel.add(barChartPanel3);
+		barChartPanel.add(barChartPanel4);
+		barChartPanel.add(barChartPanel5);
+		barChartPanel.add(barChartButton);
+		barChartPanel1.add(barChartText1);
+		barChartPanel1.add(barFirstCell);
 		
 		pieChartPanel2.add(pieChartText2);
-		pieChartPanel2.add(lastCell);
+		pieChartPanel2.add(pieLastCell);
 		
-		pieChartPanel3.add(titelText);
-		pieChartPanel3.add(titel);
+		barChartPanel2.add(barChartText2);
+		barChartPanel2.add(barLastCell);
+		
+		pieChartPanel3.add(pieTitelText);
+		pieChartPanel3.add(pieTitel);
 		pieChartPanel3.setLayout(new BoxLayout(pieChartPanel3, BoxLayout.Y_AXIS));
+		
+		barChartPanel3.add(barMainTitelText);
+		barChartPanel3.add(barMainTitel);
+		barChartPanel3.setLayout(new BoxLayout(barChartPanel3, BoxLayout.Y_AXIS));
+		
+		barChartPanel4.add(barTitelXText);
+		barChartPanel4.add(barTitelX);
+		barChartPanel4.setLayout(new BoxLayout(barChartPanel4, BoxLayout.Y_AXIS));
+		
+		barChartPanel5.add(barTitelYText);
+		barChartPanel5.add(barTitelY);
+		barChartPanel5.setLayout(new BoxLayout(barChartPanel5, BoxLayout.Y_AXIS));
 		
 		pieChartText1.setEditable(false);
 		pieChartText2.setEditable(false);
-		titelText.setEditable(false);
+		pieTitelText.setEditable(false);
 		
-		firstCell.setPreferredSize(new Dimension(25, 20));
-		lastCell.setPreferredSize(new Dimension(25, 20));
+		barChartText1.setEditable(false);
+		barChartText2.setEditable(false);
+		barMainTitelText.setEditable(false);
+		barTitelXText.setEditable(false);
+		barTitelYText.setEditable(false);
+		
+		pieFirstCell.setPreferredSize(new Dimension(25, 20));
+		pieLastCell.setPreferredSize(new Dimension(25, 20));
+		pieChartPanel3.setPreferredSize(new Dimension(20,20));
+		
+		barFirstCell.setPreferredSize(new Dimension(25, 20));
+		barLastCell.setPreferredSize(new Dimension(25, 20));
 		
 		
 		pieChartText1.setAlignmentX(RIGHT_ALIGNMENT);
-		firstCell.setAlignmentX(LEFT_ALIGNMENT);
-		lastCell.setAlignmentX(RIGHT_ALIGNMENT);
+		pieFirstCell.setAlignmentX(LEFT_ALIGNMENT);
+		pieLastCell.setAlignmentX(RIGHT_ALIGNMENT);
 		pieChartButton.setAlignmentX(CENTER_ALIGNMENT);
+		
+		barChartText1.setAlignmentX(RIGHT_ALIGNMENT);
+		barFirstCell.setAlignmentX(LEFT_ALIGNMENT);
+		barLastCell.setAlignmentX(RIGHT_ALIGNMENT);
+		barChartButton.setAlignmentX(CENTER_ALIGNMENT);
 		
 		
 		ActionListener graphsAction = new ActionListener(){
@@ -329,9 +392,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource().equals(pieChartButton)){
-					String first = firstCell.getText();
-					String last = lastCell.getText();
-					String titelString = titel.getText();
+					String first = pieFirstCell.getText();
+					String last = pieLastCell.getText();
+					String titelString = pieTitel.getText();
 					try{
 						ArrayList<String> names = PieChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
 						ArrayList<Double> values = PieChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
@@ -345,20 +408,43 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a piechart");
 					}
 					
-				}				
+				}
+				
+				if(e.getSource().equals(barChartButton)){
+					String first = barFirstCell.getText();
+					String last = barLastCell.getText();
+					String mainTitelString = barMainTitel.getText();
+					String titelXString = barTitelX.getText();
+					String titelYString = barTitelY.getText();
+					try{
+						ArrayList<String> names = BarChart.getNames((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						ArrayList<Double> values = BarChart.getValues((SpreadSheet) ( panes.get(index)).getTable().getModel(), first, last);
+						BarChart chart = new BarChart(names, values, mainTitelString, titelXString, titelYString);
+						chart.pack();
+						chart.setVisible(true);
+						graphsDialog.dispose();
+					} catch(CellInputException c){
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure your input for the first cell and the last cell is correct");
+					} catch(CellDataException d){
+						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a piechart");
+					}
+					
+				}
 			}
 			
 		};
 		
 		pieChartButton.addActionListener(graphsAction);
+		barChartButton.addActionListener(graphsAction);
 
 		
 		graphsPanel.add(graphsTabbedPane);
 		graphsTabbedPane.addTab("PieChart", pieChartPanel);
+		graphsTabbedPane.addTab("BarChart", barChartPanel);
 		
 		graphsDialog.add(graphsPanel);
 		graphsDialog.setIconImage(mainImage);
-		graphsDialog.setMinimumSize(new Dimension(270, 250));
+		graphsDialog.setMinimumSize(new Dimension(370, 350));
 		graphsDialog.setResizable(true);
 		graphsDialog.setLocation ((screenWidth / 2) - (graphsPanel.getPreferredSize().width / 2), (screenHeight / 2) - (graphsPanel.getPreferredSize().height / 2)); //center in het midden
 		
