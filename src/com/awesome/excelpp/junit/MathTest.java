@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.awesome.excelpp.math.*;
 import com.awesome.excelpp.math.exception.MathException;
 import com.awesome.excelpp.stringmath.IsNumber;
+import com.awesome.excelpp.stringmath.Upper;
 
 public class MathTest {
 
@@ -38,7 +39,7 @@ public class MathTest {
 	
 	@Test
 	public void Count() {
-		System.out.println(new IsNumber().getValue("a"));
+		System.out.println(new Upper().getValue("Test", "test"));
 	}
 	 
 }
