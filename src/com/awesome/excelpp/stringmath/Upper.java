@@ -1,17 +1,10 @@
 package com.awesome.excelpp.stringmath;
 
-import com.awesome.excelpp.math.Formula;
 
-public class Upper extends Formula{
-	public String upper() {
-		String string = "";
-		string.toUpperCase();
+public class Upper extends StringFormula {
+	public String getValue(String... vars) {
+		String string = vars[0];
+		string = string.toUpperCase();
 		return string;
-	}
-
-	@Override
-	public double getValue(double... numbers) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }
