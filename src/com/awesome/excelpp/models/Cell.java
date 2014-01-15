@@ -58,7 +58,7 @@ public class Cell {
 	 * @return			String with an unevaluated expression
 	 */
 	public String getContent() {
-		return content;
+		return content == null ? "" : content;
 	}
 	
 	/**
