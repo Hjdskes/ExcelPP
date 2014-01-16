@@ -80,15 +80,35 @@ Wij hebben ervoor gekozen om dit in ons programma te implementeren door op basis
 ++++++++++++++++++++++++++++++++++++++++++++
 +++ infix parser -> shunting-yard parser +++
 ++++++++++++++++++++++++++++++++++++++++++++
-SKIP
+probleem:
+SKIP?
 
 ++++++++++++++++++++++++++++++++++++
 +++ regex parser -> eigen parser +++
 ++++++++++++++++++++++++++++++++++++
+technologische afweging:
 
 ++++++++++++++++++++++++++++++++++++++++
 +++ String datatype -> Cell datatype +++
 ++++++++++++++++++++++++++++++++++++++++
+probleem:
+
++++++++++++++++++++++++++++++++++++
++++ Writer: modulaire structuur +++
++++++++++++++++++++++++++++++++++++
+technologisch afweging:
+
++++++++++++++++++++++++++
++++ JFreechart / BIRT +++
++++++++++++++++++++++++++
+technologisch afweging:
+BERND?
+
+++++++++++++++++++++++++++++++++++++
++++ Parser:	Double -> Object +++
+++++++++++++++++++++++++++++++++++++
+probleem:
+
 
 +++ 1. Welke problemen zijn opgelost +++
 +++ 2. Welke technologische afwegingen zijn gemaakt (bv: Jfreechart versus BIRT) +++
