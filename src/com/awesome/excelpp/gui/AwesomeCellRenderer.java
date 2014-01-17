@@ -14,7 +14,7 @@ import sun.swing.DefaultLookup;
 import com.awesome.excelpp.models.Cell;
 
 /**
- * @author: Oracle, Philip Milne. Modified by Team Awesome to support Cell markup
+ * @author: Philip Milne. Modified by Team Awesome to support <code>Cell markup.
  * @source: http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/7-b147/javax/swing/table/DefaultTableCellRenderer.java/?v=source
  */
 public class AwesomeCellRenderer extends DefaultTableCellRenderer {
@@ -47,15 +47,15 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
      * or not the table is being printed, check the return value from
      * {@link javax.swing.JComponent#isPaintingForPrint()}.
      *
-     * @param table  the <code>JTable</code>
-     * @param value  the value to assign to the cell at
-     *                  <code>[row, column]</code>
-     * @param isSelected true if cell is selected
-     * @param hasFocus true if cell has focus
-     * @param row  the row of the cell to render
-     * @param column the column of the cell to render
-     * @return the custom awesome table cell renderer
-     * @see javax.swing.JComponent#isPaintingForPrint()
+     * @param table  the <code>JTable</code>.
+     * @param value  the value to assign to the <code>Cell</code> at
+     *                  <code>[row, column]</code>.
+     * @param isSelected True if <code>Cell</code> is selected.
+     * @param hasFocus True if <code>Cell</code> has focus.
+     * @param row  The row of the <code>Cell</code> to render.
+     * @param column The column of the <code>Cell</code> to render.
+     * @return The <code>AwesomeCellRenderer</code>.
+     * @see javax.swing.JComponent#isPaintingForPrint().
      */
     @Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

@@ -3,6 +3,10 @@ package com.awesome.excelpp.gui;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+/**
+ * This class packs a <code>SpreadSheetTable</code> inside a <code>JScrollPane</code>.
+ * @author Team Awesome.
+ */
 public class SpreadSheetScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 
@@ -18,13 +22,17 @@ public class SpreadSheetScrollPane extends JScrollPane {
 		this(new SpreadSheetTable());
 	}
 
+	/**
+	 * Sets the currently contained <code>SpreadSheetTable</code>.
+	 * @param table	The new <code>SpreadSheetTable</code> to set.
+	 */
 	public void setTable(SpreadSheetTable table) {
 		this.setViewportView(table);
 	}
 
 	/**
-	 * Returns the currently contained SpreadSheetTable
-	 * @return SpreadSheetTable
+	 * Returns the currently contained <code>SpreadSheetTable</code>.
+	 * @return SpreadSheetTable	The currently contained <code>SpreadSheetTable</code>.
 	 */
 	public SpreadSheetTable getTable() {
 		return (SpreadSheetTable)this.getViewport().getComponent(0);

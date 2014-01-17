@@ -15,8 +15,8 @@ import java.util.EventObject;
 import com.awesome.excelpp.models.Cell;
 
 /**
- * Custom CellEditor to preserve text markup and colors upon editing a Cell.
- * @author Team Awesome. The isCellEditable method is copied from the DefaultCellEditor source code, taken from
+ * Custom CellEditor to preserve text markup and fore- and background <code>Color</code> upon editing a <code>Cell</code>.
+ * @author Team Awesome. The <code>isCellEditable</code> method is copied from the <code>DefaultCellEditor</code> source code, taken from
  * http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/javax/swing/DefaultCellEditor.java
  * This method is written by Alan Chung and Philip Milne.
  */
@@ -40,6 +40,10 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 		return currentCell;
 	}
 
+	/**
+	 * Implements the <code>TableCellEditor</code> interface.
+	 * @return Component
+	 */
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		currentCell = (Cell)value;
@@ -57,14 +61,24 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 		textfield.setText(currentCell.getContent());
         return textfield;
 	}
-	
+
+	/**
+	 * Returns true if this <code>Cell</code> is editable.
+	 * @return boolean	True if this <code>Cell</code> is editable.
+	 */
 	@Override
 	public boolean isCellEditable(EventObject evt) {
 		if (evt instanceof MouseEvent)
 			return ((MouseEvent)evt).getClickCount() >= clickCount;
 		return true;
 	}
-	
+
+	/**
+	 * Stops editing and returns true to indicate that editing has stopped, thus calling the
+	 * <code>AwesomeCellRenderer</code> to take over again.
+	 * This method calls <code>fireEditingStopped</code>.
+	 * @return true
+	 */
 	@Override
 	public boolean stopCellEditing() {
 		currentCell.setContent(textfield.getText());

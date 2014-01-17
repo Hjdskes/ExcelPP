@@ -89,12 +89,12 @@ public class Cell {
 	/**
 	 * Sets the unevaluated content of this Cell
 	 * @param content	String with an unevaluated expression
-	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 * @param undoable	Boolean if false edit won't be posted to the undoSupport
 	 */
 	public void setContent(String content, boolean undoable) {
-		if(undoable){
+		if(undoable) {
 			setContent(content);
-		} else{
+		} else {
 			this.content = content;
 		}
 	}
@@ -117,9 +117,9 @@ public class Cell {
 	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
 	 */
 	public void setBold(int bold, boolean undoable) {
-		if(undoable){
+		if(undoable) {
 			setBold(bold);
-		} else{
+		} else {
 			if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
 				this.fontBold = bold;
 		}
@@ -148,12 +148,12 @@ public class Cell {
 	/**
 	 * Sets the italic state of the font in this Cell
 	 * @param bold    Whether or not font is italic: 2 for italic, 0 for plain
-	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 * @param undoable	Boolean if false edit won't be posted to the undoSupport
 	 */
 	public void setItalic(int italic, boolean undoable){
-		if(undoable){
+		if(undoable) {
 			setItalic(italic);
-		} else{
+		} else {
 			if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
 				this.fontItalic = italic;
 		}
@@ -181,12 +181,12 @@ public class Cell {
 	/**
 	 * Gets the foreground Color of this Cell
 	 * @return      The new foreground Color of this Cell
-	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 * @param undoable	Boolean if false edit won't be posted to the undoSupport
 	 */
 	public void setForegroundColor(Color newForegroundColor, boolean undoable) {
-		if(undoable){
+		if(undoable) {
 			setForegroundColor(newForegroundColor);
-		} else{
+		} else {
 			this.foregroundColor = newForegroundColor;
 		}
 	}
@@ -218,12 +218,12 @@ public class Cell {
 	/**
 	 * Gets the background Color of this Cell
 	 * @return      The new background Color of this Cell
-	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 * @param undoable	Boolean if false edit won't be posted to the undoSupport
 	 */
 	public void setBackgroundColor(Color newBackgroundColor, boolean undoable) {
-		if(undoable){
+		if(undoable) {
 			setBackgroundColor(newBackgroundColor);
-		} else{
+		} else {
 			this.backgroundColor = newBackgroundColor;
 		}
 	}
@@ -245,7 +245,7 @@ public class Cell {
 	 * Gets the sheet of this cell
 	 * @return The sheet of this cell
 	 */
-	public SpreadSheet getSheet(){
+	public SpreadSheet getSheet() {
 		return sheet;
 	}
 	
@@ -285,19 +285,18 @@ public class Cell {
 	}
 	
 	/**
-	 * Creates a copy of the Cell this
+	 * Creates a copy of this Cell
 	 * @return copy of this
 	 */
-	private Cell cloneThis(){
+	private Cell cloneThis() {
 		return new Cell (this.getSheet(), this.getContent(), this.getBold(), this.getItalic(), this.getForegroundColor(), this.getBackgroundColor());
 	}
 	
 	/**
 	 * Posts and eddit to undoSupport if oldValue does not equals newValue
-	 
 	 */
-	private void postEdit(Cell oldValue, Cell newValue){
-		if(!oldValue.equals(newValue)){
+	private void postEdit(Cell oldValue, Cell newValue) {
+		if(!oldValue.equals(newValue)) {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue);
 			this.getSheet().getUndoSupport().postEdit(e);
 		}

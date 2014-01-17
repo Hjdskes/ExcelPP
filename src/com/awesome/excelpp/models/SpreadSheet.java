@@ -79,10 +79,8 @@ public class SpreadSheet extends AbstractTableModel {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
-		cells.put(getNumCell(row, col), (Cell)aValue)
+		cells.put(getNumCell(row, col), (Cell)aValue);
 		fireTableDataChanged();
-		
-	
 	}
 	
 	/**
@@ -95,9 +93,7 @@ public class SpreadSheet extends AbstractTableModel {
 	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
 		if(postEdit == true){
 			setValueAt(aValue, row, col);
-		}
-		
-		else{
+		} else {
 			cells.put(getNumCell(row, col), (Cell)aValue);
 			fireTableDataChanged();
 		}
