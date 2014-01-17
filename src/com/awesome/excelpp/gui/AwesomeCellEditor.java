@@ -60,9 +60,8 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 	
 	@Override
 	public boolean isCellEditable(EventObject evt) {
-		if (evt instanceof MouseEvent) {
+		if (evt instanceof MouseEvent)
 			return ((MouseEvent)evt).getClickCount() >= clickCount;
-		}
 		return true;
 	}
 	
