@@ -113,11 +113,11 @@ public class CellTest {
 	public void test_SetContent() {
 		Cell cell = new Cell(null, "stringCell");
 		
-		cell.setContent("stringCellModified");
+		cell.setContent("stringCellModified", true);
 		assertTrue(cell.getContent().equals("stringCellModified"));
 		assertTrue(cell.toString().equals("stringCellModified"));
 		
-		cell.setContent("=Add(2,4)");
+		cell.setContent("=Add(2,4)", true);
 		assertTrue(cell.getContent().equals("=Add(2,4)"));
 		
 		expected = 6.0;
