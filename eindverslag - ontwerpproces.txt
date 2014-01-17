@@ -102,7 +102,16 @@ technologisch afweging:
 +++ JFreechart / BIRT +++
 +++++++++++++++++++++++++
 technologisch afweging:
-BERND?
+BIRT:
++ Heel veel verschillende functionaliteiten (en dus ook al degene die wij nodig hebben)
+- Niet intuïtief
+JFreechart:
++ Heel veel verschillende functionaliteiten (en dus ook al degene die wij nodig hebben)
++ Intuïtief en duidelijk
+
+De beslissing tussen JFreechart en BIRT kwam dus neer op hoe makkelijk de beiden libraries te begrijpen waren. 
+Beide konden alles wat we in onze applicatie nodig hadden maar JFreechart kon veel sneller geïmplementeerd worden 
+omdat de basis van JFreechart makkelijker te begrijpen is.
 
 ++++++++++++++++++++++++++++++++++++
 +++ Parser:	Double -> Object +++
