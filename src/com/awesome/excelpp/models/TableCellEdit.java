@@ -10,27 +10,35 @@ import javax.swing.undo.CannotUndoException;
  */
 public class TableCellEdit extends AbstractUndoableEdit{
 	private static final long serialVersionUID = 1L;
-	private SpreadSheet sheet;
-	private Object oldValue;
-	private Object newValue;
-	private int row;
-	private int col;
+	private Cell edited;
+	private Cell oldValue;
+	private Cell newValue;
 	
-	public TableCellEdit(SpreadSheet sheet, Object oldValue, Object newValue, int row, int col){
-		this.sheet = sheet;
+	
+	public TableCellEdit(Cell edited, Cell oldValue, Cell newValue){
+		this.edited = edited;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-		this.row  = row;
-		this.col = col;
+		
 	}
 	
 	public void undo() throws CannotUndoException{
 		super.undo();
-		sheet.setValueAt(oldValue, row, col, false);	
+		edited.setContent(oldValue.getContent(), false);
+		edited.setBold(oldValue.getBold(), false);
+		edited.setItalic(oldValue.getItalic(), false);
+		edited.setForegroundColor(oldValue.getForegroundColor(), false);
+		edited.setBackgroundColor(oldValue.getBackgroundColor(), false);
+		edited.getSheet().fireTableDataChanged();
 	}
 	
 	public void redo() throws CannotRedoException{
 		super.redo();
-		sheet.setValueAt(newValue, row, col, false);
+		edited.setContent(newValue.getContent(), false);
+		edited.setBold(newValue.getBold(), false);
+		edited.setItalic(newValue.getItalic(), false);
+		edited.setForegroundColor(newValue.getForegroundColor(), false);
+		edited.setBackgroundColor(newValue.getBackgroundColor(), false);
+		edited.getSheet().fireTableDataChanged();
 	}
 }

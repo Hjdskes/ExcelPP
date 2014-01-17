@@ -79,16 +79,10 @@ public class SpreadSheet extends AbstractTableModel {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
-		Cell oldValue = (Cell)this.getValueAt(row, col);
-		Cell newValue = (Cell)aValue;
-		
-		if (!oldValue.equals(newValue)) {
-			cells.put(getNumCell(row, col), newValue);
-			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
-			undoSupport.postEdit(e);
-		}
-		
+		cells.put(getNumCell(row, col), (Cell)aValue)
 		fireTableDataChanged();
+		
+	
 	}
 	
 	/**

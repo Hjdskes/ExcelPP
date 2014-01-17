@@ -334,16 +334,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	public final void changeMarkup(int index, boolean bold) {
-		Cell current = null, oldValue = null, newValue = null;
+		Cell current = null;
 		int[] row = panes.get(index).getTable().getSelectedRows();
 		int[] column = panes.get(index).getTable().getSelectedColumns();
 
 		for (int i = 0; i < column.length; i++) {
 			for (int j = 0; j < row.length; j++) {
 				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
-				oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-						  current.getForegroundColor(), current.getBackgroundColor());
-
+	
 				if(bold == true) {
 					int bolde = current.getBold()  == 0 ? 1 : 0;
 					current.setBold(bolde);
@@ -352,11 +350,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 					current.setItalic(italic);
 				}
 
-				newValue = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]); //nieuwe waarde cell voor undo/redo
-				if(oldValue.getBold() != newValue.getBold() || oldValue.getItalic() != newValue.getItalic()) { //als waarden verschillen
-					TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row[j], column[i]); //edit aanmaken en posten
-					((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-				}
+			
 			}
 		}
 
@@ -365,8 +359,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	public final void changeColors(int index, boolean foreground) {
 		Color newColor = null;
-		Cell current = null, oldValue = null, newValue = null;
-		TableCellEdit edit;
+		Cell current = null;
 		int[] row = panes.get(index).getTable().getSelectedRows();
 		int[] column = panes.get(index).getTable().getSelectedColumns();
 
@@ -378,19 +371,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		for (int i = 0; i < column.length; i++) {
 			for (int j = 0; j < row.length; j++) {
 				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
-				oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-						  current.getForegroundColor(), current.getBackgroundColor());
 
 				if(newColor != null && foreground == false)
 					current.setBackgroundColor(newColor);
 				else if(newColor != null && foreground == true)
 					current.setForegroundColor(newColor);
 
-				newValue = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]); //nieuwe waarde cell voor undo/redo
-				if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor()) || !oldValue.getForegroundColor().equals(newValue.getForegroundColor())) { //als waarden verschillen
-					edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row[j], column[i]); //edit aanmaken en posten
-					((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-				}
 			}
 		}
 

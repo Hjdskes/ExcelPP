@@ -79,7 +79,24 @@ public class Cell {
 	 * @param content	String with an unevaluated expression
 	 */
 	public void setContent(String content) {
+		Cell oldValue = cloneThis();
 		this.content = content;
+		Cell newValue = cloneThis();
+		postEdit(oldValue, newValue);
+	}
+	
+
+	/**
+	 * Sets the unevaluated content of this Cell
+	 * @param content	String with an unevaluated expression
+	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 */
+	public void setContent(String content, boolean undoable) {
+		if(undoable){
+			setContent(content);
+		} else{
+			this.content = content;
+		}
 	}
 
 	/**
@@ -87,8 +104,25 @@ public class Cell {
 	 * @param bold    Whether or not font is bold: 1 for bold, 0 for plain
 	 */
 	public void setBold(int bold) {
+		Cell oldValue = cloneThis();
 		if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
 			this.fontBold = bold;
+		Cell newValue = cloneThis();
+		postEdit(oldValue, newValue);
+	}
+	
+	/**
+	 * Sets the bold state of the font in this Cell
+	 * @param bold    Whether or not font is bold: 1 for bold, 0 for plain
+	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 */
+	public void setBold(int bold, boolean undoable) {
+		if(undoable){
+			setBold(bold);
+		} else{
+			if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
+				this.fontBold = bold;
+		}
 	}
 
 	/**
@@ -104,8 +138,25 @@ public class Cell {
 	 * @param bold    Whether or not font is italic: 2 for italic, 0 for plain
 	 */
 	public void setItalic(int italic) {
+		Cell oldValue = cloneThis();
 		if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
 			this.fontItalic = italic;
+		Cell newValue = cloneThis();
+		postEdit(oldValue, newValue);
+	}
+	
+	/**
+	 * Sets the italic state of the font in this Cell
+	 * @param bold    Whether or not font is italic: 2 for italic, 0 for plain
+	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 */
+	public void setItalic(int italic, boolean undoable){
+		if(undoable){
+			setItalic(italic);
+		} else{
+			if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
+				this.fontItalic = italic;
+		}
 	}
 
 	/**
@@ -121,7 +172,23 @@ public class Cell {
 	 * @return      The new foreground Color of this Cell
 	 */
 	public void setForegroundColor(Color newForegroundColor) {
+		Cell oldValue = cloneThis();
 		this.foregroundColor = newForegroundColor;
+		Cell newValue = cloneThis();
+		postEdit(oldValue, newValue);
+	}
+	
+	/**
+	 * Gets the foreground Color of this Cell
+	 * @return      The new foreground Color of this Cell
+	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 */
+	public void setForegroundColor(Color newForegroundColor, boolean undoable) {
+		if(undoable){
+			setForegroundColor(newForegroundColor);
+		} else{
+			this.foregroundColor = newForegroundColor;
+		}
 	}
 
 	/**
@@ -142,7 +209,23 @@ public class Cell {
 	 * @return      The new background Color of this Cell
 	 */
 	public void setBackgroundColor(Color newBackgroundColor) {
+		Cell oldValue = cloneThis();
 		this.backgroundColor = newBackgroundColor;
+		Cell newValue = cloneThis();
+		postEdit(oldValue, newValue);
+	}
+	
+	/**
+	 * Gets the background Color of this Cell
+	 * @return      The new background Color of this Cell
+	 * @param undoable	Boolean if false and edit won't be posted to the undoSupport
+	 */
+	public void setBackgroundColor(Color newBackgroundColor, boolean undoable) {
+		if(undoable){
+			setBackgroundColor(newBackgroundColor);
+		} else{
+			this.backgroundColor = newBackgroundColor;
+		}
 	}
 
 	/**
@@ -199,5 +282,24 @@ public class Cell {
 		}
 		
 		return content;
+	}
+	
+	/**
+	 * Creates a copy of the Cell this
+	 * @return copy of this
+	 */
+	private Cell cloneThis(){
+		return new Cell (this.getSheet(), this.getContent(), this.getBold(), this.getItalic(), this.getForegroundColor(), this.getBackgroundColor());
+	}
+	
+	/**
+	 * Posts and eddit to undoSupport if oldValue does not equals newValue
+	 
+	 */
+	private void postEdit(Cell oldValue, Cell newValue){
+		if(!oldValue.equals(newValue)){
+			TableCellEdit e = new TableCellEdit(this, oldValue, newValue);
+			this.getSheet().getUndoSupport().postEdit(e);
+		}
 	}
 }
