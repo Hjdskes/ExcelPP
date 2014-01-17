@@ -81,7 +81,7 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 	 */
 	@Override
 	public boolean stopCellEditing() {
-		currentCell.setContent(textfield.getText());
+		currentCell.setContent(textfield.getText(), true);
 		return super.stopCellEditing();
 	}
 }

@@ -352,10 +352,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	
 				if(bold == true) {
 					int bolde = current.getBold()  == 0 ? 1 : 0;
-					current.setBold(bolde);
+					current.setBold(bolde, true);
 				} else if(bold == false) {
 					int italic = current.getItalic() == 0 ? 2 : 0;
-					current.setItalic(italic);
+					current.setItalic(italic, true);
 				}
 			}
 		}
@@ -385,9 +385,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
 
 				if(newColor != null && foreground == false)
-					current.setBackgroundColor(newColor);
+					current.setBackgroundColor(newColor, true);
 				else if(newColor != null && foreground == true)
-					current.setForegroundColor(newColor);
+					current.setForegroundColor(newColor, true);
 			}
 		}
 
