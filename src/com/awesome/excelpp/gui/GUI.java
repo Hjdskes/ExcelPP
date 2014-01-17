@@ -349,7 +349,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		}
 
 		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-		if(oldValue.getItalic() != newValue.getItalic() || oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
+		if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
 			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
 			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
 		}
@@ -379,7 +379,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		}
 
 		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-		if(!oldValue.getForegroundColor().equals(newValue.getForegroundColor()) || !oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
+		if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
 			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
 			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
 		}
