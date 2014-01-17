@@ -74,8 +74,9 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		if (isSelected) {
-			super.setForeground(fg == null ? table.getSelectionForeground() : fg);
+			super.setForeground(fg == null ? current.getForegroundColor() : fg);
 			super.setBackground(bg == null ? table.getSelectionBackground() : bg);
+			//super.setBackground(bg == null ? current.getBackgroundColor().brighter() : bg); //ToDo: hierdoor werkt meerdere cellen selecteren niet meer
 		} else {
 			Color background;
 			if (current != null)

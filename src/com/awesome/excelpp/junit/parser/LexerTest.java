@@ -88,6 +88,38 @@ public class LexerTest {
 		test_ExprTwoArgs("Add", "2", "4");
 	}
 	
+	@Test
+	public void test_Constructor_Cell_1() {
+		lex = new Lexer("B1+B1");
+		
+		Token next;
+		next = lex.next();
+		assertEquals(TokenType.CELL, next.type);
+		assertTrue(next.data.equals("B1"));
+		next = lex.next();
+		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertTrue(next.data.equals("+"));
+		next = lex.next();
+		assertEquals(TokenType.CELL, next.type);
+		assertTrue(next.data.equals("B1"));
+	}
+	
+	@Test
+	public void test_Constructor_Cell_2() {
+		lex = new Lexer("B1:BB78+B1:BB78");
+		
+		Token next;
+		next = lex.next();
+		assertEquals(TokenType.CELLRANGE, next.type);
+		assertTrue(next.data.equals("B1:BB78"));
+		next = lex.next();
+		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertTrue(next.data.equals("+"));
+		next = lex.next();
+		assertEquals(TokenType.CELLRANGE, next.type);
+		assertTrue(next.data.equals("B1:BB78"));
+	}
+	
 	public void test_ExprTwoArgs(String expr, String arg1, String arg2) {
 		Token next;
 		

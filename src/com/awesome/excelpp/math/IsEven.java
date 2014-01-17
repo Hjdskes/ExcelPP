@@ -2,7 +2,6 @@ package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
 
-
 public class IsEven extends Formula {
 	@Override
 	public double getValue(double... numbers) throws MathException {

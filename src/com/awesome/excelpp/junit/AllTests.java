@@ -4,7 +4,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.awesome.excelpp.junit.math.MathTest;
 import com.awesome.excelpp.junit.models.CellTest;
 import com.awesome.excelpp.junit.models.SpreadSheetTest;
 import com.awesome.excelpp.junit.parser.LexerTest;

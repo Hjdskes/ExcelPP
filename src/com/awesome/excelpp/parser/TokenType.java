@@ -14,6 +14,10 @@ public enum TokenType {
 	 */
 	CELL,
 	/**
+	 * Token representing a CELLRANGE: <code>(A-Z)+(0-9)+:(A-Z)+(0-9)+</code>
+	 */
+	CELLRANGE,
+	/**
 	 * Token representing a WORD: <code>a-zA-Z</code>
 	 */
 	WORD,
@@ -38,17 +42,9 @@ public enum TokenType {
 	 */
 	DELIM,
 	/**
-	 * Token representing a CELLDELIM: <code>:</code>
-	 */
-	CELLDELIM,
-	/**
 	 * Token representing LOGIC: <code><>=</code>
 	 */
 	LOGIC,
-	/**
-	 * Token representing WHITESPACE: <code>\ \t\n\r\f</code>
-	 */
-	WHITESPACE,
 	/**
 	 * Pseudo Token representing UNARYMINUS
 	 */

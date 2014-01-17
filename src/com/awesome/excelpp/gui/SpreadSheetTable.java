@@ -5,13 +5,13 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.gui.GUI;
 
 import java.io.File;
-
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
@@ -39,7 +39,8 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		this.setSelectionBackground (new Color(200, 221, 242));
 		this.setColumnSelectionAllowed(true);
 		this.addMouseListener(this);
-		this.setDefaultRenderer(String.class, new AwesomeCellRenderer());
+		this.setDefaultRenderer(Cell.class, new AwesomeCellRenderer());
+		this.setDefaultEditor(Cell.class, new AwesomeCellEditor());
 
 		sheet.addTableModelListener(this);
 		sheet.addUndoableEditListener(this);
@@ -233,6 +234,13 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	@Override
 	public final void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
+	}
+
+	public final void editingStopped(ChangeEvent e) {
+		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
+		super.editingStopped(e);
+		if (current != null)
+			GUI.functionFieldSetText(current.getContent());
 	}
 
 	public void mousePressed(MouseEvent e) {}

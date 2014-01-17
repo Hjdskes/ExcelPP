@@ -6,6 +6,7 @@ import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -130,6 +131,59 @@ public class ParserTest {
 		expected = 16.0;
 		result = new Parser("=-2*2+C1", testSheet).eval();
 		assertEquals(expected, result, .001);
+	}
+	
+	@Test
+	public void test_cellrange1() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		expected = 8.0;
+		result = new Parser("=Add(A1:A2)", testSheet).eval();
+		assertEquals(expected, result, .001);
+	}
+	
+	@Test
+	public void test_cellrange2() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		expected = 10.0;
+		result = new Parser("=Add(A1:A2, 2)", testSheet).eval();
+		assertEquals(expected, result, .001);
+	}
+	
+	@Test
+	public void test_cellrange_invalid1() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		exception.expect(ReferenceException.class);
+		result = new Parser("=A1:A2", testSheet).eval();
+	}
+	
+	@Test
+	public void test_cellrange_invalid2() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		exception.expect(ReferenceException.class);
+		result = new Parser("=Add(2, 2) + A1:A2", testSheet).eval();
+	}
+	
+	@Test
+	public void test_cellrange_invalid3() throws ParserException {
+		SpreadSheet testSheet = new SpreadSheet();
+		testSheet.setValueAt("=4", 0, 0);
+		testSheet.setValueAt("=4", 1, 0);
+		
+		exception.expect(ReferenceException.class);
+		result = new Parser("=Add(2+A1:A2)", testSheet).eval();
+		System.out.println(result);
 	}
 	
 	@Test
