@@ -5,13 +5,13 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.gui.GUI;
 
 import java.io.File;
-
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
@@ -234,6 +234,12 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	@Override
 	public final void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
+	}
+
+	public final void editingStopped(ChangeEvent e) {
+		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
+		if (current != null)
+			GUI.functionFieldSetText(current.getContent());
 	}
 
 	public void mousePressed(MouseEvent e) {}
