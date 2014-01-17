@@ -120,6 +120,17 @@ public class LexerTest {
 		assertTrue(next.data.equals("B1:BB78"));
 	}
 	
+	@Test
+	public void test_Constructor_String_1() {
+		lex = new Lexer("\"test\"");
+		
+		Token next;
+		next = lex.next();
+		System.out.println(next);
+		assertEquals(TokenType.STRING, next.type);
+		assertTrue(next.data.equals("\"test\""));
+	}
+	
 	public void test_ExprTwoArgs(String expr, String arg1, String arg2) {
 		Token next;
 		

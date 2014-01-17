@@ -54,13 +54,12 @@ public class Lexer {
 	    		setState(State.NONE);
 	    		break;
 	    	case '"':
-	    		setSTate(State.NONE);
 	    		do {
-	    			token.append(ch);
-	    			ch++;
-	    		} while (input.charAt(i != '"'))
+	    			token.append(input.charAt(i++));
+	    		} while (input.charAt(i) != '"');
+	    		token.append(input.charAt(i));
 	    		tokens.add(new Token(TokenType.STRING, token.toString()));
-	    		token = new StringBuilder();
+	    		setState(State.NONE);
 	    		break;
 	    	default:
 	    		if (Character.isDigit(ch)) {
