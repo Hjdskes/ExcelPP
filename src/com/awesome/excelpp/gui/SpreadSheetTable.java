@@ -16,7 +16,8 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
 /**
- * Class that sets up everything needed for a new tab in the GUI
+ * This class sets up the table as seen in the main GUI.
+ * @author Team Awesome.
  */
 public class SpreadSheetTable extends JTable implements MouseListener, UndoableEditListener {
 	private static final long serialVersionUID = 1L;
@@ -48,34 +49,34 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	}
 
 	/**
-	 * Returns the sheet used in this SpreadSheetTable
-	 * @return SpreadSheet
+	 * Returns the <code>SpreadSheet</code> used in this <code>SpreadSheetTable</code>.
+	 * @return SpreadSheet	The currently contained <code>SpreadSheet</code>.
 	 */
 	public final SpreadSheet getSheet() {
 		return sheet;
 	}
 
 	/**
-	 * Returns true if a Cell has been selected ever since
+	 * Returns true if a <code>Cell</code> has been selected ever since
 	 * the application was started.
 	 * (Otherwise, text typed into the text field will
-	 * always replace Cell A1's content).
-	 * @return true	if a Cell has ever been selected
+	 * always replace <code>Cell</code> A1's content).
+	 * @return true	If a <code>Cell</code> has ever been selected.
 	 */
 	public final boolean getCellSelected() {
 		return cellSelected;
 	}
 
 	/**
-	 * Returns the currently opened file
-	 * @return File
+	 * Returns the currently opened <code>File</code>.
+	 * @return File	The currently opened <code>File</code>/
 	 */
 	public final File getFile() {
 		return file;
 	}
 
 	/**
-	 * Sets the currently opened file
+	 * Sets the currently opened <code>File</code>.
 	 * @param void
 	 */
 	public void setFile(File file) {
@@ -83,15 +84,15 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	}
 
 	/**
-	 * Returns this tab's UndoManager
-	 * @return UndoManager
+	 * Returns this tab's <code>UndoManager</code>.
+	 * @return UndoManager	This tab's <code>UndoManager</code>.
 	 */
 	public final UndoManager getUndoManager(){
 		return undoManager;
 	}
 
 	/**
-	 * Listens for all mouseClicked events emitted by the elements of the tab
+	 * Listens for all <code>MouseClicked</code> events emitted by the elements of this <code>SpreadSheetTable</code>.
 	 * @return void
 	 */
 	public final void mouseClicked(MouseEvent e) {
@@ -186,13 +187,18 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	}
 
 	/**
-	 * Listen for undoable edits and adds them to the undoManager
+	 * Listen for undoable edits and adds them to the <code>UndoManager</code>.
+	 * @return void
 	 */
 	@Override
 	public final void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
 	}
 
+	/**
+	 * Listens for all editingStopped events emitted by this <code>SpreadSheetTable's Cells</code>.
+	 * @return void
+	 */
 	public final void editingStopped(ChangeEvent e) {
 		int row = this.getSelectedRow();
 		int column = this.getSelectedColumn();

@@ -41,17 +41,12 @@ import org.xml.sax.SAXException;
 
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
-import com.awesome.excelpp.models.TableCellEdit;
 import com.awesome.excelpp.readers.XML;
 import com.awesome.excelpp.writers.XMLWriter;
 
 /**
- * Class that constructs everything needed for and by the GUI
- * ToDo: fix color buttons
- *         make them more distinct
- *         coloring whole button with last selected color is a bit too much?
- *       even display color when cell is selected?
- *       color multiple cells at the same time
+ * Class that constructs the main window of the GUI.
+ * @author Team Awesome.
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -98,8 +93,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a JPanel holding the required buttons
-	 * @return JPanel
+	 * Creates a <code>JPanel</code> holding the required buttons.
+	 * @return JPanel	The <code>JPanel</code> holding all the required buttons.
 	 */
 	private final JPanel createButtonPanel() {
 		final FlowLayout layout = new FlowLayout();
@@ -208,7 +203,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 	
 	/**
-	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts
+	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts.
 	 * @return void
 	 */
 	private final void openHelpDialog() {
@@ -267,7 +262,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a new tab with everything setup inside it
+	 * Creates a new tab with everything setup inside it.
+	 * @param file	The file to open inside the new <code>SpreadSheetTable</code>.
 	 * @return void
 	 */
 	public final void createNewTab(File file) {
@@ -299,6 +295,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Updates the tab's title.
+	 * @param index	The index of the tab to update.
 	 * @param newTitle	the new title to set.
 	 * @return void
 	 */
@@ -308,9 +305,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Gets the a tab's title
-	 * @param index		Tab to get the title from
-	 * @return String	The title
+	 * Gets a tab's title.
+	 * @param index		The index of the tab to get the title from.
+	 * @return String	The title.
 	 */
 	private static final String getTabTitle(int index) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
@@ -319,7 +316,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Helper method to set the text in the function field
-	 * @param String - text to set
+	 * @param String	The text to set in the function field
 	 */
 	public static void functionFieldSetText (String text) {
 		functionField.setText(text);
@@ -327,23 +324,27 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Helper method to get the text from the function field
-	 * @return String
+	 * @return String	The text from the function field
 	 */
-	public static String functionFieldGetText () {
+	public static String functionFieldGetText() {
 		return functionField.getText();
 	}
 
+	/**
+	 * Changes markup in the currently selected <code>Cells</code>.
+	 * @param index	The index of the tab whose <code>Cells</code> need to be updated.
+	 * @param bold	True if the boldness is subject to change.
+	 * @return void
+	 */
 	public final void changeMarkup(int index, boolean bold) {
-		Cell current = null, oldValue = null, newValue = null;
+		Cell current = null;
 		int[] row = panes.get(index).getTable().getSelectedRows();
 		int[] column = panes.get(index).getTable().getSelectedColumns();
 
 		for (int i = 0; i < column.length; i++) {
 			for (int j = 0; j < row.length; j++) {
 				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
-				oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-						  current.getForegroundColor(), current.getBackgroundColor());
-
+	
 				if(bold == true) {
 					int bolde = current.getBold()  == 0 ? 1 : 0;
 					current.setBold(bolde);
@@ -351,22 +352,21 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 					int italic = current.getItalic() == 0 ? 2 : 0;
 					current.setItalic(italic);
 				}
-
-				newValue = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]); //nieuwe waarde cell voor undo/redo
-				if(oldValue.getBold() != newValue.getBold() || oldValue.getItalic() != newValue.getItalic()) { //als waarden verschillen
-					TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row[j], column[i]); //edit aanmaken en posten
-					((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-				}
 			}
 		}
 
 		panes.get(index).getTable().grabFocus();
 	}
 
+	/**
+	 * Changes the fore- and background <code>Colors</code> in the currently selected <code>Cells</code>.
+	 * @param index	The index of the tab whose <code>Cells</code> need to be updated.
+	 * @param foreground True if the foreground <code>Color</code> is subject to change.
+	 * @return void
+	 */
 	public final void changeColors(int index, boolean foreground) {
 		Color newColor = null;
-		Cell current = null, oldValue = null, newValue = null;
-		TableCellEdit edit;
+		Cell current = null;
 		int[] row = panes.get(index).getTable().getSelectedRows();
 		int[] column = panes.get(index).getTable().getSelectedColumns();
 
@@ -378,19 +378,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		for (int i = 0; i < column.length; i++) {
 			for (int j = 0; j < row.length; j++) {
 				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
-				oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-						  current.getForegroundColor(), current.getBackgroundColor());
 
 				if(newColor != null && foreground == false)
 					current.setBackgroundColor(newColor);
 				else if(newColor != null && foreground == true)
 					current.setForegroundColor(newColor);
-
-				newValue = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]); //nieuwe waarde cell voor undo/redo
-				if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor()) || !oldValue.getForegroundColor().equals(newValue.getForegroundColor())) { //als waarden verschillen
-					edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row[j], column[i]); //edit aanmaken en posten
-					((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-				}
 			}
 		}
 
@@ -403,8 +395,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Listens for all events emitted by the elements of the GUI
-	 * Calls other functions
+	 * Listens for all events emitted by the elements of the GUI.
 	 * @return void
 	 */
 	public final void actionPerformed(ActionEvent e) {
@@ -451,7 +442,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Listens for all KeyPressed events emitted by the elements of the GUI
+	 * Listens for all KeyPressed events emitted by the elements of the GUI.
 	 * @return void
 	 */
 	@Override
@@ -466,8 +457,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Is executed right before the window closes. We use this to do some clean ups and check if files
+	 * Is executed right before the window closes. Used to do some clean ups and check if files
 	 * need to be saved.
+	 * @return void
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e) {
@@ -477,7 +469,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				return;
 			}
 		}
-		System.exit(0); //ToDo: niet de beste oplossing?
+		System.exit(0); //ToDo: niet de beste oplossing? Bastiaan zei dat we het zo konden laten.
 	}
 
 	public void keyTyped(KeyEvent e) {}
@@ -490,7 +482,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public void windowDeactivated(WindowEvent e) {}
 
 	/**
-	 * Opens a file dialog in which the user can select the file to open
+	 * Opens a file dialog in which the user can select the file to open.
 	 * @return void
 	 */
 	public final void openFile() {
@@ -523,7 +515,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Saves the currently opened file
+	 * Saves the currently opened file.
+	 * @param saveAs True if the Save As button has been pressed, will spawn a Save As dialog.
 	 * @return void
 	 */
 	public final void saveFile (boolean saveAs) {
@@ -554,8 +547,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
-	 * @param index
-	 * @return integer 	0 for OK, 1 for cancel
+	 * @param index	The index of the tab whose <code>File</code> will be closed.
+	 * @return integer 	0 for OK, 1 for cancel.
 	 */
 	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;
