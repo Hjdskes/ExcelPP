@@ -10,14 +10,13 @@ import javax.swing.undo.UndoableEditSupport;
 import com.awesome.excelpp.writers.Writer;
 
 /**
- * Class that represents a spreadsheet
- * 
+ * This class that represents a <code>SpreadSheet</code>.
+ * @author Team Awesome.
  */
 public class SpreadSheet extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	protected final short numberOfRows = 42;
 	protected final short numberOfCols = 26;
-	
 	private HashMap<Integer, Cell> cells;
 	private UndoableEditSupport undoSupport;
 	
@@ -26,17 +25,29 @@ public class SpreadSheet extends AbstractTableModel {
 		cells = new HashMap<Integer, Cell>();
 		undoSupport = new UndoableEditSupport();
 	}
-	
+
+	/**
+	 * Returns Cell.class regardless of columnIndex.
+	 * @return Cell.class
+	 */
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return Cell.class;
 	};
 
+	/**
+	 * Returns the number of columns inside this <code>SpreadSheet</code>.
+	 * @return int	The number of columns.
+	 */
 	@Override
 	public int getColumnCount() {
 		return numberOfCols;
 	}
-	
+
+	/**
+	 * Returns the number of rows inside this <code>SpreadSheet</code>.
+	 * @return int	The number of rows.
+	 */
 	@Override
 	public int getRowCount() {
 		return numberOfRows;
@@ -57,15 +68,19 @@ public class SpreadSheet extends AbstractTableModel {
 		}
 		return cell;
 	}
-	
+
+	/**
+	 * Returns true regardless of row and column.
+	 * @return true
+	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
 
 	/**
-	 * Returns true if this sheet is empty
-	 * @return boolean	true if this sheet is empty
+	 * Returns true if this <code>SpreadSheet</code> is empty.
+	 * @return boolean	True if this <code>SpreadSheet</code> is empty.
 	 */
 	public boolean isEmpty() {
 		return cells.isEmpty();
@@ -116,18 +131,29 @@ public class SpreadSheet extends AbstractTableModel {
 	
 	/* LISTENERS */	
 	/**
-	 * Adds an UndoableEditListener to the SpreadSheet
-	 * @param l UndoableEditListener that is added
+	 * Adds an <code>UndoableEditListener</code> to this <code>SpreadSheet</code>.
+	 * @param l <code>UndoableEditListener</code> to add.
+	 * @return void
 	 */
-	public void addUndoableEditListener(UndoableEditListener l){
+	public void addUndoableEditListener(UndoableEditListener l) {
 		this.undoSupport.addUndoableEditListener(l);
 	}
-	
-	public UndoableEditSupport getUndoSupport(){
+
+	/**
+	 * Gets the <code>UndoEditSupport</code> of this <code>SpreadSheet</code>.
+	 * @return UndoableEditSupport The <code>UndoEditSupport</code> of this <code>SpreadSheet</code>.
+	 */
+	public UndoableEditSupport getUndoSupport() {
 		return undoSupport;
 	}
 	
 	/* OTHER */
+	/**
+	 * Returns the number the <code>Cell</code> at the specified position inside this <code>SpreadSheet</code>.
+	 * @param row	The row of this <code>Cell</code>.
+	 * @param col	The column of this <code>Cell</code>.
+	 * @return int	The number of this <code>Cell</code>.
+	 */
 	private int getNumCell(int row, int col) {
 		return row * numberOfCols + col;
 	}
@@ -138,8 +164,8 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 	
 	/**
-	 * Outputs the assigned spreadsheet map to a normalized XML file
-	 * @param file		the output file
+	 * Outputs this <code>SpreadSheet</code> map to a normalized XML file.
+	 * @param writer	The <code>Writer</code> to use.
 	 */
 	public void write(Writer writer) {
 		for (Integer cellnr : cells.keySet()) {
