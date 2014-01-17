@@ -1,0 +1,115 @@
+//////////////////////////////////////////////////////////////////
+/// WORK IN PROGRESS /// WORK IN PROGRESS /// WORK IN PROGRESS ///
+//////////////////////////////////////////////////////////////////
+
+========================
+=== 2. Ontwerpproces ===
+========================
+Gedurende het ontwerpproces zijn er verschillende momenten geweest waarop een aantal belangrijke ontwerpbeslissingen zijn genomen. Sommige van deze beslissingen bleken achteraf niet de juiste keuze. Wij zullen hier een aantal van deze beslissingen toelichten en bespreken. Bij het nemen van beslissingen hebben we zoveel mogelijk rekening gehouden met voornamelijk de volgende aspecten:
+- platform onafhankelijkheid
+- beschikbaarheid documentatie
+- performance en geheugengebruik
+- gemak van gebruik
+
+
+In het begin van het project dienden we gelijk 2 belangrijke technologische afwegingen te maken, namelijk welke libraries we zullen gebruiken voor het uitlezen en wegschrijven van XML en voor het weergeven van de Graphical User Interface (GUI).
+
++++++++++++++++++++++++++++
++++ XML reader / writer +++
++++++++++++++++++++++++++++
+Technologische afweging:
+Binnen de standaard API van Java zijn er 2 veelgebruikte APIs voor het uitlezen van XML bestanden, namelijk:
+- JAXP DOM
+- JAXP SAX
+Daarnaast is er eigenlijk maar 1 gangbare API voor het wegschrijven van XML, namelijk:
+- JAXP DOM
+
+Van deze APIs hebben we de voor- en nadelen onderzocht.
+JAXP DOM
++ makkelijk in gebruik omdat de hele XML als DOM model in het geheugen staat
++ makkelijk in gebruik door 'DOM traversal'
++ kan ook gebruikt worden voor het wegschrijven van XML
+- verbruikt meer geheugen omdat de hele XML als DOM model in het geheugen staat
+- is minder snel en efficient dan een event based XML parser
+
+JAXP SAX
++ sneller, vooral bij grote files
++ verbruikt minder geheugen
+- lastiger te implementeren ivm callbacks (event based)
+- kan niet gebruikt worden voor het wegschrijven van XML
+
+De belangrijkste argumenten voor het gebruik van JAXP SAX zijn dus voornamelijk de snelheid en het geheugengebruik. Daarnaast zijn de belangrijkste argumenten voor het gebruik van JAXP DOM het gebruiksgemak en het kunnen wegschrijven van files met dezelfde library. Na het programmeren van een testcase bleek het snelheidsverschil voor ons niet groot genoeg en hebben we voor gebruiksgemak gekozen.
+
+++++++++++++++++++++++++++++
++++ JavaFX / SWT / Swing +++
+++++++++++++++++++++++++++++
+Technologische afweging:
+Voor het programmeren van GUIs biedt Java zelf AWT, Swing en JavaFX. Daarnaast biedt Eclipse nog SWT. Ondanks dat JavaFX door Java zelf is ontwikkeld wordt het, net als SWT, niet standaard meegeleverd bij de Java Development Kit (JDK). Swing wordt op dit moment gezien als 'de standaard' voor het programmeren van GUI's. Daarnaast bouwt Swing voort op AWT. De nieuwste API van Java is JavaFX. Verder is SWT ontwikkeld door Eclipse ten behoeve van de Eclipse IDE.
+
+Verder bieden ze de volgende voor- en nadelen.
+Swing
++ gedraagt zich op alle platformen vrijwel hetzelfde
++ wordt gezien als 'standaard'
++ er is uitgebreide documentatie beschikbaar
+
+AWT
+- gedraagt zich niet helemaal hetzelfde op alle platformen
+- wordt relatief minder gebruikt dan Swing
+
+SWT
+- gedraagt zich niet helemaal hetzelfde op alle platformen
+- komt weinig intuïtief over
+- wordt relatief minder gebruikt dan Swing
+
+JFX
++ ziet er grafisch erg mooi uit
+- is nog redelijk nieuw en daarmee minder uitgebreid getest
+- meer voor webapplicaties
+- wordt relatief minder gebruikt dan Swing
+
+Omdat binnen onze groep alle 3 de gangbare operating systems gebruikt. Platform onafhankelijkheid is daarom een belangrijk argument voor ons. Daarom zijn SWT en AWT afgevallen. Verder JavaFX nog relatief nieuw. Hierdoor is het aantal voorbeelden en de hoeveelheid documentatie beschikbaar op het internet een stuk kleiner. Aangezien dit onze eerste ervaring met het programmeren van GUI's is heeft dit een grote invloed gehad op onze keuze.
+Om deze redenen hebben wij de conclusie getrokken dat geen van de alternatieven ons tijdens het ontwikkel van Excel++ genoeg voordelen biedt om af te wijken van de 'standaard' Swing.
+
++++++++++++++++++++++++++++++++++++
++++ Plugin architectuur formula +++
++++++++++++++++++++++++++++++++++++
+probleem:
+Ons programma Excel++ dient op zijn minst 30 verschillende functies te ondersteunen. Om het ontwerp van ons programma modulair te houden is het wenselijk dat we ook deze formules op zichzelf staand toe kunnen voegen aan het programma. Andy Zaidman heeft tijdens één van zijn lectures geopperd om dit te doen middels een 'plugin architectuur'.
+Wij hebben ervoor gekozen om dit in ons programma te implementeren door op basis van input van de user dynamisch een formule klasse in te laden. Op deze manier hoeft er bij het toevoegen van een nieuwe formule enkel een nieuwe klasse aangemaakt te worden in het juiste package. Na het toevoegen van de klasse zal de functie automatisch beschikbaar zijn in Excel++.
+
+++++++++++++++++++++++++++++++++++++++++++++
++++ infix parser -> shunting-yard parser +++
+++++++++++++++++++++++++++++++++++++++++++++
+probleem:
+SKIP?
+
+++++++++++++++++++++++++++++++++++++
++++ regex parser -> eigen parser +++
+++++++++++++++++++++++++++++++++++++
+technologische afweging:
+
+++++++++++++++++++++++++++++++++++++++++
++++ String datatype -> Cell datatype +++
+++++++++++++++++++++++++++++++++++++++++
+probleem:
+
++++++++++++++++++++++++++++++++++++
++++ Writer: modulaire structuur +++
++++++++++++++++++++++++++++++++++++
+technologisch afweging:
+
++++++++++++++++++++++++++
++++ JFreechart / BIRT +++
++++++++++++++++++++++++++
+technologisch afweging:
+BERND?
+
+++++++++++++++++++++++++++++++++++++
++++ Parser:	Double -> Object +++
+++++++++++++++++++++++++++++++++++++
+probleem:
+
+
++++ 1. Welke problemen zijn opgelost +++
++++ 2. Welke technologische afwegingen zijn gemaakt (bv: Jfreechart versus BIRT) +++
++++ 3. Hoe heeft de UML jullie wel/niet geholpen +++
