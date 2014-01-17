@@ -135,7 +135,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
 		final ImageIcon boldIcon = new ImageIcon("data/icons/format-text-bold.png");
 		final ImageIcon italicIcon = new ImageIcon("data/icons/format-text-italic.png");
-		final ImageIcon colorIcon = new ImageIcon("data/icons/gnome-colors.png");
+		final ImageIcon foregroundIcon = new ImageIcon("data/icons/color_line.png");
+		final ImageIcon backgroundIcon = new ImageIcon("data/icons/emblem-art.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		buttonNew.setIcon(newIcon);
@@ -147,8 +148,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonRedo.setIcon(redoIcon);
 		buttonBold.setIcon(boldIcon);
 		buttonItalic.setIcon(italicIcon);
-		buttonForegroundColor.setIcon(colorIcon);
-		buttonBackgroundColor.setIcon(colorIcon);
+		buttonForegroundColor.setIcon(foregroundIcon);
+		buttonBackgroundColor.setIcon(backgroundIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -348,7 +349,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		}
 
 		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-		if(oldValue.getItalic() != newValue.getItalic() || oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
+		if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
 			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
 			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
 		}
@@ -378,7 +379,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		}
 
 		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-		if(!oldValue.getForegroundColor().equals(newValue.getForegroundColor()) || !oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
+		if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
 			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
 			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
 		}

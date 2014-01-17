@@ -48,7 +48,20 @@ public class Cell {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
+		boolean equals = false;
+		
+		if (obj instanceof Cell) {
+			Cell other = (Cell)obj;
+			if ((content == null && other.getContent() == null) || content != null && content.equals(other.getContent()) &&
+					(this.fontBold == other.getBold()) &&
+					(this.fontItalic == other.getItalic()) &&
+					(this.foregroundColor.equals(other.getForegroundColor())) &&
+					(this.backgroundColor.equals(other.getBackgroundColor())))
+			{
+				equals = true;
+			}
+		}
+		return equals;
 	}
 	
 	/**

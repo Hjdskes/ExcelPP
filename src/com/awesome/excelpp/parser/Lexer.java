@@ -61,7 +61,7 @@ public class Lexer {
 	    			} else if (this.state == State.CELL) {
 	    				token.append(ch);
 	    			} else {
-	    				setState(State.NUMBER);    				
+	    				setState(State.NUMBER);
 	    				token.append(ch);
 	    			}
 	    		} else if (Character.isLetter(ch)) {
@@ -97,7 +97,8 @@ public class Lexer {
 	 * @param state		the {@link State} we want to change to
 	 */
 	private void setState(State state) {
-		if (this.state != state && state != State.CELL) {
+		if (this.state != state &&
+				(state != State.CELL && state != State.CELLRANGE)) {
 			if (this.state == State.NUMBER){
 				tokens.add(new Token(TokenType.NUMBER, token.toString()));
 			}else if(this.state == State.CELL){
