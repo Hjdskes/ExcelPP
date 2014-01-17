@@ -183,7 +183,20 @@ public class ParserTest {
 		
 		exception.expect(ReferenceException.class);
 		result = new Parser("=Add(2+A1:A2)", testSheet).eval();
-		System.out.println(result);
+	}
+	
+	@Test
+	public void test_function_string1() throws ParserException {
+		expected = 1.0;
+		result = new Parser("=IsNumber(2)").eval();
+		assertEquals(expected, result, .001);
+	}
+	
+	@Test
+	public void test_function_string2() throws ParserException {
+		expected = 0.0;
+		result = new Parser("=IsNumber(\"test\")").eval();
+		assertEquals(expected, result, .001);
 	}
 	
 	//@Test

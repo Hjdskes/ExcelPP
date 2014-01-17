@@ -85,6 +85,10 @@ public class Parser {
 				output.push(currentToken);
 				lastWasNumber = true;
 				break;
+			case STRING:
+				output.push(currentToken);
+				lastWasNumber = false;
+				break;
 			case MULTDIV:
 				while(!operators.isEmpty() &&
 						(operators.getFirst().type == TokenType.MULTDIV ||
@@ -174,6 +178,9 @@ public class Parser {
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
+				break;
+			case STRING:
+				evalStack.push(output.removeLast().data);
 				break;
 			case CELLRANGE:
 				String[] range = output.removeLast().data.split(":");
