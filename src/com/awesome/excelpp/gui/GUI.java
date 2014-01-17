@@ -4,7 +4,6 @@ package com.awesome.excelpp.gui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -53,7 +52,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static final long serialVersionUID = 1L;
 	private static final int screenWidth = (int)Utils.getScreenWidth();
 	private static final int screenHeight = (int)Utils.getScreenHeight();
-	private static final ArrayList<SpreadSheetScrollPane> panes = new ArrayList<SpreadSheetScrollPane>();
 	private static BufferedImage mainImage;
 	private static JFrame mainFrame;
 	private static JTextField functionField;
@@ -279,13 +277,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		SpreadSheet sheet = new SpreadSheet();
 		SpreadSheetTable table = new SpreadSheetTable(sheet, file);
 		SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
-		int last = panes.size();
-		panes.add(pane);
 		String tabTitle = "New file";
 		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
-		mainTabs.setTabComponentAt(last, new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
-		mainTabs.setSelectedIndex(last);
-		//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
+		int tabCount = mainTabs.getTabCount();
+		mainTabs.setTabComponentAt(tabCount == 0 ? 0 : (tabCount - 1), new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
+		mainTabs.setSelectedIndex(tabCount == 0 ? 0 : (tabCount - 1));
+		//ToDo: mainTabs.setMnemonicAt(tabCount, KeyEvent.VK_(tabCount + 1));
 	}
 
 	/**
@@ -297,7 +294,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			int index = mainTabs.getSelectedIndex();
 			if (closeFile(index) == 0) {
 				mainTabs.remove(index);
-				panes.remove(index);
 			}
 		}
 	}
@@ -347,12 +343,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public final void changeMarkup(int index, boolean bold) {
 		Cell current = null;
-		int[] row = panes.get(index).getTable().getSelectedRows();
-		int[] column = panes.get(index).getTable().getSelectedColumns();
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getTabComponentAt(index);
+		SpreadSheetTable table = scrollPane.getTable();
+		int[] row = table.getSelectedRows();
+		int[] column = table.getSelectedColumns();
 
 		for (int i = 0; i < column.length; i++) {
 			for (int j = 0; j < row.length; j++) {
-				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
+				current = (Cell)table.getValueAt(row[j], column[i]);
 	
 				if(bold == true) {
 					int bolde = current.getBold()  == 0 ? 1 : 0;
@@ -364,7 +362,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			}
 		}
 
-		panes.get(index).getTable().grabFocus();
+		table.grabFocus();
 	}
 
 	/**
@@ -376,8 +374,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void changeColors(int index, boolean foreground) {
 		Color newColor = null;
 		Cell current = null;
-		int[] row = panes.get(index).getTable().getSelectedRows();
-		int[] column = panes.get(index).getTable().getSelectedColumns();
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getTabComponentAt(index);
+		SpreadSheetTable table = scrollPane.getTable();
+		int[] row = table.getSelectedRows();
+		int[] column = table.getSelectedColumns();
 
 		if(foreground == false)
 			newColor = JColorChooser.showDialog(this, "Choose a background color", buttonBackgroundColor.getBackground());
@@ -386,7 +386,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 		for (int i = 0; i < column.length; i++) {
 			for (int j = 0; j < row.length; j++) {
-				current = (Cell)panes.get(index).getTable().getValueAt(row[j], column[i]);
+				current = (Cell)table.getValueAt(row[j], column[i]);
 
 				if(newColor != null && foreground == false)
 					current.setBackgroundColor(newColor, true);
@@ -400,7 +400,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		else if(newColor != null && foreground == true)
 			buttonForegroundColor.setBackground(newColor);
 
-		panes.get(index).getTable().grabFocus();
+		table.grabFocus();
 	}
 
 	/**
@@ -416,7 +416,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			if(closeFile(index) == 0) {
 				SpreadSheet newSheet = new SpreadSheet();
 				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
-				panes.get(index).setTable(newTable);
+				SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+				scrollPane.setTable(newTable);
 				updateTabTitle(index, "New file");
 			}
 		} else if (e.getSource().equals(buttonNewTab))
@@ -439,11 +440,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
 		} else if (e.getSource().equals(buttonUndo)) {
-			UndoManager manager = panes.get(index).getTable().getUndoManager();
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			UndoManager manager = scrollPane.getTable().getUndoManager();
 			if (manager.canUndo() == true)
 				manager.undo();
 		} else if (e.getSource().equals(buttonRedo)) {
-			UndoManager manager = panes.get(index).getTable().getUndoManager();
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			UndoManager manager = scrollPane.getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
 		}
@@ -456,11 +459,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	@Override
 	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-			int index = mainTabs.getSelectedIndex();
-			if (panes.get(index).getTable().getCellSelected() == false)
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getSelectedComponent();
+			SpreadSheetTable table = scrollPane.getTable();
+			if (table.getCellSelected() == false)
 				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
 			else
-				panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getTable().getSelectedRow(), panes.get(index).getTable().getSelectedColumn());
+				table.setValueAt(functionField.getText(), table.getSelectedRow(), table.getSelectedColumn());
 		}
 	}
 
@@ -471,7 +475,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e) {
-		for(int i = 0; i < panes.size(); i++) {
+		for(int i = 0; i < mainTabs.getTabCount(); i++) {
 			if(closeFile(i) == 1) {
 				JOptionPane.showMessageDialog(this, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
 				return;
@@ -517,7 +521,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				table = new SpreadSheetTable(sheet, file);
 				ex.printStackTrace();
 			}
-			panes.get(index).setTable(table);
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			scrollPane.setTable(table);
 			updateTabTitle(index, file.getName());
 		}
 	}
@@ -528,8 +533,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return void
 	 */
 	public final void saveFile (boolean saveAs) {
-		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
-		SpreadSheetTable table = pane.getTable();
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getSelectedComponent();
+		SpreadSheetTable table = scrollPane.getTable();
 		File file = table.getFile();
 		if (file == null || saveAs == true) {
 			final JFileChooser fc = new JFileChooser();
@@ -560,7 +565,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;
-		SpreadSheetTable table = panes.get(index).getTable();
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+		SpreadSheetTable table = scrollPane.getTable();
 		if(getTabTitle(index).equals("New file")) {
 			if(table.getSheet().isEmpty() == true)
 				close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
