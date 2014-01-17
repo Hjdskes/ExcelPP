@@ -6,6 +6,10 @@ import java.io.PrintWriter;
 
 import com.awesome.excelpp.models.Cell;
 
+/**
+ * This class 
+ * @author Team Awesome.
+ */
 public class XMLWriter implements Writer {
 	PrintWriter pw;
 	
