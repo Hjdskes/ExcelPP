@@ -53,6 +53,15 @@ public class Lexer {
 	    	case ' ': case '\t': case '\n': case '\r': case '\f':
 	    		setState(State.NONE);
 	    		break;
+	    	case '"':
+	    		setSTate(State.NONE);
+	    		do {
+	    			token.append(ch);
+	    			ch++;
+	    		} while (input.charAt(i != '"'))
+	    		tokens.add(new Token(TokenType.STRING, token.toString()));
+	    		token = new StringBuilder();
+	    		break;
 	    	default:
 	    		if (Character.isDigit(ch)) {
 	    			if(this.state == State.WORD){
