@@ -72,6 +72,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonNewTab;
 	private static JButton buttonNew;
 
+	/**
+	 * Constructs the main window.
+	 * @throws IOException
+	 */
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
 		mainImage = ImageIO.read(new File("data/icons/gnumeric.png"));

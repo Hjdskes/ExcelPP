@@ -12,7 +12,7 @@ Gedurende het ontwerpproces zijn er verschillende momenten geweest waarop een aa
 - gemak van gebruik
 
 
-In het begin van het project dienden we gelijk 2 belangrijke technologische afwegingen te maken, namelijk welke libraries we zullen gebruiken voor het uitlezen en wegschrijven van XML en voor het weergeven van de Graphical User Interface (GUI).
+In het begin van het project dienden we gelijk 2 belangrijke technologische afwegingen te maken, namelijk welke libraries we zullen gebruiken voor het uitlezen en wegschrijven van XML en voor het weergeven van de Graphical User Interface (GUI). 
 
 +++++++++++++++++++++++++++
 +++ XML reader / writer +++
