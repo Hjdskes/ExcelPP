@@ -238,6 +238,7 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 
 	public final void editingStopped(ChangeEvent e) {
 		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
+		super.editingStopped(e);
 		if (current != null)
 			GUI.functionFieldSetText(current.getContent());
 	}
