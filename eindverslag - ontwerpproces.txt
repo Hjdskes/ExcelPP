@@ -81,12 +81,18 @@ Wij hebben ervoor gekozen om dit in ons programma te implementeren door op basis
 +++ infix parser -> shunting-yard parser +++
 ++++++++++++++++++++++++++++++++++++++++++++
 probleem:
-SKIP?
+De eerste versie van onze Parser evalueerde direct vanuit de gegeven wiskunde expressie. Deze expressie is gegeven in "infix" notatie, de notatie die de meeste mensen gewend zijn. 
+Het probleem was echter dat het implementeren van de wiskundige bewerkingsvolgorde lastig was. 
+Het resulteerde in code dat methoden aanriep in methoden. 
+Hierdoor was de code uiteindelijk lastig te begrijpen, waardoor het optimaliseren van de code en het fixen van bugs automatisch ook lastig werd.
+Om die reden zijn we overgestapt naar een ander soort Parser, waarbij we eerst de expressie omzetten naar "Reverse Polish Notation", ook wel "postfix" notatie. 
+Deze expressie is makkelijker en sneller te evalueren dan een expressie in de "infix" notatie. Het omzetten zelf hebben we gedaan met behulp van het Shunting-yard algoritme, uitgevonden door E.W. Dijkstra.
+Met het evalueren van de nieuw verkregen expressie hoeven we geen rekening meer te houden met de wiskundige bewerkingsvolgorde, behalve bij expressies tussen haakjes.
 
-++++++++++++++++++++++++++++++++++++
-+++ regex parser -> eigen parser +++
-++++++++++++++++++++++++++++++++++++
-technologische afweging:
+Ook zijn we overgestapt naar het gebruiken van een state machine in plaats van regex patronen bij het "tokenization" proces. 
+Het is bekend dat regex zeer traag is, maar aan de andere kant erg simpel is te implementeren. 
+We hadden daarom vanaf het begin regex gebruikt, en we zouden overstappen op een andere manier van "tokenizen" als we tijd over hadden.
+
 
 
 ++++++++++++++++++++++++++++++++++++++++
@@ -132,8 +138,11 @@ omdat de basis van JFreechart makkelijker te begrijpen is.
 +++ Parser:	Double -> Object +++
 ++++++++++++++++++++++++++++++++++++
 probleem:
+Tijdens het begin van het project hebben wij ervoor gekozen om ons te richten op een goede basis voor het programma. Dit betekende onder andere dat we wel een aantal van de ondersteunde formules hadden geimplementeerd, maar nog lang niet alles. Daardoor kwamen we vrij laat tot de conclusie dat onze formule Parser niet alleen het inlezen van Doubles moest ondersteunen, maar ook ook het inlezen van Strings. Een aantal functies kunnen ook Strings als argument meegegeven krijgen, of String returnen, de functie LOWER bijvoorbeeld. Om dit probleem op te lossen hebben we besloten om de functie Parser te baseren op Object in plaats van op Double. Hierdoor kunnen we de Parser Strings en Doubles laten genereren en laten opslaan als een Object. De formule beslist later zelf met behulp van 'instanceof' of zijn argumenten een String, een Int of een Double zijn.
 
 
-+++ 1. Welke problemen zijn opgelost +++
-+++ 2. Welke technologische afwegingen zijn gemaakt (bv: Jfreechart versus BIRT) +++
-+++ 3. Hoe heeft de UML jullie wel/niet geholpen +++
+++++++++++++++++++++++
++++ Het nu van UML +++
+++++++++++++++++++++++
+Een aantal van de genomen beslissingen hebben een grote impact gehad op het ontwerp van ons programma. Vooral ook de beslissingen die later genomen waren, nadat we meer kennis opgedaan hadden, hebben af en toe flinke gevolgen gehad. Twee voorbeelden hiervan zijn bijvoorbeeld het switchen van String naar Cell in het spreadsheet model en het switchen van Doubles naar Objects in de formule parser. Tijdens deze beslissingen heeft de UML ons geholpen om het overzicht op het ontwerp van het programma te behouden. Dankzij de UML was snel inzichtelijk wat voor impact dit soort wijzigingen op ons programma gingen hebben en waar we tegen problemen aan zouden lopen. Verder is het dankzij de UML ook makkelijk om uit te leggen aan de groep waar je precies aan werkt.
+Een probleem waar we tegenaan gelopen zijn is dat het updaten van de UML niet altijd even frequent gedaan werd. De globale structuur van Excel++ kwam wel altijd overeen met het UML diagram, en er werd ook voor gezorgd dat de structuur na ingrijpende wijzigingen weer klopte.
