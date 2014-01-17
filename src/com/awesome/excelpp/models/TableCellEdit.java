@@ -16,9 +16,9 @@ public class TableCellEdit extends AbstractUndoableEdit{
 
 	/**
 	 * Constructs a new edit to be added to the undoManager.
-	 * @param edited
-	 * @param oldValue
-	 * @param newValue
+	 * @param edited The cell that was changed.
+	 * @param oldValue The previous value of this cell. (The value that will be set after an undo)
+	 * @param newValue The new value of this cell. (The value that will be set after a redo)
 	 */
 	public TableCellEdit(Cell edited, Cell oldValue, Cell newValue){
 		this.edited = edited;
