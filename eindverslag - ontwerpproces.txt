@@ -88,15 +88,30 @@ SKIP?
 ++++++++++++++++++++++++++++++++++++
 technologische afweging:
 
+
 ++++++++++++++++++++++++++++++++++++++++
 +++ String datatype -> Cell datatype +++
 ++++++++++++++++++++++++++++++++++++++++
 probleem:
+Voor het representeren van spreadsheet data hebben wij een klasse SpreadSheet ontwikkeld gebaseerd op het AbstractTableModel van Java Swing.
+Deze klasse houdt referenties naar alle Cell objecten bij en biedt de GUI de mogelijkheid om waarden op te vragen.
+De standaard AbstractTableModel API biedt echter enkel methoden zodat er omgegaan kan worden met het datatype Object.
+Daarnaast biedt JTable de mogelijkheid om een CellRenderer en een CellEditor in te stellen.
+Er wordt standaard echter alleen een CellRenderer en een CellEditor voor het omgaan met Strings meegeleverd.
+Doordat de JTable en het AbstractTableModel enkel met Objects / Strings om kunnen gaan hebben we niet de mogelijkheid om opmaak in te stellen voor Cellen in onze datarepresentatie.
+Daarom hebben wij ervoor gekozen om een eigen CellRenderer en CellEditor te ontwikkelen en om binnen het AbstractTableModel enkel gebruik te maken van Cells.
+Op deze manier kunnen we in de GUI makkelijk Cell objecten aanvragen en van de Cell objecten zelf de opmaak wijzigen.
+Omdat de Cell hierdoor verantwoordelijk is voor het opslaan van zijn eigen opmaak blijft het correct wegschrijven van Cell eigenschappen, zoals inhoud en opmaak, bovendien eenvoudig.
 
 +++++++++++++++++++++++++++++++++++
 +++ Writer: modulaire structuur +++
 +++++++++++++++++++++++++++++++++++
 technologisch afweging:
+Omdat het AbstractTableModel SpreadSheet de data representatie van onze spreadsheet bevat hebben we in eerste instantie ook de output van XML onderdeel gemaakt van de klasse SpreadSheet.
+Dit paste echter niet goed goed in ons streven om Excel++ zoveel mogelijk modulair te houden. Bovendien zou dit het toevoegen van ondersteuning voor andere bestandstypen lastig maken.
+Dit is de reden geweest om het wegschrijven van XML files ook modulair te maken. We hebben ervoor gekozen om de klasse SpreadSheet te laten communiceren met een Writer interface.
+De XML Writer implementeert vervolgens deze interface. Om ondersteuning voor eventuele extra Writers toe te voegen hoeven nu alleen de Writer interface te implementeren.
+Als demonstratie van deze Writer interface hebben we de extra Writer SysOutWriter toegevoegd, en indien mogelijk wordt voor het einde van het project nog ondersteuning voor CSV files toegevoegd.
 
 +++++++++++++++++++++++++
 +++ JFreechart / BIRT +++
