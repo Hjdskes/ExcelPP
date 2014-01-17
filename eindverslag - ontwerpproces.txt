@@ -81,13 +81,24 @@ Wij hebben ervoor gekozen om dit in ons programma te implementeren door op basis
 +++ infix parser -> shunting-yard parser +++
 ++++++++++++++++++++++++++++++++++++++++++++
 probleem:
-SKIP?
+De eerste versie van onze Parser evalueerde direct vanuit de gegeven wiskunde expressie. Deze expressie is gegeven in "infix" notatie, de notatie die de meeste mensen gewend zijn. 
+Het probleem was echter dat het implementeren van de wiskundige bewerkingsvolgorde lastig was. 
+Het resulteerde in code dat methoden aanriep in methoden. 
+Hierdoor was de code uiteindelijk lastig te begrijpen, waardoor het optimaliseren van de code en het fixen van bugs automatisch ook lastig werd.
+Om die reden zijn we overgestapt naar een ander soort Parser, waarbij we eerst de expressie omzetten naar "Reverse Polish Notation", ook wel "postfix" notatie. 
+Deze expressie is makkelijker en sneller te evalueren dan een expressie in de "infix" notatie. Het omzetten zelf hebben we gedaan met behulp van het Shunting-yard algoritme, uitgevonden door E.W. Dijkstra.
+Met het evalueren van de nieuw verkregen expressie hoeven we geen rekening meer te houden met de wiskundige bewerkingsvolgorde, behalve bij expressies tussen haakjes.
+
+Ook zijn we overgestapt naar het gebruiken van een state machine in plaats van regex patronen bij het "tokenization" proces. 
+Het is bekend dat regex zeer traag is, maar aan de andere kant erg simpel is te implementeren. 
+We hadden daarom vanaf het begin regex gebruikt, en we zouden overstappen op een andere manier van "tokenizen" als we tijd over hadden.
+
 
 ++++++++++++++++++++++++++++++++++++
 +++ regex parser -> eigen parser +++
 ++++++++++++++++++++++++++++++++++++
 technologische afweging:
-
+Aangezien we genoeg tijd hadden, hebben we in plaats van het
 
 ++++++++++++++++++++++++++++++++++++++++
 +++ String datatype -> Cell datatype +++
