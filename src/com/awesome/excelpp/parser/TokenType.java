@@ -22,6 +22,10 @@ public enum TokenType {
 	 */
 	WORD,
 	/**
+	 * Token representing a STRING: <code>"string"</code>
+	 */
+	STRING,
+	/**
 	 * Token representing a PLUSMINUS: <code>+-</code>
 	 */
 	PLUSMINUS,
