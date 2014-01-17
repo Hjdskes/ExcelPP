@@ -21,6 +21,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -128,11 +129,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
 		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon formulaIcon = new ImageIcon("data/icons/formula_piet2.png");
 		final ImageIcon boldIcon = new ImageIcon("data/icons/format-text-bold.png");
 		final ImageIcon italicIcon = new ImageIcon("data/icons/format-text-italic.png");
 		final ImageIcon foregroundIcon = new ImageIcon("data/icons/color_line.png");
 		final ImageIcon backgroundIcon = new ImageIcon("data/icons/emblem-art.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
+
+		final JLabel formulaLabel = new JLabel(formulaIcon);
 
 		buttonNew.setIcon(newIcon);
 		buttonNewTab.setIcon(newTabIcon);
@@ -168,6 +172,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonUndo);
 		panel.add(buttonRedo);
 		panel.add(functions);
+		panel.add(formulaLabel);
 		panel.add(functionField);
 		panel.add(buttonBold);
 		panel.add(buttonItalic);
@@ -400,41 +405,40 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
-		JButton source = (JButton)e.getSource();
 
-		if (source.equals(buttonOpen))
+		if (e.getSource().equals(buttonOpen))
 			openFile();
-		else if (source.equals(buttonNew)) {
+		else if (e.getSource().equals(buttonNew)) {
 			if(closeFile(index) == 0) {
 				SpreadSheet newSheet = new SpreadSheet();
 				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
 				panes.get(index).setTable(newTable);
 				updateTabTitle(index, "New file");
 			}
-		} else if (source.equals(buttonNewTab))
+		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab(null);
-		else if (source.equals(buttonSave))
+		else if (e.getSource().equals(buttonSave))
 			saveFile(false);
-		else if (source.equals(buttonSaveAs))
+		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
-		else if (source.equals(buttonBold)) {
+		else if (e.getSource().equals(buttonBold)) {
 			changeMarkup(index, true);
-		} else if (source.equals(buttonItalic)) {
+		} else if (e.getSource().equals(buttonItalic)) {
 			changeMarkup(index, false);
-		} else if (source.equals(buttonForegroundColor)) {
+		} else if (e.getSource().equals(buttonForegroundColor)) {
 			changeColors(index, true);
-		} else if (source.equals(buttonBackgroundColor)) {
+		} else if (e.getSource().equals(buttonBackgroundColor)) {
 			changeColors(index, false);
-		} else if (source.equals(buttonAbout))
+		} else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
-		else if (source.equals(functions)) {
+		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
-		} else if (source.equals(buttonUndo)) {
+		} else if (e.getSource().equals(buttonUndo)) {
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canUndo() == true)
 				manager.undo();
-		} else if (source.equals(buttonRedo)) {
+		} else if (e.getSource().equals(buttonRedo)) {
 			UndoManager manager = panes.get(index).getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
