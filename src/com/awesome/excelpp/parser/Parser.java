@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
 
@@ -24,15 +25,18 @@ public class Parser {
 	
 	private Lexer lex;
 	private SpreadSheet sheet;
+	private Cell cell;
 
 	/**
 	 * Creates a new expression Parser.
 	 * @param lex The {@link Lexer} containing the expression 
 	 * @param sheet The referenced {@link SpreadSheet}
+	 * @param cell The source {@link Cell}
 	 */
-	public Parser(Lexer lex, SpreadSheet sheet){
+	public Parser(Lexer lex, SpreadSheet sheet, Cell cell){
 		this.lex = lex;
 		this.sheet = sheet;
+		this.cell = cell;
 		output = new LinkedList<Token>();
 		arityStack = new LinkedList<Integer>();
 	}
@@ -41,9 +45,19 @@ public class Parser {
 	 * Creates a new expression Parser.
 	 * @param expr The String containing the expression
 	 * @param sheet	The referenced {@link SpreadSheet}
+	 * @param cell The source {@link Cell}
+	 */
+	public Parser(String expr, SpreadSheet sheet, Cell cell){
+		this(new Lexer(expr), sheet, cell);
+	}
+	
+	/**
+	 * Creates a new expression Parser.
+	 * @param expr The String containing the expression
+	 * @param sheet	The referenced {@link SpreadSheet}
 	 */
 	public Parser(String expr, SpreadSheet sheet){
-		this(new Lexer(expr), sheet);
+		this(new Lexer(expr), sheet, null);
 	}
 	
 	/**
@@ -51,7 +65,7 @@ public class Parser {
 	 * @param expr The String containing the expression
 	 */
 	public Parser(String expr){
-		this(new Lexer(expr), null);
+		this(new Lexer(expr), null, null);
 	}
 	
 	/**
@@ -219,6 +233,7 @@ public class Parser {
 						Object cellref = sheet.getValueAt(row - 1, col);
 						Object value = 0.0;
 						try {
+							((Cell)cellref).addObserver(cell);
 							value = Double.parseDouble(cellref.toString());
 						} catch (NumberFormatException e) {
 							//TODO: Do something with strings...
@@ -235,6 +250,8 @@ public class Parser {
 				col -= 65;
 				
 				Object cellref = sheet.getValueAt(row - 1, col);
+				((Cell)cellref).addObserver(cell);
+				
 				Object value = 0.0;
 				try {
 					value = Double.parseDouble(cellref.toString());
