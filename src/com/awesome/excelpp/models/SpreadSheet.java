@@ -55,8 +55,8 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Gets the String value of the <code>Cell</code> with coordinates (row, col) from this <code>SpreadSheet</code>.
-	 * @param row Representing x-coordinate
-	 * @param col Representing y-coordinate
+	 * @param row Representing y-coordinate
+	 * @param col Representing x-coordinate
 	 * @return The <code>Cell<code> object at specified row and column
 	 */
 	@Override
@@ -83,9 +83,14 @@ public class SpreadSheet extends AbstractTableModel {
 	 * @return True if this <code>SpreadSheet</code> is empty
 	 */
 	public boolean isEmpty() {
-		return cells.isEmpty();
+		boolean empty = true;
+		for(int index : cells.keySet()) {
+			if (!cells.get(index).isEmpty())
+				empty = false;
+		}
+		return empty;
 	}
-
+	
 	/**
 	 * Sets a <code>Cell</code> with coordinates (row, col) in this <code>SpreadSheet</code>.
 	 * @param aValue Object to store in the <code>Cell</code> object
