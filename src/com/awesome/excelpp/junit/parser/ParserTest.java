@@ -138,9 +138,12 @@ public class ParserTest {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
 		testSheet.setValueAt("=4", 1, 0);
+		testSheet.setValueAt("=4", 2, 0);
+		testSheet.setValueAt("=4", 3, 0);
+		testSheet.setValueAt("=4", 4, 0);
 		
-		expected = 8.0;
-		result = new Parser("=Add(A1:A2)", testSheet).eval();
+		expected = 20.0;
+		result = new Parser("=Add(A1:A5)", testSheet).eval();
 		assertEquals(expected, result, .001);
 	}
 	
@@ -155,7 +158,7 @@ public class ParserTest {
 		assertEquals(expected, result, .001);
 	}
 	
-	//@Test
+	@Test
 	public void test_cellrange_invalid1() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
@@ -165,7 +168,7 @@ public class ParserTest {
 		result = new Parser("=A1:A2", testSheet).eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_cellrange_invalid2() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
 		testSheet.setValueAt("=4", 0, 0);
@@ -199,43 +202,43 @@ public class ParserTest {
 		assertEquals(expected, result, .001);
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function1() throws ParserException {
 		exception.expect(MissingRBracketException.class);
 		result = new Parser("=Add(").eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function2() throws ParserException {
 		exception.expect(MissingLBracketException.class);
 		result = new Parser("=Add())").eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function3() throws ParserException {
 		exception.expect(MissingLBracketException.class);
 		result = new Parser("=Add").eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function4() throws ParserException {
 		exception.expect(MissingArgException.class);
 		result = new Parser("=Add()").eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function5() throws ParserException {
 		exception.expect(MissingLBracketException.class);
 		result = new Parser("=Add 5,5").eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function6() throws ParserException {
 		exception.expect(MissingArgException.class);
 		result = new Parser("=-").eval();
 	}
 	
-	//@Test
+	@Test
 	public void test_invalid_function7() throws ParserException {
 		exception.expect(MissingArgException.class);
 		result = new Parser("=2-").eval();

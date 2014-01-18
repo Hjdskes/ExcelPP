@@ -173,8 +173,19 @@ public class Parser {
 		while(!output.isEmpty()){
 			switch (output.getLast().type) {
 			case UNARYMINUS:
-				output.removeLast();
-				evalStack.push(new Double(-((Double)evalStack.pop()).doubleValue()));
+				Object arg;
+				try {
+					arg = evalStack.pop();
+				} catch (NoSuchElementException e) {
+					throw new MissingArgException();
+				}
+				
+				if (arg instanceof Double) {
+					output.removeLast();
+					evalStack.push(-(Double)arg);
+				} else {
+					//TODO: Do something with strings...
+				}
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
@@ -183,7 +194,14 @@ public class Parser {
 				evalStack.push(output.removeLast().data);
 				break;
 			case CELLRANGE:
-				String[] range = output.removeLast().data.split(":");
+				String[] range;
+				int arity;
+				try {
+					range = output.removeLast().data.split(":");
+					arity = arityStack.removeLast() - 1;
+				} catch (NoSuchElementException e) {
+					throw new ReferenceException();
+				}
 				int startRow = Integer.parseInt(range[0].substring(1));
 				int startCol = (int) range[0].charAt(0);
 				startCol -= 65;
@@ -191,16 +209,13 @@ public class Parser {
 				int endCol = (int) range[1].charAt(0);
 				endCol -= 65;
 
-				arityStack.add(arityStack.removeLast() - 1);
 				for(int row = startRow; row <= endRow; row++){
 					for(int col = startCol; col <= endCol; col++){
-						arityStack.add(arityStack.removeLast() + 1);
-						System.out.println(arityStack);
-						String temp = sheet.getValueAt(row - 1, col).toString();
-						System.out.println(temp);
-						evalStack.push(Double.parseDouble(temp));
+						arity++;
+						evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
 					}
 				}
+				arityStack.push(arity);
 				break;
 			case CELL:
 				String ref = output.removeLast().data;
@@ -211,30 +226,51 @@ public class Parser {
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
-				Double b = (Double)evalStack.pop();
-				Double a = (Double)evalStack.pop();
-				if(output.getLast().data.equals("+")){
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
-				}else if(output.getLast().data.equals("-")){
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
-				}else if(output.getLast().data.equals("*")){
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
-				}else{
-					output.removeLast();
-					evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
+				Object a, b;
+				Token op;
+				try {
+					b = evalStack.pop();
+					a = evalStack.pop();
+					op = output.removeLast();
+				} catch (NoSuchElementException e) {
+					throw new MissingArgException();
+				}
+				
+				if (a instanceof Double && b instanceof Double) {
+					if(op.data.equals("+")){
+						evalStack.push(new Double((Double)a + (Double)b));
+					}else if(op.data.equals("-")){
+						evalStack.push(new Double((Double)a - (Double)b));
+					}else if(op.data.equals("*")){
+						evalStack.push(new Double((Double)a * (Double)b));
+					}else{
+						evalStack.push(new Double((Double)a / (Double)b));
+					}
+				} else {
+					// TODO: Do something with strings...
 				}
 				break;
 			case WORD:
-				int numArgs = arityStack.removeLast();
-				Object args[] = new Object[numArgs];
-				for (int i = numArgs - 1; i >= 0; i--) {
-					args[i] = evalStack.pop();
+				int numArgs = 0;
+				Object args[];
+				try {
+					numArgs = arityStack.removeLast();
+					args = new Object[numArgs];
+				} catch (NoSuchElementException e) {
+					throw new MissingLBracketException();
 				}
-				evalStack.push(evalFunction(output.removeLast().data, args));
+				
+				try {
+					for (int i = numArgs - 1; i >= 0; i--) {
+						args[i] = evalStack.pop();
+					}
+					evalStack.push(evalFunction(output.removeLast().data, args));
+				} catch (NoSuchElementException e) {
+					throw new MissingArgException();
+				}
 				break;
+			case LBRACKET:
+				throw new MissingRBracketException();
 			}
 		}
 		
