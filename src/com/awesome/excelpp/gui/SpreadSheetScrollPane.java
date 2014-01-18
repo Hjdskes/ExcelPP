@@ -24,7 +24,7 @@ public class SpreadSheetScrollPane extends JScrollPane {
 
 	/**
 	 * Sets the currently contained <code>SpreadSheetTable</code>.
-	 * @param The new <code>SpreadSheetTable</code> to set
+	 * @param table The new <code>SpreadSheetTable</code> to set
 	 */
 	public void setTable(SpreadSheetTable table) {
 		this.setViewportView(table);

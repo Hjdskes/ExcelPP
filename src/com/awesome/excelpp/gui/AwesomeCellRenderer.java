@@ -16,7 +16,7 @@ import com.awesome.excelpp.models.Cell;
 /**
  * Custom CellRenderer to support text markup and fore- and background <code>Color</code> in <code>Cells</code>.
  * <p>Source: http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/7-b147/javax/swing/table/DefaultTableCellRenderer.java/?v=source</p>
- * @author: Philip Milne. Modified by Team Awesome to support <code>Cell</code> markup.
+ * @author Philip Milne. Modified by Team Awesome to support <code>Cell</code> markup.
  */
 public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
