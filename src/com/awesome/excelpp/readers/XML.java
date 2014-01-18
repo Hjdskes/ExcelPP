@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
 /**
@@ -107,8 +108,8 @@ public class XML {
 			int row_out = Integer.parseInt(row);
 			int col_out = Integer.parseInt(column);
 
-			//Wordt dit de nieuwe constructor?
-			sheet.setValueAt(data, row_out - 1, col_out - 1, bold, italic, fontColor, bgColor);
+			Cell newValue = new Cell(sheet, data, bold, italic, fontColor, bgColor);
+			sheet.setValueAt(newValue, row_out - 1, col_out - 1);
 		}
 		return sheet;
 	}

@@ -1,6 +1,5 @@
 package com.awesome.excelpp.models;
 
-import java.awt.Color;
 import java.util.HashMap;
 
 import javax.swing.event.UndoableEditListener;
@@ -94,8 +93,8 @@ public class SpreadSheet extends AbstractTableModel {
 	/**
 	 * Sets a <code>Cell</code> with coordinates (row, col) in this <code>SpreadSheet</code>.
 	 * @param aValue Object to store in the <code>Cell</code> object
-	 * @param row Representing x-coordinate
-	 * @param col Representing y-coordinate
+	 * @param row Representing y-coordinate
+	 * @param col Representing x-coordinate
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
@@ -103,38 +102,7 @@ public class SpreadSheet extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 	
-	/**
-	 * Sets a <code>Cell</code> with coordinates (row, col) in this <code>SpreadSheet</code>.
-	 * @param aValue String object to store in the Cell object
-	 * @param row Representing x-coordinate
-	 * @param col Representing y-coordinate
-	 * @param postEdit When true, an edit is posted so that it can be undone/redone
-	 */
-	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
-		if(postEdit == true){
-			setValueAt(aValue, row, col);
-		} else {
-			cells.put(getNumCell(row, col), (Cell)aValue);
-			fireTableDataChanged();
-		}
-	}
-	
-	/**
-	 * Sets a <code>Cell</code> with all its styles from the XML Parser. 
-	 * @param aValue
-	 * @param row
-	 * @param col
-	 * @param bold
-	 * @param italic
-	 * @param foregroundColor
-	 * @param backgroundColor
-	 */
-	public void setValueAt(Object aValue, int row, int col, int bold, int italic, Color foregroundColor, Color backgroundColor) {
-		Cell newValue = new Cell(this, (String)aValue, bold, italic, foregroundColor, backgroundColor);
-		cells.put(getNumCell(row, col), newValue);
-	}
-	
-	/* LISTENERS */	
+	/* LISTENERS */
 	/**
 	 * Adds an <code>UndoableEditListener</code> to this <code>SpreadSheet</code>.
 	 * @param l <code>UndoableEditListener</code> to add
@@ -177,7 +145,7 @@ public class SpreadSheet extends AbstractTableModel {
 					 
 			if (!cell.isEmpty()) {
 				int[] xy = getXYCell(cellnr);
-				writer.addCell(cell, xy[1] + 1, xy[0] + 1, cell.getBold(), cell.getItalic(), cell.getForegroundColorHex(), cell.getBackgroundColorHex());
+				writer.addCell(cell, xy[1] + 1, xy[0] + 1);
 			}
 		}
 		writer.close();
