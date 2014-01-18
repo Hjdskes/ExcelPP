@@ -2,6 +2,8 @@ package com.awesome.excelpp.math;
 
 import java.util.ArrayList;
 
+import com.awesome.excelpp.math.exception.MathException;
+
 public class And extends Logic {
 	public double getValue(ArrayList<Logic> arguments) {
 		double res = 0.0;
@@ -22,7 +24,7 @@ public class And extends Logic {
 	}
 
 	@Override
-	public double getValue(double... numbers) {
+	public double getValue(Object ... numbers) throws MathException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

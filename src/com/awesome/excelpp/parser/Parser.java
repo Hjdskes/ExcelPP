@@ -85,6 +85,10 @@ public class Parser {
 				output.push(currentToken);
 				lastWasNumber = true;
 				break;
+			case STRING:
+				output.push(currentToken);
+				lastWasNumber = false;
+				break;
 			case MULTDIV:
 				while(!operators.isEmpty() &&
 						(operators.getFirst().type == TokenType.MULTDIV ||
@@ -169,18 +173,35 @@ public class Parser {
 		while(!output.isEmpty()){
 			switch (output.getLast().type) {
 			case UNARYMINUS:
+				Object arg;
 				try {
-					output.removeLast();
-					evalStack.push(new Double(-((Double)evalStack.pop()).doubleValue()));
+					arg = evalStack.pop();
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
+				}
+				
+				if (arg instanceof Double) {
+					output.removeLast();
+					evalStack.push(-(Double)arg);
+				} else {
+					//TODO: Do something with strings...
 				}
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
 				break;
+			case STRING:
+				evalStack.push(output.removeLast().data);
+				break;
 			case CELLRANGE:
-				String[] range = output.removeLast().data.split(":");
+				String[] range;
+				int arity;
+				try {
+					range = output.removeLast().data.split(":");
+					arity = arityStack.removeLast() - 1;
+				} catch (NoSuchElementException e) {
+					throw new ReferenceException();
+				}
 				int startRow = Integer.parseInt(range[0].substring(1));
 				int startCol = (int) range[0].charAt(0);
 				startCol -= 65;
@@ -188,66 +209,76 @@ public class Parser {
 				int endCol = (int) range[1].charAt(0);
 				endCol -= 65;
 
-				try {
-					arityStack.add(arityStack.removeLast() - 1);
-					for(int row = startRow; row <= endRow; row++){
-						for(int col = startCol; col <= endCol; col++){
-							arityStack.add(arityStack.removeLast() + 1);
-							System.out.println(arityStack);
-							String temp = sheet.getValueAt(row - 1, col).toString();
-							System.out.println(temp);
-							evalStack.push(Double.parseDouble(temp));
+				for(int row = startRow; row <= endRow; row++){
+					for(int col = startCol; col <= endCol; col++){
+						arity++;
+						
+						Object cellref = sheet.getValueAt(row - 1, col);
+						Object value = 0.0;
+						try {
+							value = Double.parseDouble(cellref.toString());
+						} catch (NumberFormatException e) {
+							//TODO: Do something with strings...
 						}
+						evalStack.push(value);
 					}
-				} catch (NoSuchElementException e) {
-					throw new ReferenceException();
 				}
+				arityStack.push(arity);
 				break;
 			case CELL:
+				String ref = output.removeLast().data;
+				int row = Integer.parseInt(ref.substring(1));
+				int col = (int) ref.charAt(0);
+				col -= 65;
+				
+				Object cellref = sheet.getValueAt(row - 1, col);
+				Object value = 0.0;
 				try {
-					String ref = output.removeLast().data;
-					int row = Integer.parseInt(ref.substring(1));
-					int col = (int) ref.charAt(0);
-					col -= 65;
-					evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
-				} catch (NumberFormatException | NullPointerException e) {
-					throw new ReferenceException();
+					value = Double.parseDouble(cellref.toString());
+				} catch (NumberFormatException e) {
+					//TODO: Do something with strings...
 				}
+				evalStack.push(value);
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
+				Object a, b;
+				Token op;
 				try {
-					Double b = (Double)evalStack.pop();
-					Double a = (Double)evalStack.pop();
-					if(output.getLast().data.equals("+")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
-					}else if(output.getLast().data.equals("-")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
-					}else if(output.getLast().data.equals("*")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
-					}else{
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
-					}
+					b = evalStack.pop();
+					a = evalStack.pop();
+					op = output.removeLast();
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
+				}
+				
+				if (a instanceof Double && b instanceof Double) {
+					if(op.data.equals("+")){
+						evalStack.push(new Double((Double)a + (Double)b));
+					}else if(op.data.equals("-")){
+						evalStack.push(new Double((Double)a - (Double)b));
+					}else if(op.data.equals("*")){
+						evalStack.push(new Double((Double)a * (Double)b));
+					}else{
+						evalStack.push(new Double((Double)a / (Double)b));
+					}
+				} else {
+					// TODO: Do something with strings...
 				}
 				break;
 			case WORD:
 				int numArgs = 0;
-				double[] args;
+				Object args[];
 				try {
 					numArgs = arityStack.removeLast();
-					args = new double[numArgs];
+					args = new Object[numArgs];
 				} catch (NoSuchElementException e) {
 					throw new MissingLBracketException();
 				}
+				
 				try {
 					for (int i = numArgs - 1; i >= 0; i--) {
-						args[i] = (Double)evalStack.pop();
+						args[i] = evalStack.pop();
 					}
 					evalStack.push(evalFunction(output.removeLast().data, args));
 				} catch (NoSuchElementException e) {
@@ -275,7 +306,7 @@ public class Parser {
 	 * @return				the evaluated {@link Formula}
 	 * @throws FormulaException
 	 */
-	private double evalFunction(String function, double ... args) throws FormulaException {
+	private double evalFunction(String function, Object ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
 		Formula formula;
