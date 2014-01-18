@@ -7,3 +7,6 @@
 
 Als we over bepaalde dingen gaan beslissen (bijvoorbeeld welke toolkit te gebruiken), stel ik voor om dat via een email te doen die aan iedereen geaddresseerd is. Zo houden we ook dit proces
 overzichtelijk en kunnen we makkelijke bepaalde keuzes terug kijken.
+
+##Code Coverage:
+![Code Coverage](https://raw2.github.com/Unia/oop/master/code%20coverage.png)
