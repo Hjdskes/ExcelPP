@@ -343,7 +343,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public final void changeMarkup(int index, boolean bold) {
 		Cell current = null;
-		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getTabComponentAt(index);
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
 		SpreadSheetTable table = scrollPane.getTable();
 		int[] row = table.getSelectedRows();
 		int[] column = table.getSelectedColumns();
@@ -373,7 +373,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public final void changeColors(int index, boolean foreground) {
 		Color newColor = null;
 		Cell current = null;
-		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getTabComponentAt(index);
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
 		SpreadSheetTable table = scrollPane.getTable();
 		int[] row = table.getSelectedRows();
 		int[] column = table.getSelectedColumns();
@@ -460,8 +460,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			SpreadSheetTable table = scrollPane.getTable();
 			if (table.getCellSelected() == false)
 				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
-			else
-				table.setValueAt(functionField.getText(), table.getSelectedRow(), table.getSelectedColumn());
+			else {
+				Cell current = (Cell) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+				current.setContent(functionField.getText(), true);
+			}
 		}
 	}
 
