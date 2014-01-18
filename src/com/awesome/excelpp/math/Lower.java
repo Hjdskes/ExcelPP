@@ -1,4 +1,4 @@
-package com.awesome.excelpp.stringmath;
+package com.awesome.excelpp.math;
 
 
 public class Lower extends StringFormula {

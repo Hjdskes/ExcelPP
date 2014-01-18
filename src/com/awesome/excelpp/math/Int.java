@@ -1,4 +1,4 @@
-package com.awesome.excelpp.stringmath;
+package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
 
