@@ -10,8 +10,8 @@ import javax.swing.undo.UndoableEditSupport;
 import com.awesome.excelpp.writers.Writer;
 
 /**
- * This class that represents a <code>SpreadSheet</code>.
- * @author Team Awesome.
+ * This class represents a <code>SpreadSheet</code>.
+ * @author Team Awesome
  */
 public class SpreadSheet extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 
 	/**
-	 * Returns Cell.class regardless of columnIndex.
+	 * Returns <code>Cell.class</code> regardless of columnIndex.
 	 * @return Cell.class
 	 */
 	@Override
@@ -37,7 +37,7 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Returns the number of columns inside this <code>SpreadSheet</code>.
-	 * @return int	The number of columns.
+	 * @return The number of columns
 	 */
 	@Override
 	public int getColumnCount() {
@@ -46,7 +46,7 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Returns the number of rows inside this <code>SpreadSheet</code>.
-	 * @return int	The number of rows.
+	 * @return The number of rows
 	 */
 	@Override
 	public int getRowCount() {
@@ -54,10 +54,10 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 
 	/**
-	 * Gets the String value of the Cell with coordinates row, col from this SpreadSheet
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @return			String value of the Cell object at row, col
+	 * Gets the String value of the <code>Cell</code> with coordinates (row, col) from this <code>SpreadSheet</code>.
+	 * @param row Representing x-coordinate
+	 * @param col Representing y-coordinate
+	 * @return The <code>Cell<code> object at specified row and column
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
@@ -71,7 +71,7 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Returns true regardless of row and column.
-	 * @return true
+	 * @return True
 	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
@@ -80,17 +80,17 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Returns true if this <code>SpreadSheet</code> is empty.
-	 * @return boolean	True if this <code>SpreadSheet</code> is empty.
+	 * @return True if this <code>SpreadSheet</code> is empty
 	 */
 	public boolean isEmpty() {
 		return cells.isEmpty();
 	}
 
 	/**
-	 * Sets a Cell with coordinates row, col in this SpreadSheet
-	 * @param aValue	String object to store in the Cell object
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
+	 * Sets a <code>Cell</code> with coordinates (row, col) in this <code>SpreadSheet</code>.
+	 * @param aValue Object to store in the <code>Cell</code> object
+	 * @param row Representing x-coordinate
+	 * @param col Representing y-coordinate
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
@@ -99,11 +99,11 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 	
 	/**
-	 * Sets a Cell with coordinates row, col in this SpreadSheet
-	 * @param aValue	String object to store in the Cell object
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @param postEdit when true an edit is posted so that it can be undone/redone
+	 * Sets a <code>Cell</code> with coordinates (row, col) in this <code>SpreadSheet</code>.
+	 * @param aValue String object to store in the Cell object
+	 * @param row Representing x-coordinate
+	 * @param col Representing y-coordinate
+	 * @param postEdit When true, an edit is posted so that it can be undone/redone
 	 */
 	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
 		if(postEdit == true){
@@ -115,7 +115,7 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 	
 	/**
-	 * Sets a Cell with all it's styles from the XML Parser 
+	 * Sets a <code>Cell</code> with all its styles from the XML Parser. 
 	 * @param aValue
 	 * @param row
 	 * @param col
@@ -132,8 +132,7 @@ public class SpreadSheet extends AbstractTableModel {
 	/* LISTENERS */	
 	/**
 	 * Adds an <code>UndoableEditListener</code> to this <code>SpreadSheet</code>.
-	 * @param l <code>UndoableEditListener</code> to add.
-	 * @return void
+	 * @param l <code>UndoableEditListener</code> to add
 	 */
 	public void addUndoableEditListener(UndoableEditListener l) {
 		this.undoSupport.addUndoableEditListener(l);
@@ -141,7 +140,7 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Gets the <code>UndoEditSupport</code> of this <code>SpreadSheet</code>.
-	 * @return UndoableEditSupport The <code>UndoEditSupport</code> of this <code>SpreadSheet</code>.
+	 * @return The <code>UndoEditSupport</code> of this <code>SpreadSheet</code>
 	 */
 	public UndoableEditSupport getUndoSupport() {
 		return undoSupport;
@@ -150,9 +149,9 @@ public class SpreadSheet extends AbstractTableModel {
 	/* OTHER */
 	/**
 	 * Returns the number the <code>Cell</code> at the specified position inside this <code>SpreadSheet</code>.
-	 * @param row	The row of this <code>Cell</code>.
-	 * @param col	The column of this <code>Cell</code>.
-	 * @return int	The number of this <code>Cell</code>.
+	 * @param row The row of this <code>Cell</code>
+	 * @param col The column of this <code>Cell</code>
+	 * @return The number of this <code>Cell</code>
 	 */
 	private int getNumCell(int row, int col) {
 		return row * numberOfCols + col;
@@ -165,7 +164,7 @@ public class SpreadSheet extends AbstractTableModel {
 	
 	/**
 	 * Outputs this <code>SpreadSheet</code> map to a normalized XML file.
-	 * @param writer	The <code>Writer</code> to use.
+	 * @param writer The <code>Writer</code> to use
 	 */
 	public void write(Writer writer) {
 		for (Integer cellnr : cells.keySet()) {

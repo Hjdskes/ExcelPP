@@ -5,7 +5,7 @@ import javax.swing.JTable;
 
 /**
  * This class packs a <code>SpreadSheetTable</code> inside a <code>JScrollPane</code>.
- * @author Team Awesome.
+ * @author Team Awesome
  */
 public class SpreadSheetScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class SpreadSheetScrollPane extends JScrollPane {
 
 	/**
 	 * Sets the currently contained <code>SpreadSheetTable</code>.
-	 * @param table	The new <code>SpreadSheetTable</code> to set.
+	 * @param The new <code>SpreadSheetTable</code> to set
 	 */
 	public void setTable(SpreadSheetTable table) {
 		this.setViewportView(table);
@@ -32,7 +32,7 @@ public class SpreadSheetScrollPane extends JScrollPane {
 
 	/**
 	 * Returns the currently contained <code>SpreadSheetTable</code>.
-	 * @return SpreadSheetTable	The currently contained <code>SpreadSheetTable</code>.
+	 * @return The currently contained <code>SpreadSheetTable</code>
 	 */
 	public SpreadSheetTable getTable() {
 		return (SpreadSheetTable)this.getViewport().getComponent(0);

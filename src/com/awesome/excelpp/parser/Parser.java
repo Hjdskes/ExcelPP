@@ -8,11 +8,14 @@ import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
 
+/**
+ * The Parser analyzes whether the tokens follow correct grammar for an Excel++ expression.
+ * <p>It then evaluates the expression and calls all specified math functions dynamically, based on the input it is given.
+ * The parser supports passing Objects, so that Strings, Doubles and Integers can be detected at runtime.</p>
+ * @author Team Awesome
+ */
 public class Parser {
-	
-	/*
-	 * The following Tokens are operands:
-	 * 
+	/* The following Tokens are operands:
 	 * - NUMBER
 	 * - CELL
 	 */
@@ -23,9 +26,9 @@ public class Parser {
 	private SpreadSheet sheet;
 
 	/**
-	 * Creates a new expression Parser
-	 * @param lex		the {@link Lexer} containing the expression 
-	 * @param sheet		the referenced {@link SpreadSheet}
+	 * Creates a new expression Parser.
+	 * @param lex The {@link Lexer} containing the expression 
+	 * @param sheet The referenced {@link SpreadSheet}
 	 */
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
@@ -35,17 +38,17 @@ public class Parser {
 	}
 	
 	/**
-	 * Creates a new expression Parser
-	 * @param expr		the String containing the expression
-	 * @param sheet		the referenced {@link SpreadSheet}
+	 * Creates a new expression Parser.
+	 * @param expr The String containing the expression
+	 * @param sheet	The referenced {@link SpreadSheet}
 	 */
 	public Parser(String expr, SpreadSheet sheet){
 		this(new Lexer(expr), sheet);
 	}
 	
 	/**
-	 * Creates a new expression Parser
-	 * @param expr		the String containing the expression
+	 * Creates a new expression Parser.
+	 * @param expr The String containing the expression
 	 */
 	public Parser(String expr){
 		this(new Lexer(expr), null);
@@ -57,7 +60,7 @@ public class Parser {
 	 * infix               | postfix<br>
 	 * ------------------- | -----------------<br>
 	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +<br>
-	 * @throws		ParserException 
+	 * @throws ParserException 
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public void toPostfix() throws ParserException{
@@ -158,9 +161,9 @@ public class Parser {
 	}
 	
 	/**
-	 * Evaluate the stored mathematical expression represented in postfix-notation
-	 * @return		the evaluated expression
-	 * @throws		ParserException
+	 * Evaluates the stored mathematical expression represented in postfix-notation.
+	 * @return The evaluated expression
+	 * @throws ParserException
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public double eval() throws ParserException{
@@ -300,10 +303,10 @@ public class Parser {
 	}
 	
 	/**
-	 * Evaluate a {@link Formula} using the formulas in package com.awesome.excelpp.math
-	 * @param formulaName	the {@link Formula} name
-	 * @param args			the {@link Formula} arguments (1..*)
-	 * @return				the evaluated {@link Formula}
+	 * Evaluates a {@link Formula} using the formulas in package <code>com.awesome.excelpp.math</code>.
+	 * @param formulaName The {@link Formula} name
+	 * @param args The {@link Formula} arguments (1..*)
+	 * @return The evaluated {@link Formula}
 	 * @throws FormulaException
 	 */
 	private double evalFunction(String function, Object ... args) throws FormulaException {

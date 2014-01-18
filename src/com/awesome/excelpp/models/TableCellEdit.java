@@ -6,7 +6,7 @@ import javax.swing.undo.CannotUndoException;
 
 /**
  * This class represents an edit in a <code>SpreadSheet</code>.
- * @author Team Awesome.
+ * @author Team Awesome
  */
 public class TableCellEdit extends AbstractUndoableEdit{
 	private static final long serialVersionUID = 1L;
@@ -16,9 +16,9 @@ public class TableCellEdit extends AbstractUndoableEdit{
 
 	/**
 	 * Constructs a new edit to be added to the undoManager.
-	 * @param edited The <code>Cell</code> that was changed.
-	 * @param oldValue The previous value of this <code>Cell</code>. (The value that will be set after an undo).
-	 * @param newValue The new value of this <code>Cell</code>. (The value that will be set after a redo).
+	 * @param edited The <code>Cell</code> that was changed
+	 * @param oldValue The previous value of this <code>Cell</code>. (The value that will be set after an undo)
+	 * @param newValue The new value of this <code>Cell</code>. (The value that will be set after a redo)
 	 */
 	public TableCellEdit(Cell edited, Cell oldValue, Cell newValue){
 		this.edited = edited;
@@ -29,7 +29,6 @@ public class TableCellEdit extends AbstractUndoableEdit{
 	/**
 	 * Undoes an edit.
 	 * @throws CannotUndoException
-	 * @return void
 	 */
 	public void undo() throws CannotUndoException{
 		super.undo();
@@ -44,7 +43,6 @@ public class TableCellEdit extends AbstractUndoableEdit{
 	/**
 	 * Redoes an edit.
 	 * @throws CannotUndoException
-	 * @return void
 	 */
 	public void redo() throws CannotRedoException{
 		super.redo();

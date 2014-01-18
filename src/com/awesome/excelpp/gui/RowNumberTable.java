@@ -15,11 +15,9 @@ import com.awesome.excelpp.models.Cell;
 
 /**
  * Uses a <code>JTable</code> as a renderer for row numbers of a given main table.
- * This table must be added to the row header of the <code>JScrollPane</code> that
- * contains the main table.
- *
- * @author Rob Camick. Modified by Team Awesome.
- * @source http://tips4java.wordpress.com/2008/11/18/row-number-table/
+ * <p>This table must be added to the row header of the <code>JScrollPane</code> that
+ * contains the main table. Source: http://tips4java.wordpress.com/2008/11/18/row-number-table/</p>
+ * @author Rob Camick, modified by Team Awesome
  */
 public class RowNumberTable extends JTable implements ChangeListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;

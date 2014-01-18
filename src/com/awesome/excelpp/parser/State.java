@@ -2,6 +2,7 @@ package com.awesome.excelpp.parser;
 
 /**
  * Enum representing the different states the {@link Lexer} can have.
+ * @author Team Awesome
  */
 public enum State {
 	/**

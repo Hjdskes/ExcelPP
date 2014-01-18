@@ -2,14 +2,18 @@ package com.awesome.excelpp.parser;
 
 import java.util.LinkedList;
 
+/**
+ * This class splits an incoming String into Tokens for analysis by the {@link Parser}.
+ * @author Team Awesome
+ */
 public class Lexer {
 	private LinkedList<Token> tokens;
 	private StringBuilder token = new StringBuilder();
 	private State state = State.NONE;
 	
 	/**
-	 * Creates a new expression {@link Lexer}
-	 * @param input		the String containing the expression
+	 * Creates a new expression {@link Lexer}.
+	 * @param input	The String containing the expression
 	 */
 	public Lexer(String input) {
 		this.tokens = new LinkedList<Token>();
@@ -86,7 +90,7 @@ public class Lexer {
 	
 	/**
 	 * Checks whether the {@link Lexer} has another {@link Token} in its input. 
-	 * @return		true / false
+	 * @return True is the {@link Lexer} has another {@link Token} in its input
 	 */
 	public boolean hasNext() {
 		return !tokens.isEmpty();
@@ -94,7 +98,7 @@ public class Lexer {
 	
 	/**
 	 * Returns the next {@link Token} the {@link Lexer} has in its input.
-	 * @return		the next {@link Token}
+	 * @return The next {@link Token}
 	 */
 	public Token next() {
 		return hasNext() ? tokens.pop() : new Token(TokenType.EOL, null);
@@ -102,7 +106,7 @@ public class Lexer {
 	
 	/**
 	 * Changes the parser's internal {@link State}.
-	 * @param state		the {@link State} we want to change to
+	 * @param state	The {@link State} we want to change to
 	 */
 	private void setState(State state) {
 		if (this.state != state &&

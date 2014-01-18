@@ -2,6 +2,10 @@ package com.awesome.excelpp.parser;
 
 import com.awesome.excelpp.parser.exception.ParserException;
 
+/**
+ * This class is a benchmark for the @{link Parser}.
+ * @author Team Awesome
+ */
 public class ParserTest {
 	public static void main(String[] args) throws ParserException {
 		double totalFirst = 0, totalSecond = 0, totalLexer = 0;

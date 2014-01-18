@@ -1,4 +1,3 @@
-
 package com.awesome.excelpp.gui;
 
 import java.io.File;
@@ -46,7 +45,7 @@ import com.awesome.excelpp.writers.XMLWriter;
 
 /**
  * Class that constructs the main window of the GUI.
- * @author Team Awesome.
+ * @author Team Awesome
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -96,8 +95,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a <code>JPanel</code> holding the required buttons.
-	 * @return JPanel	The <code>JPanel</code> holding all the required buttons.
+	 * Creates a {@link JPanel} holding the required buttons.
+	 * @return The <code>JPanel</code> holding all the required buttons
 	 */
 	private final JPanel createButtonPanel() {
 		final FlowLayout layout = new FlowLayout();
@@ -211,7 +210,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	
 	/**
 	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts.
-	 * @return void
 	 */
 	private final void openHelpDialog() {
 		final JDialog helpDialog = new JDialog(this, "Help", true);
@@ -219,7 +217,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JTabbedPane helpTabbedPane = new JTabbedPane();
 
 		final String formulaText = "Implemented are the 25 formules one can see inside the combobox. "
-				+ "We adhere to the implementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
+				+ "We adhere to the intimplementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
 				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
 				+ " this, we are very curious to hear about your results!\n\n"
 				+ "The syntax is as follows: =Add(2+2);\n"
@@ -270,8 +268,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Creates a new tab with everything setup inside it.
-	 * @param file	The file to open inside the new <code>SpreadSheetTable</code>.
-	 * @return void
+	 * @param file The file to open inside the new <code>SpreadSheetTable</code>
 	 */
 	public final void createNewTab(File file) {
 		SpreadSheet sheet = new SpreadSheet();
@@ -280,29 +277,33 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		String tabTitle = "New file";
 		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
 		int tabCount = mainTabs.getTabCount();
-		mainTabs.setTabComponentAt(tabCount == 0 ? 0 : (tabCount - 1), new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
-		mainTabs.setSelectedIndex(tabCount == 0 ? 0 : (tabCount - 1));
+		tabCount = tabCount == 0 ? 0 : (tabCount - 1);
+		mainTabs.setTabComponentAt(tabCount, new CloseableTabComponent(tabTitle, tabCount)); // Now assign the component for the tab
+		mainTabs.setSelectedIndex(tabCount);
 		//ToDo: mainTabs.setMnemonicAt(tabCount, KeyEvent.VK_(tabCount + 1));
 	}
 
 	/**
 	 * Removes the currently active tab. Makes sure there is always one tab remaining.
-	 * @return void
 	 */
-	public static final void removeTab() {
-		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
-			int index = mainTabs.getSelectedIndex();
+	public static final void removeTab(int index) {
+		int tabCount = mainTabs.getTabCount();
+		if(tabCount > 1) { //er moet ten minste één tab open blijven
 			if (closeFile(index) == 0) {
 				mainTabs.remove(index);
+				CloseableTabComponent comp;
+				for(int i = index; i == tabCount; i++) { //"herstel" alle indices van de CloseableTabComponents
+					 comp = (CloseableTabComponent)mainTabs.getTabComponentAt(i);
+					 comp.setIndex(i - 1);
+				}
 			}
 		}
 	}
 
 	/**
 	 * Updates the tab's title.
-	 * @param index	The index of the tab to update.
-	 * @param newTitle	the new title to set.
-	 * @return void
+	 * @param index	The index of the tab to update
+	 * @param newTitle the new title to set
 	 */
 	private final void updateTabTitle(int index, String newTitle) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
@@ -311,8 +312,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Gets a tab's title.
-	 * @param index		The index of the tab to get the title from.
-	 * @return String	The title.
+	 * @param index	The index of the tab to get the title from
+	 * @return The title
 	 */
 	private static final String getTabTitle(int index) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
@@ -320,16 +321,16 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Helper method to set the text in the function field
-	 * @param String	The text to set in the function field
+	 * Helper method to set the text in the function field.
+	 * @param text The text to set in the function field
 	 */
 	public static void functionFieldSetText (String text) {
 		functionField.setText(text);
 	}
 
 	/**
-	 * Helper method to get the text from the function field
-	 * @return String	The text from the function field
+	 * Helper method to get the text from the function field.
+	 * @return The text from the function field
 	 */
 	public static String functionFieldGetText() {
 		return functionField.getText();
@@ -337,9 +338,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Changes markup in the currently selected <code>Cells</code>.
-	 * @param index	The index of the tab whose <code>Cells</code> need to be updated.
-	 * @param bold	True if the boldness is subject to change.
-	 * @return void
+	 * @param index	The index of the tab whose <code>Cells</code> need to be updated
+	 * @param bold True if the boldness is subject to change
 	 */
 	public final void changeMarkup(int index, boolean bold) {
 		Cell current = null;
@@ -367,9 +367,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Changes the fore- and background <code>Colors</code> in the currently selected <code>Cells</code>.
-	 * @param index	The index of the tab whose <code>Cells</code> need to be updated.
-	 * @param foreground True if the foreground <code>Color</code> is subject to change.
-	 * @return void
+	 * @param index	The index of the tab whose <code>Cells</code> need to be updated
+	 * @param foreground True if the foreground <code>Color</code> is subject to change
 	 */
 	public final void changeColors(int index, boolean foreground) {
 		Color newColor = null;
@@ -405,7 +404,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Listens for all events emitted by the elements of the GUI.
-	 * @return void
 	 */
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
@@ -426,15 +424,15 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			saveFile(false);
 		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
-		else if (e.getSource().equals(buttonBold)) {
+		else if (e.getSource().equals(buttonBold))
 			changeMarkup(index, true);
-		} else if (e.getSource().equals(buttonItalic)) {
+		else if (e.getSource().equals(buttonItalic))
 			changeMarkup(index, false);
-		} else if (e.getSource().equals(buttonForegroundColor)) {
+		else if (e.getSource().equals(buttonForegroundColor))
 			changeColors(index, true);
-		} else if (e.getSource().equals(buttonBackgroundColor)) {
+		else if (e.getSource().equals(buttonBackgroundColor))
 			changeColors(index, false);
-		} else if (e.getSource().equals(buttonAbout))
+		else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
@@ -454,7 +452,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Listens for all KeyPressed events emitted by the elements of the GUI.
-	 * @return void
 	 */
 	@Override
 	public final void keyPressed(KeyEvent e) {
@@ -471,7 +468,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	/**
 	 * Is executed right before the window closes. Used to do some clean ups and check if files
 	 * need to be saved.
-	 * @return void
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e) {
@@ -495,7 +491,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Opens a file dialog in which the user can select the file to open.
-	 * @return void
 	 */
 	public final void openFile() {
 		final JFileChooser fc = new JFileChooser();
@@ -529,8 +524,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Saves the currently opened file.
-	 * @param saveAs True if the Save As button has been pressed, will spawn a Save As dialog.
-	 * @return void
+	 * @param saveAs True if the Save As button has been pressed, will spawn a Save As dialog
 	 */
 	public final void saveFile (boolean saveAs) {
 		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getSelectedComponent();
@@ -560,8 +554,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
-	 * @param index	The index of the tab whose <code>File</code> will be closed.
-	 * @return integer 	0 for OK, 1 for cancel.
+	 * @param index	The index of the tab whose <code>File</code> will be closed
+	 * @return 0 for OK, 1 for cancel
 	 */
 	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;

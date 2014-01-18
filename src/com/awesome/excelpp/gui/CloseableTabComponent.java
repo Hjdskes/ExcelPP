@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
- * @author Tad Harrison. Modified by Team Awesome.
- * @source http://paperjammed.com/2012/11/22/adding-tab-close-buttons-to-a-jtabbedpane-in-java-swing/
+ * This class makes a <code>Component</code> with a label and an icon, to be used inside tabs.
+ * <p>Source: http://paperjammed.com/2012/11/22/adding-tab-close-buttons-to-a-jtabbedpane-in-java-swing/</p>
+ *  @author Tad Harrison. Modified by Team Awesome.
  */
 public class CloseableTabComponent extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -24,14 +25,19 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 	private static final ImageIcon closeTabIconRollover = new ImageIcon ("data/icons/tab_close.png");
 	private JLabel tabTitle;
 	private JButton buttonClose;
+	private int index;
 
 	/**
 	 * Creates a component to add to a <code>JTabbedPane</code> with a little "close tab" 
 	 * button on the right side of the tab.
-	 * @param title	The title to be displayed on the tab.
+	 * @param title	The title to be displayed on the tab
+	 * @param index The initial index of the tab inside the <code>JTabbedPane</code>
 	 */
-	public CloseableTabComponent (String title) {
+	public CloseableTabComponent (String title, int index) {
 		super(new FlowLayout(FlowLayout.CENTER, 5, 0));
+
+		this.index = index;
+
 		// Make a small JPanel with the flow layout, spacing things 5px apart, and make it non-opaque
 		setOpaque(false);
 
@@ -60,7 +66,7 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 
 	/**
 	 * Sets the title of this tab.
-	 * @param newTitle	The new title to set.
+	 * @param newTitle	The new title to set
 	 */
 	public void setTitle(String newTitle) {
 		tabTitle.setText(newTitle);
@@ -68,18 +74,33 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 
 	/**
 	 * Returns the title of this tab.
-	 * @return String	The title of this tab.
+	 * @return The title of this tab
 	 */
 	public String getTitle() {
 		return tabTitle.getText();
 	}
 
 	/**
+	 * Sets the index of this tab.
+	 * @param newIndex The new index to set
+	 */
+	public void setIndex(int newIndex) {
+		index = newIndex;
+	}
+
+	/**
+	 * Returns the index of this tab.
+	 * @return The index of this tab
+	 */
+	public int getIndex() {
+		return index;
+	}
+
+	/**
 	 * Listens for all events emitted by the elements of this tab.
-	 * @return void
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		GUI.removeTab();
+		GUI.removeTab(index);
 	}
 }

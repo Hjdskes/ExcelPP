@@ -11,10 +11,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import sun.swing.DefaultLookup;
 
 /**
- * Based on <code>AwesomeCellRenderer</code>.
- * Made because using the same CellRenderer for both JTables results in bugs.
- *
- * Renders Cells so they appear to be a header.
+ * Renders <code>Cells</code> so they appear to be a header.
+ * <p>Based on <code>AwesomeCellRenderer</code>.
+ * Made because using the same CellRenderer for both JTables results in bugs.</p>
+ * @author Team Awesome
  */
 public class RowNumberTableRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
@@ -31,15 +31,15 @@ public class RowNumberTableRenderer extends DefaultTableCellRenderer {
 	 * or not the table is being printed, check the return value from
 	 * {@link javax.swing.JComponent#isPaintingForPrint()}.
 	 *
-	 * @param table  The <code>JTable</code>.
+	 * @param table  The <code>JTable</code>
 	 * @param value  The value to assign to the cell at
-	 *                  <code>[row, column]</code>.
-	 * @param isSelected True if cell is selected.
-	 * @param hasFocus True if cell has focus.
-	 * @param row  The row of the cell to render.
-	 * @param column The column of the cell to render.
-	 * @return The RowNumberTableRenderer table cell renderer.
-	 * @see javax.swing.JComponent#isPaintingForPrint().
+	 *                  <code>[row, column]</code>
+	 * @param isSelected True if cell is selected
+	 * @param hasFocus True if cell has focus
+	 * @param row  The row of the cell to render
+	 * @param column The column of the cell to render
+	 * @return The RowNumberTableRenderer table cell renderer
+	 * @see javax.swing.JComponent#isPaintingForPrint()
 	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

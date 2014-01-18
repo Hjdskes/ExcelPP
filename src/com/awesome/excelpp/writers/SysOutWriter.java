@@ -6,7 +6,7 @@ import com.awesome.excelpp.models.Cell;
 
 /**
  * This class 
- * @author Team Awesome.
+ * @author Team Awesome
  */
 public class SysOutWriter implements Writer {
 	PrintWriter pw;

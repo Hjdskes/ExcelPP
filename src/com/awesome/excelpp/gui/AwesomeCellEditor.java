@@ -33,7 +33,7 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 	}
 
 	/**
-	 * Sets the value of this cell.
+	 * Sets the value of this <code>Cell</code>.
 	 */
 	@Override
 	public Object getCellEditorValue() {
@@ -64,7 +64,7 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 
 	/**
 	 * Returns true if this <code>Cell</code> is editable.
-	 * @return boolean	True if this <code>Cell</code> is editable.
+	 * @return True if this <code>Cell</code> is editable
 	 */
 	@Override
 	public boolean isCellEditable(EventObject evt) {
@@ -77,7 +77,7 @@ public class AwesomeCellEditor extends AbstractCellEditor implements TableCellEd
 	 * Stops editing and returns true to indicate that editing has stopped, thus calling the
 	 * <code>AwesomeCellRenderer</code> to take over again.
 	 * This method calls <code>fireEditingStopped</code>.
-	 * @return true
+	 * @return True
 	 */
 	@Override
 	public boolean stopCellEditing() {
