@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
- * @author Tad Harrison, modified by Team Awesome
+ * @author Tad Harrison. Modified by Team Awesome.
  * @source http://paperjammed.com/2012/11/22/adding-tab-close-buttons-to-a-jtabbedpane-in-java-swing/
  */
 public class CloseableTabComponent extends JPanel implements ActionListener {
@@ -26,9 +26,9 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 	private JButton buttonClose;
 
 	/**
-	 * Creates a component to add to a JTabbedPane with a little "close tab" 
+	 * Creates a component to add to a <code>JTabbedPane</code> with a little "close tab" 
 	 * button on the right side of the tab.
-	 * @param title - the title to be displayed by the tab.
+	 * @param title	The title to be displayed on the tab.
 	 */
 	public CloseableTabComponent (String title) {
 		super(new FlowLayout(FlowLayout.CENTER, 5, 0));
@@ -58,14 +58,26 @@ public class CloseableTabComponent extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0)); // Add a thin border to keep the image below the top edge of the tab when the tab is selected
 	}
 
+	/**
+	 * Sets the title of this tab.
+	 * @param newTitle	The new title to set.
+	 */
 	public void setTitle(String newTitle) {
 		tabTitle.setText(newTitle);
 	}
 
+	/**
+	 * Returns the title of this tab.
+	 * @return String	The title of this tab.
+	 */
 	public String getTitle() {
 		return tabTitle.getText();
 	}
 
+	/**
+	 * Listens for all events emitted by the elements of this tab.
+	 * @return void
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		GUI.removeTab();

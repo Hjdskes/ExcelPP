@@ -5,26 +5,24 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.gui.GUI;
 
 import java.io.File;
-
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
 /**
- * Class that sets up everything needed for a new tab in the GUI
+ * This class sets up the table as seen in the main GUI.
+ * @author Team Awesome.
  */
 public class SpreadSheetTable extends JTable implements MouseListener, UndoableEditListener {
 	private static final long serialVersionUID = 1L;
 	private File file;
 	private SpreadSheet sheet;
-	private int selectedColumn;
-	private int selectedRow;
 	private boolean cellSelected;
 	private UndoManager undoManager;
 
@@ -39,7 +37,8 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 		this.setSelectionBackground (new Color(200, 221, 242));
 		this.setColumnSelectionAllowed(true);
 		this.addMouseListener(this);
-		this.setDefaultRenderer(String.class, new AwesomeCellRenderer());
+		this.setDefaultRenderer(Cell.class, new AwesomeCellRenderer());
+		this.setDefaultEditor(Cell.class, new AwesomeCellEditor());
 
 		sheet.addTableModelListener(this);
 		sheet.addUndoableEditListener(this);
@@ -50,58 +49,34 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	}
 
 	/**
-	 * Returns the sheet used in this SpreadSheetTable
-	 * @return SpreadSheet
+	 * Returns the <code>SpreadSheet</code> used in this <code>SpreadSheetTable</code>.
+	 * @return SpreadSheet	The currently contained <code>SpreadSheet</code>.
 	 */
 	public final SpreadSheet getSheet() {
 		return sheet;
 	}
 
 	/**
-	 * Returns the currently selected row.
-	 * This is different from the regular JTable's method
-	 * because this value is kept even when the JTable is
-	 * not focused.
-	 * @return int	the selected row
-	 */
-	@Override
-	public final int getSelectedRow() {
-		return selectedRow;
-	}
-
-	/**
-	 * Returns the currently selected column.
-	 * This is different from the regular JTable's method
-	 * because this value is kept even when the JTable is
-	 * not focused.
-	 * @return int	the selected column
-	 */
-	@Override
-	public final int getSelectedColumn() {
-		return selectedColumn;
-	}
-
-	/**
-	 * Returns true if a Cell has been selected ever since
+	 * Returns true if a <code>Cell</code> has been selected ever since
 	 * the application was started.
 	 * (Otherwise, text typed into the text field will
-	 * always replace Cell A1's content).
-	 * @return true	if a Cell has ever been selected
+	 * always replace <code>Cell</code> A1's content).
+	 * @return true	If a <code>Cell</code> has ever been selected.
 	 */
 	public final boolean getCellSelected() {
 		return cellSelected;
 	}
 
 	/**
-	 * Returns the currently opened file
-	 * @return File
+	 * Returns the currently opened <code>File</code>.
+	 * @return File	The currently opened <code>File</code>/
 	 */
 	public final File getFile() {
 		return file;
 	}
 
 	/**
-	 * Sets the currently opened file
+	 * Sets the currently opened <code>File</code>.
 	 * @param void
 	 */
 	public void setFile(File file) {
@@ -109,68 +84,25 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 	}
 
 	/**
-	 * Returns this tab's UndoManager
-	 * @return UndoManager
+	 * Returns this tab's <code>UndoManager</code>.
+	 * @return UndoManager	This tab's <code>UndoManager</code>.
 	 */
 	public final UndoManager getUndoManager(){
 		return undoManager;
 	}
 
 	/**
-	 * Sets the bold attribute of the selected Cell.
-	 * @param bold	Value to give to the attribute. Can be 0 (plain text), or 1 (bold).
-	 */
-	public final void setCellBold(int bold) {
-		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
-		if (current != null)
-			current.setBold(bold);
-	}
-
-	/**
-	 * Sets the italic attribute of the selected Cell.
-	 * @param italic	Value to give to the attribute. Can be 0 (plain text), or 2 (italic).
-	 */
-	public final void setCellItalic(int italic) {
-		Cell current = (Cell)this.getValueAt(selectedRow, selectedColumn);
-		if (current != null)
-			current.setItalic(italic);
-	}
-
-	/**
-	 * Sets the foreground color of a Cell.
-	 * @param cell	Which Cell to change the color for.
-	 * @param foreground	The new foreground color.
-	 */
-	public final void setCellForeground(Cell cell, Color foreground) {
-		if(cell != null)
-			cell.setForegroundColor(foreground);
-	}
-
-	/**
-	 * Sets the background color of a Cell.
-	 * @param cell	Which Cell to change the color for.
-	 * @param background	The new background color.
-	 */
-	public final void setCellBackground(Cell cell, Color background) {
-		if(cell != null)
-			cell.setBackgroundColor(background);
-	}
-
-	/**
-	 * Listens for all mouseClicked events emitted by the elements of the tab
+	 * Listens for all <code>MouseClicked</code> events emitted by the elements of this <code>SpreadSheetTable</code>.
 	 * @return void
 	 */
 	public final void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(this)) {
 			cellSelected = true;
-			Point p = e.getPoint();
-			selectedRow = this.rowAtPoint(p);
-			selectedColumn = this.columnAtPoint(p);
-			this.changeSelection(selectedRow, selectedColumn, false, false);
+			int[] selectedColumns = this.getSelectedColumns();
+			int[] selectedRows = this.getSelectedRows();
 
 			String text = null;
 			int button = e.getButton();
-			boolean alt = e.isAltDown();
 			boolean formule = false; //of er al een (nog niet afgeronde) formule in het tekstvak staat
 			String currentText = GUI.functionFieldGetText();
 
@@ -179,7 +111,34 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 					formule = true;
 			}
 
-			if (this.getSelectedColumnCount() == 1 && this.getSelectedRowCount() == 1) {
+			Cell activeCell = null;
+			if(button == MouseEvent.BUTTON1) {
+				for (int i = 0; i < selectedColumns.length; i++) {
+					for (int j = 0; j < selectedRows.length; j++) {
+						activeCell = (Cell)this.getValueAt(selectedRows[j], selectedColumns[i]);
+						if (formule)
+							text += "(" + activeCell.getContent() + "),";
+						else
+							text += activeCell.getContent();
+					}
+				}
+			} else if(button == MouseEvent.BUTTON3) {
+				for (int i = 0; i < selectedColumns.length; i++) {
+					for (int j = 0; j < selectedRows.length; j++) {
+						if (formule)
+							text += "(" + this.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1) + "),";
+						else
+							text += this.getColumnName(selectedColumns[i]) + (selectedRows[j] + 1);
+					}
+				}
+			}
+
+			if (formule)
+				text = currentText + text;
+			text = text == null || text.length() == 0 ? "" : text.substring(0, text.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
+			GUI.functionFieldSetText(text);
+
+			/*if (this.getSelectedColumnCount() == 1 && this.getSelectedRowCount() == 1) {
 				if(button == MouseEvent.BUTTON3) {
 					if (formule)
 						text = currentText + "(" + this.getColumnName(selectedColumn) + (selectedRow + 1) + ")";
@@ -197,8 +156,8 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 				if (text != null && text.length() > 0)
 					GUI.functionFieldSetText(text);
 			} else { //ToDo: wordt overridden door bovenstaande, maar werkt wel als deze wordt veranderd naar bijv BUTTON2 (middlemouse button)
-				int selectedRows[] = this.getSelectedRows();
-				int selectedColumns[] = this.getSelectedColumns();
+				int[] selectedRows = this.getSelectedRows();
+				int[] selectedColumns = this.getSelectedColumns();
 				if (alt && button == MouseEvent.BUTTON1) {
 					for (int i = 0; i < selectedColumns.length; i++) {
 						for (int j = 0; j < selectedRows.length; j++) {
@@ -223,16 +182,30 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 					text = currentText + text;
 				text = text == null || text.length() == 0 ? "" : text.substring(0, text.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
 				GUI.functionFieldSetText(text);
-			}
+			}*/
 		}
 	}
 
 	/**
-	 * Listen for undoable edits and adds them to the undoManager
+	 * Listen for undoable edits and adds them to the <code>UndoManager</code>.
+	 * @return void
 	 */
 	@Override
 	public final void undoableEditHappened(UndoableEditEvent e) {
 		undoManager.addEdit(e.getEdit());
+	}
+
+	/**
+	 * Listens for all editingStopped events emitted by this <code>SpreadSheetTable's Cells</code>.
+	 * @return void
+	 */
+	public final void editingStopped(ChangeEvent e) {
+		int row = this.getSelectedRow();
+		int column = this.getSelectedColumn();
+		Cell current = (Cell)this.getValueAt(row, column);
+		super.editingStopped(e);
+		if (current != null)
+			GUI.functionFieldSetText(current.getContent());
 	}
 
 	public void mousePressed(MouseEvent e) {}

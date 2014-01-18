@@ -11,7 +11,8 @@ import com.awesome.excelpp.parser.exception.ReferenceException;
 import java.awt.Color;
 
 /**
- * Class that represents a cell
+ * Class that represents a cell inside the <code>SpreadSheetTable</code>.
+ * @author Team Awesome.
  */
 public class Cell {
 	private String content; // =2+2
@@ -22,8 +23,13 @@ public class Cell {
 	private Color backgroundColor;
 	
 	/**
-	 * Constructs a new Cell
-	 * @param content	String with an unevaluated expression
+	 * Constructs a new <code>Cell</code>.
+	 * @param sheet	<code>SpreadSheet</code> to add this <code>Cell</code> to.
+	 * @param content	String with an unevaluated expression.
+	 * @param bold	0 if the text is plain, 1 if the text is bold.
+	 * @param italic	0 if the text is plain, 2 if the text is italic.
+	 * @param foregroundColor	The foreground <code>Color</code> of this <code>Cell</code>. Can be null.
+	 * @param backgroundColor	The background <code>Color</code> of this <code>Cell</code>. Can be null.
 	 */
 	public Cell(SpreadSheet sheet, String content, int bold, int italic, Color foregroundColor, Color backgroundColor) {
 		this.sheet = sheet;
@@ -35,124 +41,198 @@ public class Cell {
 	}
 
 	/**
-	 * Constructs a new Cell with the specified background Color
-	 * @param content  String with an unevaluated expression
-	 * @param bold     Whether or not the text in this Cell is bold
-	 * @param italic  Whether or not the text in this Cell is in italic
-	 * @param foregroundColor    The foreground Color of this Cell. Can be null.
-	 * @param backgroundColor    The background Color of this Cell. Can be null.
+	 * Constructs a new <code>Cell</code> with default markup.
+	 * @param sheet	<code>SpreadSheet</code> to add this <code>Cell</code> to.
+	 * @param content	String with an unevaluated expression.
 	 */
 	public Cell(SpreadSheet sheet, String content) {
 		this(sheet, content, 0, 0, Color.BLACK, Color.WHITE);
 	}
 
+	/**
+	 * Returns true if and only if this <code>Cell</code> equals that <code>Cell</code>.
+	 * @param obj	The <code>Cell</code> to compare with.
+	 * @return boolean	True if and only if this <code>Cell</code> equals that <code>Cell</code>.
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof Cell && ((Cell) obj).getContent().equals(this.getContent());
+		boolean equals = false;
+		
+		if (obj instanceof Cell) {
+			Cell other = (Cell)obj;
+			if ((content == null && other.getContent() == null) || content != null && content.equals(other.getContent()) &&
+					(this.fontBold == other.getBold()) &&
+					(this.fontItalic == other.getItalic()) &&
+					(this.foregroundColor.equals(other.getForegroundColor())) &&
+					(this.backgroundColor.equals(other.getBackgroundColor())))
+			{
+				equals = true;
+			}
+		}
+		return equals;
 	}
 	
 	/**
-	 * Gets the unevaluated content of this Cell
-	 * Suppose the content of this Cell is "=4+4"
-	 * This function will then return "=4+4"
-	 * @return			String with an unevaluated expression
+	 * Gets the unevaluated content of this <code>Cell</code>.
+	 * Suppose the content of this <code>Cell</code> is "=4+4",
+	 * this method will then return "=4+4".
+	 * @return String The unevaluated expression.
 	 */
 	public String getContent() {
 		return content == null ? "" : content;
 	}
 	
 	/**
-	 * Sets the unevaluated content of this Cell
-	 * @param content	String with an unevaluated expression
+	 * Sets the unevaluated content of this <code>Cell</code>.
+	 * @param content String with an unevaluated expression.
+	 * @param undoable If false, edit won't be posted to the undoSupport.
+	 * @return void
 	 */
-	public void setContent(String content) {
-		this.content = content;
+	public void setContent(String content, boolean undoable) {
+		if(undoable) {
+			Cell oldValue = cloneThis();
+			this.content = content;
+			Cell newValue = cloneThis();
+			postEdit(oldValue, newValue);
+		} else {
+			this.content = content;
+		}
+	}
+	
+	/**
+	 * Sets the bold state of the font in this <code>Cell</code>.
+	 * @param bold Whether or not the font is bold: 1 for bold, 0 for plain.
+	 * @param undoable If false, edit won't be posted to the undoSupport.
+	 * @return void
+	 */
+	public void setBold(int bold, boolean undoable) {
+		if(undoable) {
+			Cell oldValue = cloneThis();
+			if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
+				this.fontBold = bold;
+			Cell newValue = cloneThis();
+			postEdit(oldValue, newValue);
+		} else {
+			if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
+				this.fontBold = bold;
+		}
 	}
 
 	/**
-	 * Sets the bold state of the font in this Cell
-	 * @param bold    Whether or not font is bold: 1 for bold, 0 for plain
-	 */
-	public void setBold(int bold) {
-		if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
-			this.fontBold = bold;
-	}
-
-	/**
-	 * Gets the current bold state of the font in this Cell
-	 * @return     The current bold state of the font in this Cell
+	 * Gets the current bold state of the font in this <code>Cell</code>.
+	 * @return int The current bold state of the font in this <code>Cell</code>.
 	 */
 	public int getBold() {
 		return fontBold;
 	}
-
+	
 	/**
-	 * Sets the italic state of the font in this Cell
-	 * @param bold    Whether or not font is italic: 2 for italic, 0 for plain
+	 * Sets the italic state of the font in this <code>Cell</code>.
+	 * @param italic Whether or not the font is italic: 2 for italic, 0 for plain.
+	 * @param undoable If false, edit won't be posted to the undoSupport.
+	 * @return void
 	 */
-	public void setItalic(int italic) {
-		if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
-			this.fontItalic = italic;
+	public void setItalic(int italic, boolean undoable){
+		if(undoable) {
+			Cell oldValue = cloneThis();
+			if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
+				this.fontItalic = italic;
+			Cell newValue = cloneThis();
+			postEdit(oldValue, newValue);
+		} else {
+			if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
+				this.fontItalic = italic;
+		}
 	}
 
 	/**
-	 * Gets the current italic state of the font in this Cell
-	 * @return     The current italic state of the font in this Cell
+	 * Gets the current italic state of the font in this <code>Cell</code>.
+	 * @return int The current italic state of the font in this <code>Cell</code>.
 	 */
 	public int getItalic() {
 		return fontItalic;
 	}
 
 	/**
-	 * Gets the foreground Color of this Cell
-	 * @return      The new foreground Color of this Cell
+	 * Gets the foreground <code>Color</code> of this <code>Cell</code>.
+	 * @param newForegroundColor The new foreground <code>Color</code> of this <code>Cell</code>.
+	 * @param undoable If false, edit won't be posted to the undoSupport.
+	 * @return void
 	 */
-	public void setForegroundColor(Color newForegroundColor) {
-		this.foregroundColor = newForegroundColor;
+	public void setForegroundColor(Color newForegroundColor, boolean undoable) {
+		if(undoable) {
+			Cell oldValue = cloneThis();
+			this.foregroundColor = newForegroundColor;
+			Cell newValue = cloneThis();
+			postEdit(oldValue, newValue);
+		} else {
+			this.foregroundColor = newForegroundColor;
+		}
 	}
 
 	/**
-	 * Sets the foreground Color of this Cell
-	 * @return      The foreground Color of this Cell
+	 * Gets the foreground <code>Color</code> of this <code>Cell</code>.
+	 * @return Color The foreground <code>Color</code> of this <code>Cell</code>.
 	 */
 	public Color getForegroundColor() {
 		return foregroundColor;
 	}
-	
+
+	/**
+	 * Returns this <code>Cell's</code> foreground <code>Color</code> as a hex String.
+	 * @return String This <code>Cell's</code> foreground <code>Color</code> as hex.
+	 */
 	public String getForegroundColorHex() {
 		String hex = "#" + Integer.toHexString(foregroundColor.getRGB()).substring(2);
 		return hex;
 	}
-
+	
 	/**
-	 * Gets the background Color of this Cell
-	 * @return      The new background Color of this Cell
+	 * Sets the background <code>Color</code> of this <code>Cell</code>.
+	 * @param newBackgroundColor The new background <code>Color</code> of this <code>Cell</code>.
+	 * @param undoable If false, edit won't be posted to the undoSupport.
+	 * @return void
 	 */
-	public void setBackgroundColor(Color newBackgroundColor) {
-		this.backgroundColor = newBackgroundColor;
+	public void setBackgroundColor(Color newBackgroundColor, boolean undoable) {
+		if(undoable) {
+			Cell oldValue = cloneThis();
+			this.backgroundColor = newBackgroundColor;
+			Cell newValue = cloneThis();
+			postEdit(oldValue, newValue);
+		} else {
+			this.backgroundColor = newBackgroundColor;
+		}
 	}
 
 	/**
-	 * Sets the background Color of this Cell
-	 * @return      The background Color of this Cell
+	 * Gets the background <code>Color</code> of this <code>Cell</code>.
+	 * @return Color The background <code>Color</code> of this <code>Cell</code>.
 	 */
 	public Color getBackgroundColor() {
 		return backgroundColor;
 	}
-	
+
+	/**
+	 * Returns this <code>Cell's</code> background <code>Color</code> as a hex String.
+	 * @return String This <code>Cell's</code> background <code>Color</code> as hex.
+	 */
 	public String getBackgroundColorHex() {
 		String hex = "#"+Integer.toHexString(backgroundColor.getRGB()).substring(2);
 		return hex;
 	}
 	
 	/**
-	 * Gets the sheet of this cell
-	 * @return The sheet of this cell
+	 * Gets the <code>SpreadSheet</code> this <code>Cell</code> belongs to.
+	 * @return SpreadSheet The <code>SpreadSheet</code> this <code>Cell</code> belongs to.
 	 */
-	public SpreadSheet getSheet(){
+	public SpreadSheet getSheet() {
 		return sheet;
 	}
-	
+
+	/**
+	 * Returns true if this <code>Cell</code> is empty.
+	 * @return boolean	True if this <code>Cell</code> is empty.
+	 */
 	public boolean isEmpty() {
 		return (fontBold == 0 && fontItalic == 0 &&
 				(foregroundColor == null || foregroundColor == Color.BLACK) &&
@@ -161,10 +241,10 @@ public class Cell {
 	}
 
 	/**
-	 * Gets the evaluated content of this Cell
-	 * Suppose the content of this Cell is "=4+4"
-	 * This function will then return "8"
-	 * @return	String with an evaluated expression
+	 * Gets the evaluated content of this <code>Cell</code>.
+	 * Suppose the content of this <code>Cell</code> is "=4+4",
+	 * this method will then return "8".
+	 * @return String The evaluated expression.
 	 */
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
@@ -186,5 +266,26 @@ public class Cell {
 		}
 		
 		return content;
+	}
+	
+	/**
+	 * Creates a copy of this <code>Cell</code>.
+	 * @return Cell	The copy of this <code>Cell</code>.
+	 */
+	private Cell cloneThis() {
+		return new Cell (this.getSheet(), this.getContent(), this.getBold(), this.getItalic(), this.getForegroundColor(), this.getBackgroundColor());
+	}
+	
+	/**
+	 * Posts an edit to undoSupport if <code>oldValue</code> does not equals <code>newValue</code>.
+	 * @param oldValue <code>Cell</code> containing the old value.
+	 * @param newValue <code>Cell</code> containing the new value.
+	 * @return void
+	 */
+	private void postEdit(Cell oldValue, Cell newValue) {
+		if(!oldValue.equals(newValue)) {
+			TableCellEdit e = new TableCellEdit(this, oldValue, newValue);
+			this.getSheet().getUndoSupport().postEdit(e);
+		}
 	}
 }

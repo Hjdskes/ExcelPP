@@ -16,6 +16,7 @@ public enum State {
 	 * Used when the Lexer's position is inside a CELL {@link Token}.
 	 */
 	CELL,
+	CELLRANGE,
 	/**
 	 * Used when the Lexer's position is inside a WORD {@link Token}.
 	 */

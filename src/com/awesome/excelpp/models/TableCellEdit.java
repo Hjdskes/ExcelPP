@@ -5,32 +5,54 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 /**
- * Class that represents an edit in a SpreadSheet
- *
+ * This class represents an edit in a <code>SpreadSheet</code>.
+ * @author Team Awesome.
  */
 public class TableCellEdit extends AbstractUndoableEdit{
 	private static final long serialVersionUID = 1L;
-	private SpreadSheet sheet;
-	private Object oldValue;
-	private Object newValue;
-	private int row;
-	private int col;
-	
-	public TableCellEdit(SpreadSheet sheet, Object oldValue, Object newValue, int row, int col){
-		this.sheet = sheet;
+	private Cell edited;
+	private Cell oldValue;
+	private Cell newValue;
+
+	/**
+	 * Constructs a new edit to be added to the undoManager.
+	 * @param edited The <code>Cell</code> that was changed.
+	 * @param oldValue The previous value of this <code>Cell</code>. (The value that will be set after an undo).
+	 * @param newValue The new value of this <code>Cell</code>. (The value that will be set after a redo).
+	 */
+	public TableCellEdit(Cell edited, Cell oldValue, Cell newValue){
+		this.edited = edited;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-		this.row  = row;
-		this.col = col;
 	}
-	
+
+	/**
+	 * Undoes an edit.
+	 * @throws CannotUndoException
+	 * @return void
+	 */
 	public void undo() throws CannotUndoException{
 		super.undo();
-		sheet.setValueAt(oldValue, row, col, false);	
+		edited.setContent(oldValue.getContent(), false);
+		edited.setBold(oldValue.getBold(), false);
+		edited.setItalic(oldValue.getItalic(), false);
+		edited.setForegroundColor(oldValue.getForegroundColor(), false);
+		edited.setBackgroundColor(oldValue.getBackgroundColor(), false);
+		edited.getSheet().fireTableDataChanged();
 	}
-	
+
+	/**
+	 * Redoes an edit.
+	 * @throws CannotUndoException
+	 * @return void
+	 */
 	public void redo() throws CannotRedoException{
 		super.redo();
-		sheet.setValueAt(newValue, row, col, false);
+		edited.setContent(newValue.getContent(), false);
+		edited.setBold(newValue.getBold(), false);
+		edited.setItalic(newValue.getItalic(), false);
+		edited.setForegroundColor(newValue.getForegroundColor(), false);
+		edited.setBackgroundColor(newValue.getBackgroundColor(), false);
+		edited.getSheet().fireTableDataChanged();
 	}
 }

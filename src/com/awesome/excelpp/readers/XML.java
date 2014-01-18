@@ -17,27 +17,30 @@ import org.xml.sax.SAXException;
 
 import com.awesome.excelpp.models.SpreadSheet;
 
-/**Deze klasse parset van en write naar XML files.
- * 
+/**
+ * This class parsers to and from XML files.
+ * @author Team Awesome.
  */
 public class XML {
-	
-	/**Parset een XML bestand naar een Document object.
-	 * 
-	 * @param file - Het XML bestand.
-	 * @return doc - Document object met data van het XML bestand.
+	/**
+	 * Parser an XML file to a Document Object.
+	 * @param file The XML file.
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @return Document The Document Object with the data of the XML file.
 	 */
 	public static Document parse(File file) throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		Document doc = db.parse(file);
 		return doc;
 	}
 	
-	/**Print een Document in tabelformaat.
-	 * 
-	 * @param doc - Een Document, eventueel ingelezen uit een XML bestand.
+	/**
+	 * Prints a Document Object in table format.
+	 * @param doc A Document.
 	 */
 	public static SpreadSheet print(Document doc){
 		SpreadSheet sheet = new SpreadSheet();
