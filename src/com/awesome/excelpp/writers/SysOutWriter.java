@@ -5,14 +5,14 @@ import java.io.PrintWriter;
 import com.awesome.excelpp.models.Cell;
 
 /**
- * The <code>SysOutWriter</code> class is used by <code>SpreadSheet</code> to write to stdout
+ * The <code>SysOutWriter</code> class is used by <code>SpreadSheet</code> to write to stdout.
  * @author Team Awesome
  */
 public class SysOutWriter implements Writer {
 	PrintWriter pw;
 
 	/**
-	 * Creates an <code>SysOutWriter</code> class which will write to stdout
+	 * Creates a <code>SysOutWriter</code> class which will write to stdout.
 	 */
 	public SysOutWriter() {
 		pw = new PrintWriter(System.out);

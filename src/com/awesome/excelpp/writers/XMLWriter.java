@@ -7,15 +7,15 @@ import java.io.PrintWriter;
 import com.awesome.excelpp.models.Cell;
 
 /**
- * The <code>XMLWriter</code> class is used by <code>SpreadSheet</code> to write XML files to disk
+ * The <code>XMLWriter</code> class is used by <code>SpreadSheet</code> to write XML files to disk.
  * @author Team Awesome
  */
 public class XMLWriter implements Writer {
 	PrintWriter pw;
 	
 	/**
-	 * Creates an <code>XMLWriter</code> class which will write to the specified File.
-	 * @param file	The file to write
+	 * Creates an <code>XMLWriter</code> class which will write to the specified <code>File</code>.
+	 * @param file The <code>File</code> to write
 	 * @throws FileNotFoundException
 	 */
 	public XMLWriter(File file) throws FileNotFoundException {
