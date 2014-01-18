@@ -1,10 +1,8 @@
-
 package com.awesome.excelpp.gui;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +20,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -47,23 +46,17 @@ import com.awesome.excelpp.graph.exception.CellDataException;
 import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
-import com.awesome.excelpp.models.TableCellEdit;
 import com.awesome.excelpp.readers.XML;
 import com.awesome.excelpp.writers.XMLWriter;
 
 /**
- * Class that constructs everything needed for and by the GUI
- * ToDo: fix color buttons
- *         make them more distinct
- *         coloring whole button with last selected color is a bit too much?
- *       even display color when cell is selected?
- *       color multiple cells at the same time
+ * Class that constructs the main window of the GUI.
+ * @author Team Awesome
  */
 public class GUI extends JFrame implements ActionListener, KeyListener, WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static final int screenWidth = (int)Utils.getScreenWidth();
 	private static final int screenHeight = (int)Utils.getScreenHeight();
-	private static final ArrayList<SpreadSheetScrollPane> panes = new ArrayList<SpreadSheetScrollPane>();
 	private static BufferedImage mainImage;
 	private static JFrame mainFrame;
 	private static JTextField functionField;
@@ -83,6 +76,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	private static JButton buttonNew;
 	private static JButton buttonGraphs;
 
+	/**
+	 * Constructs the main window.
+	 * @throws IOException
+	 */
 	public GUI () throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
 		mainImage = ImageIO.read(new File("data/icons/gnumeric.png"));
@@ -105,8 +102,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a JPanel holding the required buttons
-	 * @return JPanel
+	 * Creates a {@link JPanel} holding the required buttons.
+	 * @return The <code>JPanel</code> holding all the required buttons
 	 */
 	private final JPanel createButtonPanel() {
 		final FlowLayout layout = new FlowLayout();
@@ -142,11 +139,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon saveIconAs = new ImageIcon("data/icons/document-save-as.png");
 		final ImageIcon undoIcon = new ImageIcon("data/icons/edit-undo.png");
 		final ImageIcon redoIcon = new ImageIcon("data/icons/edit-redo.png");
+		final ImageIcon formulaIcon = new ImageIcon("data/icons/formula_piet2.png");
 		final ImageIcon boldIcon = new ImageIcon("data/icons/format-text-bold.png");
 		final ImageIcon italicIcon = new ImageIcon("data/icons/format-text-italic.png");
 		final ImageIcon foregroundIcon = new ImageIcon("data/icons/color_line.png");
 		final ImageIcon backgroundIcon = new ImageIcon("data/icons/emblem-art.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
+
+		final JLabel formulaLabel = new JLabel(formulaIcon);
 
 		buttonNew.setIcon(newIcon);
 		buttonNewTab.setIcon(newTabIcon);
@@ -183,6 +183,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		panel.add(buttonUndo);
 		panel.add(buttonRedo);
 		panel.add(functions);
+		panel.add(formulaLabel);
 		panel.add(functionField);
 		panel.add(buttonBold);
 		panel.add(buttonItalic);
@@ -220,8 +221,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 	
 	/**
-	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts
-	 * @return void
+	 * Opens a help dialog in which the user can get help on formulas and keyboard shortcuts.
 	 */
 	private final void openHelpDialog() {
 		final JDialog helpDialog = new JDialog(this, "Help", true);
@@ -229,7 +229,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JTabbedPane helpTabbedPane = new JTabbedPane();
 
 		final String formulaText = "Implemented are the 25 formules one can see inside the combobox. "
-				+ "We adhere to the implementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
+				+ "We adhere to the intimplementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
 				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
 				+ " this, we are very curious to hear about your results!\n\n"
 				+ "The syntax is as follows: =Add(2+2);\n"
@@ -538,40 +538,43 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a new tab with everything setup inside it
-	 * @return void
+	 * Creates a new tab with everything setup inside it.
+	 * @param file The file to open inside the new <code>SpreadSheetTable</code>
 	 */
 	public final void createNewTab(File file) {
 		SpreadSheet sheet = new SpreadSheet();
 		SpreadSheetTable table = new SpreadSheetTable(sheet, file);
 		SpreadSheetScrollPane pane = new SpreadSheetScrollPane(table);
-		int last = panes.size();
-		panes.add(pane);
 		String tabTitle = "New file";
 		mainTabs.addTab(null, null, pane, tabTitle); // Add tab to pane without label or icon but with tooltip
-		mainTabs.setTabComponentAt(last, new CloseableTabComponent(tabTitle)); // Now assign the component for the tab
-		mainTabs.setSelectedIndex(last);
-		//ToDo: mainTabs.setMnemonicAt(last, KeyEvent.VK_(last + 1));
+		int tabCount = mainTabs.getTabCount();
+		tabCount = tabCount == 0 ? 0 : (tabCount - 1);
+		mainTabs.setTabComponentAt(tabCount, new CloseableTabComponent(tabTitle, tabCount)); // Now assign the component for the tab
+		mainTabs.setSelectedIndex(tabCount);
+		//ToDo: mainTabs.setMnemonicAt(tabCount, KeyEvent.VK_(tabCount + 1));
 	}
 
 	/**
 	 * Removes the currently active tab. Makes sure there is always one tab remaining.
-	 * @return void
 	 */
-	public static final void removeTab() {
-		if(mainTabs.getTabCount() > 1) { //er moet ten minste één tab open blijven
-			int index = mainTabs.getSelectedIndex();
+	public static final void removeTab(int index) {
+		int tabCount = mainTabs.getTabCount();
+		if(tabCount > 1) { //er moet ten minste één tab open blijven
 			if (closeFile(index) == 0) {
 				mainTabs.remove(index);
-				panes.remove(index);
+				CloseableTabComponent comp;
+				for(int i = index; i == tabCount; i++) { //"herstel" alle indices van de CloseableTabComponents
+					 comp = (CloseableTabComponent)mainTabs.getTabComponentAt(i);
+					 comp.setIndex(i - 1);
+				}
 			}
 		}
 	}
 
 	/**
 	 * Updates the tab's title.
-	 * @param newTitle	the new title to set.
-	 * @return void
+	 * @param index	The index of the tab to update
+	 * @param newTitle the new title to set
 	 */
 	private final void updateTabTitle(int index, String newTitle) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
@@ -579,9 +582,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Gets the a tab's title
-	 * @param index		Tab to get the title from
-	 * @return String	The title
+	 * Gets a tab's title.
+	 * @param index	The index of the tab to get the title from
+	 * @return The title
 	 */
 	private static final String getTabTitle(int index) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
@@ -589,118 +592,130 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Helper method to set the text in the function field
-	 * @param String - text to set
+	 * Helper method to set the text in the function field.
+	 * @param text The text to set in the function field
 	 */
 	public static void functionFieldSetText (String text) {
 		functionField.setText(text);
 	}
 
 	/**
-	 * Helper method to get the text from the function field
-	 * @return String
+	 * Helper method to get the text from the function field.
+	 * @return The text from the function field
 	 */
-	public static String functionFieldGetText () {
+	public static String functionFieldGetText() {
 		return functionField.getText();
 	}
 
+	/**
+	 * Changes markup in the currently selected <code>Cells</code>.
+	 * @param index	The index of the tab whose <code>Cells</code> need to be updated
+	 * @param bold True if the boldness is subject to change
+	 */
 	public final void changeMarkup(int index, boolean bold) {
-		int row = panes.get(index).getTable().getSelectedRow();
-		int column = panes.get(index).getTable().getSelectedColumn();
-		Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-		Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-								  current.getForegroundColor(), current.getBackgroundColor());
+		Cell current = null;
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+		SpreadSheetTable table = scrollPane.getTable();
+		int[] row = table.getSelectedRows();
+		int[] column = table.getSelectedColumns();
 
-		if(bold == true) {
-			int bolde = current.getBold()  == 0 ? 1 : 0;
-			current.setBold(bolde);
-		} else if(bold == false) {
-			int italic = current.getItalic() == 0 ? 2 : 0;
-			current.setItalic(italic);
+		for (int i = 0; i < column.length; i++) {
+			for (int j = 0; j < row.length; j++) {
+				current = (Cell)table.getValueAt(row[j], column[i]);
+	
+				if(bold == true) {
+					int bolde = current.getBold()  == 0 ? 1 : 0;
+					current.setBold(bolde, true);
+				} else if(bold == false) {
+					int italic = current.getItalic() == 0 ? 2 : 0;
+					current.setItalic(italic, true);
+				}
+			}
 		}
 
-		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-		if(oldValue.getBold() != newValue.getBold()) { //als waarden verschillen
-			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-		}
-
-		panes.get(index).getTable().grabFocus();
-	}
-
-	public final void changeColors(int index, boolean foreground) {
-		Color newColor = null;
-		int row = panes.get(index).getTable().getSelectedRow();
-		int column = panes.get(index).getTable().getSelectedColumn();
-		Cell current = (Cell)panes.get(index).getTable().getValueAt(row, column);
-		Cell oldValue = new Cell (current.getSheet(), current.getContent(), current.getBold(), current.getItalic(), //oude waarde cell voor undo/redo
-								  current.getForegroundColor(), current.getBackgroundColor());
-
-		if(foreground == false)
-			newColor = JColorChooser.showDialog(this, "Choose a background color", current.getBackgroundColor());
-		else if(foreground == true)
-			newColor = JColorChooser.showDialog(this, "Choose a foreground color", current.getForegroundColor());
-
-		if(newColor != null && foreground == false) {
-			panes.get(index).getTable().setCellBackground(current, newColor);
-			buttonBackgroundColor.setBackground(newColor);
-		} else if(newColor != null && foreground == true) {
-			panes.get(index).getTable().setCellForeground(current, newColor);
-			buttonForegroundColor.setBackground(newColor);
-		}
-
-		Cell newValue = (Cell)panes.get(index).getTable().getValueAt(row, column); //nieuwe waarde cell voor undo/redo
-		if(!oldValue.getBackgroundColor().equals(newValue.getBackgroundColor())) { //als waarden verschillen
-			TableCellEdit edit = new TableCellEdit((SpreadSheet) panes.get(index).getTable().getModel(), oldValue, newValue, row, column); //edit aanmaken en posten
-			((SpreadSheet) panes.get(index).getTable().getModel()).getUndoSupport().postEdit(edit);
-		}
-
-		panes.get(index).getTable().grabFocus();
+		table.grabFocus();
 	}
 
 	/**
-	 * Listens for all events emitted by the elements of the GUI
-	 * Calls other functions
-	 * @return void
+	 * Changes the fore- and background <code>Colors</code> in the currently selected <code>Cells</code>.
+	 * @param index	The index of the tab whose <code>Cells</code> need to be updated
+	 * @param foreground True if the foreground <code>Color</code> is subject to change
+	 */
+	public final void changeColors(int index, boolean foreground) {
+		Color newColor = null;
+		Cell current = null;
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+		SpreadSheetTable table = scrollPane.getTable();
+		int[] row = table.getSelectedRows();
+		int[] column = table.getSelectedColumns();
+
+		if(foreground == false)
+			newColor = JColorChooser.showDialog(this, "Choose a background color", buttonBackgroundColor.getBackground());
+		else if(foreground == true)
+			newColor = JColorChooser.showDialog(this, "Choose a foreground color", buttonForegroundColor.getBackground());
+
+		for (int i = 0; i < column.length; i++) {
+			for (int j = 0; j < row.length; j++) {
+				current = (Cell)table.getValueAt(row[j], column[i]);
+
+				if(newColor != null && foreground == false)
+					current.setBackgroundColor(newColor, true);
+				else if(newColor != null && foreground == true)
+					current.setForegroundColor(newColor, true);
+			}
+		}
+
+		if(newColor != null && foreground == false)
+			buttonBackgroundColor.setBackground(newColor);
+		else if(newColor != null && foreground == true)
+			buttonForegroundColor.setBackground(newColor);
+
+		table.grabFocus();
+	}
+
+	/**
+	 * Listens for all events emitted by the elements of the GUI.
 	 */
 	public final void actionPerformed(ActionEvent e) {
 		int index = mainTabs.getSelectedIndex();
-		JButton source = (JButton)e.getSource();
 
-		if (source.equals(buttonOpen))
+		if (e.getSource().equals(buttonOpen))
 			openFile();
-		else if (source.equals(buttonNew)) {
+		else if (e.getSource().equals(buttonNew)) {
 			if(closeFile(index) == 0) {
 				SpreadSheet newSheet = new SpreadSheet();
 				SpreadSheetTable newTable = new SpreadSheetTable(newSheet, null);
-				panes.get(index).setTable(newTable);
+				SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+				scrollPane.setTable(newTable);
 				updateTabTitle(index, "New file");
 			}
-		} else if (source.equals(buttonNewTab))
+		} else if (e.getSource().equals(buttonNewTab))
 			createNewTab(null);
-		else if (source.equals(buttonSave))
+		else if (e.getSource().equals(buttonSave))
 			saveFile(false);
-		else if (source.equals(buttonSaveAs))
+		else if (e.getSource().equals(buttonSaveAs))
 			saveFile(true);
-		else if (source.equals(buttonBold)) {
+		else if (e.getSource().equals(buttonBold))
 			changeMarkup(index, true);
-		} else if (source.equals(buttonItalic)) {
+		else if (e.getSource().equals(buttonItalic))
 			changeMarkup(index, false);
-		} else if (source.equals(buttonForegroundColor)) {
+		else if (e.getSource().equals(buttonForegroundColor))
 			changeColors(index, true);
-		} else if (source.equals(buttonBackgroundColor)) {
+		else if (e.getSource().equals(buttonBackgroundColor))
 			changeColors(index, false);
-		} else if (source.equals(buttonAbout))
+		else if (e.getSource().equals(buttonAbout))
 			openHelpDialog();
-		else if (source.equals(functions)) {
+		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
-		} else if (source.equals(buttonUndo)) {
-			UndoManager manager = panes.get(index).getTable().getUndoManager();
+		} else if (e.getSource().equals(buttonUndo)) {
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			UndoManager manager = scrollPane.getTable().getUndoManager();
 			if (manager.canUndo() == true)
 				manager.undo();
-		} else if (source.equals(buttonRedo)) {
-			UndoManager manager = panes.get(index).getTable().getUndoManager();
+		} else if (e.getSource().equals(buttonRedo)) {
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			UndoManager manager = scrollPane.getTable().getUndoManager();
 			if (manager.canRedo() == true)
 				manager.redo();
 		} else if(e.getSource().equals(buttonGraphs)){
@@ -709,33 +724,35 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Listens for all KeyPressed events emitted by the elements of the GUI
-	 * @return void
+	 * Listens for all KeyPressed events emitted by the elements of the GUI.
 	 */
 	@Override
 	public final void keyPressed(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-			int index = mainTabs.getSelectedIndex();
-			if (panes.get(index).getTable().getCellSelected() == false)
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getSelectedComponent();
+			SpreadSheetTable table = scrollPane.getTable();
+			if (table.getCellSelected() == false)
 				JOptionPane.showMessageDialog(this, "Please select a Cell first.", "No Cell selected", JOptionPane.INFORMATION_MESSAGE);
-			else
-				panes.get(index).getTable().setValueAt(functionField.getText(), panes.get(index).getTable().getSelectedRow(), panes.get(index).getTable().getSelectedColumn());
+			else {
+				Cell current = (Cell) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+				current.setContent(functionField.getText(), true);
+			}
 		}
 	}
 
 	/**
-	 * Is executed right before the window closes. We use this to do some clean ups and check if files
+	 * Is executed right before the window closes. Used to do some clean ups and check if files
 	 * need to be saved.
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e) {
-		for(int i = 0; i < panes.size(); i++) {
+		for(int i = 0; i < mainTabs.getTabCount(); i++) {
 			if(closeFile(i) == 1) {
 				JOptionPane.showMessageDialog(this, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 		}
-		System.exit(0); //ToDo: niet de beste oplossing?
+		System.exit(0); //ToDo: niet de beste oplossing? Bastiaan zei dat we het zo konden laten.
 	}
 
 	public void keyTyped(KeyEvent e) {}
@@ -748,8 +765,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	public void windowDeactivated(WindowEvent e) {}
 
 	/**
-	 * Opens a file dialog in which the user can select the file to open
-	 * @return void
+	 * Opens a file dialog in which the user can select the file to open.
 	 */
 	public final void openFile() {
 		final JFileChooser fc = new JFileChooser();
@@ -775,18 +791,19 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				table = new SpreadSheetTable(sheet, file);
 				ex.printStackTrace();
 			}
-			panes.get(index).setTable(table);
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			scrollPane.setTable(table);
 			updateTabTitle(index, file.getName());
 		}
 	}
 
 	/**
-	 * Saves the currently opened file
-	 * @return void
+	 * Saves the currently opened file.
+	 * @param saveAs True if the Save As button has been pressed, will spawn a Save As dialog
 	 */
 	public final void saveFile (boolean saveAs) {
-		SpreadSheetScrollPane pane = panes.get(mainTabs.getSelectedIndex());
-		SpreadSheetTable table = pane.getTable();
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getSelectedComponent();
+		SpreadSheetTable table = scrollPane.getTable();
 		File file = table.getFile();
 		if (file == null || saveAs == true) {
 			final JFileChooser fc = new JFileChooser();
@@ -812,12 +829,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 	/**
 	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
-	 * @param index
-	 * @return integer 	0 for OK, 1 for cancel
+	 * @param index	The index of the tab whose <code>File</code> will be closed
+	 * @return 0 for OK, 1 for cancel
 	 */
 	public static final int closeFile(int index) { //ToDo: andere manier vinden
 		int close = 0;
-		SpreadSheetTable table = panes.get(index).getTable();
+		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+		SpreadSheetTable table = scrollPane.getTable();
 		if(getTabTitle(index).equals("New file")) {
 			if(table.getSheet().isEmpty() == true)
 				close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);

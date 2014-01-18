@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.awesome.excelpp.math.Add;
 import com.awesome.excelpp.math.Average;
 import com.awesome.excelpp.math.IsEven;
+import com.awesome.excelpp.math.IsNumber;
 import com.awesome.excelpp.math.Max;
 import com.awesome.excelpp.math.Min;
 import com.awesome.excelpp.math.Power;
@@ -15,7 +16,6 @@ import com.awesome.excelpp.math.Roundup;
 import com.awesome.excelpp.math.Sqrt;
 import com.awesome.excelpp.math.exception.MathException;
 import com.awesome.excelpp.stringmath.Int;
-import com.awesome.excelpp.stringmath.IsNumber;
 import com.awesome.excelpp.stringmath.Lower;
 import com.awesome.excelpp.stringmath.Upper;
 
@@ -43,7 +43,7 @@ public class MathTest {
 	}
 	
 	@Test
-	public void Add() {
+	public void Add() throws MathException {
 		assertEquals(14.0,new Add().getValue(2,4,8),.001);
 	}
 
@@ -80,17 +80,17 @@ public class MathTest {
 	} 
 	
 	@Test
-	public void Min() {
+	public void Min() throws MathException {
 		assertEquals(9, new Min().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	
 	@Test
-	public void Max() {
+	public void Max() throws MathException {
 		assertEquals(20, new Max().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	
 	@Test
-	public void Average() {
+	public void Average() throws MathException {
 		assertEquals(13, new Average().getValue(10, 11, 9, 20, 15), .001);
 	} 
 	

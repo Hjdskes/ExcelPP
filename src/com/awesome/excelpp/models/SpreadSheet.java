@@ -1,6 +1,5 @@
 package com.awesome.excelpp.models;
 
-import java.awt.Color;
 import java.util.HashMap;
 
 import javax.swing.event.UndoableEditListener;
@@ -10,14 +9,13 @@ import javax.swing.undo.UndoableEditSupport;
 import com.awesome.excelpp.writers.Writer;
 
 /**
- * Class that represents a spreadsheet
- * 
+ * This class represents a <code>SpreadSheet</code>.
+ * @author Team Awesome
  */
 public class SpreadSheet extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	protected final short numberOfRows = 42;
 	protected final short numberOfCols = 26;
-	
 	private HashMap<Integer, Cell> cells;
 	private UndoableEditSupport undoSupport;
 	
@@ -26,27 +24,39 @@ public class SpreadSheet extends AbstractTableModel {
 		cells = new HashMap<Integer, Cell>();
 		undoSupport = new UndoableEditSupport();
 	}
-	
+
+	/**
+	 * Returns <code>Cell.class</code> regardless of columnIndex.
+	 * @return Cell.class
+	 */
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return Cell.class;
 	};
 
+	/**
+	 * Returns the number of columns inside this <code>SpreadSheet</code>.
+	 * @return The number of columns
+	 */
 	@Override
 	public int getColumnCount() {
 		return numberOfCols;
 	}
-	
+
+	/**
+	 * Returns the number of rows inside this <code>SpreadSheet</code>.
+	 * @return The number of rows
+	 */
 	@Override
 	public int getRowCount() {
 		return numberOfRows;
 	}
 
 	/**
-	 * Gets the String value of the Cell with coordinates row, col from this SpreadSheet
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @return			String value of the Cell object at row, col
+	 * Gets the String value of the <code>Cell</code> with coordinates (row, col) from this <code>SpreadSheet</code>.
+	 * @param row Representing y-coordinate
+	 * @param col Representing x-coordinate
+	 * @return The <code>Cell<code> object at specified row and column
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
@@ -57,87 +67,65 @@ public class SpreadSheet extends AbstractTableModel {
 		}
 		return cell;
 	}
-	
+
+	/**
+	 * Returns true regardless of row and column.
+	 * @return True
+	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
 
 	/**
-	 * Returns true if this sheet is empty
-	 * @return boolean	true if this sheet is empty
+	 * Returns true if this <code>SpreadSheet</code> is empty.
+	 * @return True if this <code>SpreadSheet</code> is empty
 	 */
 	public boolean isEmpty() {
-		return cells.isEmpty();
+		boolean empty = true;
+		for(int index : cells.keySet()) {
+			if (!cells.get(index).isEmpty())
+				empty = false;
+		}
+		return empty;
 	}
-
+	
 	/**
-	 * Sets a Cell with coordinates row, col in this SpreadSheet
-	 * @param aValue	String object to store in the Cell object
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
+	 * Sets a <code>Cell</code> with coordinates (row, col) in this <code>SpreadSheet</code>.
+	 * @param aValue Object to store in the <code>Cell</code> object
+	 * @param row Representing y-coordinate
+	 * @param col Representing x-coordinate
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
-		Cell oldValue = (Cell)this.getValueAt(row, col);
-		Cell newValue = (Cell)aValue;
-		
-		if (!oldValue.equals(newValue)) {
-			cells.put(getNumCell(row, col), newValue);
-			TableCellEdit e = new TableCellEdit(this, oldValue, newValue, row, col);
-			undoSupport.postEdit(e);
-		}
-		
+		cells.put(getNumCell(row, col), (Cell)aValue);
 		fireTableDataChanged();
 	}
 	
+	/* LISTENERS */
 	/**
-	 * Sets a Cell with coordinates row, col in this SpreadSheet
-	 * @param aValue	String object to store in the Cell object
-	 * @param row		int representing x-coordinate
-	 * @param col		int representing y-coordinate
-	 * @param postEdit when true an edit is posted so that it can be undone/redone
+	 * Adds an <code>UndoableEditListener</code> to this <code>SpreadSheet</code>.
+	 * @param l <code>UndoableEditListener</code> to add
 	 */
-	public void setValueAt(Object aValue, int row, int col, boolean postEdit) {
-		if(postEdit == true){
-			setValueAt(aValue, row, col);
-		}
-		
-		else{
-			cells.put(getNumCell(row, col), (Cell)aValue);
-			fireTableDataChanged();
-		}
-	}
-	
-	/**
-	 * Sets a Cell with all it's styles from the XML Parser 
-	 * @param aValue
-	 * @param row
-	 * @param col
-	 * @param bold
-	 * @param italic
-	 * @param foregroundColor
-	 * @param backgroundColor
-	 */
-	public void setValueAt(Object aValue, int row, int col, int bold, int italic, Color foregroundColor, Color backgroundColor) {
-		Cell newValue = new Cell(this, (String)aValue, bold, italic, foregroundColor, backgroundColor);
-		cells.put(getNumCell(row, col), newValue);
-	}
-	
-	/* LISTENERS */	
-	/**
-	 * Adds an UndoableEditListener to the SpreadSheet
-	 * @param l UndoableEditListener that is added
-	 */
-	public void addUndoableEditListener(UndoableEditListener l){
+	public void addUndoableEditListener(UndoableEditListener l) {
 		this.undoSupport.addUndoableEditListener(l);
 	}
-	
-	public UndoableEditSupport getUndoSupport(){
+
+	/**
+	 * Gets the <code>UndoEditSupport</code> of this <code>SpreadSheet</code>.
+	 * @return The <code>UndoEditSupport</code> of this <code>SpreadSheet</code>
+	 */
+	public UndoableEditSupport getUndoSupport() {
 		return undoSupport;
 	}
 	
 	/* OTHER */
+	/**
+	 * Returns the number the <code>Cell</code> at the specified position inside this <code>SpreadSheet</code>.
+	 * @param row The row of this <code>Cell</code>
+	 * @param col The column of this <code>Cell</code>
+	 * @return The number of this <code>Cell</code>
+	 */
 	private int getNumCell(int row, int col) {
 		return row * numberOfCols + col;
 	}
@@ -148,8 +136,8 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 	
 	/**
-	 * Outputs the assigned spreadsheet map to a normalized XML file
-	 * @param file		the output file
+	 * Outputs this <code>SpreadSheet</code> map to a normalized XML file.
+	 * @param writer The <code>Writer</code> to use
 	 */
 	public void write(Writer writer) {
 		for (Integer cellnr : cells.keySet()) {
@@ -157,7 +145,7 @@ public class SpreadSheet extends AbstractTableModel {
 					 
 			if (!cell.isEmpty()) {
 				int[] xy = getXYCell(cellnr);
-				writer.addCell(cell, xy[1] + 1, xy[0] + 1, cell.getBold(), cell.getItalic(), cell.getForegroundColorHex(), cell.getBackgroundColorHex());
+				writer.addCell(cell, xy[1] + 1, xy[0] + 1);
 			}
 		}
 		writer.close();

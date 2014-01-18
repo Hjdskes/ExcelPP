@@ -8,11 +8,14 @@ import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
 
+/**
+ * The Parser analyzes whether the tokens follow correct grammar for an Excel++ expression.
+ * <p>It then evaluates the expression and calls all specified math functions dynamically, based on the input it is given.
+ * The parser supports passing Objects, so that Strings, Doubles and Integers can be detected at runtime.</p>
+ * @author Team Awesome
+ */
 public class Parser {
-	
-	/*
-	 * The following Tokens are operands:
-	 * 
+	/* The following Tokens are operands:
 	 * - NUMBER
 	 * - CELL
 	 */
@@ -23,9 +26,9 @@ public class Parser {
 	private SpreadSheet sheet;
 
 	/**
-	 * Creates a new expression Parser
-	 * @param lex		the {@link Lexer} containing the expression 
-	 * @param sheet		the referenced {@link SpreadSheet}
+	 * Creates a new expression Parser.
+	 * @param lex The {@link Lexer} containing the expression 
+	 * @param sheet The referenced {@link SpreadSheet}
 	 */
 	public Parser(Lexer lex, SpreadSheet sheet){
 		this.lex = lex;
@@ -35,17 +38,17 @@ public class Parser {
 	}
 	
 	/**
-	 * Creates a new expression Parser
-	 * @param expr		the String containing the expression
-	 * @param sheet		the referenced {@link SpreadSheet}
+	 * Creates a new expression Parser.
+	 * @param expr The String containing the expression
+	 * @param sheet	The referenced {@link SpreadSheet}
 	 */
 	public Parser(String expr, SpreadSheet sheet){
 		this(new Lexer(expr), sheet);
 	}
 	
 	/**
-	 * Creates a new expression Parser
-	 * @param expr		the String containing the expression
+	 * Creates a new expression Parser.
+	 * @param expr The String containing the expression
 	 */
 	public Parser(String expr){
 		this(new Lexer(expr), null);
@@ -57,7 +60,7 @@ public class Parser {
 	 * infix               | postfix<br>
 	 * ------------------- | -----------------<br>
 	 * 3 + 7 / (4 * 5 - 6) | 3 7 4 5 * 6 - / +<br>
-	 * @throws		ParserException 
+	 * @throws ParserException 
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public void toPostfix() throws ParserException{
@@ -84,6 +87,10 @@ public class Parser {
 			case CELLRANGE:
 				output.push(currentToken);
 				lastWasNumber = true;
+				break;
+			case STRING:
+				output.push(currentToken);
+				lastWasNumber = false;
 				break;
 			case MULTDIV:
 				while(!operators.isEmpty() &&
@@ -154,9 +161,9 @@ public class Parser {
 	}
 	
 	/**
-	 * Evaluate the stored mathematical expression represented in postfix-notation
-	 * @return		the evaluated expression
-	 * @throws		ParserException
+	 * Evaluates the stored mathematical expression represented in postfix-notation.
+	 * @return The evaluated expression
+	 * @throws ParserException
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public double eval() throws ParserException{
@@ -169,18 +176,35 @@ public class Parser {
 		while(!output.isEmpty()){
 			switch (output.getLast().type) {
 			case UNARYMINUS:
+				Object arg;
 				try {
-					output.removeLast();
-					evalStack.push(new Double(-((Double)evalStack.pop()).doubleValue()));
+					arg = evalStack.pop();
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
+				}
+				
+				if (arg instanceof Double) {
+					output.removeLast();
+					evalStack.push(-(Double)arg);
+				} else {
+					//TODO: Do something with strings...
 				}
 				break;
 			case NUMBER:
 				evalStack.push(Double.valueOf(output.removeLast().data));
 				break;
+			case STRING:
+				evalStack.push(output.removeLast().data);
+				break;
 			case CELLRANGE:
-				String[] range = output.removeLast().data.split(":");
+				String[] range;
+				int arity;
+				try {
+					range = output.removeLast().data.split(":");
+					arity = arityStack.removeLast() - 1;
+				} catch (NoSuchElementException e) {
+					throw new ReferenceException();
+				}
 				int startRow = Integer.parseInt(range[0].substring(1));
 				int startCol = (int) range[0].charAt(0);
 				startCol -= 65;
@@ -188,66 +212,76 @@ public class Parser {
 				int endCol = (int) range[1].charAt(0);
 				endCol -= 65;
 
-				try {
-					arityStack.add(arityStack.removeLast() - 1);
-					for(int row = startRow; row <= endRow; row++){
-						for(int col = startCol; col <= endCol; col++){
-							arityStack.add(arityStack.removeLast() + 1);
-							System.out.println(arityStack);
-							String temp = sheet.getValueAt(row - 1, col).toString();
-							System.out.println(temp);
-							evalStack.push(Double.parseDouble(temp));
+				for(int row = startRow; row <= endRow; row++){
+					for(int col = startCol; col <= endCol; col++){
+						arity++;
+						
+						Object cellref = sheet.getValueAt(row - 1, col);
+						Object value = 0.0;
+						try {
+							value = Double.parseDouble(cellref.toString());
+						} catch (NumberFormatException e) {
+							//TODO: Do something with strings...
 						}
+						evalStack.push(value);
 					}
-				} catch (NoSuchElementException e) {
-					throw new ReferenceException();
 				}
+				arityStack.push(arity);
 				break;
 			case CELL:
+				String ref = output.removeLast().data;
+				int row = Integer.parseInt(ref.substring(1));
+				int col = (int) ref.charAt(0);
+				col -= 65;
+				
+				Object cellref = sheet.getValueAt(row - 1, col);
+				Object value = 0.0;
 				try {
-					String ref = output.removeLast().data;
-					int row = Integer.parseInt(ref.substring(1));
-					int col = (int) ref.charAt(0);
-					col -= 65;
-					evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
-				} catch (NumberFormatException | NullPointerException e) {
-					throw new ReferenceException();
+					value = Double.parseDouble(cellref.toString());
+				} catch (NumberFormatException e) {
+					//TODO: Do something with strings...
 				}
+				evalStack.push(value);
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
+				Object a, b;
+				Token op;
 				try {
-					Double b = (Double)evalStack.pop();
-					Double a = (Double)evalStack.pop();
-					if(output.getLast().data.equals("+")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() + b.doubleValue()));
-					}else if(output.getLast().data.equals("-")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() - b.doubleValue()));
-					}else if(output.getLast().data.equals("*")){
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() * b.doubleValue()));
-					}else{
-						output.removeLast();
-						evalStack.push(new Double(a.doubleValue() / b.doubleValue()));
-					}
+					b = evalStack.pop();
+					a = evalStack.pop();
+					op = output.removeLast();
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
+				}
+				
+				if (a instanceof Double && b instanceof Double) {
+					if(op.data.equals("+")){
+						evalStack.push(new Double((Double)a + (Double)b));
+					}else if(op.data.equals("-")){
+						evalStack.push(new Double((Double)a - (Double)b));
+					}else if(op.data.equals("*")){
+						evalStack.push(new Double((Double)a * (Double)b));
+					}else{
+						evalStack.push(new Double((Double)a / (Double)b));
+					}
+				} else {
+					// TODO: Do something with strings...
 				}
 				break;
 			case WORD:
 				int numArgs = 0;
-				double[] args;
+				Object args[];
 				try {
 					numArgs = arityStack.removeLast();
-					args = new double[numArgs];
+					args = new Object[numArgs];
 				} catch (NoSuchElementException e) {
 					throw new MissingLBracketException();
 				}
+				
 				try {
 					for (int i = numArgs - 1; i >= 0; i--) {
-						args[i] = (Double)evalStack.pop();
+						args[i] = evalStack.pop();
 					}
 					evalStack.push(evalFunction(output.removeLast().data, args));
 				} catch (NoSuchElementException e) {
@@ -269,13 +303,13 @@ public class Parser {
 	}
 	
 	/**
-	 * Evaluate a {@link Formula} using the formulas in package com.awesome.excelpp.math
-	 * @param formulaName	the {@link Formula} name
-	 * @param args			the {@link Formula} arguments (1..*)
-	 * @return				the evaluated {@link Formula}
+	 * Evaluates a {@link Formula} using the formulas in package <code>com.awesome.excelpp.math</code>.
+	 * @param formulaName The {@link Formula} name
+	 * @param args The {@link Formula} arguments (1..*)
+	 * @return The evaluated {@link Formula}
 	 * @throws FormulaException
 	 */
-	private double evalFunction(String function, double ... args) throws FormulaException {
+	private double evalFunction(String function, Object ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
 		Formula formula;

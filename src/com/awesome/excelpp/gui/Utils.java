@@ -4,12 +4,13 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
 /**
- * A class that holds multiple utility methods
+ * A class that holds several utility methods.
+ * @author Team Awesome
  */
 public class Utils {
 	/**
-	 * Returns the screen width
-	 * @return double - the screen width
+	 * Returns the screen width.
+	 * @return The screen width
 	 */
 	public static double getScreenWidth() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -19,8 +20,8 @@ public class Utils {
 	}
 	
 	/**
-	 * Returns the screen height
-	 * @return double - the screen width
+	 * Returns the screen height.
+	 * @return The screen height
 	 */
 	public static double getScreenHeight() {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
