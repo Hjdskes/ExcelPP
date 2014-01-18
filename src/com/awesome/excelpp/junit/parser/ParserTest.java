@@ -1,5 +1,6 @@
 package com.awesome.excelpp.junit.parser;
 
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.Parser;
 import com.awesome.excelpp.parser.exception.MissingArgException;
@@ -127,7 +128,7 @@ public class ParserTest {
 	@Test
 	public void test_cell() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
-		testSheet.setValueAt("=4*5", 0, 2);
+		testSheet.setValueAt(new Cell(testSheet, "=4*5"), 0, 2);
 		expected = 16.0;
 		result = new Parser("=-2*2+C1", testSheet).eval();
 		assertEquals(expected, result, .001);
@@ -136,11 +137,11 @@ public class ParserTest {
 	@Test
 	public void test_cellrange1() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
-		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 1, 0);
-		testSheet.setValueAt("=4", 2, 0);
-		testSheet.setValueAt("=4", 3, 0);
-		testSheet.setValueAt("=4", 4, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 0, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 1, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 2, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 3, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 4, 0);
 		
 		expected = 20.0;
 		result = new Parser("=Add(A1:A5)", testSheet).eval();
@@ -150,8 +151,8 @@ public class ParserTest {
 	@Test
 	public void test_cellrange2() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
-		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 1, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 0, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 1, 0);
 		
 		expected = 10.0;
 		result = new Parser("=Add(A1:A2, 2)", testSheet).eval();
@@ -161,8 +162,8 @@ public class ParserTest {
 	@Test
 	public void test_cellrange_invalid1() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
-		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 1, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 0, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 1, 0);
 		
 		exception.expect(ReferenceException.class);
 		result = new Parser("=A1:A2", testSheet).eval();
@@ -171,8 +172,8 @@ public class ParserTest {
 	@Test
 	public void test_cellrange_invalid2() throws ParserException {
 		SpreadSheet testSheet = new SpreadSheet();
-		testSheet.setValueAt("=4", 0, 0);
-		testSheet.setValueAt("=4", 1, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 0, 0);
+		testSheet.setValueAt(new Cell(testSheet, "=4"), 1, 0);
 		
 		exception.expect(ReferenceException.class);
 		result = new Parser("=Add(2, 2) + A1:A2", testSheet).eval();
