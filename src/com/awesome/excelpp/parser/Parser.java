@@ -212,7 +212,15 @@ public class Parser {
 				for(int row = startRow; row <= endRow; row++){
 					for(int col = startCol; col <= endCol; col++){
 						arity++;
-						evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
+						
+						Object cellref = sheet.getValueAt(row - 1, col);
+						Object value = 0.0;
+						try {
+							value = Double.parseDouble(cellref.toString());
+						} catch (NumberFormatException e) {
+							//TODO: Do something with strings...
+						}
+						evalStack.push(value);
 					}
 				}
 				arityStack.push(arity);
@@ -222,7 +230,15 @@ public class Parser {
 				int row = Integer.parseInt(ref.substring(1));
 				int col = (int) ref.charAt(0);
 				col -= 65;
-				evalStack.push(Double.parseDouble(sheet.getValueAt(row - 1, col).toString()));
+				
+				Object cellref = sheet.getValueAt(row - 1, col);
+				Object value = 0.0;
+				try {
+					value = Double.parseDouble(cellref.toString());
+				} catch (NumberFormatException e) {
+					//TODO: Do something with strings...
+				}
+				evalStack.push(value);
 				break;
 			case MULTDIV:
 			case PLUSMINUS:

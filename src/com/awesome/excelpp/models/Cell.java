@@ -60,7 +60,7 @@ public class Cell {
 		
 		if (obj instanceof Cell) {
 			Cell other = (Cell)obj;
-			if ((content == null && other.getContent() == null) || content != null && content.equals(other.getContent()) &&
+			if (	this.getContent().equals(other.getContent()) &&
 					(this.fontBold == other.getBold()) &&
 					(this.fontItalic == other.getItalic()) &&
 					(this.foregroundColor.equals(other.getForegroundColor())) &&
@@ -89,13 +89,12 @@ public class Cell {
 	 * @return void
 	 */
 	public void setContent(String content, boolean undoable) {
+		Cell oldValue = cloneThis();
+		this.content = content;
+		Cell newValue = cloneThis();
+		
 		if(undoable) {
-			Cell oldValue = cloneThis();
-			this.content = content;
-			Cell newValue = cloneThis();
 			postEdit(oldValue, newValue);
-		} else {
-			this.content = content;
 		}
 	}
 	
@@ -106,15 +105,13 @@ public class Cell {
 	 * @return void
 	 */
 	public void setBold(int bold, boolean undoable) {
+		Cell oldValue = cloneThis();
+		if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
+			this.fontBold = bold;
+		Cell newValue = cloneThis();
+		
 		if(undoable) {
-			Cell oldValue = cloneThis();
-			if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
-				this.fontBold = bold;
-			Cell newValue = cloneThis();
 			postEdit(oldValue, newValue);
-		} else {
-			if (bold == 0 || bold == 1) //bold mag alleen 0 of 1 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.BOLD
-				this.fontBold = bold;
 		}
 	}
 
@@ -133,15 +130,13 @@ public class Cell {
 	 * @return void
 	 */
 	public void setItalic(int italic, boolean undoable){
+		Cell oldValue = cloneThis();
+		if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
+			this.fontItalic = italic;
+		Cell newValue = cloneThis();
+		
 		if(undoable) {
-			Cell oldValue = cloneThis();
-			if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
-				this.fontItalic = italic;
-			Cell newValue = cloneThis();
 			postEdit(oldValue, newValue);
-		} else {
-			if (italic == 0 || italic == 2) //italic mag alleen 0 of 2 zijn: http://docs.oracle.com/javase/7/docs/api/constant-values.html#java.awt.Font.ITALIC
-				this.fontItalic = italic;
 		}
 	}
 
@@ -160,13 +155,12 @@ public class Cell {
 	 * @return void
 	 */
 	public void setForegroundColor(Color newForegroundColor, boolean undoable) {
+		Cell oldValue = cloneThis();
+		this.foregroundColor = newForegroundColor;
+		Cell newValue = cloneThis();
+		
 		if(undoable) {
-			Cell oldValue = cloneThis();
-			this.foregroundColor = newForegroundColor;
-			Cell newValue = cloneThis();
 			postEdit(oldValue, newValue);
-		} else {
-			this.foregroundColor = newForegroundColor;
 		}
 	}
 
@@ -175,7 +169,7 @@ public class Cell {
 	 * @return Color The foreground <code>Color</code> of this <code>Cell</code>.
 	 */
 	public Color getForegroundColor() {
-		return foregroundColor;
+		return foregroundColor == null ? Color.BLACK : foregroundColor;
 	}
 
 	/**
@@ -194,13 +188,12 @@ public class Cell {
 	 * @return void
 	 */
 	public void setBackgroundColor(Color newBackgroundColor, boolean undoable) {
+		Cell oldValue = cloneThis();
+		this.backgroundColor = newBackgroundColor;
+		Cell newValue = cloneThis();
+		
 		if(undoable) {
-			Cell oldValue = cloneThis();
-			this.backgroundColor = newBackgroundColor;
-			Cell newValue = cloneThis();
 			postEdit(oldValue, newValue);
-		} else {
-			this.backgroundColor = newBackgroundColor;
 		}
 	}
 
@@ -209,7 +202,7 @@ public class Cell {
 	 * @return Color The background <code>Color</code> of this <code>Cell</code>.
 	 */
 	public Color getBackgroundColor() {
-		return backgroundColor;
+		return backgroundColor == null ? Color.WHITE : backgroundColor;
 	}
 
 	/**
@@ -235,9 +228,9 @@ public class Cell {
 	 */
 	public boolean isEmpty() {
 		return (fontBold == 0 && fontItalic == 0 &&
-				(foregroundColor == null || foregroundColor == Color.BLACK) &&
-				(backgroundColor == null || backgroundColor == Color.WHITE) && 
-				(content == null || content.equals("") || content == ""));
+				(getForegroundColor() == Color.BLACK) &&
+				(getBackgroundColor() == Color.WHITE) && 
+				(this.getContent().equals("")));
 	}
 
 	/**
@@ -265,7 +258,7 @@ public class Cell {
 			}
 		}
 		
-		return content;
+		return content == null ? "" : content;
 	}
 	
 	/**
