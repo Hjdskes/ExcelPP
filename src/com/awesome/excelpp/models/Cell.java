@@ -9,12 +9,13 @@ import com.awesome.excelpp.parser.exception.ParserException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.awt.Color;
+import java.util.Observable;
 
 /**
  * Class that represents a cell inside the <code>SpreadSheetTable</code>.
  * @author Team Awesome
  */
-public class Cell {
+public class Cell extends Observable {
 	private String content; // =2+2
 	private SpreadSheet sheet;
 	private int fontBold; // 1 = bold, 0 = niet bold
@@ -95,6 +96,8 @@ public class Cell {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -111,6 +114,8 @@ public class Cell {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -135,6 +140,8 @@ public class Cell {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -158,6 +165,8 @@ public class Cell {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -190,6 +199,8 @@ public class Cell {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
