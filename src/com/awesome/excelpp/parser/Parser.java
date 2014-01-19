@@ -238,7 +238,6 @@ public class Parser {
 				
 				Object cellref = sheet.getValueAt(row - 1, col);
 				Object value = 0.0;
-				System.out.println("cellref " + cellref.toString());
 				try {
 					value = Double.parseDouble(cellref.toString());
 				} catch (NumberFormatException e) {
