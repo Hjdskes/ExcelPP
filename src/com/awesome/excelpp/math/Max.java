@@ -7,6 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Max extends Formula {
+	@Override
 	public Double getValue(Object ... args) throws MathException {
 		double maximum = Double.MIN_VALUE;
 

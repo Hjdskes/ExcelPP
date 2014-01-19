@@ -7,6 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Power extends Formula {
+	@Override
 	public Double getValue(Object ... args) throws MathException {
 		if (args.length != 2)
 			throw new MathException();
