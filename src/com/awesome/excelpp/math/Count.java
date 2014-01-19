@@ -6,6 +6,7 @@ package com.awesome.excelpp.math;
  * @author Team Awesome
  */
 public class Count extends Formula {
+	@Override
 	public Integer getValue(Object... args) {
 		/* double count = 0;
 		for(int i=0; i < args.length; i++) {

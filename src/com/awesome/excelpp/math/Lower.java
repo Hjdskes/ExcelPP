@@ -7,6 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Lower extends Formula {
+	@Override
 	public String getValue(Object... args) throws MathException {
 		if(args[0] instanceof String) {
 			String string = (String) args[0];

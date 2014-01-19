@@ -7,19 +7,18 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Add extends Formula {
+	@Override
 	public Double getValue(Object ... args) throws MathException  {
 		double sum = 0;
-		
+
 		for (Object o : args) {
 			if (o instanceof Integer)
 				o = new Double((Integer)o);
-			
-			if (!(o instanceof Double))
+			else if (!(o instanceof Double))
 				throw new MathException();
-			
+
 			sum += (Double)o;
 		}
-	        
 		return sum;
 	}
 }

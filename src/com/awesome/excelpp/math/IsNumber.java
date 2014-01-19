@@ -5,6 +5,7 @@ package com.awesome.excelpp.math;
  * @author Team Awesome
  */
 public class IsNumber extends Formula {
+	@Override
 	public Boolean getValue(Object ... args) {
 		boolean res = true;
 		for (Object o : args) {
