@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 public class IsEven extends Formula {
 	@Override
-	public String getValue(Object ... args) throws MathException {
+	public double getValue(Object ... args) throws MathException {
 		double res = 0.0;
 		for (Object o : args) {
 			if (o instanceof Integer)
@@ -16,6 +16,6 @@ public class IsEven extends Formula {
 			if ((Double)o % 2 == 0.0)
 				res = 1.0;
 		}
-		return String.valueOf(res);
+		return res;
 	}
 }

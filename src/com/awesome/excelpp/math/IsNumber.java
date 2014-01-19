@@ -1,7 +1,7 @@
 package com.awesome.excelpp.math;
 
 public class IsNumber extends Formula {
-	public String getValue(Object ... args) {
+	public double getValue(Object ... args) {
 		double res = 1.0;
 		
 		for (Object o : args) {
@@ -9,6 +9,6 @@ public class IsNumber extends Formula {
 				res = 0.0;
 		}
 		
-		return String.valueOf(res);
+		return res;
 	}
 }
