@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.awesome.excelpp.math.Add;
+import com.awesome.excelpp.math.Sum;
 import com.awesome.excelpp.math.And;
 import com.awesome.excelpp.math.exception.MathException;
 
@@ -22,6 +22,6 @@ public class AndTest {
 	
 	@Test(expected = MathException.class)
 	public void And_invalid() throws MathException {
-		new Add().getValue("twee", 4, 8);
+		new Sum().getValue("twee", 4, 8);
 	}
 }
