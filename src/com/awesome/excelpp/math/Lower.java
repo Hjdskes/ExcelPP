@@ -9,11 +9,9 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Lower extends Formula {
 	@Override
 	public String getValue(Object... args) throws MathException {
-		if(args[0] instanceof String) {
-			String string = (String) args[0];
-			return string.toLowerCase();
-		} else {
+		if (args.length != 1)
 			throw new MathException();
-		}
+
+		return getString(args[0]).toLowerCase();
 	}
 }

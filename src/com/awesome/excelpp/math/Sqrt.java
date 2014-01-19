@@ -6,13 +6,12 @@ import com.awesome.excelpp.math.exception.MathException;
  * Returns a positive square root.
  * @author Team Awesome
  */
-public class Sqrt {
+public class Sqrt extends Formula {
+	@Override
 	public Double getValue(Object...args) throws MathException {
-		if (args[0] instanceof Integer)
-			args[0] = new Double((Integer)args[0]);
-		else if (!(args[0] instanceof Double))
+		if (args.length != 1)
 			throw new MathException();
 
-		return Math.sqrt((Double)args[0]);
+		return Math.sqrt(getDouble(args[0]));
 	}
 }	

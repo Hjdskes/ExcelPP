@@ -8,11 +8,9 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class Upper extends Formula {
 	public String getValue(Object...args) throws MathException {
-		if(args[0] instanceof String) {
-			String string = (String) args[0];
-			return string.toUpperCase();
-		} else {
+		if (args.length != 1)
 			throw new MathException();
-		}
+
+		return getString(args[0]).toUpperCase();
 	}
 }

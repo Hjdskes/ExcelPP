@@ -11,13 +11,8 @@ public class Max extends Formula {
 		double maximum = Double.MIN_VALUE;
 
 		for(Object o : args) {
-			if (o instanceof Integer)
-				o = new Double((Integer)o);
-			else if (!(o instanceof Double))
-				throw new MathException();
-
-			if (maximum < (Double)o)
-				maximum = (Double)o;
+			if (maximum < getDouble(o))
+				maximum = getDouble(o);
 		}
 		return maximum;	
 	}

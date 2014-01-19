@@ -10,7 +10,7 @@ import com.awesome.excelpp.math.exception.MathException;
 public abstract class Formula {
 	public abstract Object getValue(Object ... args) throws MathException;
 	
-	public double getDouble(Object arg) throws MathException{
+	public double getDouble(Object arg) throws MathException {
 		if (arg instanceof Integer)
 			arg = (Double)arg;
 		if (!(arg instanceof Double))
@@ -18,7 +18,7 @@ public abstract class Formula {
 		return (Double)arg;
 	}
 	
-	public int getInteger(Object arg) throws MathException{
+	public int getInteger(Object arg) throws MathException {
 		if (arg instanceof Double)
 			arg = (Integer)arg;
 		if (!(arg instanceof Integer))
@@ -26,7 +26,7 @@ public abstract class Formula {
 		return (Integer)arg;
 	}
 	
-	public String getString(Object arg) throws MathException{
+	public String getString(Object arg) throws MathException {
 		if (arg instanceof Integer)
 			arg = ((Integer)arg).toString();
 		if (arg instanceof Double)

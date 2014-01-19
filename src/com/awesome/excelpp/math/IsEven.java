@@ -9,16 +9,13 @@ import com.awesome.excelpp.math.exception.MathException;
 public class IsEven extends Formula {
 	@Override
 	public Boolean getValue(Object ... args) throws MathException {
+		if (args.length != 1)
+			throw new MathException();
+
 		boolean res = false;
-		for (Object o : args) {
-			if (o instanceof Integer)
-				o = new Double((Integer)o);
-			else if (!(o instanceof Double))
-				throw new MathException();
-			
-			if ((Double)o % 2 == 0.0)
-				res = true;
-		}
+		if (getDouble(args[0]) % 2 == 0.0)
+			res = true;
+
 		return res;
 	}
 }
