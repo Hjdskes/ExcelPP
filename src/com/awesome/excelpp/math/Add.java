@@ -7,7 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  *
  */
 public class Add extends Formula {
-	public double getValue(Object ... args) throws MathException  {
+	public String getValue(Object ... args) throws MathException  {
 		double sum = 0;
 		
 		for (Object o : args) {
@@ -20,6 +20,6 @@ public class Add extends Formula {
 			sum += (Double)o;
 		}
 	        
-		return sum;
+		return String.valueOf(sum);
 	}
 }
