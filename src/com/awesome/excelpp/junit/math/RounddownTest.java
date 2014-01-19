@@ -9,7 +9,14 @@ import com.awesome.excelpp.math.exception.MathException;
 
 public class RounddownTest {
 	@Test
-	public void Rounddown() {
-		assertEquals(10, new Rounddown().getValue(10.2), .001);
+	public void Rounddown() throws MathException {
+		Double expected = 10.0;
+		Double result = new Rounddown().getValue(10.2);
+		assertEquals(expected, result, .001);
+	}
+
+	@Test(expected = MathException.class)
+	public void Rounddown_invalid() throws MathException {
+		new Rounddown().getValue("twee");
 	}
 }

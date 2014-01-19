@@ -10,8 +10,8 @@ import com.awesome.excelpp.math.exception.MathException;
 public class AddTest {
 	@Test
 	public void Add() throws MathException {
-		String expected = "14.0";
-		String result = new Add().getValue(2, 4, 8);
+		Double expected = 14.0;
+		Double result = new Add().getValue(2, 4, 8);
 		assertEquals(expected, result);
 	}
 	

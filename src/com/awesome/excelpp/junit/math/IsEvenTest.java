@@ -10,27 +10,27 @@ import com.awesome.excelpp.math.exception.MathException;
 public class IsEvenTest {
 	@Test
 	public void IsEven() throws MathException {
-		double expected = 1.0;
-		double result = new IsEven().getValue(10);
-		assertEquals(expected, result, .001);
+		boolean expected = true;
+		boolean result = new IsEven().getValue(10);
+		assertEquals(expected, result);
 	}
 	
 	@Test
 	public void IsEvenMultiple() throws MathException {
-		double expected = 1.0;
-		double result = new IsEven().getValue(10, 20);
-		assertEquals(expected, result, .001);
+		boolean expected = true;
+		boolean result = new IsEven().getValue(10, 20);
+		assertEquals(expected, result);
 	}
 	
 	@Test
 	public void notEven() throws MathException{
-		double expected = 0.0;
-		double result = new IsEven().getValue(11);
-		assertEquals(expected, result, .001);
+		boolean expected = false;
+		boolean result = new IsEven().getValue(11);
+		assertEquals(expected, result);
 	}
 	
 	@Test(expected = MathException.class)
 	public void IsEvenError() throws MathException {
-		double result = new IsEven().getValue("twee");
+		boolean result = new IsEven().getValue("twee");
 	}
 }

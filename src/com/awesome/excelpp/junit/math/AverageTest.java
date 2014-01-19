@@ -10,8 +10,8 @@ import com.awesome.excelpp.math.exception.MathException;
 public class AverageTest {
 	@Test
 	public void Average() throws MathException {
-		String expected = "13.0";
-		String result = new Average().getValue(10, 11, 9, 20, 15);
+		Double expected = 13.0;
+		Double result = new Average().getValue(10, 11, 9, 20, 15);
 		assertEquals(expected, result);
 	}
 	
