@@ -10,7 +10,7 @@ public class Add extends Formula {
 	public Double getValue(Object ... args) throws MathException  {
 		double sum = 0;
 		for (Object o : args) {
-			sum += super.getNumber(o);
+			sum += getNumber(o);
 		}
 		return sum;
 	}

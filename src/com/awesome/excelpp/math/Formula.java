@@ -22,7 +22,7 @@ public abstract class Formula {
 			arg = ((Integer)arg).toString();
 		if (arg instanceof Double)
 			arg = ((Double)arg).toString();
-		if (!(arg instanceof Integer))
+		if (!(arg instanceof String))
 			throw new MathException();
 		return (String)arg;
 	}
