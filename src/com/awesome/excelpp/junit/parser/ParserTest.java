@@ -16,113 +16,116 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 public class ParserTest {	
-	double expected, result;
+	double expected;
+	Object result;
+	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
 	@Test
 	public void test_empty() throws ParserException {
-		exception.expect(MissingArgException.class);
+		expected = 0.0;
 		result = new Parser("").eval();
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_number() throws ParserException {
 		expected = 2.0;
 		result = new Parser("=2").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = 450.257;
 		result = new Parser("=450.257").eval();
-		assertEquals(expected, result, .001);		
+		assertEquals(expected, (Double)result, .001);		
 
 		expected = 4.0;
-		result = new Parser("2.+2").eval();
-		assertEquals(expected, result, .001);
+		result = new Parser("=2.+2").eval();
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_plus() throws ParserException {
 		expected = 4.0;
 		result = new Parser("=2+2").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = 28.0;
 		result = new Parser("=25.37+2.63").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_minus() throws ParserException {
 		expected = 0.0;
 		result = new Parser("=2-2").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = -3.99;
 		result = new Parser("=2.38-6.37").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_unaryminus() throws ParserException {
 		expected = -4.0;
 		result = new Parser("=-2---2").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = -.57;
 		result = new Parser("=2+-2.57").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = 1.43;
 		result = new Parser("=2+-.57").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_multiply() throws ParserException {
 		expected = 50.0;
 		result = new Parser("=25*2").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = 5.0;
 		result = new Parser("=2*2.5").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_division() throws ParserException {
 		expected = 12.5;
 		result = new Parser("=25/2").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = 40.0;
 		result = new Parser("=30/.75").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_brackets() throws ParserException {
 		expected = 4.0;
 		result = new Parser("=(2+2)").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_function() throws ParserException {
 		expected = 6.0;
 		result = new Parser("=Add(2,4)").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 		
 		expected = -1.0;
 		result = new Parser("=Subtract(5,6)").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_nested_functions() throws ParserException {
 		expected = 3.0;
 		result = new Parser("=Add(1,2,Add(-3,4),Subtract(5,6))").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
@@ -131,7 +134,7 @@ public class ParserTest {
 		testSheet.setValueAt(new Cell(testSheet, "=4*5"), 0, 2);
 		expected = 16.0;
 		result = new Parser("=-2*2+C1", testSheet).eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
@@ -145,7 +148,7 @@ public class ParserTest {
 		
 		expected = 20.0;
 		result = new Parser("=Add(A1:A5)", testSheet).eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
@@ -156,7 +159,7 @@ public class ParserTest {
 		
 		expected = 10.0;
 		result = new Parser("=Add(A1:A2, 2)", testSheet).eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
@@ -193,14 +196,14 @@ public class ParserTest {
 	public void test_function_string1() throws ParserException {
 		expected = 1.0;
 		result = new Parser("=IsNumber(2)").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test
 	public void test_function_string2() throws ParserException {
 		expected = 0.0;
 		result = new Parser("=IsNumber(\"test\")").eval();
-		assertEquals(expected, result, .001);
+		assertEquals(expected, (Double)result, .001);
 	}
 	
 	@Test

@@ -20,7 +20,16 @@ public class Lexer {
 		
 		if (input == null)
 			return;
-
+		
+		if (input.length() > 0 && input.charAt(0) != '=') {
+			try {
+				tokens.add(new Token(TokenType.NUMBER, new Double(Double.parseDouble(input)).toString()));
+			} catch (NumberFormatException e) {
+				tokens.add(new Token(TokenType.STRING, input));
+			}
+			return;
+		}
+		
 	    for (int i = 0; i < input.length(); i++) {
 	    	char ch = input.charAt(i);
 	    	

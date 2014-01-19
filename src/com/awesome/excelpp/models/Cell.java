@@ -249,9 +249,9 @@ public class Cell extends Observable implements Observer {
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
-				Parser parse = new Parser(content.substring(1), sheet, this);
+				Parser parse = new Parser(content, sheet, this);
 				parse.toPostfix();
-				return String.valueOf(parse.eval());
+				return parse.eval().toString();
 			} catch (ParserException e) {
 				backgroundColor = Color.red;
 				if (e instanceof MissingRBracketException ||

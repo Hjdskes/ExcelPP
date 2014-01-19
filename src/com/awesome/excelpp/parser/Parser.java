@@ -180,7 +180,7 @@ public class Parser {
 	 * @throws ParserException
 	 */
 	@SuppressWarnings("incomplete-switch")
-	public double eval() throws ParserException{
+	public Object eval() throws ParserException{
 		if (output.isEmpty()) {
 			toPostfix();
 		}
@@ -202,6 +202,7 @@ public class Parser {
 					evalStack.push(-(Double)arg);
 				} else {
 					//TODO: Do something with strings...
+					throw new MissingArgException();
 				}
 				break;
 			case NUMBER:
@@ -230,15 +231,15 @@ public class Parser {
 					for(int col = startCol; col <= endCol; col++){
 						arity++;
 						
-						Object cellref = sheet.getValueAt(row - 1, col);
-						Object value = 0.0;
-						try {
-							((Cell)cellref).addObserver(cell);
-							value = Double.parseDouble(cellref.toString());
-						} catch (NumberFormatException e) {
-							//TODO: Do something with strings...
-						}
-						evalStack.push(value);
+						Cell cellref = (Cell)sheet.getValueAt(row - 1, col);
+						if (cell == cellref)
+							throw new ReferenceException();
+						
+						if (cell != null)
+							cellref.addObserver(cell);
+						
+						Object refvalue = new Parser(cellref.getContent(), sheet, cell).eval();
+						evalStack.push(refvalue);
 					}
 				}
 				arityStack.push(arity);
@@ -249,16 +250,15 @@ public class Parser {
 				int col = (int) ref.charAt(0);
 				col -= 65;
 				
-				Object cellref = sheet.getValueAt(row - 1, col);
-				((Cell)cellref).addObserver(cell);
+				Cell cellref = (Cell)sheet.getValueAt(row - 1, col);
+				if (cell == cellref)
+					throw new ReferenceException();
 				
-				Object value = 0.0;
-				try {
-					value = Double.parseDouble(cellref.toString());
-				} catch (NumberFormatException e) {
-					//TODO: Do something with strings...
-				}
-				evalStack.push(value);
+				if (cell != null)
+					cellref.addObserver(cell);
+				
+				Object refvalue = new Parser(cellref.getContent(), sheet, cell).eval();
+				evalStack.push(refvalue);
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
@@ -284,6 +284,7 @@ public class Parser {
 					}
 				} else {
 					// TODO: Do something with strings...
+					throw new MissingArgException();
 				}
 				break;
 			case WORD:
@@ -310,11 +311,15 @@ public class Parser {
 			}
 		}
 		
-		double retvalue = 0.0;
+		Object retvalue = 0.0;
 		try {
-			retvalue = ((Double)evalStack.pop()).doubleValue();
+			retvalue = evalStack.pop();
 		} catch (NoSuchElementException e) {
-			throw new MissingArgException();
+			
+		}
+		
+		if (retvalue instanceof Double) {
+			retvalue = (Double)retvalue;
 		}
 		return retvalue;
 	}
