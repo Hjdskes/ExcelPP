@@ -8,6 +8,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Mod extends Formula {
+	@Override
 	public Double getValue(Object...args) throws MathException {
 		if (args.length != 2)
 			throw new MathException();
