@@ -18,8 +18,14 @@ public class LineChart extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	
-	public LineChart(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values, String mainTitle, String titleX, String titleY){
+	public LineChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
 		super("LineChart");
+		PieChart.validate(rows);
+		PieChart.validate(columns);
+		ArrayList<String> horizontalNames = getHorizontalNames(sheet, rows, columns);
+		ArrayList<String> verticalNames = getVerticalNames(sheet, rows, columns);
+		ArrayList<Double> values = getValues(sheet, rows, columns);
+		
 		DefaultCategoryDataset data = createData(horizontalNames, verticalNames, values);
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
 		ChartPanel panel = new ChartPanel(chart);
@@ -51,24 +57,22 @@ public class LineChart extends JFrame{
 		return chart;
 	}
 	
-	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		char start; char end; int firstRow; int startInt; int endInt;
+	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		int firstRow; int startInt; int endInt;
 		try{
-			start = startCell.charAt(0);
-			end = endCell.charAt(0);
-			firstRow = Integer.parseInt(startCell.substring(1))-1;
-			startInt = Character.toUpperCase(start) - 65 + 1;
-			endInt = Character.toUpperCase(end) - 65;
+			firstRow = rows[0];
+			startInt = columns[0];
+			endInt = columns[columns.length-1];
 		} catch(Exception e){
 			throw new CellInputException();
 		}
 		
 		ArrayList<String> res = new ArrayList<String>();
 		
-		if(endInt-startInt>0 && startInt >= 0 && startInt <=25 && endInt >= 0 && endInt <=25){
-			for(int i = 0; i<=endInt-startInt; i++){
-				if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null){
-					res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
+		if(endInt-startInt>0 && startInt >= 0 && endInt >= 0){
+			for(int i = 0; i<endInt-startInt; i++){
+				if(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != null){
+					res.add(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent());
 				} else{
 					throw new CellDataException();
 				}
@@ -80,14 +84,12 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
-	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		char start; char end; int firstRow; int startInt; int secondRow;
+	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		int firstRow; int startInt; int secondRow;
 		try{
-			start = startCell.charAt(0);
-			end = endCell.charAt(0);
-			firstRow = Integer.parseInt(startCell.substring(1));
-			secondRow = Integer.parseInt(endCell.substring(1))-1;
-			startInt = Character.toUpperCase(start) - 65;
+			firstRow = rows[0];
+			secondRow = rows[rows.length-1];
+			startInt = columns[0];
 
 		} catch(Exception e){
 			throw new CellInputException();
@@ -95,10 +97,10 @@ public class LineChart extends JFrame{
 		
 		ArrayList<String> res = new ArrayList<String>();
 		
-		if(startInt >= 0 && startInt <=25){
-			for(int i = 0; i<=secondRow-firstRow; i++){
-				if(((Cell) sheet.getValueAt(firstRow+i, startInt)).getContent() != null){
-					res.add(((Cell) sheet.getValueAt(firstRow + i, startInt)).getContent());
+		if(startInt >= 0){
+			for(int i = 0; i<secondRow-firstRow; i++){
+				if(((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != null){
+					res.add(((Cell) sheet.getValueAt(firstRow + 1 + i, startInt)).getContent());
 				} else{
 					throw new CellDataException();
 				}
@@ -110,15 +112,13 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
-	public static ArrayList<Double> getValues(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		char start; char end; int firstRow; int secondRow; int startInt; int endInt; Double add; int horizontalLength; int verticalLength;
+	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		int firstRow; int secondRow; int startInt; int endInt; Double add; int horizontalLength; int verticalLength;
 		try{
-			start = startCell.charAt(0);
-			end = endCell.charAt(0);
-			firstRow = Integer.parseInt(startCell.substring(1));
-			secondRow = Integer.parseInt(endCell.substring(1))-1;
-			startInt = Character.toUpperCase(start) - 65+1;
-			endInt = Character.toUpperCase(end) - 65+1;
+			firstRow = rows[0];
+			secondRow = rows[rows.length-1];
+			startInt = columns[0];
+			endInt = columns[columns.length-1];
 			horizontalLength = endInt-startInt;
 			verticalLength = secondRow-firstRow;
 			System.out.println("startInt: " + startInt);
@@ -131,12 +131,13 @@ public class LineChart extends JFrame{
 		
 		ArrayList<Double> res = new ArrayList<Double>();
 		
-		if(endInt-startInt>0 && startInt>=0 && startInt<=25 && endInt >= 0 && endInt <=25){
-		for(int i = 0; i<=verticalLength; i++){
+		if(endInt-startInt>0 && startInt>=0 && endInt >= 0){
+		for(int i = 0; i<verticalLength; i++){
 			for(int i2 = 0; i2<horizontalLength; i2++){
 				try{
-					add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow+i, startInt+i2)).toString());
+					add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow+ 1 +i, startInt + 1 + i2)).toString());
 					res.add(add);
+					System.out.println(add);
 				} catch(Exception e){
 					throw new CellDataException();
 				}

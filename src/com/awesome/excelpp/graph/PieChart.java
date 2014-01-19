@@ -24,8 +24,12 @@ public class PieChart extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 
-	public PieChart(ArrayList<String> names, ArrayList<Double> values, String title){
+	public PieChart(SpreadSheet sheet, int[] rows, int[] columns, String title) throws CellInputException, CellDataException{
 		super("PieChart");
+		validate(rows);
+		validate(columns);
+		ArrayList<String> names = getNames(sheet, rows, columns);
+		ArrayList<Double> values = getValues(sheet, rows, columns);
 		PieDataset data = createData(names, values);
 		JFreeChart  chart= createChart(data, title);
 		ChartPanel panel = new ChartPanel(chart);
@@ -58,22 +62,21 @@ public class PieChart extends JFrame{
 		
 	
 	
-	public static ArrayList<String> getNames(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		char start; char end; int firstRow; int secondRow; int startInt; int endInt;
+	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		int firstRow; int secondRow; int startInt; int endInt;
 		try{
-			start = startCell.charAt(0);
-			end = endCell.charAt(0);
-			firstRow = Integer.parseInt(startCell.substring(1))-1;
-			secondRow = Integer.parseInt(endCell.substring(1))-1;
-			startInt = Character.toUpperCase(start) - 65;
-			endInt = Character.toUpperCase(end) - 65;
+		
+			firstRow = rows[0];
+			secondRow = rows[rows.length-1];
+			startInt =columns[0];
+			endInt = columns[columns.length-1];
 		} catch(Exception e){
 			throw new CellInputException();
 		}
 		
 		ArrayList<String> res = new ArrayList<String>();
 		
-		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0 && startInt <=25 && endInt >= 0 && endInt <=25){
+		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0  && endInt >= 0){
 			for(int i = 0; i<=endInt-startInt; i++){
 				if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null){
 					res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
@@ -88,22 +91,21 @@ public class PieChart extends JFrame{
 		return res;
 	}
 	
-	public static ArrayList<Double> getValues(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		char start; char end; int firstRow; int secondRow; int startInt; int endInt; Double add;
+	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		int firstRow; int secondRow; int startInt; int endInt; Double add;
 		try{
-			start = startCell.charAt(0);
-			end = endCell.charAt(0);
-			firstRow = Integer.parseInt(startCell.substring(1))-1;
-			secondRow = Integer.parseInt(endCell.substring(1))-1;
-			startInt = Character.toUpperCase(start) - 65;
-			endInt = Character.toUpperCase(end) - 65;
+		
+			firstRow = rows[0];
+			secondRow = rows[rows.length-1];
+			startInt = columns[0];
+			endInt = columns[columns.length-1];
 		} catch(Exception e){
 			throw new CellInputException();
 		}
 		
 		ArrayList<Double> res = new ArrayList<Double>();
 		
-		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt>=0 && startInt<=25 && endInt >= 0 && endInt <=25){
+		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt>=0 && endInt >= 0){
 		for(int i = 0; i<=endInt-startInt; i++){
 				
 				try{
@@ -121,5 +123,14 @@ public class PieChart extends JFrame{
 		
 		
 	}
+	
+	public static void validate(int[] array) throws CellInputException{
+		for(int i = 0; i<array.length-1; i++){
+			if(!(array[i] + 1 == array[i+1])){
+				throw new CellInputException();
+			}
+		}
+	}
+	
 	
 }

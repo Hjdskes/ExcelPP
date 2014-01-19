@@ -18,8 +18,12 @@ public class BarChart extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 
-	public BarChart(ArrayList<String> names, ArrayList<Double> values, String mainTitle, String titleX, String titleY){
+	public BarChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
 		super("BarChart");
+		PieChart.validate(rows);
+		PieChart.validate(columns);
+		ArrayList<String> names = getNames(sheet, rows, columns);
+		ArrayList<Double> values = getValues(sheet, rows, columns);
 		DefaultCategoryDataset data = createData(names, values);
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
 		ChartPanel panel = new ChartPanel(chart);
@@ -48,13 +52,13 @@ public class BarChart extends JFrame{
 		return chart;
 	}
 	
-	public static ArrayList<String> getNames(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		ArrayList<String> res= PieChart.getNames(sheet, startCell, endCell);
+	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		ArrayList<String> res= PieChart.getNames(sheet, rows, columns);
 		return res;
 	}
 	
-	public static ArrayList<Double> getValues(SpreadSheet sheet, String startCell, String endCell) throws CellInputException, CellDataException{
-		ArrayList<Double> res = PieChart.getValues(sheet, startCell, endCell);
+	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		ArrayList<Double> res = PieChart.getValues(sheet, rows, columns);
 		return res;
 	}
 
