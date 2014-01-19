@@ -423,10 +423,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 						graphsDialog.dispose();
 					} catch(CellInputException c){
 						JOptionPane.showMessageDialog(mainFrame, "Please make sure your input for the first cell and the last cell is correct");
-						c.printStackTrace();
 					} catch(CellDataException d){
 						JOptionPane.showMessageDialog(mainFrame, "Please make sure the Data entered in the table can be transformed to a piechart");
-						d.printStackTrace();
 					}
 					
 				}

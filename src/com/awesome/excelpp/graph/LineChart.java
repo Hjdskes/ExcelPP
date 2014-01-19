@@ -8,6 +8,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
+
 import com.awesome.excelpp.graph.exception.CellDataException;
 import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.Cell;
@@ -20,13 +21,23 @@ public class LineChart extends JFrame{
 	
 	public LineChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
 		super("LineChart");
+		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		PieChart.validate(rows);
 		PieChart.validate(columns);
-		ArrayList<String> horizontalNames = getHorizontalNames(sheet, rows, columns);
-		ArrayList<String> verticalNames = getVerticalNames(sheet, rows, columns);
-		ArrayList<Double> values = getValues(sheet, rows, columns);
 		
-		DefaultCategoryDataset data = createData(horizontalNames, verticalNames, values);
+		int startRow = rows[0];
+		int endRow = rows[rows.length-1];
+		if(endRow-startRow>1){
+			ArrayList<String> horizontalNames = getHorizontalNames(sheet, rows, columns);
+			ArrayList<String> verticalNames = getVerticalNames(sheet, rows, columns);
+			ArrayList<Double> values = getValuesXRowsXColumns(sheet, rows, columns);
+			data = createData(horizontalNames, verticalNames, values);
+		} else{
+			ArrayList<String> names = getNames(sheet, rows, columns);
+			ArrayList<Double> values = getValues(sheet, rows, columns);
+			data = createData(names, values);
+		}
+		
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -34,13 +45,29 @@ public class LineChart extends JFrame{
 	}
 	
 	
-	private DefaultCategoryDataset createData(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values){
+	static DefaultCategoryDataset createData(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(horizontalNames.size() * verticalNames.size() == values.size()){
 			for(int i = 0; i<verticalNames.size(); i++){
 				for(int i2 = 0; i2<horizontalNames.size(); i2++){
 				res.setValue(values.get(i*horizontalNames.size() + i2), verticalNames.get(i) , horizontalNames.get(i2));
 				}
+			}
+		}
+		
+		else{
+			System.err.println("The arrayLists differ in size");
+		}
+		
+		
+		return res;
+	}
+	
+	public static DefaultCategoryDataset createData(ArrayList<String> names, ArrayList<Double> values){
+		DefaultCategoryDataset res = new DefaultCategoryDataset();
+		if(names.size() == values.size()){
+			for(int i = 0; i<names.size(); i++){
+				res.setValue(values.get(i),"f(x)", names.get(i));
 			}
 		}
 		
@@ -110,7 +137,7 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
-	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+	public static ArrayList<Double> getValuesXRowsXColumns(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		int firstRow; int secondRow; int startInt; int endInt; Double add; int horizontalLength; int verticalLength;
 		try{
 			firstRow = rows[0];
@@ -141,6 +168,13 @@ public class LineChart extends JFrame{
 		}
 		return res;
 		
-		
+	}
+	
+	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		return PieChart.getNames(sheet, rows, columns);
+	}
+	
+	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		return PieChart.getValues(sheet, rows, columns);
 	}
 }

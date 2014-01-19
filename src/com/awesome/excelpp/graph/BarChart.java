@@ -20,18 +20,29 @@ public class BarChart extends JFrame{
 
 	public BarChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
 		super("BarChart");
+		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		PieChart.validate(rows);
 		PieChart.validate(columns);
-		ArrayList<String> names = getNames(sheet, rows, columns);
-		ArrayList<Double> values = getValues(sheet, rows, columns);
-		DefaultCategoryDataset data = createData(names, values);
+		int startRow = rows[0];
+		int endRow = rows[rows.length-1];
+		if(endRow-startRow>1){
+			ArrayList<String> horizontalNames = getHorizontalNames(sheet, rows, columns);
+			ArrayList<String> verticalNames = getVerticalNames(sheet, rows, columns);
+			ArrayList<Double> values = getValuesXRowsXcolumns(sheet, rows, columns);
+			data = createData(horizontalNames, verticalNames, values);
+		} else{
+			ArrayList<String> names = getNames(sheet, rows, columns);
+			ArrayList<Double> values = getValues(sheet, rows, columns);
+			data = createData(names, values);
+		}
+		
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setContentPane(panel);
 	}
 	
-	private DefaultCategoryDataset createData(ArrayList<String> names, ArrayList<Double> values){
+	public static DefaultCategoryDataset createData(ArrayList<String> names, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(names.size() == values.size()){
 			for(int i = 0; i<names.size(); i++){
@@ -45,6 +56,10 @@ public class BarChart extends JFrame{
 		
 		
 		return res;
+	}
+	
+	private DefaultCategoryDataset createData(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values){
+		return LineChart.createData(horizontalNames, verticalNames, values);
 	}
 	
 	private JFreeChart createChart(DefaultCategoryDataset data, String mainTitle, String titleX, String titleY){
@@ -61,5 +76,16 @@ public class BarChart extends JFrame{
 		ArrayList<Double> res = PieChart.getValues(sheet, rows, columns);
 		return res;
 	}
-
+	
+	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		return LineChart.getHorizontalNames(sheet, rows, columns);
+	}
+	
+	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		return LineChart.getVerticalNames(sheet, rows, columns);
+	}
+	
+	public static ArrayList<Double> getValuesXRowsXcolumns(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+		return LineChart.getValuesXRowsXColumns(sheet, rows, columns);
+	}
 }
