@@ -95,7 +95,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	}
 
 	/**
-	 * Creates a {@link JPanel} holding the required buttons.
+	 * Creates a <code>JPanel</code> holding the required buttons.
 	 * @return The <code>JPanel</code> holding all the required buttons
 	 */
 	private final JPanel createButtonPanel() {
@@ -288,13 +288,15 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public static final void removeTab(int index) {
 		int tabCount = mainTabs.getTabCount();
+		System.out.println(index);
 		if(tabCount > 1) { //er moet ten minste één tab open blijven
 			if (closeFile(index) == 0) {
 				mainTabs.remove(index);
 				CloseableTabComponent comp;
-				for(int i = index; i == tabCount; i++) { //"herstel" alle indices van de CloseableTabComponents
-					 comp = (CloseableTabComponent)mainTabs.getTabComponentAt(i);
-					 comp.setIndex(i - 1);
+				for(int i = index + 1; i <= tabCount - 2; i++) { //"herstel" alle indices van de CloseableTabComponents
+					System.out.println("Old index: " + i + "\nNew Index: " + (i - 1) + "\n\n");
+					comp = (CloseableTabComponent)mainTabs.getTabComponentAt(i);
+					comp.setIndex(i - 1);
 				}
 			}
 		}
@@ -559,12 +561,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @param index	The index of the tab whose <code>File</code> will be closed
 	 * @return 0 for OK, 1 for cancel
 	 */
-	public static final int closeFile(int index) { //ToDo: andere manier vinden
+	public static final int closeFile(int index) {
 		int close = 0;
 		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
 		SpreadSheetTable table = scrollPane.getTable();
 		if(getTabTitle(index).equals("New file")) {
-			if(table.getSheet().isEmpty() == true)
+			if(table.getSheet().isEmpty() == false)
 				close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
 		} else {
 			try {
