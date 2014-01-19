@@ -11,7 +11,6 @@ public class Upper extends Formula {
 	public String getValue(Object...args) throws MathException {
 		if (args.length != 1)
 			throw new MathException();
-
 		return getString(args[0]).toUpperCase();
 	}
 }
