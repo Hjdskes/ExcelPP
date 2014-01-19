@@ -8,7 +8,7 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class Subtract extends Formula {
 	public Object getValue(Object ... args) throws MathException {
-		if (args.length == 1)
+		if (args.length < 1)
 			throw new MathException();
 		
 		double res = getDouble(args[0]);
