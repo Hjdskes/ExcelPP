@@ -80,7 +80,6 @@ public class LineChart extends JFrame{
 		} else{
 			throw new CellInputException();
 		}
-		System.out.println("H: " + res.toString());
 		return res;
 	}
 	
@@ -108,7 +107,6 @@ public class LineChart extends JFrame{
 		} else{
 			throw new CellInputException();
 		}
-		System.out.println("V: " + res.toString());
 		return res;
 	}
 	
@@ -121,10 +119,6 @@ public class LineChart extends JFrame{
 			endInt = columns[columns.length-1];
 			horizontalLength = endInt-startInt;
 			verticalLength = secondRow-firstRow;
-			System.out.println("startInt: " + startInt);
-			System.out.println("endInt: " + endInt);
-			System.out.println("horizontalLength: " + horizontalLength);
-			System.out.println("verticalLength: " + verticalLength);
 		} catch(Exception e){
 			throw new CellInputException();
 		}
@@ -137,7 +131,6 @@ public class LineChart extends JFrame{
 				try{
 					add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow+ 1 +i, startInt + 1 + i2)).toString());
 					res.add(add);
-					System.out.println(add);
 				} catch(Exception e){
 					throw new CellDataException();
 				}
@@ -146,7 +139,6 @@ public class LineChart extends JFrame{
 		} else{
 			throw new CellInputException();
 		}
-		System.out.println("Va: " + res.toString());
 		return res;
 		
 		
