@@ -2,14 +2,18 @@ package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
 
-public class Int extends StringFormula {
-	public String getValue(String...vars) throws MathException {
-		
+public class Int extends Formula {
+	public Integer getValue(Object...vars) throws MathException {
 		try {
-		double temp = Double.parseDouble(vars[0]);
+			double temp = 0.0;
+			if(vars[0] instanceof String) {
+				temp = Double.parseDouble((String)vars[0]);
+			}
+			else if(vars[0] instanceof Double) {
+				temp = (Double) vars[0];
+			}
 		int integer = (int) temp;
-		String res = String.valueOf(integer);
-		return res;
+		return integer;
 		
 		} catch(Exception e) {
 			throw new MathException();

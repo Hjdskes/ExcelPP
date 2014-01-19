@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 public class IsEven extends Formula {
 	@Override
-	public double getValue(Object ... args) throws MathException {
+	public Double getValue(Object ... args) throws MathException {
 		double res = 0.0;
 		for (Object o : args) {
 			if (o instanceof Integer)

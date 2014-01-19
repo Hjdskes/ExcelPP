@@ -1,14 +1,12 @@
 package com.awesome.excelpp.math;
 
 public class IsNumber extends Formula {
-	public double getValue(Object ... args) {
-		double res = 1.0;
-		
+	public Boolean getValue(Object ... args) {
+		boolean res = true;
 		for (Object o : args) {
 			if (!(o instanceof Double) && !(o instanceof Integer))
-				res = 0.0;
+				res = false;
 		}
-		
 		return res;
 	}
 }

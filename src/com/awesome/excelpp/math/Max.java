@@ -3,7 +3,7 @@ package com.awesome.excelpp.math;
 import com.awesome.excelpp.math.exception.MathException;
 
 public class Max extends Formula {
-	public double getValue(Object ... args) throws MathException {
+	public Double getValue(Object ... args) throws MathException {
 		double maximum = Double.MIN_VALUE;
 		
 		for(Object o : args) {

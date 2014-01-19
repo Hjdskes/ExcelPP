@@ -3,7 +3,7 @@ package com.awesome.excelpp.math;
 import com.awesome.excelpp.math.exception.MathException;
 
 public class And extends Formula {
-	public double getValue(Object... args) throws MathException {
+	public Double getValue(Object... args) throws MathException {
 		double res = 0.0;
 		for(int i = 0; i< args.length; i++) {
 			System.out.println(args[i]);
