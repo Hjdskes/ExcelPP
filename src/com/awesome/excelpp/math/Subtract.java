@@ -7,6 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Subtract extends Formula {
+	@Override
 	public Object getValue(Object ... args) throws MathException {
 		if (args.length < 1)
 			throw new MathException();

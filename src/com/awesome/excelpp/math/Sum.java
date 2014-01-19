@@ -6,7 +6,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * The add function returns the sum of all its arguments.
  * @author Team Awesome
  */
-public class Add extends Formula {
+public class Sum extends Formula {
 	@Override
 	public Double getValue(Object ... args) throws MathException  {
 		double sum = 0;
