@@ -11,11 +11,15 @@ import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.awt.Color;
 
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Class that represents a cell inside the <code>SpreadSheetTable</code>.
  * @author Team Awesome
  */
-public class Cell {
+public class Cell extends Observable implements Observer {
 	private String content; // =2+2
 	private SpreadSheet sheet;
 	private int fontBold; // 1 = bold, 0 = niet bold
@@ -24,6 +28,9 @@ public class Cell {
 	private Color backgroundColor;
 	private Color restoreBackground;
 	private boolean parsing;
+	
+	ArrayList<Observer> observers;
+	ArrayList<Cell> observing;
 	
 	/**
 	 * Constructs a new <code>Cell</code>.
@@ -42,6 +49,8 @@ public class Cell {
 		this.foregroundColor = foregroundColor;
 		this.backgroundColor = backgroundColor;
 		this.parsing = false;
+		this.observers = new ArrayList<Observer>();
+		this.observing = new ArrayList<Cell>();
 	}
 
 	/**
@@ -99,6 +108,14 @@ public class Cell {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		
+		for (Cell c : observing) {
+			c.deleteObserver(this);
+		}
+		observing.clear();
+		
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -286,7 +303,7 @@ public class Cell {
 				return "#INFREF";
 			}
 		}
-		
+
 		return content == null ? "" : content;
 	}
 
@@ -307,6 +324,44 @@ public class Cell {
 		if(!oldValue.equals(newValue)) {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue);
 			this.getSheet().getUndoSupport().postEdit(e);
+		}
+	}
+	
+	@Override
+	public synchronized void addObserver(Observer o) {
+		for (Object c : observers) {
+			if (c == o)
+				return;
+		}
+		observers.add(o);
+	}
+	
+	@Override
+	public synchronized void deleteObserver(Observer o) {
+		observers.remove(o);
+		super.deleteObserver(o);
+	}
+	
+	public void Observe(Cell other) throws ReferenceException {
+		for (Object o : observing) {
+			if (o == other) {
+				return;
+			}
+		}
+		observing.add(other);
+		other.addObserver(this);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		setChanged();
+		notifyObservers();
+	}
+	
+	@Override
+	public void notifyObservers() {
+		for (Observer o : observers) {
+			o.update(this, null);
 		}
 	}
 }

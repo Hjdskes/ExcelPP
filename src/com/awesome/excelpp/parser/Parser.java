@@ -1,7 +1,9 @@
 package com.awesome.excelpp.parser;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
@@ -234,13 +236,14 @@ public class Parser {
 				} catch (NoSuchElementException e) {
 					throw new ReferenceException();
 				}
-				int startRow = Integer.parseInt(range[0].substring(1));
+				
+				int startRow = Integer.parseInt(range[0].substring(1)) - 1;
 				int startCol = (int) range[0].charAt(0);
 				startCol -= 65;
-				int endRow = Integer.parseInt(range[1].substring(1));
+				int endRow = Integer.parseInt(range[1].substring(1)) - 1;
 				int endCol = (int) range[1].charAt(0);
 				endCol -= 65;
-
+				
 				for(int row = startRow; row <= endRow; row++){
 					for(int col = startCol; col <= endCol; col++){
 						arity++;
@@ -254,7 +257,7 @@ public class Parser {
 				break;
 			case CELL:
 				String ref = output.removeLast().data;
-				int row = Integer.parseInt(ref.substring(1));
+				int row = Integer.parseInt(ref.substring(1)) - 1;
 				int col = (int) ref.charAt(0);
 				col -= 65;
 
