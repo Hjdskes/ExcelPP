@@ -12,15 +12,10 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Product extends Formula {
 	@Override
 	public Double getValue(Object...args) throws MathException {
-		double product = 0;
+		double product = 0.0;
 
 		for(Object o : args) {
-			if (o instanceof Integer)
-				o = new Double((Integer)o);
-			else if (!(o instanceof Double))
-				throw new MathException();
-
-			product *= (Double)o;
+			product *= getDouble(o);
 		}
 		return product;
 	}

@@ -22,7 +22,7 @@ public abstract class Formula {
 	 * @return The double value of the argument
 	 * @throws MathException If the argument was not a number
 	 */
-	public double getDouble(Object arg) throws MathException{
+	public double getDouble(Object arg) throws MathException {
 		if (arg instanceof Integer)
 			arg = ((Integer)arg).doubleValue();
 		
@@ -38,7 +38,7 @@ public abstract class Formula {
 	 * @return The integer value of the argument
 	 * @throws MathException If the argument was not a number
 	 */
-	public int getInteger(Object arg) throws MathException{
+	public int getInteger(Object arg) throws MathException {
 		if (arg instanceof Double)
 			arg = ((Double)arg).intValue();
 		
@@ -54,7 +54,7 @@ public abstract class Formula {
 	 * @return The String value of the argument
 	 * @throws MathException If the argument could not be converted.
 	 */
-	public String getString(Object arg) throws MathException{
+	public String getString(Object arg) throws MathException {
 		if (arg instanceof Integer)
 			arg = ((Integer)arg).toString();
 		if (arg instanceof Double)

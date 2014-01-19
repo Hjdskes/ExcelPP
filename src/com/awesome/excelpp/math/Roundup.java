@@ -9,11 +9,9 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Roundup extends Formula {
 	@Override
 	public Double getValue(Object...args) throws MathException {
-		if (args[0] instanceof Integer)
-			args[0] = new Double((Integer)args[0]);
-		else if (!(args[0] instanceof Double))
+		if (args.length != 1)
 			throw new MathException();
 
-		return Math.ceil((Double)args[0]);
+		return Math.ceil(getDouble(args[0]));
 	}
 }
