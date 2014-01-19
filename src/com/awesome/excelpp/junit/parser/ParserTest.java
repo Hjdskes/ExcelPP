@@ -113,7 +113,11 @@ public class ParserTest {
 	@Test
 	public void test_function() throws ParserException {
 		expected = 6.0;
-		result = new Parser("=Add(2,4)").eval();
+		result = new Parser("=Sum(2,4)").eval();
+		assertEquals(expected, (Double)result, .001);
+		
+		expected = 6.0;
+		result = new Parser("=Sum(10,-4)").eval();
 		assertEquals(expected, (Double)result, .001);
 		
 		expected = -1.0;
@@ -124,7 +128,7 @@ public class ParserTest {
 	@Test
 	public void test_nested_functions() throws ParserException {
 		expected = 3.0;
-		result = new Parser("=Add(1,2,Add(-3,4),Subtract(5,6))").eval();
+		result = new Parser("=Sum(1,2,Sum(-3,4),Subtract(5,6))").eval();
 		assertEquals(expected, (Double)result, .001);
 	}
 	
@@ -147,7 +151,7 @@ public class ParserTest {
 		testSheet.setValueAt(new Cell(testSheet, "=4"), 4, 0);
 		
 		expected = 20.0;
-		result = new Parser("=Add(A1:A5)", testSheet).eval();
+		result = new Parser("=Sum(A1:A5)", testSheet).eval();
 		assertEquals(expected, (Double)result, .001);
 	}
 	
@@ -158,7 +162,7 @@ public class ParserTest {
 		testSheet.setValueAt(new Cell(testSheet, "=4"), 1, 0);
 		
 		expected = 10.0;
-		result = new Parser("=Add(A1:A2, 2)", testSheet).eval();
+		result = new Parser("=Sum(A1:A2, 2)", testSheet).eval();
 		assertEquals(expected, (Double)result, .001);
 	}
 	
@@ -179,7 +183,7 @@ public class ParserTest {
 		testSheet.setValueAt(new Cell(testSheet, "=4"), 1, 0);
 		
 		exception.expect(ReferenceException.class);
-		result = new Parser("=Add(2, 2) + A1:A2", testSheet).eval();
+		result = new Parser("=Sum(2, 2) + A1:A2", testSheet).eval();
 	}
 	
 	//@Test
@@ -189,7 +193,7 @@ public class ParserTest {
 		testSheet.setValueAt("=4", 1, 0);
 		
 		exception.expect(ReferenceException.class);
-		result = new Parser("=Add(2+A1:A2)", testSheet).eval();
+		result = new Parser("=Sum(2+A1:A2)", testSheet).eval();
 	}
 	
 	@Test
@@ -207,31 +211,31 @@ public class ParserTest {
 	@Test
 	public void test_invalid_function1() throws ParserException {
 		exception.expect(MissingRBracketException.class);
-		result = new Parser("=Add(").eval();
+		result = new Parser("=Sum(").eval();
 	}
 	
 	@Test
 	public void test_invalid_function2() throws ParserException {
 		exception.expect(MissingLBracketException.class);
-		result = new Parser("=Add())").eval();
+		result = new Parser("=Sum())").eval();
 	}
 	
 	@Test
 	public void test_invalid_function3() throws ParserException {
 		exception.expect(MissingLBracketException.class);
-		result = new Parser("=Add").eval();
+		result = new Parser("=Sum").eval();
 	}
 	
 	@Test
 	public void test_invalid_function4() throws ParserException {
 		exception.expect(MissingArgException.class);
-		result = new Parser("=Add()").eval();
+		result = new Parser("=Sum()").eval();
 	}
 	
 	@Test
 	public void test_invalid_function5() throws ParserException {
 		exception.expect(MissingLBracketException.class);
-		result = new Parser("=Add 5,5").eval();
+		result = new Parser("=Sum 5,5").eval();
 	}
 	
 	@Test

@@ -145,6 +145,7 @@ public class Parser {
 				} catch (NoSuchElementException e) {
 					throw new MissingLBracketException();
 				}
+				lastWasNumber = false;
 				break;
 			case WORD:
 				numargsStack.push(1);
