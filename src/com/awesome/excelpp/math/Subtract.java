@@ -3,8 +3,8 @@ package com.awesome.excelpp.math;
 import com.awesome.excelpp.math.exception.MathException;
 
 /**
- * Class for the substract formula
- *
+ * The subtract function returns the value of the first argument, minus all the other arguments.
+ * @author Team Awesome
  */
 public class Subtract extends Formula {
 	public double getValue(Object ... args) throws MathException {

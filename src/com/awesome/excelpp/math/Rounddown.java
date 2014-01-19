@@ -1,8 +1,11 @@
 package com.awesome.excelpp.math;
 
+/**
+ * Rounds a number down, toward zero.
+ * @author Team Awesome
+ */
 public class Rounddown {
 	public double getValue(double...numbers) {
-		double down = Math.floor(numbers[0]);
-		return down;
+		return Math.floor(numbers[0]);
 	}
 }
