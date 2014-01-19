@@ -24,8 +24,7 @@ public abstract class Formula {
 	 */
 	public double getDouble(Object arg) throws MathException {
 		if (arg instanceof Integer)
-			arg = ((Integer)arg).doubleValue();
-		
+			return ((Integer)arg).doubleValue();
 		if (!(arg instanceof Double))
 			throw new MathException();
 		
@@ -40,8 +39,7 @@ public abstract class Formula {
 	 */
 	public int getInteger(Object arg) throws MathException {
 		if (arg instanceof Double)
-			arg = ((Double)arg).intValue();
-		
+			return ((Double)arg).intValue();
 		if (!(arg instanceof Integer))
 			throw new MathException();
 		
@@ -56,10 +54,9 @@ public abstract class Formula {
 	 */
 	public String getString(Object arg) throws MathException {
 		if (arg instanceof Integer)
-			arg = ((Integer)arg).toString();
+			return ((Integer)arg).toString();
 		if (arg instanceof Double)
-			arg = ((Double)arg).toString();
-		
+			return ((Double)arg).toString();
 		if (!(arg instanceof String))
 			throw new MathException();
 		
