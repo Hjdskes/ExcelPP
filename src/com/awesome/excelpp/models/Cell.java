@@ -9,14 +9,12 @@ import com.awesome.excelpp.parser.exception.ParserException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.awt.Color;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Class that represents a cell inside the <code>SpreadSheetTable</code>.
  * @author Team Awesome
  */
-public class Cell extends Observable implements Observer {
+public class Cell {
 	private String content; // =2+2
 	private SpreadSheet sheet;
 	private int fontBold; // 1 = bold, 0 = niet bold
@@ -97,8 +95,6 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
-		setChanged();
-		notifyObservers();
 	}
 	
 	/**
@@ -115,8 +111,6 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -141,8 +135,6 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -166,8 +158,6 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -200,8 +190,6 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -249,7 +237,7 @@ public class Cell extends Observable implements Observer {
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
-				Parser parse = new Parser(content, sheet, this);
+				Parser parse = new Parser(content, sheet);
 				parse.toPostfix();
 				return parse.eval().toString();
 			} catch (ParserException e) {
@@ -286,11 +274,5 @@ public class Cell extends Observable implements Observer {
 			TableCellEdit e = new TableCellEdit(this, oldValue, newValue);
 			this.getSheet().getUndoSupport().postEdit(e);
 		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		setChanged();
-		notifyObservers();
 	}
 }

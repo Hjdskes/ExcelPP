@@ -194,16 +194,14 @@ public class ParserTest {
 	
 	@Test
 	public void test_function_string1() throws ParserException {
-		expected = 1.0;
 		result = new Parser("=IsNumber(2)").eval();
-		assertEquals(expected, (Double)result, .001);
+		assertTrue((Boolean)result);
 	}
 	
 	@Test
 	public void test_function_string2() throws ParserException {
-		expected = 0.0;
 		result = new Parser("=IsNumber(\"test\")").eval();
-		assertEquals(expected, (Double)result, .001);
+		assertFalse((Boolean)result);
 	}
 	
 	@Test
