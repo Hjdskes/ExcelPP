@@ -4,9 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.awesome.excelpp.math.Add;
-import com.awesome.excelpp.math.And;
 import com.awesome.excelpp.math.Count;
+import com.awesome.excelpp.math.CountIf;
 import com.awesome.excelpp.math.Counta;
 import com.awesome.excelpp.math.exception.MathException;
 
@@ -29,6 +28,13 @@ public class CountTest {
 	public void CountaTest() throws MathException {
 		String expected = "3";
 		String result = new Counta().getValue(2.0, 0, 8, "Test");
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void CountIf() throws MathException {
+		String expected = "2";
+		String result = new CountIf().getValue(8, 0, 8, "Test", "Hallo", 8.0, 5, 8);
 		assertEquals(expected, result);
 	}
 }

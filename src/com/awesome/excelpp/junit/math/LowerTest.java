@@ -12,4 +12,9 @@ public class LowerTest {
 	public void Lower() throws MathException {
 		assertEquals("test", new Lower().getValue("TEST"));
 	}
+	
+	@Test(expected = MathException.class)
+	public void NotLower() throws MathException {
+		assertEquals("test", new Lower().getValue(10));
+	}
 }
