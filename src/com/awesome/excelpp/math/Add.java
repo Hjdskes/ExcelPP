@@ -3,7 +3,7 @@ package com.awesome.excelpp.math;
 import com.awesome.excelpp.math.exception.MathException;
 
 /**
- * Class for the add formula
+ * Class for the Add formula
  *
  */
 public class Add extends Formula {
