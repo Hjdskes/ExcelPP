@@ -1,11 +1,27 @@
 package com.awesome.excelpp.math;
 
-public class Product extends Formula{
-	public double getValue(double...numbers) {
+import com.awesome.excelpp.math.exception.MathException;
+
+/**
+ * The Product function multiplies all the numbers given as arguments and returns the product.
+ * <p>For example, if cells A1 and A2 contain numbers,
+ * you can use the formula =PRODUCT(A1, A2) to multiply those two numbers together.
+ * You can also perform the same operation by using the multiply (*) mathematical operator; for example, =A1 * A2.</p>
+ * @author Team Awesome
+ */
+public class Product extends Formula {
+	@Override
+	public Double getValue(Object...args) throws MathException {
 		double product = 0;
-		for(int i=0; i < numbers.length; i++) {
-			product = product*numbers[i];
+
+		for(Object o : args) {
+			if (o instanceof Integer)
+				o = new Double((Integer)o);
+			else if (!(o instanceof Double))
+				throw new MathException();
+
+			product *= (Double)o;
 		}
-	return product;
+		return product;
 	}
 }

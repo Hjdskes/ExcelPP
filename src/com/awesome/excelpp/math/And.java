@@ -2,7 +2,12 @@ package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
 
+/**
+ * Returns true if all its arguments evaluate to true; returns false if one or more arguments evaluate to false.
+ * @author Team Awesome
+ */
 public class And extends Formula {
+	@Override
 	public Double getValue(Object... args) throws MathException {
 		double res = 0.0;
 		for(int i = 0; i< args.length; i++) {

@@ -2,7 +2,10 @@ package com.awesome.excelpp.math;
 
 import java.util.ArrayList;
 
-
+/**
+ * Returns true if any argument is true; returns false if all arguments are false.
+ * @author Team Awesome
+ */
 public class Or {
 	public double or(ArrayList<Logic> arguments) {
 		double res = 0.0;
