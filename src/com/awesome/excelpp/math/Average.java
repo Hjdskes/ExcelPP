@@ -3,7 +3,7 @@ package com.awesome.excelpp.math;
 import com.awesome.excelpp.math.exception.MathException;
 
 public class Average extends Formula {
-	public String getValue(Object ... args) throws MathException {
+	public double getValue(Object ... args) throws MathException {
 		double sum = 0;
 		int total = 0;
 		
@@ -17,6 +17,6 @@ public class Average extends Formula {
 			sum += (Double)o;
 			total++;
 		}
-		return String.valueOf(sum / total);	
+		return sum / total;	
 	}
 }

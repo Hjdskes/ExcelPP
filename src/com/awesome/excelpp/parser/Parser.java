@@ -284,6 +284,7 @@ public class Parser {
 					}
 				} else {
 					// TODO: Do something with strings...
+					// Moet dit niet gewoon een MathException returnen? Of wil je iets doen met String concat?
 					throw new MissingArgException();
 				}
 				break;
@@ -331,11 +332,11 @@ public class Parser {
 	 * @return The evaluated {@link Formula}
 	 * @throws FormulaException
 	 */
-	private double evalFunction(String function, Object ... args) throws FormulaException {
+	private Object evalFunction(String function, Object ... args) throws FormulaException {
 		String packageName = "com.awesome.excelpp.math";
 		String formulaNameFull = packageName + '.' + function;
 		Formula formula;
-		double value = 0;
+		Object value = null;
 		
 		try {
 			Class<?> formulaClass = Class.forName(formulaNameFull);
