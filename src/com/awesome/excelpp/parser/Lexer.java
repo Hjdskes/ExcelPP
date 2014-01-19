@@ -72,6 +72,7 @@ public class Lexer {
 	    		} while (input.charAt(i) != '"');
 	    		token.append(input.charAt(i));
 	    		tokens.add(new Token(TokenType.STRING, token.toString()));
+	    		token = new StringBuilder();
 	    		setState(State.NONE);
 	    		break;
 	    	default:

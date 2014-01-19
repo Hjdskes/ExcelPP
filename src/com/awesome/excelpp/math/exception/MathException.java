@@ -1,5 +1,7 @@
 package com.awesome.excelpp.math.exception;
 
-public class MathException extends Exception {
+import com.awesome.excelpp.parser.exception.ParserException;
+
+public class MathException extends ParserException {
 	private static final long serialVersionUID = 1L;
 }
