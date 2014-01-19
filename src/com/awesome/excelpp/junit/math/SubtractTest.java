@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.awesome.excelpp.math.Add;
 import com.awesome.excelpp.math.Subtract;
 import com.awesome.excelpp.math.exception.MathException;
 
@@ -12,7 +11,7 @@ public class SubtractTest {
 	@Test
 	public void Subtract() throws MathException {
 		double expected = -10.0;
-		double result = new Subtract().getValue(2, 4, 8);
+		double result = (Double)new Subtract().getValue(2, 4, 8);
 		assertEquals(expected, result, .001);
 	}
 	

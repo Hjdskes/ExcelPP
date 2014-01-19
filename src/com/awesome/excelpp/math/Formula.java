@@ -12,7 +12,7 @@ public abstract class Formula {
 	
 	public double getDouble(Object arg) throws MathException{
 		if (arg instanceof Integer)
-			arg = (Double)arg;
+			arg = ((Integer)arg).doubleValue();
 		if (!(arg instanceof Double))
 			throw new MathException();
 		return (Double)arg;
@@ -20,7 +20,7 @@ public abstract class Formula {
 	
 	public int getInteger(Object arg) throws MathException{
 		if (arg instanceof Double)
-			arg = (Integer)arg;
+			arg = ((Double)arg).intValue();
 		if (!(arg instanceof Integer))
 			throw new MathException();
 		return (Integer)arg;
