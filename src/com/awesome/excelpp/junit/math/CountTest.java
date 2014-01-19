@@ -12,15 +12,15 @@ import com.awesome.excelpp.math.exception.MathException;
 public class CountTest {
 	@Test
 	public void Count() throws MathException {
-		double expected = 2.0;
-		double result = new And().getValue(2);
-		assertEquals(expected, result, .001);
+		String expected = "1";
+		String result = new Count().getValue(2);
+		assertEquals(expected, result);
 	}
 	
 	@Test
 	public void CountTest2() throws MathException {
-		double expected = 3.0;
-		double result = new And().getValue(2, 0, 8);
-		assertEquals(expected, result, .001);
+		String expected = "3";
+		String result = new Count().getValue(2, 0, 8);
+		assertEquals(expected, result);
 	}
 }

@@ -5,10 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.awesome.excelpp.math.Lower;
+import com.awesome.excelpp.math.exception.MathException;
 
 public class LowerTest {
 	@Test
-	public void Lower() {
+	public void Lower() throws MathException {
 		assertEquals("test", new Lower().getValue("TEST"));
 	}
 }
