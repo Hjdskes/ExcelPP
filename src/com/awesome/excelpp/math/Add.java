@@ -9,17 +9,9 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Add extends Formula {
 	public Double getValue(Object ... args) throws MathException  {
 		double sum = 0;
-		
 		for (Object o : args) {
-			if (o instanceof Integer)
-				o = new Double((Integer)o);
-			
-			if (!(o instanceof Double))
-				throw new MathException();
-			
-			sum += (Double)o;
+			sum += super.getNumber(o);
 		}
-	        
 		return sum;
 	}
 }

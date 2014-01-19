@@ -12,8 +12,8 @@ public class Int extends Formula {
 			else if(vars[0] instanceof Double) {
 				temp = (Double) vars[0];
 			}
-		int integer = (int) temp;
-		return integer;
+			int integer = (int) temp;
+			return integer;
 		
 		} catch(Exception e) {
 			throw new MathException();
