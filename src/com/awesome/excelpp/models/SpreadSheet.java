@@ -11,7 +11,7 @@ import com.awesome.excelpp.writers.Writer;
 /**
  * This class represents the model for a <code>SpreadSheet</code>.
  * This is the class that holds an internal representation of all data entered in Excel++
- * <code>SpreadSheet</code> maintains an internal hashmap containing all <code>Cell</cell> objects
+ * <code>SpreadSheet</code> maintains an internal hashmap containing all <code>Cell</code> objects
  * and keeps track of their location in the current SpreadSheet.
  * It is also used by <code>SpreadSheetTable</code> to query for values to display on screen.
  * @author Team Awesome
