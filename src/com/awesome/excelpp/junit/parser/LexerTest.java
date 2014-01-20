@@ -127,7 +127,7 @@ public class LexerTest {
 		Token next;
 		next = lex.next();
 		assertEquals(TokenType.STRING, next.type);
-		assertTrue(next.data.equals("\"test\""));
+		assertTrue(next.data.equals("test"));
 	}
 	
 	@Test
@@ -137,7 +137,7 @@ public class LexerTest {
 		Token next;
 		next = lex.next();
 		assertEquals(TokenType.STRING, next.type);
-		assertTrue(next.data.equals("\"test\""));
+		assertTrue(next.data.equals("test"));
 		
 		next = lex.next();
 		assertEquals(TokenType.PLUSMINUS, next.type);
@@ -170,7 +170,7 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(TokenType.STRING, next.type);
-		assertTrue(next.data.equals("\"test\""));
+		assertTrue(next.data.equals("test"));
 		
 		next = lex.next();
 		assertEquals(TokenType.DELIM, next.type);
