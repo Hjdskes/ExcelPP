@@ -23,7 +23,6 @@ public class IsNumber extends Formula {
 				res = false;
 			}
 		}
-		
 		else if (!(args[0] instanceof Double) && !(args[0] instanceof Integer))
 				res = false;
 
