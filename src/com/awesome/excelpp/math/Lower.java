@@ -4,6 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Converts all uppercase letters in a text string to lowercase.
+ * <p>Syntax: =Lower(text);</p>
  * @author Team Awesome
  */
 public class Lower extends Formula {

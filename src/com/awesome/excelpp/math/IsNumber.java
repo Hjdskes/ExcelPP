@@ -4,6 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns the logical value true if value is a number; otherwise, it returns false.
+ * <p>Syntax: =IsNumber(value);</p>
  * @author Team Awesome
  */
 public class IsNumber extends Formula {

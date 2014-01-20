@@ -1,5 +1,6 @@
 package com.awesome.excelpp.math;
 
+<<<<<<< HEAD
 import com.awesome.excelpp.math.exception.MathException;
 
 public class Not extends Formula {
@@ -45,4 +46,14 @@ public class Not extends Formula {
 		}
 	}
 	
+=======
+/**
+ * Reverses the value of its argument.
+ * <p>Use Not when you want to make sure a value is not equal to one particular value.
+ * </br>Syntax: =Not(logical);</p>
+ * @author Team Awesome
+ */
+public class Not {
+
+>>>>>>> 4d5fe631fc3b104b7164735a865d930a5f537078
 }

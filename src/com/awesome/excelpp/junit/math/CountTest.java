@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.awesome.excelpp.math.Count;
 import com.awesome.excelpp.math.CountIf;
-import com.awesome.excelpp.math.Counta;
+import com.awesome.excelpp.math.CountA;
 import com.awesome.excelpp.math.exception.MathException;
 
 public class CountTest {

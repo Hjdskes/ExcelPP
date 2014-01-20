@@ -2,6 +2,8 @@ package com.awesome.excelpp.parser;
 
 import java.util.LinkedList;
 
+import static com.awesome.excelpp.parser.TokenType.*;
+
 /**
  * This class splits an incoming String into Tokens for analysis by the {@link Parser}.
  * @author Team Awesome
@@ -21,15 +23,6 @@ public class Lexer {
 		if (input == null)
 			return;
 		
-		if (input.length() > 0 && input.charAt(0) != '=') {
-			try {
-				tokens.add(new Token(TokenType.NUMBER, new Double(Double.parseDouble(input)).toString()));
-			} catch (NumberFormatException e) {
-				tokens.add(new Token(TokenType.STRING, input));
-			}
-			return;
-		}
-		
 	    for (int i = 0; i < input.length(); i++) {
 	    	char ch = input.charAt(i);
 	    	
@@ -37,24 +30,24 @@ public class Lexer {
 	    	case '*':
 	    	case '/':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(TokenType.MULTDIV, Character.toString(ch)));
+	    		tokens.add(new Token(MULTDIV, Character.toString(ch)));
 	    		break;
 	    	case '+':
 	    	case '-':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(TokenType.PLUSMINUS, Character.toString(ch)));
+	    		tokens.add(new Token(PLUSMINUS, Character.toString(ch)));
 	    		break;
 	    	case '(':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(TokenType.LBRACKET, Character.toString(ch)));
+	    		tokens.add(new Token(LBRACKET, Character.toString(ch)));
 	    		break;
 	    	case ')':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(TokenType.RBRACKET, Character.toString(ch)));
+	    		tokens.add(new Token(RBRACKET, Character.toString(ch)));
 	    		break;
 	    	case ',':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(TokenType.DELIM, Character.toString(ch)));
+	    		tokens.add(new Token(DELIM, Character.toString(ch)));
 	    		break;
 	    	case ':':
 	    		token.append(ch);
@@ -67,11 +60,11 @@ public class Lexer {
 	    		setState(State.NONE);
 	    		break;
 	    	case '"':
-	    		do {
-	    			token.append(input.charAt(i++));
-	    		} while (input.charAt(i) != '"');
-	    		token.append(input.charAt(i));
-	    		tokens.add(new Token(TokenType.STRING, token.toString()));
+	    		while (input.charAt(++i) != '"') {
+	    			token.append(input.charAt(i));
+	    		}
+	    		tokens.add(new Token(STRING, token.toString()));
+	    		token = new StringBuilder();
 	    		setState(State.NONE);
 	    		break;
 	    	default:
@@ -94,7 +87,7 @@ public class Lexer {
 	    	}
 	    }
 	    setState(State.NONE);
-	    tokens.add(new Token(TokenType.EOL, null));
+	    tokens.add(new Token(EOL, null));
 	}
 	
 	/**
@@ -110,7 +103,7 @@ public class Lexer {
 	 * @return The next {@link Token}
 	 */
 	public Token next() {
-		return hasNext() ? tokens.pop() : new Token(TokenType.EOL, null);
+		return hasNext() ? tokens.pop() : new Token(EOL, null);
 	}
 	
 	/**
@@ -120,17 +113,17 @@ public class Lexer {
 	private void setState(State state) {
 		if (this.state != state &&
 				(state != State.CELL && state != State.CELLRANGE)) {
-			if (this.state == State.NUMBER){
-				tokens.add(new Token(TokenType.NUMBER, token.toString()));
-			}else if(this.state == State.CELL){
+			if (this.state == State.NUMBER) {
+				tokens.add(new Token(NUMBER, token.toString()));
+			} else if (this.state == State.CELL) {
 				String temp = token.toString();
-				if(temp.indexOf(':') == -1){					
-					tokens.add(new Token(TokenType.CELL, temp));
-				}else{					
-					tokens.add(new Token(TokenType.CELLRANGE, temp));
+				if (temp.indexOf(':') == -1) {					
+					tokens.add(new Token(CELL, temp));
+				} else {					
+					tokens.add(new Token(CELLRANGE, temp));
 				}
-			}else if (this.state == State.WORD){
-				tokens.add(new Token(TokenType.WORD, token.toString()));
+			} else if (this.state == State.WORD) {
+				tokens.add(new Token(WORD, token.toString()));
 			}
 			token = new StringBuilder();
 		}

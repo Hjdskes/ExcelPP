@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
+import static com.awesome.excelpp.parser.TokenType.*;
 
 /**
  * The Parser analyzes whether the tokens follow correct grammar for an Excel++ expression.
@@ -94,8 +95,8 @@ public class Parser {
 				break;
 			case MULTDIV:
 				while(!operators.isEmpty() &&
-						(operators.getFirst().type == TokenType.MULTDIV ||
-						operators.getFirst().type == TokenType.UNARYMINUS))
+						(operators.getFirst().type == MULTDIV ||
+						operators.getFirst().type == UNARYMINUS))
 				{
 					output.push(operators.pop());
 				}
@@ -104,12 +105,12 @@ public class Parser {
 				break;
 			case PLUSMINUS:
 				if(!lastWasNumber && currentToken.data.equals("-")) {
-					operators.push(new Token(TokenType.UNARYMINUS, "-"));
+					operators.push(new Token(UNARYMINUS, "-"));
 				} else {
 					while(!operators.isEmpty() &&
-							(operators.getFirst().type == TokenType.PLUSMINUS ||
-							operators.getFirst().type == TokenType.MULTDIV ||
-							operators.getFirst().type == TokenType.UNARYMINUS))
+							(operators.getFirst().type == PLUSMINUS ||
+							operators.getFirst().type == MULTDIV ||
+							operators.getFirst().type == UNARYMINUS))
 					{
 						output.push(operators.pop());
 					}
@@ -123,11 +124,11 @@ public class Parser {
 				break;
 			case RBRACKET:
 				try {
-					while(!(operators.getFirst().type == TokenType.LBRACKET)){
+					while(!(operators.getFirst().type == LBRACKET)){
 						output.push(operators.pop());
 					}
 					operators.pop();
-					if (!operators.isEmpty() && operators.getFirst().type == TokenType.WORD){
+					if (!operators.isEmpty() && operators.getFirst().type == WORD){
 						output.push(operators.pop());
 						arityStack.push(numargsStack.pop());
 					}
@@ -139,7 +140,7 @@ public class Parser {
 				try {
 					Integer numargs = numargsStack.pop() + 1;
 					numargsStack.push(numargs);
-					while(!(operators.getFirst().type == TokenType.LBRACKET)){
+					while(!(operators.getFirst().type == LBRACKET)){
 						output.push(operators.pop());
 					}
 				} catch (NoSuchElementException e) {
@@ -241,6 +242,7 @@ public class Parser {
 				try {
 					value = Double.parseDouble(cellref.toString());
 				} catch (NumberFormatException e) {
+					value = cellref.toString();
 					//TODO: Do something with strings...
 				}
 				evalStack.push(value);
@@ -258,19 +260,23 @@ public class Parser {
 				}
 				
 				if (a instanceof Double && b instanceof Double) {
-					if(op.data.equals("+")){
+					if (op.data.equals("+")) {
 						evalStack.push(new Double((Double)a + (Double)b));
-					}else if(op.data.equals("-")){
+					} else if (op.data.equals("-")) {
 						evalStack.push(new Double((Double)a - (Double)b));
-					}else if(op.data.equals("*")){
+					} else if (op.data.equals("*")) {
 						evalStack.push(new Double((Double)a * (Double)b));
-					}else{
+					} else {
 						evalStack.push(new Double((Double)a / (Double)b));
 					}
 				} else {
 					// TODO: Do something with strings...
 					// Moet dit niet gewoon een MathException returnen? Of wil je iets doen met String concat?
-					throw new MissingArgException();
+					if (op.data.equals("+")) {
+						evalStack.push(a.toString() + b.toString());
+					} else {
+						throw new MissingArgException();
+					}
 				}
 				break;
 			case WORD:

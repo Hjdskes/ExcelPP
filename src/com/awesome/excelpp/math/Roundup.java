@@ -4,6 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Rounds a number up, away from 0 (zero).
+ * <p>Syntax: =Roundup(number, num_digits);</p>
  * @author Team Awesome
  */
 public class Roundup extends Formula {
