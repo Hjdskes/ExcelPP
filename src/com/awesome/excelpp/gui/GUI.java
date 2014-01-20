@@ -3,6 +3,7 @@ package com.awesome.excelpp.gui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -288,15 +289,15 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public static final void removeTab(int index) {
 		int tabCount = mainTabs.getTabCount();
-		System.out.println(index);
 		if(tabCount > 1) { //er moet ten minste één tab open blijven
 			if (closeFile(index) == 0) {
+				CloseableTabComponent[] tabComponents = new CloseableTabComponent[tabCount];
+				for (int i = index; i < tabCount; i++) {
+					tabComponents[i] = (CloseableTabComponent)mainTabs.getTabComponentAt(i);
+				}
 				mainTabs.remove(index);
-				CloseableTabComponent comp;
-				for(int i = index + 1; i <= tabCount - 2; i++) { //"herstel" alle indices van de CloseableTabComponents
-					System.out.println("Old index: " + i + "\nNew Index: " + (i - 1) + "\n\n");
-					comp = (CloseableTabComponent)mainTabs.getTabComponentAt(i);
-					comp.setIndex(i - 1);
+				for(int i = tabCount - 1; i >= index; i--) { //"herstel" alle indices van de CloseableTabComponents
+					tabComponents[i].setIndex(i - 1);
 				}
 			}
 		}
