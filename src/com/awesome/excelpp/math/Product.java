@@ -7,7 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * <p>For example, if cells A1 and A2 contain numbers,
  * you can use the formula =Product(A1, A2) to multiply those two numbers together.
  * You can also perform the same operation by using the multiply (*) mathematical operator; for example, =A1 * A2.
- * Syntax: =Product(number1, [number2], ...);</p>
+ * </br>Syntax: =Product(number1, [number2], ...);</p>
  * @author Team Awesome
  */
 public class Product extends Formula {
