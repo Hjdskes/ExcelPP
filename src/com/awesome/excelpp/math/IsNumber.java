@@ -24,12 +24,6 @@ public class IsNumber extends Formula {
 			} else if (!(args[0] instanceof Double) && !(args[0] instanceof Integer))
 				res = false;
 		}
-<<<<<<< HEAD
-		else if (!(args[0] instanceof Double) && !(args[0] instanceof Integer))
-				res = false;
-
-=======
->>>>>>> 30f48358da5738d636c0a6594b4af051178b5559
 		return res;
 	}
 }
