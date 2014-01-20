@@ -65,7 +65,7 @@ public class SpreadSheet extends AbstractTableModel {
 	 * Returns the <code>Cell</code> at coordinates (row, col) from this <code>SpreadSheet</code>.
 	 * @param row Representing y-coordinate
 	 * @param col Representing x-coordinate
-	 * @return The <code>Cell<code> object at specified row and column
+	 * @return The <code>Cell</code> object at specified row and column
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
