@@ -3,7 +3,8 @@ package com.awesome.excelpp.math;
 import com.awesome.excelpp.math.exception.MathException;
 
 /**
- * Returns true if number is even, or false if number is odd. 
+ * Returns true if number is even, or false if number is odd.
+ * <p>Syntax: =IsEven(value);</p> 
  * @author Team Awesome
  */
 public class IsEven extends Formula {

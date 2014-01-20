@@ -4,6 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * The subtract function returns the value of the first argument, minus all the other arguments.
+ * <p>Syntax: =Subtract(value1, [value2], ...);</p>
  * @author Team Awesome
  */
 public class Subtract extends Formula {

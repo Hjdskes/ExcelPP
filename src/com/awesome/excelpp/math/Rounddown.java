@@ -4,6 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Rounds a number down, toward zero.
+ * <p>Syntax: =Rounddown(number, num_digits);</p>
  * @author Team Awesome
  */
 public class Rounddown extends Formula {

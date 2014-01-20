@@ -4,7 +4,8 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns the remainder after the first argument is divided by the second argument.
- * <p>The result has the same sign as divisor.</p>
+ * <p>The result has the same sign as divisor.
+ * Syntax: =Mod(number1, number2);</p>
  * @author Team Awesome
  */
 public class Mod extends Formula {

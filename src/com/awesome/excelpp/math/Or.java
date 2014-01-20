@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Returns true if any argument is true; returns false if all arguments are false.
+ * <p>Syntax: =Or(logical1, [logical2], ...);</p>
  * @author Team Awesome
  */
 public class Or {
