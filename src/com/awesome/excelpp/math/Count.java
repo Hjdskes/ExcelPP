@@ -15,5 +15,4 @@ public class Count extends Formula {
 		}*/
 		return args.length;
 	}
-	
 }

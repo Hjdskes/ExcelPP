@@ -27,7 +27,7 @@ public class CountTest {
 	@Test
 	public void CountaTest() throws MathException {
 		String expected = "3";
-		String result = new Counta().getValue(2.0, 0, 8, "Test");
+		String result = new CountA().getValue(2.0, 0, 8, "Test");
 		assertEquals(expected, result);
 	}
 	

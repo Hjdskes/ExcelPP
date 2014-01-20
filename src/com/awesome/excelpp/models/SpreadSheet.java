@@ -10,10 +10,10 @@ import com.awesome.excelpp.writers.Writer;
 
 /**
  * This class represents the model for a <code>SpreadSheet</code>.
- * This is the class that holds an internal representation of all data entered in Excel++
- * <code>SpreadSheet</code> maintains an internal hashmap containing all <code>Cell</code> objects
- * and keeps track of their location in the current SpreadSheet.
- * It is also used by <code>SpreadSheetTable</code> to query for values to display on screen.
+ * <p>This is the class that holds an internal representation of all data entered in Excel++.
+ * The <code>SpreadSheet</code> maintains an internal <code>HashMap</code> containing all <code>Cell</code> objects
+ * and keeps track of their location in the current <code>SpreadSheet</code>.
+ * It is also used by <code>SpreadSheetTable</code> to query for values to display on screen.</p>
  * @author Team Awesome
  */
 public class SpreadSheet extends AbstractTableModel {
@@ -34,7 +34,8 @@ public class SpreadSheet extends AbstractTableModel {
 
 	/**
 	 * Returns <code>Cell.class</code> regardless of columnIndex.
-	 * In our implementation all columns contain data of type Cell, therefore the returned type is always the same.
+	 * In our implementation all columns contain data of type <code>Cell</code>,
+	 * therefore the returned type is always the same.
 	 * @return Cell.class
 	 */
 	@Override
@@ -77,9 +78,9 @@ public class SpreadSheet extends AbstractTableModel {
 	}
 
 	/**
-	 * Check if the <code>Cell</code> at coordinates (row, col) is editable.
-	 * Excel++ does not implement functionality to disable editing of cells.
-	 * Therefore this returns true regardless of row and column.
+	 * Checks if the <code>Cell</code> at coordinates (row, col) is editable.
+	 * Excel++ does not implement functionality to disable editing of <code>Cells</code>.
+	 * Therefore this method returns true regardless of row and column.
 	 * @return True
 	 */
 	@Override
@@ -131,19 +132,20 @@ public class SpreadSheet extends AbstractTableModel {
 	
 	/* OTHER */
 	/**
-	 * Returns the hashmap key of the <code>Cell</code> at the specified position inside this <code>SpreadSheet</code>.
+	 * Returns the <code>HashMap</code> key of the <code>Cell</code> at the specified position inside this <code>SpreadSheet</code>.
 	 * @param row The row of this <code>Cell</code>
 	 * @param col The column of this <code>Cell</code>
-	 * @return The hashmap key of this <code>Cell</code>
+	 * @return The <code>HashMap</code> key of this <code>Cell</code>
 	 */
 	private int getNumCell(int row, int col) {
 		return row * numberOfCols + col;
 	}
 	
 	/**
-	 * Returns the coordinates (row, col) from the hashmap key of the <code>Cell</code>.
-	 * This function is only used by <code>SpreadSheet</code> itself, during write(), therefore it's private.
-	 * @param nr A hashmap key for a <code>Cell</code> object.
+	 * Returns the coordinates (row, col) from the <code>HashMap</code> key of the <code>Cell</code>.
+	 * This function is only used by <code>SpreadSheet</code> itself, during <code>write()</code>,
+	 * therefore it's private.
+	 * @param nr A <code>HashMap</code> key for a <code>Cell</code> object.
 	 * @return An array of size 2 containing the (row, col) coordinates of the passed hashmap key
 	 */
 	private int[] getXYCell(int nr) {

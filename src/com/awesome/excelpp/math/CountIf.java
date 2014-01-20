@@ -14,7 +14,6 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class CountIf extends Formula {
-
 	@Override
 	public String getValue(Object... args) throws MathException {
 		 int count = 0;
