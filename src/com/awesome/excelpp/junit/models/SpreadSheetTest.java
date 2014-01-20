@@ -62,12 +62,12 @@ public class SpreadSheetTest {
 		sheet.setValueAt(new Cell(sheet, null), 0, 0);
 		sheet.setValueAt(new Cell(sheet, "2"), 0, 1);
 		sheet.setValueAt(new Cell(sheet, "test"), 0, 2);
-		sheet.setValueAt(new Cell(sheet, "=Add(2,2)"), 0, 3);
+		sheet.setValueAt(new Cell(sheet, "=Sum(2,2)"), 0, 3);
 		assertTrue(sheet.getValueAt(0, 3).toString().equals("4.0"));
 		
 		String expected = "row=1, col=2, content=2\n" +
 							"row=1, col=3, content=test\n" +
-							"row=1, col=4, content==Add(2,2)\n";
+							"row=1, col=4, content==Sum(2,2)\n";
 		
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
