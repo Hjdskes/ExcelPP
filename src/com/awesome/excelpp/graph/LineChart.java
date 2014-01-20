@@ -14,11 +14,27 @@ import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
+/**
+ * Class that constructs a <code>LineChart</code> from the data in a sheet
+ * @author Team Awesome
+ *
+ */
 public class LineChart extends JFrame{
 
 	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Constructs a <code>lineChart</code> and adds it to a  <code>ChartPanel</code>
+	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>LineChart</code>
+	 * @param rows Array of the selected rows that will be put into the <code>LineChart</code>
+	 * @param columns Array of the selected columns that will be put into the <code>LineChart</code>
+	 * @param mainTitle Main title of the chart
+	 * @param titleX Title of the x-axis of the chart
+	 * @param titleY Title of the y-axis of the chart
+	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
+	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
+	 */
 	public LineChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
 		super("LineChart");
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
@@ -44,7 +60,13 @@ public class LineChart extends JFrame{
 		setContentPane(panel);
 	}
 	
-	
+	/**
+	 * Creates a <code>DefaultCategoryDataset</code> that can be used for drawing charts
+	 * @param horizontalNames If put into a table this would be the names of each column
+	 * @param verticalNames If put into a table this would be the names of each row
+	 * @param values ArrayList containing the values belonging to the horizontal and vertical names.
+	 * @return<code>DefaultCategoryDataset</code> containing the data taken from horizontalNames, verticalNames and values
+	 */
 	static DefaultCategoryDataset createData(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(horizontalNames.size() * verticalNames.size() == values.size()){
@@ -63,6 +85,12 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
+	/**
+	 * Creates a <code>DefaultCategoryDataset</code> that can be used for drawing charts
+	 * @param names ArrayList containing the names used for each line
+	 * @param values ArrayList containing the values belonging to the names
+	 * @return <code>DefaultCategoryDataset</code> containing the data taken from names and values
+	 */
 	public static DefaultCategoryDataset createData(ArrayList<String> names, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(names.size() == values.size()){
@@ -79,11 +107,28 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
+	/**
+	 * Creates a <code>LineChart</code>
+	 * @param data Contains the data that should be put into the <code>LineChart</code>
+	 * @param mainTitle Main title of the chart
+	 * @param titleX Title of the x-axis of the chart
+	 * @param titleY Title of the y-axis of the chart
+	 * @return <code>JFreeChart</code> chart created from the specified data
+	 */
 	private JFreeChart createChart(DefaultCategoryDataset data, String mainTitle, String titleX, String titleY){
 		JFreeChart chart = ChartFactory.createLineChart(mainTitle,titleX, titleY, data);
 		return chart;
 	}
 	
+	/**
+	 * Retrieves the names of each column (for a x rows by x columns <code>LineChart</code>)
+	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>LineChart</code>
+	 * @param rows rows Array of the selected rows that will be put into the <code>Linechart</code>
+	 * @param columns Array of the selected columns that will be put into the <code>Linechart</code>
+	 * @return <code>ArrayList</code> containing all the names of the columns
+	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
+	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
+	 */
 	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		int firstRow; int startInt; int endInt;
 		try{
@@ -110,6 +155,15 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
+	/**
+	 * Retrieves the names of each row (for a x rows by x columns <code>LineChart</code>)
+	 * @param sheet <code>SpreadSheet</code> containing the cells you want to put into a <code>LineChart</code>
+	 * @param rows rows Array of the selected rows that will be put into the <code>LineChart</code>
+	 * @param columns Array of the selected columns that will be put into the <code>LineChart</code>
+	 * @return <code>ArrayList</code> containing all the names of the columns
+	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
+	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
+	 */
 	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		int firstRow; int startInt; int secondRow;
 		try{
@@ -137,6 +191,15 @@ public class LineChart extends JFrame{
 		return res;
 	}
 	
+	/**
+	 * Retrieves the values of the cells (for a x rows by x columns <code>LineChart</code>)
+	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>LineChart</code>
+	 * @param rows Array of the selected rows that will be put into the <code>LineChart</code>
+	 * @param columns Array of the selected columns that will be put into the <code>LineChart</code>
+	 * @return <code>ArrayList</code> containing all the values
+	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
+	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LinceChart</code>
+	 */
 	public static ArrayList<Double> getValuesXRowsXColumns(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		int firstRow; int secondRow; int startInt; int endInt; Double add; int horizontalLength; int verticalLength;
 		try{
@@ -169,11 +232,28 @@ public class LineChart extends JFrame{
 		return res;
 		
 	}
-	
+	/**
+	 * Retrieves the names of each column (for a 2 rows by x columns <code>LineChart</code>)
+	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>LineChart</code>
+	 * @param rows Array of the selected rows that will be put into the <code>LineChart</code>
+	 * @param columns Array of the selected columns that will be put into the <code>LineChart</code>
+	 * @return <code>ArrayList</code> containing all the names
+	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
+	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
+	 */
 	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		return PieChart.getNames(sheet, rows, columns);
 	}
 	
+	/**
+	 * Retrieves the values of the cells (for a 2 rows by x columns <code>LineChart</code>)
+	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>LineChart</code>
+	 * @param rows Array of the selected rows that will be put into the <code>LineChart</code>
+	 * @param columns Array of the selected columns that will be put into the <code>LineChart</code>
+	 * @return <code>ArrayList</code> containing all the values
+	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
+	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
+	 */
 	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		return PieChart.getValues(sheet, rows, columns);
 	}
