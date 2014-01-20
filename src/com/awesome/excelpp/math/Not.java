@@ -9,18 +9,13 @@ import com.awesome.excelpp.math.exception.MathException;
  * </br>Syntax: =Not(logical);</p>
  * @author Team Awesome
  */
-
 public class Not extends Formula {
-
 	@Override
 	public String getValue(Object... args) throws MathException {
-
-			if(args[0] instanceof Boolean) {
+		if(args[0] instanceof Boolean) {
 			boolean x = (Boolean) args[0];
 			return (String.valueOf(!x));
-		}
-	
-		else if (args[0] instanceof Double) {
+		} else if (args[0] instanceof Double) {
 			double ret = 0.0;
 			if((double) args[0] == 0.0) {
 				ret = 1.0;
@@ -32,9 +27,7 @@ public class Not extends Formula {
 				throw new MathException();
 			}
 			return String.valueOf(ret);
-		}
-			
-		else if(args[0] instanceof Integer) {
+		} else if(args[0] instanceof Integer) {
 			int ret = 0;
 			if((int) args[0] == 0) {
 				ret = 1;
@@ -46,9 +39,7 @@ public class Not extends Formula {
 				throw new MathException();
 			}
 			return String.valueOf(ret);
-		}
-			
-		else {
+		} else {
 			throw new MathException();
 		}
 	}

@@ -7,8 +7,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * <p>Syntax: =CountA(value1, [value2], ...);</p>
  * @author Team Awesome
  */
-public class Counta extends Formula {
-	
+public class CountA extends Formula {
 		@Override
 		public Integer getValue(Object... args) throws MathException {
 			 int count = 0;
