@@ -1,4 +1,4 @@
-package com.awesome.exelpp.junit.graph;
+package com.awesome.excelpp.junit.graph;
 
 import static org.junit.Assert.*;
 

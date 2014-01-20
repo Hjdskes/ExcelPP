@@ -14,16 +14,14 @@ import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.SpreadSheet;
 
 /**
- * Class that constructs a <code>BarChart</code> from the data in a sheet
+ * The Barchart class constructs a <code>BarChart</code> from the data in a <code>SpreadSheet</code>.
  * @author Team Awesome
- *
  */
 public class BarChart extends JFrame{
-	
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs a <code>BarChart</code> and adds it to a <code>ChartPanel</code>
+	 * Constructs a <code>BarChart</code> and adds it to a <code>ChartPanel</code>.
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
 	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
@@ -50,15 +48,15 @@ public class BarChart extends JFrame{
 			ArrayList<Double> values = getValues(sheet, rows, columns);
 			data = createData(names, values);
 		}
-		
+
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setContentPane(panel);
 	}
-	
+
 	/**
-	 * Creates a <code>DefaultCategoryDataset</code> that can be used for drawing charts
+	 * Creates a <code>DefaultCategoryDataset</code> that can be used for drawing charts.
 	 * @param names ArrayList containing the names used for each bar
 	 * @param values ArrayList containing the values belonging to the names
 	 * @return <code>DefaultCategoryDataset</code> containing the data taken from names and values
@@ -70,17 +68,15 @@ public class BarChart extends JFrame{
 				res.setValue(values.get(i),names.get(i) , "");
 			}
 		}
-		
-		else{
+		else {
 			System.err.println("The arrayLists differ in size");
 		}
-		
-		
+
 		return res;
 	}
 	
 	/**
-	 * Creates a <code>DefaultCategoryDataset</code> that can be used for drawing charts
+	 * Creates a <code>DefaultCategoryDataset</code> that can be used for drawing charts.
 	 * @param horizontalNames If put into a table this would be the names of each column
 	 * @param verticalNames If put into a table this would be the names of each row
 	 * @param values ArrayList containing the values belonging to the horizontal and vertical names.
@@ -89,9 +85,9 @@ public class BarChart extends JFrame{
 	private DefaultCategoryDataset createData(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values){
 		return LineChart.createData(horizontalNames, verticalNames, values);
 	}
-	
+
 	/**
-	 * Creates a <code>BarChart</code>
+	 * Creates a <code>BarChart</code>.
 	 * @param data Contains the data that should be put into the <code>BarChart</code>
 	 * @param mainTitle Main title of the chart
 	 * @param titleX Title of the x-axis of the chart
@@ -102,9 +98,9 @@ public class BarChart extends JFrame{
 		JFreeChart chart = ChartFactory.createBarChart3D(mainTitle,titleX, titleY, data);
 		return chart;
 	}
-	
+
 	/**
-	 * Retrieves the names of each column (for a 2 rows by x columns <code>BarChart</code>)
+	 * Retrieves the names of each column (for a 2 rows by x columns <code>BarChart</code>).
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
 	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
@@ -116,9 +112,9 @@ public class BarChart extends JFrame{
 		ArrayList<String> res= PieChart.getNames(sheet, rows, columns);
 		return res;
 	}
-	
+
 	/**
-	 * Retrieves the values of the cells (for a 2 rows by x columns <code>BarChart</code>)
+	 * Retrieves the values of the cells (for a 2 rows by x columns <code>BarChart</code>).
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
 	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
@@ -130,9 +126,9 @@ public class BarChart extends JFrame{
 		ArrayList<Double> res = PieChart.getValues(sheet, rows, columns);
 		return res;
 	}
-	
+
 	/**
-	 * Retrieves the names of each column (for a x rows by x columns <code>BarChart</code>)
+	 * Retrieves the names of each column (for a x rows by x columns <code>BarChart</code>).
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
 	 * @param rows rows Array of the selected rows that will be put into the <code>Barchart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>Barchart</code>
@@ -143,9 +139,9 @@ public class BarChart extends JFrame{
 	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		return LineChart.getHorizontalNames(sheet, rows, columns);
 	}
-	
+
 	/**
-	 * Retrieves the names of each row (for a x rows by x columns <code>BarChart</code>)
+	 * Retrieves the names of each row (for a x rows by x columns <code>BarChart</code>).
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to put into a <code>BarChart</code>
 	 * @param rows rows Array of the selected rows that will be put into the <code>BarChart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
@@ -156,9 +152,9 @@ public class BarChart extends JFrame{
 	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		return LineChart.getVerticalNames(sheet, rows, columns);
 	}
-	
+
 	/**
-	 * Retrieves the values of the cells (for a x rows by x columns <code>BarChart</code>)
+	 * Retrieves the values of the </code>Cells</code> (for a x rows by x columns <code>BarChart</code>).
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
 	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
