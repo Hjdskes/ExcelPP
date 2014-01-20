@@ -318,7 +318,7 @@ public class Parser {
 	
 	/**
 	 * Evaluates a {@link Formula} using the formulas in package <code>com.awesome.excelpp.math</code>.
-	 * @param formulaName The {@link Formula} name
+	 * @param function The {@link Formula} name
 	 * @param args The {@link Formula} arguments (1..*)
 	 * @return The evaluated {@link Formula}
 	 * @throws FormulaException

@@ -1,4 +1,4 @@
-﻿package com.awesome.excelpp.gui;
+package com.awesome.excelpp.gui;
 
 import java.io.File;
 import java.io.FileNotFoundException;
