@@ -18,7 +18,7 @@ import com.awesome.excelpp.writers.Writer;
  */
 public class SpreadSheet extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
-	protected final short numberOfRows = 42;
+	protected final short numberOfRows = 75;
 	protected final short numberOfCols = 26;
 	private HashMap<Integer, Cell> cells;
 	private UndoableEditSupport undoSupport;
