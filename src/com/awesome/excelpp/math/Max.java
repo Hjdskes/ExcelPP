@@ -2,19 +2,19 @@ package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
 
+/**
+ * Returns the largest value in a set of values.
+ * <p>Syntax: =Maz(value1, [value2], ...);</p>
+ * @author Team Awesome
+ */
 public class Max extends Formula {
-	public double getValue(Object ... args) throws MathException {
+	@Override
+	public Double getValue(Object ... args) throws MathException {
 		double maximum = Double.MIN_VALUE;
-		
+
 		for(Object o : args) {
-			if (o instanceof Integer)
-				o = new Double((Integer)o);
-			
-			if (!(o instanceof Double))
-				throw new MathException();
-			
-			if (maximum < (Double)o)
-				maximum = (Double)o;
+			if (maximum < getDouble(o))
+				maximum = getDouble(o);
 		}
 		return maximum;	
 	}

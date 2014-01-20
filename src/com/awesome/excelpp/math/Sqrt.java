@@ -1,9 +1,18 @@
 package com.awesome.excelpp.math;
 
-public class Sqrt {
-	public double getValue(double...numbers) {
-		double sqrt = 0;
-		sqrt = Math.sqrt(numbers[0]);
-	return sqrt;
+import com.awesome.excelpp.math.exception.MathException;
+
+/**
+ * Returns a positive square root.
+ * <p>Syntax: =Sqrt(number);</p>
+ * @author Team Awesome
+ */
+public class Sqrt extends Formula {
+	@Override
+	public Double getValue(Object...args) throws MathException {
+		if (args.length != 1)
+			throw new MathException();
+
+		return Math.sqrt(getDouble(args[0]));
 	}
 }	

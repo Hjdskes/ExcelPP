@@ -2,15 +2,21 @@ package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
 
+/**
+ * Returns true if number is even, or false if number is odd.
+ * <p>Syntax: =IsEven(value);</p> 
+ * @author Team Awesome
+ */
 public class IsEven extends Formula {
 	@Override
-	public double getValue(Object ... args) throws MathException {
-		if (!(args.length == 1 && args[0] instanceof Double))
+	public Boolean getValue(Object ... args) throws MathException {
+		if (args.length != 1)
 			throw new MathException();
-		
-		double res = 0.0;
-		if ((Double)args[0] % 2 == 0)
-			res = 1.0;
+
+		boolean res = false;
+		if (getDouble(args[0]) % 2 == 0.0)
+			res = true;
+
 		return res;
 	}
 }

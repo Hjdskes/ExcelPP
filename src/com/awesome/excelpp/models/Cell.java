@@ -237,9 +237,9 @@ public class Cell {
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
-				Parser parse = new Parser(content.substring(1), sheet);
+				Parser parse = new Parser(content, sheet);
 				parse.toPostfix();
-				return String.valueOf(parse.eval());
+				return parse.eval().toString();
 			} catch (ParserException e) {
 				backgroundColor = Color.red;
 				if (e instanceof MissingRBracketException ||

@@ -1,14 +1,32 @@
 package com.awesome.excelpp.math;
 
+import com.awesome.excelpp.math.exception.MathException;
+
+/**
+ * Returns the logical value true if value is a number; otherwise, it returns false.
+ * <p>Syntax: =IsNumber(value);</p>
+ * @author Team Awesome
+ */
 public class IsNumber extends Formula {
-	public double getValue(Object ... args) {
-		double res = 1.0;
+	@Override
+	public Boolean getValue(Object ... args) throws MathException {
+		boolean res = true;
+
+		if (args.length != 1)
+			throw new MathException();
 		
-		for (Object o : args) {
-			if (!(o instanceof Double) && !(o instanceof Integer))
-				res = 0.0;
+		else if(args[0] instanceof String) {
+			try {
+				double test = Double.parseDouble((String)args[0]);
+				res = true;
+			} catch(Exception e) {
+				res = false;
+			}
 		}
 		
+		else if (!(args[0] instanceof Double) && !(args[0] instanceof Integer))
+				res = false;
+
 		return res;
 	}
 }

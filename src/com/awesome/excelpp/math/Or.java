@@ -2,9 +2,14 @@ package com.awesome.excelpp.math;
 
 import java.util.ArrayList;
 
-
+/**
+ * Returns true if any argument is true; returns false if all arguments are false.
+ * <p>Syntax: =Or(logical1, [logical2], ...);</p>
+ * @author Team Awesome
+ */
 public class Or {
-	public double or(ArrayList<Logic> arguments) {
+	@Override
+	public double Or(ArrayList<Logic> arguments) {
 		double res = 0.0;
 		for(int i = 0; i< arguments.size()-1; i++) {
 			switch(arguments.get(i).opp) {

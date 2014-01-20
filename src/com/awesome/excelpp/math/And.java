@@ -1,37 +1,20 @@
 package com.awesome.excelpp.math;
 
-import java.util.ArrayList;
-
 import com.awesome.excelpp.math.exception.MathException;
 
-public class And extends Logic {
-	public double getValue(ArrayList<Logic> arguments) {
-		double res = 0.0;
-		for(int i = 0; i< arguments.size()-1; i++) {
-			switch(arguments.get(i).opp) {
-			case 0:
-				res = ((LogicInt) arguments.get(i)).largerThan();
-				break;
-			case 1:
-				res = ((LogicInt) arguments.get(i)).smallerThan();
-				break;
-			case 2:
-				 res = arguments.get(i).equality();
-				break;
-			}
+/**
+ * Returns true if all its arguments evaluate to true; returns false if one or more arguments evaluate to false.
+ * <p></br>Syntax: =And(logical1, [logical2], ...);</p>
+ * @author Team Awesome
+ */
+public class And extends Formula {
+	@Override
+	public Object getValue(Object... args) throws MathException {
+		boolean res = true;;
+		for (Object o : args) {
+			if (getInteger(o) == 0)
+				res = false;
 		}
 		return res;
-	}
-
-	@Override
-	public double getValue(Object ... numbers) throws MathException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double equality() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

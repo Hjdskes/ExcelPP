@@ -19,67 +19,67 @@ public class LexerTest {
 	
 	@Test
 	public void test_Constructor_Plus() {
-		lex = new Lexer("2+2");
+		lex = new Lexer("=2+2");
 		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.PLUSMINUS, "+"));
 	}
 	
 	@Test
 	public void test_Constructor_Minus() {
-		lex = new Lexer("2-2");
+		lex = new Lexer("=2-2");
 		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.PLUSMINUS, "-"));
 	}
 	
 	@Test
 	public void test_Constructor_Mult() {
-		lex = new Lexer("2*2");
+		lex = new Lexer("=2*2");
 		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.MULTDIV, "*"));
 	}
 	
 	@Test
 	public void test_Constructor_Div() {
-		lex = new Lexer("2/2");
+		lex = new Lexer("=2/2");
 		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.MULTDIV, "/"));
 	}
 	
 	@Test
 	public void test_Constructor_Double() {
-		lex = new Lexer("2.+2");
+		lex = new Lexer("=2.+2");
 		test_ExprBinaryTwoArgs("2.", "2", new Token(TokenType.PLUSMINUS, "+"));
 	}
 	
 	@Test
 	public void test_Constructor_Formule() {
-		lex = new Lexer("Add(2,4)");
+		lex = new Lexer("=Add(2,4)");
 		test_ExprTwoArgs("Add", "2", "4");
 	}
 	
 	@Test
 	public void test_Constructor_FormuleSpace() {
-		lex = new Lexer("Add(2, 4)");
+		lex = new Lexer("=Add(2, 4)");
 		test_ExprTwoArgs("Add", "2", "4");
 	}
 	
 	@Test
 	public void test_Constructor_FormuleSpaces() {
-		lex = new Lexer(" Add ( 2 , 4 ) ");
+		lex = new Lexer("= Add ( 2 , 4 ) ");
 		test_ExprTwoArgs("Add", "2", "4");
 	}
 	
 	@Test
 	public void test_Constructor_FormuleSpacesNumbers() {
-		lex = new Lexer(" Add ( 24571 , 17843 ) ");
+		lex = new Lexer("= Add ( 24571 , 17843 ) ");
 		test_ExprTwoArgs("Add", "24571", "17843");
 	}
 	
 	@Test
 	public void test_Constructor_FormuleNumbers() {
-		lex = new Lexer(" Add(24571,17843)");
+		lex = new Lexer("= Add(24571,17843)");
 		test_ExprTwoArgs("Add", "24571", "17843");
 	}
 	
 	@Test
 	public void test_Constructor_FormuleBinaryOP() {
-		lex = new Lexer("24571+17843-Add(2,4)");
+		lex = new Lexer("=24571+17843-Add(2,4)");
 		test_ExprBinaryTwoArgs("24571", "17843", new Token(TokenType.PLUSMINUS, "+"));
 		
 		Token next = lex.next();
@@ -90,7 +90,7 @@ public class LexerTest {
 	
 	@Test
 	public void test_Constructor_Cell_1() {
-		lex = new Lexer("B1+B1");
+		lex = new Lexer("=B1+B1");
 		
 		Token next;
 		next = lex.next();
@@ -106,7 +106,7 @@ public class LexerTest {
 	
 	@Test
 	public void test_Constructor_Cell_2() {
-		lex = new Lexer("B1:BB78+B1:BB78");
+		lex = new Lexer("=B1:BB78+B1:BB78");
 		
 		Token next;
 		next = lex.next();
@@ -127,17 +127,17 @@ public class LexerTest {
 		Token next;
 		next = lex.next();
 		assertEquals(TokenType.STRING, next.type);
-		assertTrue(next.data.equals("\"test\""));
+		assertTrue(next.data.equals("test"));
 	}
 	
 	@Test
 	public void test_Constructor_String_2() {
-		lex = new Lexer("\"test\" + 2 + Add(2, 4)");
+		lex = new Lexer("=\"test\" + 2 + Add(2, 4)");
 		
 		Token next;
 		next = lex.next();
 		assertEquals(TokenType.STRING, next.type);
-		assertTrue(next.data.equals("\"test\""));
+		assertTrue(next.data.equals("test"));
 		
 		next = lex.next();
 		assertEquals(TokenType.PLUSMINUS, next.type);
@@ -156,7 +156,7 @@ public class LexerTest {
 	
 	@Test
 	public void test_Constructor_String_3() {
-		lex = new Lexer("Add(\"test\", 4)");
+		lex = new Lexer("=Add(\"test\", 4)");
 		
 		Token next;
 		
@@ -170,7 +170,7 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(TokenType.STRING, next.type);
-		assertTrue(next.data.equals("\"test\""));
+		assertTrue(next.data.equals("test"));
 		
 		next = lex.next();
 		assertEquals(TokenType.DELIM, next.type);

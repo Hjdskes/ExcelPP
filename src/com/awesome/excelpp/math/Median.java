@@ -6,8 +6,17 @@ import java.util.List;
 
 import com.awesome.excelpp.math.exception.MathException;
 
+/**
+ * Returns the median of the given numbers.
+ * <p>The median is the number in the middle of a set of numbers;
+ * that is, half the numbers have values that are greater than the median,
+ * and half have values that are less.
+ * </br>Syntax: =Median(value1, [value2], ...);</p>
+ * @author Team Awesome
+ */
 public class Median extends Formula {
-	public double getValue(Object ... args) throws MathException {
+	@Override
+	public Double getValue(Object ... args) throws MathException {
 		double median = 0;
 		
 		List<Double> doubles = new ArrayList<Double>();	

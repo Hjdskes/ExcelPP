@@ -31,8 +31,8 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_Formule() {
-		Cell cell = new Cell(null, "=Add(2,4)");
-		assertTrue(cell.getContent().equals("=Add(2,4)"));
+		Cell cell = new Cell(null, "=Sum(2,4)");
+		assertTrue(cell.getContent().equals("=Sum(2,4)"));
 		
 		expected = 6.0;
 		result = Double.parseDouble(cell.toString());
@@ -42,8 +42,8 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_FormuleSpace() {
-		Cell cell = new Cell(null, "=Add(32, 56)");
-		assertTrue(cell.getContent().equals("=Add(32, 56)"));
+		Cell cell = new Cell(null, "=Sum(32, 56)");
+		assertTrue(cell.getContent().equals("=Sum(32, 56)"));
 		
 		expected = 88.0;
 		result = Double.parseDouble(cell.toString());
@@ -53,8 +53,8 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_FormuleSpaces() {
-		Cell cell = new Cell(null, "= Add ( 12 , 46 ) ");
-		assertTrue(cell.getContent().equals("= Add ( 12 , 46 ) "));
+		Cell cell = new Cell(null, "= Sum ( 12 , 46 ) ");
+		assertTrue(cell.getContent().equals("= Sum ( 12 , 46 ) "));
 		
 		expected = 58.0;
 		result = Double.parseDouble(cell.toString());
@@ -64,24 +64,24 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_FormuleInvalid1() {
-		Cell cell = new Cell(null, "=Add");
-		assertTrue(cell.getContent().equals("=Add"));
+		Cell cell = new Cell(null, "=Sum");
+		assertTrue(cell.getContent().equals("=Sum"));
 		assertTrue(cell.toString().equals("#ARGINV"));
 		assertFalse(cell.isEmpty());
 	}
 	
 	@Test
 	public void test_Constructor_FormuleInvalid2() {
-		Cell cell = new Cell(null, "=Add(");
-		assertTrue(cell.getContent().equals("=Add("));
+		Cell cell = new Cell(null, "=Sum(");
+		assertTrue(cell.getContent().equals("=Sum("));
 		assertTrue(cell.toString().equals("#ARGINV"));
 		assertFalse(cell.isEmpty());
 	}
 	
 	@Test
 	public void test_Constructor_FormuleInvalid3() {
-		Cell cell = new Cell(null, "=Add()");
-		assertTrue(cell.getContent().equals("=Add()"));
+		Cell cell = new Cell(null, "=Sum()");
+		assertTrue(cell.getContent().equals("=Sum()"));
 		assertTrue(cell.toString().equals("#ARGINV"));
 		assertFalse(cell.isEmpty());
 	}
@@ -96,8 +96,8 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_FormuleInvalid5() {
-		Cell cell = new Cell(null, "=Add(INV,INV)");
-		assertTrue(cell.getContent().equals("=Add(INV,INV)"));
+		Cell cell = new Cell(null, "=Sum(INV,INV)");
+		assertTrue(cell.getContent().equals("=Sum(INV,INV)"));
 		assertTrue(cell.toString().equals("#ARGINV"));
 		assertFalse(cell.isEmpty());
 	}
@@ -112,16 +112,16 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_FormuleInvalid7() {
-		Cell cell = new Cell(null, "=Add)2,4)");
-		assertTrue(cell.getContent().equals("=Add)2,4)"));
+		Cell cell = new Cell(null, "=Sum)2,4)");
+		assertTrue(cell.getContent().equals("=Sum)2,4)"));
 		assertTrue(cell.toString().equals("#ARGINV"));
 		assertFalse(cell.isEmpty());
 	}
 	
 	@Test
 	public void test_Constructor_FormuleInvalid8() {
-		Cell cell = new Cell(null, "=Add(2,4(");
-		assertTrue(cell.getContent().equals("=Add(2,4("));
+		Cell cell = new Cell(null, "=Sum(2,4(");
+		assertTrue(cell.getContent().equals("=Sum(2,4("));
 		assertTrue(cell.toString().equals("#ARGINV"));
 		assertFalse(cell.isEmpty());
 	}
@@ -144,8 +144,8 @@ public class CellTest {
 	
 	@Test
 	public void test_Constructor_FormuleInvalid11() {
-		Cell cell = new Cell(new SpreadSheet(), "=Add(A1:A4)");
-		assertTrue(cell.getContent().equals("=Add(A1:A4)"));
+		Cell cell = new Cell(new SpreadSheet(), "=Sum(A1:A4)");
+		assertTrue(cell.getContent().equals("=Sum(A1:A4)"));
 		assertTrue(cell.toString().equals("0.0"));
 		assertFalse(cell.isEmpty());
 	}
@@ -158,8 +158,8 @@ public class CellTest {
 		assertTrue(cell.getContent().equals("stringCellModified"));
 		assertTrue(cell.toString().equals("stringCellModified"));
 		
-		cell.setContent("=Add(2,4)", true);
-		assertTrue(cell.getContent().equals("=Add(2,4)"));
+		cell.setContent("=Sum(2,4)", true);
+		assertTrue(cell.getContent().equals("=Sum(2,4)"));
 		
 		expected = 6.0;
 		result = Double.parseDouble(cell.toString());
