@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
+import static com.awesome.excelpp.parser.TokenType.*;
 
 /**
  * The Parser analyzes whether the tokens follow correct grammar for an Excel++ expression.
@@ -94,8 +95,8 @@ public class Parser {
 				break;
 			case MULTDIV:
 				while(!operators.isEmpty() &&
-						(operators.getFirst().type == TokenType.MULTDIV ||
-						operators.getFirst().type == TokenType.UNARYMINUS))
+						(operators.getFirst().type == MULTDIV ||
+						operators.getFirst().type == UNARYMINUS))
 				{
 					output.push(operators.pop());
 				}
@@ -104,12 +105,12 @@ public class Parser {
 				break;
 			case PLUSMINUS:
 				if(!lastWasNumber && currentToken.data.equals("-")) {
-					operators.push(new Token(TokenType.UNARYMINUS, "-"));
+					operators.push(new Token(UNARYMINUS, "-"));
 				} else {
 					while(!operators.isEmpty() &&
-							(operators.getFirst().type == TokenType.PLUSMINUS ||
-							operators.getFirst().type == TokenType.MULTDIV ||
-							operators.getFirst().type == TokenType.UNARYMINUS))
+							(operators.getFirst().type == PLUSMINUS ||
+							operators.getFirst().type == MULTDIV ||
+							operators.getFirst().type == UNARYMINUS))
 					{
 						output.push(operators.pop());
 					}
@@ -123,11 +124,11 @@ public class Parser {
 				break;
 			case RBRACKET:
 				try {
-					while(!(operators.getFirst().type == TokenType.LBRACKET)){
+					while(!(operators.getFirst().type == LBRACKET)){
 						output.push(operators.pop());
 					}
 					operators.pop();
-					if (!operators.isEmpty() && operators.getFirst().type == TokenType.WORD){
+					if (!operators.isEmpty() && operators.getFirst().type == WORD){
 						output.push(operators.pop());
 						arityStack.push(numargsStack.pop());
 					}
@@ -139,7 +140,7 @@ public class Parser {
 				try {
 					Integer numargs = numargsStack.pop() + 1;
 					numargsStack.push(numargs);
-					while(!(operators.getFirst().type == TokenType.LBRACKET)){
+					while(!(operators.getFirst().type == LBRACKET)){
 						output.push(operators.pop());
 					}
 				} catch (NoSuchElementException e) {
