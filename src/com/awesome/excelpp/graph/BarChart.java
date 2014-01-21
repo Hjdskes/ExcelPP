@@ -14,7 +14,7 @@ import com.awesome.excelpp.graph.exception.CellInputException;
 import com.awesome.excelpp.models.SpreadSheet;
 
 /**
- * The Barchart class constructs a <code>BarChart</code> from the data in a <code>SpreadSheet</code>.
+ * The BarChart class constructs a <code>BarChart</code> from the data in a <code>SpreadSheet</code>.
  * @author Team Awesome
  */
 public class BarChart extends JFrame{
