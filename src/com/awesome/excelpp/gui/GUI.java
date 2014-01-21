@@ -253,7 +253,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		hotkeyPanel.setEditable(false);
 		hotkeyPanel.setLineWrap(false);
 
-		final String aboutText = "Excel++ is a TU Delft project.\nCopyright 2013 Team Awesome.";
+		final String aboutText = "Some code in this project is taken from other people.\n"
+				+ "These files were shared in the public domain; see the source files for more information.\n"
+				+ "The icons used come from the gnome-colors icon theme and are licensed under the GPL-2 license.\n"
+				+ "Excel++ is a TU Delft project.\nCopyright 2013 Team Awesome.";
 		final JTextArea aboutPanel = new JTextArea(aboutText);
 		aboutPanel.setEditable(false);
 		aboutPanel.setLineWrap(false);
