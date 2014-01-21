@@ -118,7 +118,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonForegroundColor = new JButton();
 		buttonBackgroundColor = new JButton();
 		buttonAbout = new JButton();
-		buttonGraphs = new JButton("Graphs");
+		buttonGraphs = new JButton();
 		
 		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical",
 								 "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not",
@@ -138,6 +138,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final ImageIcon italicIcon = new ImageIcon("data/icons/format-text-italic.png");
 		final ImageIcon foregroundIcon = new ImageIcon("data/icons/color_line.png");
 		final ImageIcon backgroundIcon = new ImageIcon("data/icons/emblem-art.png");
+		final ImageIcon graphsIcon = new ImageIcon("data/icons/graphs.png");
 		final ImageIcon aboutIcon = new ImageIcon("data/icons/gtk-about.png");
 
 		final JLabel formulaLabel = new JLabel(formulaIcon);
@@ -153,6 +154,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonItalic.setIcon(italicIcon);
 		buttonForegroundColor.setIcon(foregroundIcon);
 		buttonBackgroundColor.setIcon(backgroundIcon);
+		buttonGraphs.setIcon(graphsIcon);
 		buttonAbout.setIcon(aboutIcon);
 
 		buttonNew.setToolTipText("New file");
@@ -166,8 +168,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonItalic.setToolTipText("Make this cell's text italic");
 		buttonForegroundColor.setToolTipText("Set this cell's foreground color");
 		buttonBackgroundColor.setToolTipText("Set this cell's background color");
-		buttonAbout.setToolTipText("About");
 		buttonGraphs.setToolTipText("Graphs");
+		buttonAbout.setToolTipText("About");
 
 		panel.add(buttonNew);
 		panel.add(buttonNewTab);
@@ -208,8 +210,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonItalic.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonForegroundColor.addActionListener(this);
 		buttonBackgroundColor.addActionListener(this);
-		buttonAbout.addActionListener(this);
 		buttonGraphs.addActionListener(this);
+		buttonAbout.addActionListener(this);
 
 		return panel;
 	}
