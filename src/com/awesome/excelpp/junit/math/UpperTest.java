@@ -17,4 +17,9 @@ public class UpperTest {
 	public void NotUpper() throws MathException {
 		new Upper().getValue(true);
 	}
+	
+	@Test(expected = MathException.class)
+	public void UpperEmpty() throws MathException {
+		new Upper().getValue();
+	}
 }
