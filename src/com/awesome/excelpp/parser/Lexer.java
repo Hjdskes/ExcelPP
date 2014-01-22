@@ -72,6 +72,12 @@ public class Lexer {
 	    		token = new StringBuilder();
 	    		setState(State.NONE);
 	    		break;
+	    	case '=':
+	    		if (input.charAt(i + 1) == '=') {
+	    			tokens.add(new Token(LOGIC, "=="));
+	    		}
+	    		setState(State.NONE);
+	    		break;
 	    	default:
 	    		if (Character.isDigit(ch)) {
 	    			if(this.state == State.WORD){

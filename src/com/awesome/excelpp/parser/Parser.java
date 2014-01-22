@@ -139,6 +139,7 @@ public class Parser {
 			case RBRACKET:
 				try {
 					while(!(operators.getFirst().type == LBRACKET)){
+						System.out.println(output);
 						output.push(operators.pop());
 					}
 					operators.pop();
@@ -186,6 +187,8 @@ public class Parser {
 		if (output.isEmpty()) {
 			toPostfix();
 		}
+		
+		System.out.println(output);
 		
 		LinkedList<Object> evalStack = new LinkedList<Object>();
 		
@@ -285,6 +288,12 @@ public class Parser {
 						evalStack.push(new Double((Double)a / (Double)b));
 					} else if (op.data.equals(">")) {
 						evalStack.push((Double)a > (Double)b);
+					} else if (op.data.equals("<")) {
+						evalStack.push((Double)a < (Double)b);
+					}
+				} else if (a instanceof Boolean && b instanceof Boolean) {
+					if (op.data.equals("==")) {
+						evalStack.push(a == b);
 					} else if (op.data.equals("<")) {
 						evalStack.push((Double)a < (Double)b);
 					}

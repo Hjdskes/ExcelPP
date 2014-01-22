@@ -8,43 +8,45 @@ import com.awesome.excelpp.parser.Lexer;
 import com.awesome.excelpp.parser.Token;
 import com.awesome.excelpp.parser.TokenType;
 
+import static com.awesome.excelpp.parser.TokenType.*;
+
 public class LexerTest {
 	Lexer lex;
 	
 	@Test
 	public void test_Constructor_Null() {
 		lex = new Lexer(null);
-		assertEquals(TokenType.EOL, lex.next().type);
+		assertEquals(EOL, lex.next().type);
 	}
 	
 	@Test
 	public void test_Constructor_Plus() {
 		lex = new Lexer("=2+2");
-		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.PLUSMINUS, "+"));
+		test_ExprBinaryTwoArgs("2", "2", new Token(PLUSMINUS, "+"));
 	}
 	
 	@Test
 	public void test_Constructor_Minus() {
 		lex = new Lexer("=2-2");
-		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.PLUSMINUS, "-"));
+		test_ExprBinaryTwoArgs("2", "2", new Token(PLUSMINUS, "-"));
 	}
 	
 	@Test
 	public void test_Constructor_Mult() {
 		lex = new Lexer("=2*2");
-		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.MULTDIV, "*"));
+		test_ExprBinaryTwoArgs("2", "2", new Token(MULTDIV, "*"));
 	}
 	
 	@Test
 	public void test_Constructor_Div() {
 		lex = new Lexer("=2/2");
-		test_ExprBinaryTwoArgs("2", "2", new Token(TokenType.MULTDIV, "/"));
+		test_ExprBinaryTwoArgs("2", "2", new Token(MULTDIV, "/"));
 	}
 	
 	@Test
 	public void test_Constructor_Double() {
 		lex = new Lexer("=2.+2");
-		test_ExprBinaryTwoArgs("2.", "2", new Token(TokenType.PLUSMINUS, "+"));
+		test_ExprBinaryTwoArgs("2.", "2", new Token(PLUSMINUS, "+"));
 	}
 	
 	@Test
@@ -80,10 +82,10 @@ public class LexerTest {
 	@Test
 	public void test_Constructor_FormuleBinaryOP() {
 		lex = new Lexer("=24571+17843-Add(2,4)");
-		test_ExprBinaryTwoArgs("24571", "17843", new Token(TokenType.PLUSMINUS, "+"));
+		test_ExprBinaryTwoArgs("24571", "17843", new Token(PLUSMINUS, "+"));
 		
 		Token next = lex.next();
-		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertEquals(PLUSMINUS, next.type);
 		assertTrue(next.data.equals("-"));
 		test_ExprTwoArgs("Add", "2", "4");
 	}
@@ -94,13 +96,13 @@ public class LexerTest {
 		
 		Token next;
 		next = lex.next();
-		assertEquals(TokenType.CELL, next.type);
+		assertEquals(CELL, next.type);
 		assertTrue(next.data.equals("B1"));
 		next = lex.next();
-		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertEquals(PLUSMINUS, next.type);
 		assertTrue(next.data.equals("+"));
 		next = lex.next();
-		assertEquals(TokenType.CELL, next.type);
+		assertEquals(CELL, next.type);
 		assertTrue(next.data.equals("B1"));
 	}
 	
@@ -110,14 +112,30 @@ public class LexerTest {
 		
 		Token next;
 		next = lex.next();
-		assertEquals(TokenType.CELLRANGE, next.type);
+		assertEquals(CELLRANGE, next.type);
 		assertTrue(next.data.equals("B1:BB78"));
 		next = lex.next();
-		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertEquals(PLUSMINUS, next.type);
 		assertTrue(next.data.equals("+"));
 		next = lex.next();
-		assertEquals(TokenType.CELLRANGE, next.type);
+		assertEquals(CELLRANGE, next.type);
 		assertTrue(next.data.equals("B1:BB78"));
+	}
+	
+	@Test
+	public void test_Constructor_Logic_1() {
+		lex = new Lexer("=2<4");
+		
+		Token next;
+		next = lex.next();
+		assertEquals(NUMBER, next.type);
+		assertTrue(next.data.equals("2"));
+		next = lex.next();
+		assertEquals(LOGIC, next.type);
+		assertTrue(next.data.equals("<"));
+		next = lex.next();
+		assertEquals(NUMBER, next.type);
+		assertTrue(next.data.equals("4"));
 	}
 	
 	@Test
@@ -126,7 +144,7 @@ public class LexerTest {
 		
 		Token next;
 		next = lex.next();
-		assertEquals(TokenType.STRING, next.type);
+		assertEquals(STRING, next.type);
 		assertTrue(next.data.equals("test"));
 	}
 	
@@ -136,19 +154,19 @@ public class LexerTest {
 		
 		Token next;
 		next = lex.next();
-		assertEquals(TokenType.STRING, next.type);
+		assertEquals(STRING, next.type);
 		assertTrue(next.data.equals("test"));
 		
 		next = lex.next();
-		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertEquals(PLUSMINUS, next.type);
 		assertTrue(next.data.equals("+"));
 		
 		next = lex.next();
-		assertEquals(TokenType.NUMBER, next.type);
+		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals("2"));
 		
 		next = lex.next();
-		assertEquals(TokenType.PLUSMINUS, next.type);
+		assertEquals(PLUSMINUS, next.type);
 		assertTrue(next.data.equals("+"));
 		
 		test_ExprTwoArgs("Add", "2", "4");
@@ -161,27 +179,27 @@ public class LexerTest {
 		Token next;
 		
 		next = lex.next();
-		assertEquals(TokenType.WORD, next.type);
+		assertEquals(WORD, next.type);
 		assertTrue(next.data.equals("Add"));
 		
 		next = lex.next();
-		assertEquals(TokenType.LBRACKET, next.type);
+		assertEquals(LBRACKET, next.type);
 		assertTrue(next.data.equals("("));
 		
 		next = lex.next();
-		assertEquals(TokenType.STRING, next.type);
+		assertEquals(STRING, next.type);
 		assertTrue(next.data.equals("test"));
 		
 		next = lex.next();
-		assertEquals(TokenType.DELIM, next.type);
+		assertEquals(DELIM, next.type);
 		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
-		assertEquals(TokenType.NUMBER, next.type);
+		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals("4"));
 		
 		next = lex.next();
-		assertEquals(TokenType.RBRACKET, next.type);
+		assertEquals(RBRACKET, next.type);
 		assertTrue(next.data.equals(")"));
 	}
 	
@@ -189,38 +207,38 @@ public class LexerTest {
 		Token next;
 		
 		next = lex.next();
-		assertEquals(TokenType.WORD, next.type);
+		assertEquals(WORD, next.type);
 		assertTrue(next.data.equals(expr));
 		
 		next = lex.next();
-		assertEquals(TokenType.LBRACKET, next.type);
+		assertEquals(LBRACKET, next.type);
 		assertTrue(next.data.equals("("));
 		
 		next = lex.next();
-		assertEquals(TokenType.NUMBER, next.type);
+		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals(arg1));
 		
 		next = lex.next();
-		assertEquals(TokenType.DELIM, next.type);
+		assertEquals(DELIM, next.type);
 		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
-		assertEquals(TokenType.NUMBER, next.type);
+		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals(arg2));
 		
 		next = lex.next();
-		assertEquals(TokenType.RBRACKET, next.type);
+		assertEquals(RBRACKET, next.type);
 		assertTrue(next.data.equals(")"));
 		
 		next = lex.next();
-		assertEquals(TokenType.EOL, next.type);
+		assertEquals(EOL, next.type);
 	}
 	
 	public void test_ExprBinaryTwoArgs(String arg1, String arg2, Token token) {
 		Token next;
 		
 		next = lex.next();
-		assertEquals(TokenType.NUMBER, next.type);
+		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals(arg1));
 		
 		next = lex.next();
@@ -228,7 +246,7 @@ public class LexerTest {
 		assertTrue(next.data.equals(token.data));
 		
 		next = lex.next();
-		assertEquals(TokenType.NUMBER, next.type);
+		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals(arg2));
 	}
 }
