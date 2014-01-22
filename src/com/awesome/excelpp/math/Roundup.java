@@ -12,7 +12,6 @@ public class Roundup extends Formula {
 	public Double getValue(Object...args) throws MathException {
 		if (args.length != 1)
 			throw new MathException();
-
 		return Math.ceil(getDouble(args[0]));
 	}
 }

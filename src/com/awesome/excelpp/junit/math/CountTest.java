@@ -12,29 +12,36 @@ import com.awesome.excelpp.math.exception.MathException;
 public class CountTest {
 	@Test
 	public void Count() throws MathException {
-		String expected = "1";
-		String result = new Count().getValue(2);
+		int expected = 1;
+		int result = new Count().getValue(2);
 		assertEquals(expected, result);
 	}
 	
 	@Test
 	public void CountTest2() throws MathException {
-		String expected = "3";
-		String result = new Count().getValue(2, 0, 8);
+		int expected = 3;
+		int result = new Count().getValue(2, 0, 8);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void CountTest0() throws MathException {
+		int expected = 0;
+		int result = new Count().getValue();
 		assertEquals(expected, result);
 	}
 	
 	@Test
 	public void CountaTest() throws MathException {
-		String expected = "3";
-		String result = new CountA().getValue(2.0, 0, 8, "Test");
+		int expected = 3;
+		int result = new CountA().getValue(2.0, 0, 8, "Test");
 		assertEquals(expected, result);
 	}
 	
 	@Test
 	public void CountIf() throws MathException {
-		String expected = "2";
-		String result = new CountIf().getValue(8, 0, 8, "Test", "Hallo", 8.0, 5, 8);
+		int expected = 2;
+		int result = (int) new CountIf().getValue(8, 0, 8, "Test", "Hallo", 8.0, 5, 8);
 		assertEquals(expected, result);
 	}
 }
