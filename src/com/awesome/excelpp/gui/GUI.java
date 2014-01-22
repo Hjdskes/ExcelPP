@@ -268,7 +268,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		helpTabbedPane.addTab("About", aboutLabel);
 
 		helpDialog.add(helpPanel);
-		helpDialog.setSize(410, 450);
+		helpDialog.setSize(410, 458);
 		helpDialog.setIconImage(mainImage);
 		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
