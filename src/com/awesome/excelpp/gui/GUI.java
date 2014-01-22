@@ -313,7 +313,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @param index	The index of the tab to update
 	 * @param newTitle the new title to set
 	 */
-	private final void updateTabTitle(int index, String newTitle) {
+	private static final void updateTabTitle(int index, String newTitle) {
 		CloseableTabComponent currentComponent = (CloseableTabComponent)mainTabs.getTabComponentAt(index);
 		currentComponent.setTitle(newTitle);
 	}
@@ -542,13 +542,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Saves the currently opened file.
 	 * @param saveAs True if the Save As button has been pressed, will spawn a Save As dialog
 	 */
-	public final void saveFile (boolean saveAs) {
+	public static final void saveFile (boolean saveAs) {
 		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getSelectedComponent();
 		SpreadSheetTable table = scrollPane.getTable();
 		File file = table.getFile();
 		if (file == null || saveAs == true) {
 			final JFileChooser fc = new JFileChooser();
-			int choice = fc.showSaveDialog(this);
+			int choice = fc.showSaveDialog(mainFrame);
 			if (choice == JFileChooser.APPROVE_OPTION) {
 				String fileString = fc.getSelectedFile().getPath();
 				if (!fileString.endsWith(".xml"))
@@ -563,7 +563,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		try {
 			((SpreadSheet)table.getModel()).write(new XMLWriter(file));
 		} catch (FileNotFoundException ex) {
-			JOptionPane.showMessageDialog(this, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
 		}
 	}
@@ -591,6 +591,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				ex.printStackTrace();
 			}
 		}
+
+		if(close == 1)
+			saveFile(true);
 		return close;
 	}
 }

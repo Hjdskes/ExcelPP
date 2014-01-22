@@ -8,9 +8,8 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
 /**
- * Contains all shared methods for the pacakge graph
+ * Contains all shared methods for the Graph package.
  * @author Team Awesome
- *
  */
 public class Utils {
 	/**

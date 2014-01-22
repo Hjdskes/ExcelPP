@@ -33,8 +33,8 @@ public class GraphDialog extends JDialog implements ActionListener {
 	private static final String barText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
 				+ "into a bar chart and press the button below.";
 	private static final String lineText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
-				+ "into a linechart and press the button below.";
-	private static int currentGraph = 0; //selected graph in the combobox. 0 = bar, 1 = pie, 2 = line.
+				+ "into a line chart and press the button below.";
+	private int currentGraph = 0; //selected graph in the combobox. 0 = bar, 1 = pie, 2 = line.
 	private SpreadSheet sheet;
 	private int[] rows;
 	private int[] columns;
