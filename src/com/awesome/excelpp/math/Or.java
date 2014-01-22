@@ -10,7 +10,7 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Or extends Formula {
 
 	@Override
-	public Boolean getValue(Object... args) throws MathException {
+	public Object getValue(Object... args) throws MathException {
 		for(int i = 0; i<args.length; i++) {
 			if(args[i] instanceof Boolean) {
 				if((boolean) args[i] == true) {
