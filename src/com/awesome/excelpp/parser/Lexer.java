@@ -34,11 +34,12 @@ public class Lexer {
 	    		break;
 	    	case '<':
 	    	case '>':
-	    		if (input.charAt(i + 1) == '=') {
-	    			tokens.add(new Token(LOGIC, Character.toString(ch) + "="));
-	    		}
 	    		setState(State.NONE);
-	    		tokens.add(new Token(LOGIC, Character.toString(ch)));
+	    		if (input.charAt(i + 1) == '=') {
+	    			tokens.add(new Token(LOGICOP, Character.toString(ch) + "="));
+	    		} else {
+	    			tokens.add(new Token(LOGICOP, Character.toString(ch)));
+	    		}
 	    		break;
 	    	case '+':
 	    	case '-':
@@ -78,7 +79,7 @@ public class Lexer {
 	    	case '=':
 	    		setState(State.NONE);
 	    		if (input.charAt(i + 1) == '=') {
-	    			tokens.add(new Token(LOGIC, "=="));
+	    			tokens.add(new Token(LOGICEQ, "=="));
 	    		}
 	    		break;
 	    	case ';':

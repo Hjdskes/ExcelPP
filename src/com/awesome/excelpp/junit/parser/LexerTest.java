@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.awesome.excelpp.parser.Lexer;
 import com.awesome.excelpp.parser.Token;
-import com.awesome.excelpp.parser.TokenType;
 
 import static com.awesome.excelpp.parser.TokenType.*;
 
@@ -131,7 +130,7 @@ public class LexerTest {
 		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals("2"));
 		next = lex.next();
-		assertEquals(LOGIC, next.type);
+		assertEquals(LOGICOP, next.type);
 		assertTrue(next.data.equals("<"));
 		next = lex.next();
 		assertEquals(NUMBER, next.type);
