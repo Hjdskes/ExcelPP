@@ -113,7 +113,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs = new JButton();
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
-		functionField = new JTextField(100);
+		functionField = new JTextField(80);
 		buttonBold = new JButton();
 		buttonItalic = new JButton();
 		buttonForegroundColor = new JButton();
