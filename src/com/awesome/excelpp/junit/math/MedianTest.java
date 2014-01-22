@@ -8,5 +8,8 @@ import com.awesome.excelpp.math.Median;
 import com.awesome.excelpp.math.exception.MathException;
 
 public class MedianTest {
-
+	@Test 
+	public void Median() throws MathException {
+		assertEquals(4, new Median().getValue(1, 4, 6), .001);
+	}
 }
