@@ -44,15 +44,15 @@ public class Lexer {
 	    		break;
 	    	case '(':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(LBRACKET, Character.toString(ch)));
+	    		tokens.add(new Token(LBRACKET, null));
 	    		break;
 	    	case ')':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(RBRACKET, Character.toString(ch)));
+	    		tokens.add(new Token(RBRACKET, null));
 	    		break;
 	    	case ',':
 	    		setState(State.NONE);
-	    		tokens.add(new Token(DELIM, Character.toString(ch)));
+	    		tokens.add(new Token(DELIM, null));
 	    		break;
 	    	case ':':
 	    		token.append(ch);
@@ -65,18 +65,22 @@ public class Lexer {
 	    		setState(State.NONE);
 	    		break;
 	    	case '"':
+	    		setState(State.NONE);
 	    		while (input.charAt(++i) != '"') {
 	    			token.append(input.charAt(i));
 	    		}
 	    		tokens.add(new Token(STRING, token.toString()));
 	    		token = new StringBuilder();
-	    		setState(State.NONE);
 	    		break;
 	    	case '=':
+	    		setState(State.NONE);
 	    		if (input.charAt(i + 1) == '=') {
 	    			tokens.add(new Token(LOGIC, "=="));
 	    		}
+	    		break;
+	    	case ';':
 	    		setState(State.NONE);
+	    		tokens.add(new Token(EOLDELIM, null));
 	    		break;
 	    	default:
 	    		if (Character.isDigit(ch)) {

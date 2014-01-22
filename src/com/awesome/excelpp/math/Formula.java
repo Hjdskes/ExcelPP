@@ -59,7 +59,6 @@ public abstract class Formula {
 			return ((Double)arg).toString();
 		if (!(arg instanceof String))
 			throw new MathException();
-		
 		return (String)arg;
 	}
 }

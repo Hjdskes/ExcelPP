@@ -228,6 +228,26 @@ public class Cell {
 				(this.getContent().equals("")));
 	}
 
+	public Object getValue() {
+		try {
+			Parser parse = new Parser(content, sheet);
+			parse.toPostfix();
+			return parse.eval();
+		} catch (ParserException e) {
+			backgroundColor = Color.red;
+			if (e instanceof MissingRBracketException ||
+					e instanceof MissingLBracketException ||
+					e instanceof MissingArgException)
+				return "#ARGINV";
+			else if (e instanceof FormulaException)
+				return "#OPINV";
+			else if (e instanceof ReferenceException)
+				return "#REFINV";
+		}
+		
+		return content;
+	}
+
 	/**
 	 * Gets the evaluated content of this <code>Cell</code>.
 	 * Suppose the content of this <code>Cell</code> is "=4+4",
@@ -236,26 +256,13 @@ public class Cell {
 	 */
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
-			try {
-				Parser parse = new Parser(content, sheet);
-				parse.toPostfix();
-				return parse.eval().toString();
-			} catch (ParserException e) {
-				backgroundColor = Color.red;
-				if (e instanceof MissingRBracketException ||
-						e instanceof MissingLBracketException ||
-						e instanceof MissingArgException)
-					return "#ARGINV";
-				else if (e instanceof FormulaException)
-					return "#OPINV";
-				else if (e instanceof ReferenceException)
-					return "#REFINV";
-			}
+//			Parser.cellSet.clear();
+			return getValue().toString();
 		}
-		
+
 		return content == null ? "" : content;
 	}
-	
+
 	/**
 	 * Creates a copy of this <code>Cell</code>.
 	 * @return The copy of this <code>Cell</code>
