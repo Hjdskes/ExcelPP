@@ -55,6 +55,10 @@ public enum TokenType {
 	 */
 	UNARYMINUS,
 	/**
+	 * Token representing EOLDELIM.
+	 */
+	EOLDELIM,
+	/**
 	 * Pseudo Token representing EOL.
 	 */
 	EOL;

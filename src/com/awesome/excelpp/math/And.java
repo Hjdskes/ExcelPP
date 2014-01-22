@@ -9,12 +9,11 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class And extends Formula {
 	@Override
-	public Object getValue(Object... args) throws MathException {
-		boolean res = true;;
+	public Boolean getValue(Object... args) throws MathException {
 		for (Object o : args) {
-			if (getInteger(o) == 0)
-				res = false;
+			if ((boolean)o == false)
+				return false;
 		}
-		return res;
+		return true;
 	}
 }
