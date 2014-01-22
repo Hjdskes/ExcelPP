@@ -445,6 +445,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		else if (e.getSource().equals(functions)) {
 			String formula = "=" + (String)functions.getSelectedItem();
 			functionField.setText(formula + "(");
+			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
+			scrollPane.getTable().grabFocus();
 		} else if (e.getSource().equals(buttonUndo)) {
 			SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
 			UndoManager manager = scrollPane.getTable().getUndoManager();
