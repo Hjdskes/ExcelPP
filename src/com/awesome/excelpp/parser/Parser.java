@@ -118,6 +118,17 @@ public class Parser {
 					lastWasNumber = false;
 				}
 				break;
+			case LOGIC:
+				while(!operators.isEmpty() &&
+						(operators.getFirst().type == PLUSMINUS ||
+						operators.getFirst().type == MULTDIV ||
+						operators.getFirst().type == UNARYMINUS ||
+						operators.getFirst().type == LOGIC ))
+				{
+					output.push(operators.pop());
+				}
+				operators.push(currentToken);
+				lastWasNumber = false;
 			case LBRACKET:
 				operators.push(currentToken);
 				lastWasNumber = false;
@@ -249,11 +260,13 @@ public class Parser {
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
+			case LOGIC:
 				Object a, b;
 				Token op;
 				try {
 					b = evalStack.pop();
 					a = evalStack.pop();
+					System.out.println(a + "," + b + ",");
 					op = output.removeLast();
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
@@ -266,8 +279,12 @@ public class Parser {
 						evalStack.push(new Double((Double)a - (Double)b));
 					} else if (op.data.equals("*")) {
 						evalStack.push(new Double((Double)a * (Double)b));
-					} else {
+					} else if (op.data.equals("/")) {
 						evalStack.push(new Double((Double)a / (Double)b));
+					} else if (op.data.equals(">")) {
+						evalStack.push((Double)a > (Double)b);
+					} else if (op.data.equals("<")) {
+						evalStack.push((Double)a < (Double)b);
 					}
 				} else {
 					// TODO: Do something with strings...

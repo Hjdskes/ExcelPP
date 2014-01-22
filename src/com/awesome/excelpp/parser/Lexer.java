@@ -32,6 +32,11 @@ public class Lexer {
 	    		setState(State.NONE);
 	    		tokens.add(new Token(MULTDIV, Character.toString(ch)));
 	    		break;
+	    	case '<':
+	    	case '>':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(LOGIC, Character.toString(ch)));
+	    		break;
 	    	case '+':
 	    	case '-':
 	    		setState(State.NONE);

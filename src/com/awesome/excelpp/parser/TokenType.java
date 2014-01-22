@@ -47,7 +47,7 @@ public enum TokenType {
 	 */
 	DELIM,
 	/**
-	 * Token representing LOGIC: <code><>=</code>.
+	 * Token representing LOGIC: <code><,>,=</code>.
 	 */
 	LOGIC,
 	/**
