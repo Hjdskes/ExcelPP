@@ -291,6 +291,12 @@ public class Parser {
 						evalStack.push((Double)a > (Double)b);
 					} else if (op.data.equals("<")) {
 						evalStack.push((Double)a < (Double)b);
+					} else if (op.data.equals(">=")) {
+						evalStack.push((Double)a >= (Double)b);
+					} else if (op.data.equals("<=")) {
+						evalStack.push((Double)a <= (Double)b);
+					} else if (op.data.equals("==")) {
+						evalStack.push(((Double)a).equals((Double)b));
 					}
 				} else if (a instanceof Boolean && b instanceof Boolean) {
 					if (op.data.equals("==")) {

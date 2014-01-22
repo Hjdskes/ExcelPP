@@ -221,6 +221,12 @@ public class ParserTest {
 	}
 	
 	@Test
+	public void test_logic_3() throws ParserException {
+		result = new Parser("=1==1;", null).eval();
+		assertTrue((Boolean)result);
+	}
+	
+	@Test
 	public void test_invalid_function1() throws ParserException {
 		exception.expect(MissingRBracketException.class);
 		result = new Parser("=Sum(;").eval();
