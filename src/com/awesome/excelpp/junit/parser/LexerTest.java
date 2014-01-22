@@ -124,7 +124,7 @@ public class LexerTest {
 	
 	@Test
 	public void test_Constructor_Logic_1() {
-		lex = new Lexer("=2<4");
+		lex = new Lexer("=2<4;");
 		
 		Token next;
 		next = lex.next();
@@ -136,6 +136,8 @@ public class LexerTest {
 		next = lex.next();
 		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals("4"));
+		next = lex.next();
+		assertEquals(EOLDELIM, next.type);
 	}
 	
 	@Test
@@ -184,7 +186,6 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(LBRACKET, next.type);
-		assertTrue(next.data.equals("("));
 		
 		next = lex.next();
 		assertEquals(STRING, next.type);
@@ -192,7 +193,6 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(DELIM, next.type);
-		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
 		assertEquals(NUMBER, next.type);
@@ -200,7 +200,6 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(RBRACKET, next.type);
-		assertTrue(next.data.equals(")"));
 	}
 	
 	public void test_ExprTwoArgs(String expr, String arg1, String arg2) {
@@ -212,7 +211,6 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(LBRACKET, next.type);
-		assertTrue(next.data.equals("("));
 		
 		next = lex.next();
 		assertEquals(NUMBER, next.type);
@@ -220,7 +218,6 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(DELIM, next.type);
-		assertTrue(next.data.equals(","));
 		
 		next = lex.next();
 		assertEquals(NUMBER, next.type);
@@ -228,7 +225,6 @@ public class LexerTest {
 		
 		next = lex.next();
 		assertEquals(RBRACKET, next.type);
-		assertTrue(next.data.equals(")"));
 		
 		next = lex.next();
 		assertEquals(EOL, next.type);

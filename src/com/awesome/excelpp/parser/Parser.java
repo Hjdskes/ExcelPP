@@ -139,7 +139,6 @@ public class Parser {
 			case RBRACKET:
 				try {
 					while(!(operators.getFirst().type == LBRACKET)){
-						System.out.println(output);
 						output.push(operators.pop());
 					}
 					operators.pop();
@@ -168,12 +167,20 @@ public class Parser {
 				operators.push(currentToken);
 				lastWasNumber = false;
 				break;
-			case EOL:
+			case EOLDELIM:
 				while(!operators.isEmpty()){
 					output.push(operators.pop());
 				}
+				output.push(currentToken);
 				break;
 			}
+		}
+		try {
+			if (output.pop().type != EOLDELIM) {
+				throw new MissingArgException();
+			}
+		} catch (NoSuchElementException e) {
+			throw new MissingArgException();
 		}
 	}
 	
@@ -341,6 +348,7 @@ public class Parser {
 		if (retvalue instanceof Double) {
 			retvalue = (Double)retvalue;
 		}
+		
 		return retvalue;
 	}
 	
