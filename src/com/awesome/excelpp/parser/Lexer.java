@@ -34,6 +34,9 @@ public class Lexer {
 	    		break;
 	    	case '<':
 	    	case '>':
+	    		if (input.charAt(i + 1) == '=') {
+	    			tokens.add(new Token(LOGIC, Character.toString(ch) + "="));
+	    		}
 	    		setState(State.NONE);
 	    		tokens.add(new Token(LOGIC, Character.toString(ch)));
 	    		break;
