@@ -72,7 +72,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		title = new JTextField("Enter the title of the chart");
 		titleX = new JTextField("Enter the title of the X-axis");
 		titleY = new JTextField("Enter the title of the Y-axis");
-		headers = new JCheckBox("use custom headers");
+		headers = new JCheckBox("Use custom headers (this will be the first row)");
 		actionButton = new JButton("Draw the chart");
 		actionButton.addActionListener(this);
 
