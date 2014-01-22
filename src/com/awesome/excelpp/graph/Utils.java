@@ -52,7 +52,8 @@ public class Utils {
 		if(headers){
 			if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0  && endInt >= 0){
 				for(int i = 0; i<=endInt-startInt; i++){
-					if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null){
+					if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null 
+							&& ((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != ""){
 						res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
 					} else {
 						throw new CellDataException();
@@ -129,7 +130,8 @@ public class Utils {
 		if(headers){
 			if(endInt-startInt>0 && startInt >= 0 && endInt >= 0) {
 				for(int i = 0; i<endInt-startInt; i++){
-					if(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != null) {
+					if(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != null
+							&& ((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != "") {
 						res.add(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent());
 					} else {
 						throw new CellDataException();
@@ -168,7 +170,8 @@ public class Utils {
 		if(headers){
 			if(startInt >= 0){
 				for(int i = 0; i<secondRow-firstRow; i++){
-					if(((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != null){
+					if(((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != null
+							&& ((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != ""){
 						res.add(((Cell) sheet.getValueAt(firstRow + 1 + i, startInt)).getContent());
 					} else{
 						throw new CellDataException();
@@ -234,7 +237,7 @@ public class Utils {
 				  }
 				} 
 		}
-		System.out.println(res.toString());
+		
 		return res;
 	}
 	
@@ -251,7 +254,6 @@ public class Utils {
 		for(int i = 0; i<=endInt-startInt; i++){
 			res.add(Integer.toString(startInt+i+1));
 		}
-		System.out.println(res.toString());
 		return res;
 	}
 }

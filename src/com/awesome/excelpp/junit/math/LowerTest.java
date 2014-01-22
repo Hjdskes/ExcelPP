@@ -17,4 +17,9 @@ public class LowerTest {
 	public void NotLower() throws MathException {
 		assertEquals("test", new Lower().getValue(10));
 	}
+	
+	@Test(expected = MathException.class)
+	public void LowerOverload() throws MathException {
+		assertEquals("test", new Lower().getValue(10, 20));
+	}
 }

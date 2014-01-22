@@ -17,4 +17,9 @@ public class MedianTest {
 	public void Median2() throws MathException {
 		assertEquals(5.0, new Median().getValue(1.0, 4.0, 6.0, 8.0), .001);
 	}
+	
+	@Test(expected = MathException.class)
+	public void MedianError() throws MathException {
+		assertEquals(5.0, new Median().getValue(1.0, 4.0, 6.0, 8.0, "Error"), .001);
+	}
 }
