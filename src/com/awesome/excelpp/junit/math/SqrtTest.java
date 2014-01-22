@@ -17,6 +17,6 @@ public class SqrtTest {
 
 	@Test(expected = MathException.class)
 	public void Sqrt_invalid() throws MathException {
-		new Sqrt().getValue("twee");
+		assertEquals(1 ,new Sqrt().getValue(), .001);
 	}
 }
