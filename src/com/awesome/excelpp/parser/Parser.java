@@ -203,7 +203,7 @@ public class Parser {
 	 * @throws ParserException
 	 */
 	@SuppressWarnings("incomplete-switch")
-	public Object eval() throws ParserException{
+	public Object eval() throws ParserException, RecursionException {
 		if (output.isEmpty()) {
 			toPostfix();
 		}

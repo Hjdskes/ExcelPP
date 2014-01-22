@@ -6,6 +6,7 @@ import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.RecursionException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.awt.Color;
@@ -230,31 +231,33 @@ public class Cell {
 				(this.getContent().equals("")));
 	}
 
-	public synchronized Object getValue() throws ReferenceException {
-		if(!this.parsing){
+	public synchronized Object getValue() throws RecursionException {
+		Object result = content;
+		System.out.println(this.parsing);
+		if (!this.parsing) {
 			this.parsing = true;
-		}else{
-			throw new ReferenceException();
-		}
-		try {
-			Parser parse = new Parser(content, sheet);
-			parse.toPostfix();
-			return parse.eval();
-		} catch (ParserException e) {
-			backgroundColor = Color.red;
-			if (e instanceof MissingRBracketException ||
-					e instanceof MissingLBracketException ||
-					e instanceof MissingArgException)
-				return "#ARGINV";
-			else if (e instanceof FormulaException)
-				return "#OPINV";
-			else if (e instanceof ReferenceException)
-				return "#REFINV";
+			try {
+				Parser parse = new Parser(content, sheet);
+				parse.toPostfix();
+				result = parse.eval();
+			} catch (ParserException e) {
+				backgroundColor = Color.red;
+				if (e instanceof MissingRBracketException ||
+						e instanceof MissingLBracketException ||
+						e instanceof MissingArgException)
+					result = "#ARGINV";
+				else if (e instanceof FormulaException)
+					result = "#OPINV";
+				else if (e instanceof ReferenceException)
+					result = "#REFINV";
+			}
+		} else {
+			this.parsing = false;
+			throw new RecursionException();
 		}
 		
 		this.parsing = false;
-		
-		return content;
+		return result;
 	}
 
 	/**
@@ -267,7 +270,7 @@ public class Cell {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				return getValue().toString();
-			} catch (ReferenceException e) {
+			} catch (RecursionException e) {
 				return "#INFREF";
 			}
 		}
