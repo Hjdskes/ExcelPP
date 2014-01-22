@@ -79,8 +79,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
 		mainFrame.setIconImage(mainImage);
-		mainFrame.setSize (900, 400);
-		mainFrame.setMinimumSize(buttonPanel.getPreferredSize()); //ToDo: andere oplossing?
+		mainFrame.setSize (buttonPanel.getPreferredSize().width, 400);
+		mainFrame.setMinimumSize(buttonPanel.getPreferredSize()); //ToDo: andere oplossing voor verdwijnende componenten?
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(this);
