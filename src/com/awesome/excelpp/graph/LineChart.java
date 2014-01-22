@@ -31,7 +31,7 @@ public class LineChart extends JFrame{
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
 	 */
-	public LineChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
+	public LineChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY, boolean headers) throws CellInputException, CellDataException{
 		super("LineChart");
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		Utils.validate(rows);
@@ -40,12 +40,12 @@ public class LineChart extends JFrame{
 		int startRow = rows[0];
 		int endRow = rows[rows.length-1];
 		if(endRow-startRow>1){
-			ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns);
-			ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns);
-			ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns);
+			ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
+			ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
+			ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
 			data = createData(horizontalNames, verticalNames, values);
 		} else {
-			ArrayList<String> names = Utils.getNames(sheet, rows, columns);
+			ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
 			ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
 			data = createData(names, values);
 		}

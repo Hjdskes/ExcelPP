@@ -8,8 +8,9 @@ import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 
 /**
- * Contains all shared methods for the Graph package.
+ * Contains all shared methods for the pacakge graph
  * @author Team Awesome
+ *
  */
 public class Utils {
 	/**
@@ -30,11 +31,12 @@ public class Utils {
 	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>Chart</code>
 	 * @param rows Array of the selected rows that will be put into the <code>Chart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>Chart</code>
+	 * @param headers if true user made headers will be used
 	 * @return <code>ArrayList</code> containing all the names
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>Chart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>Chart</code>
 	 */
-	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns, boolean headers) throws CellInputException, CellDataException{
 		int firstRow; int secondRow; int startInt; int endInt;
 		try {
 			firstRow = rows[0];
@@ -47,16 +49,20 @@ public class Utils {
 
 		ArrayList<String> res = new ArrayList<String>();
 
-		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0  && endInt >= 0){
-			for(int i = 0; i<=endInt-startInt; i++){
-				if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null){
-					res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
-				} else {
-					throw new CellDataException();
+		if(headers){
+			if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0  && endInt >= 0){
+				for(int i = 0; i<=endInt-startInt; i++){
+					if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null){
+						res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
+					} else {
+						throw new CellDataException();
+					}
 				}
+			} else {
+				throw new CellInputException();
 			}
-		} else {
-			throw new CellInputException();
+		} else{
+			res = getColumnHeaders(startInt, endInt);
 		}
 
 		return res;
@@ -84,7 +90,7 @@ public class Utils {
 
 		ArrayList<Double> res = new ArrayList<Double>();
 
-		if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt>=0 && endInt >= 0){
+		if(endInt-startInt>0 && startInt>=0 && endInt >= 0){
 		for(int i = 0; i<=endInt-startInt; i++){
 				try {
 					add = Double.parseDouble(((Cell) sheet.getValueAt(secondRow, startInt + i)).toString());
@@ -109,7 +115,7 @@ public class Utils {
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
 	 */
-	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns, boolean headers) throws CellInputException, CellDataException{
 		int firstRow; int startInt; int endInt;
 		try {
 			firstRow = rows[0];
@@ -120,17 +126,20 @@ public class Utils {
 		}
 
 		ArrayList<String> res = new ArrayList<String>();
-
-		if(endInt-startInt>0 && startInt >= 0 && endInt >= 0) {
-			for(int i = 0; i<endInt-startInt; i++){
-				if(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != null) {
-					res.add(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent());
-				} else {
-					throw new CellDataException();
+		if(headers){
+			if(endInt-startInt>0 && startInt >= 0 && endInt >= 0) {
+				for(int i = 0; i<endInt-startInt; i++){
+					if(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != null) {
+						res.add(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent());
+					} else {
+						throw new CellDataException();
+					}
 				}
+			} else {
+				throw new CellInputException();
 			}
-		} else {
-			throw new CellInputException();
+		} else{
+			res = getColumnHeaders(startInt, endInt);
 		}
 		return res;
 	}
@@ -144,7 +153,7 @@ public class Utils {
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>Chart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>Chart</code>
 	 */
-	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns, boolean headers) throws CellInputException, CellDataException{
 		int firstRow; int startInt; int secondRow;
 		try{
 			firstRow = rows[0];
@@ -156,17 +165,20 @@ public class Utils {
 		}
 
 		ArrayList<String> res = new ArrayList<String>();
-
-		if(startInt >= 0){
-			for(int i = 0; i<secondRow-firstRow; i++){
-				if(((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != null){
-					res.add(((Cell) sheet.getValueAt(firstRow + 1 + i, startInt)).getContent());
-				} else{
-					throw new CellDataException();
+		if(headers){
+			if(startInt >= 0){
+				for(int i = 0; i<secondRow-firstRow; i++){
+					if(((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != null){
+						res.add(((Cell) sheet.getValueAt(firstRow + 1 + i, startInt)).getContent());
+					} else{
+						throw new CellDataException();
+					}
 				}
+			} else{
+				throw new CellInputException();
 			}
 		} else{
-			throw new CellInputException();
+			res = getRowHeaders(firstRow, secondRow);
 		}
 		return res;
 	}
@@ -180,7 +192,7 @@ public class Utils {
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>Chart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>Chart</code>
 	 */
-	public static ArrayList<Double> getValuesXRowsXColumns(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
+	public static ArrayList<Double> getValuesXRowsXColumns(SpreadSheet sheet, int[] rows, int[] columns, boolean headers) throws CellInputException, CellDataException{
 		int firstRow; int secondRow; int startInt; int endInt; Double add; int horizontalLength; int verticalLength;
 		try{
 			firstRow = rows[0];
@@ -195,20 +207,52 @@ public class Utils {
 
 		ArrayList<Double> res = new ArrayList<Double>();
 
-		if(endInt-startInt>0 && startInt>=0 && endInt >= 0){
-		for(int i = 0; i<verticalLength; i++){
-			for(int i2 = 0; i2<horizontalLength; i2++){
+		if(headers){
+		 if(endInt-startInt>0 && startInt>=0 && endInt >= 0){
+		  for(int i = 0; i<verticalLength; i++){
+			  for(int i2 = 0; i2<horizontalLength; i2++){
 				try{
 					add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow+ 1 +i, startInt + 1 + i2)).toString());
 					res.add(add);
 				} catch(Exception e){
 					throw new CellDataException();
-				}
-			}
+			 	}
+			  }
 			} 
+		 } else{
+			 throw new CellInputException();
+		 }
 		} else{
-			throw new CellInputException();
+			for(int i = 0; i<=verticalLength; i++){
+				  for(int i2 = 0; i2<=horizontalLength; i2++){
+					try{
+						add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow +i, startInt + i2)).toString());
+						res.add(add);
+					} catch(Exception e){
+						throw new CellDataException();
+				 	}
+				  }
+				} 
+		}
+		System.out.println(res.toString());
+		return res;
+	}
+	
+	public static ArrayList<String> getColumnHeaders(int startInt, int endInt){
+		ArrayList<String> res = new ArrayList<String>();
+		for(int i = 0; i<=endInt-startInt; i++){
+			res.add(Character.toString(Character.toChars(startInt+i+65)[0]));
 		}
 		return res;
 	}
+	
+	public static ArrayList<String> getRowHeaders(int startInt, int endInt){
+		ArrayList<String> res = new ArrayList<String>();
+		for(int i = 0; i<=endInt-startInt; i++){
+			res.add(Integer.toString(startInt+i+1));
+		}
+		System.out.println(res.toString());
+		return res;
+	}
 }
+
