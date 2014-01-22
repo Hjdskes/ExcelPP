@@ -120,12 +120,25 @@ public class Parser {
 					lastWasNumber = false;
 				}
 				break;
-			case LOGIC:
+			case LOGICOP:
 				while(!operators.isEmpty() &&
 						(operators.getFirst().type == PLUSMINUS ||
 						operators.getFirst().type == MULTDIV ||
 						operators.getFirst().type == UNARYMINUS ||
-						operators.getFirst().type == LOGIC ))
+						operators.getFirst().type == LOGICOP ))
+				{
+					output.push(operators.pop());
+				}
+				operators.push(currentToken);
+				lastWasNumber = false;
+				break;
+			case LOGICEQ:
+				while(!operators.isEmpty() &&
+						(operators.getFirst().type == PLUSMINUS ||
+						operators.getFirst().type == MULTDIV ||
+						operators.getFirst().type == UNARYMINUS ||
+						operators.getFirst().type == LOGICOP ||
+						operators.getFirst().type == LOGICEQ ))
 				{
 					output.push(operators.pop());
 				}
@@ -245,7 +258,6 @@ public class Parser {
 						Object value = null;
 						
 						value = cellref.getValue();
-						System.out.println(value.toString());
 						evalStack.push(value);
 					}
 				}
@@ -265,7 +277,8 @@ public class Parser {
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
-			case LOGIC:
+			case LOGICOP:
+			case LOGICEQ:
 				Object a, b;
 				Token op;
 				try {

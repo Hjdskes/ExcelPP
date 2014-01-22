@@ -28,14 +28,15 @@ public class PieChart extends JFrame{
 	 * @param rows Array of the selected rows that will be put into the <code>LineChart</code>
 	 * @param columns Array of the selected columns that will be put into the <code>LineChart</code>
 	 * @param title The title of the chart
+	 * @param headers if true user made headers will be used
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
 	 */
-	public PieChart(SpreadSheet sheet, int[] rows, int[] columns, String title) throws CellInputException, CellDataException{
+	public PieChart(SpreadSheet sheet, int[] rows, int[] columns, String title, boolean headers) throws CellInputException, CellDataException{
 		super("PieChart");
 		Utils.validate(rows);
 		Utils.validate(columns);
-		ArrayList<String> names = Utils.getNames(sheet, rows, columns);
+		ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
 		ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
 		PieDataset data = createData(names, values);
 		JFreeChart  chart= createChart(data, title);
@@ -52,6 +53,8 @@ public class PieChart extends JFrame{
 	 * @return <code>DefaultCategoryDataset</code> containing the data taken from names and values
 	 */
 	private PieDataset createData(ArrayList<String> names, ArrayList<Double> values){
+		System.out.println(names.toString());
+		System.out.println(values.toString());
 		DefaultPieDataset res = new DefaultPieDataset();
 		if(names.size() == values.size()){
 			for(int i = 0; i<names.size(); i++){

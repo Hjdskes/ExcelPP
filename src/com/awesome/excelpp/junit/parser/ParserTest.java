@@ -216,7 +216,7 @@ public class ParserTest {
 	
 	@Test
 	public void test_logic_2() throws ParserException {
-		result = new Parser("=(2<3)==(2<4);", null).eval();
+		result = new Parser("=2<3==2<4;", null).eval();
 		assertTrue((Boolean)result);
 	}
 	

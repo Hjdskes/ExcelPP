@@ -28,6 +28,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
 import javax.xml.parsers.ParserConfigurationException;
@@ -79,8 +80,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		mainFrame = new JFrame ("Excel++");
 		mainFrame.setLayout (new BorderLayout());
 		mainFrame.setIconImage(mainImage);
-		mainFrame.setSize (900, 400);
-		mainFrame.setMinimumSize(buttonPanel.getPreferredSize()); //ToDo: andere oplossing?
+		mainFrame.setSize (buttonPanel.getPreferredSize().width, 400);
+		mainFrame.setMinimumSize(buttonPanel.getPreferredSize()); //ToDo: andere oplossing voor verdwijnende componenten?
 		mainFrame.setLocation ((screenWidth / 2) - (mainFrame.getWidth() / 2), (screenHeight / 2) - (mainFrame.getHeight() / 2)); //center in het midden
 		mainFrame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(this);
@@ -209,7 +210,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonItalic.addActionListener(this);
 		buttonItalic.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonForegroundColor.addActionListener(this);
+		buttonForegroundColor.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonBackgroundColor.addActionListener(this);
+		buttonBackgroundColor.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonGraphs.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
@@ -236,7 +239,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ " Here is a more complicated example:<br>=Add(Average(2,4,6), 5, Power(2,4));<br><br>"
 				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1."
 				+ "Cell ranges are not yet supported.";
-		final JLabel formulaPanel = new JLabel(formulaText);
+		final JLabel formulaLabel = new JLabel(formulaText);
+		formulaLabel.setVerticalAlignment(SwingConstants.TOP);
 
 		final String hotkeyText = "<html><body style='width:300px'>New file <p style='text-align:right'>Control + N"
 				+ "<p style='text-align:left'>Open file <p style='text-align:right'>Control + O"
@@ -246,25 +250,31 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "<p style='text-align:left'>Close tab <p style='text-align:right'>Control + W"
 				+ "<p style='text-align:left'>Undo last change <p style='text-align:right'>Control + Z"
 				+ "<p style='text-align:left'>Redo last change <p style='text-align:right'>Control + Shift + Z"
+				+ "<p style='text-align:left'>Make Cell's text bold <p style='text-align:right'>Control + B"
+				+ "<p style='text-align:left'>Make Cell's text italic <p style='text-align:right'>Control + I"
+				+ "<p style='text-align:left'>Change Cell's foreground color <p style='text-align:right'>Control + F"
+				+ "<p style='text-align:left'>Change Cell's background color <p style='text-align:right'>Control + A"
 				+ "<p style='text-align:left'>Set current Cell's text bold <p style='text-align:right'>Control + B"
 				+ "<p style='text-align:left'>Set current Cell's text italic <p style='text-align:right'>Control + I"
 				+ "<p style='text-align:left'>Cel contents to textfield <p style='text-align:right'>Left mouse button"
 				+ "<p style='text-align:left'>Cel position to textfield <p style='text-align:right'>Alt + right mouse button";
-		final JLabel hotkeyPanel = new JLabel(hotkeyText);
+		final JLabel hotkeyLabel = new JLabel(hotkeyText);
+		hotkeyLabel.setVerticalAlignment(SwingConstants.TOP);
 
 		final String aboutText = "<html><body style='width:300px'>Some code in this project is taken from other people."
 				+ " These files were shared in the public domain; see the source files for more information.<br>"
 				+ "The icons used come from the gnome-colors icon theme and are licensed under the GPL-2 license.<br><br>"
 				+ "Excel++ is a TU Delft project.\nCopyright 2013 Team Awesome.";
-		final JLabel aboutPanel = new JLabel(aboutText);
+		final JLabel aboutLabel = new JLabel(aboutText);
+		aboutLabel.setVerticalAlignment(SwingConstants.TOP);
 
 		helpPanel.add(helpTabbedPane);
-		helpTabbedPane.addTab("Formula Help", formulaPanel);
-		helpTabbedPane.addTab("Hotkeys", hotkeyPanel);
-		helpTabbedPane.addTab("About", aboutPanel);
+		helpTabbedPane.addTab("Formula Help", formulaLabel);
+		helpTabbedPane.addTab("Hotkeys", hotkeyLabel);
+		helpTabbedPane.addTab("About", aboutLabel);
 
 		helpDialog.add(helpPanel);
-		helpDialog.setSize(410, 380);
+		helpDialog.setSize(410, 458);
 		helpDialog.setIconImage(mainImage);
 		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden

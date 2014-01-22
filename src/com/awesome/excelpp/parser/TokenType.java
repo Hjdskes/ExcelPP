@@ -47,9 +47,13 @@ public enum TokenType {
 	 */
 	DELIM,
 	/**
-	 * Token representing LOGIC: <code><,>,=</code>.
+	 * Token representing LOGICOP: <code><,>,=</code>.
 	 */
-	LOGIC,
+	LOGICOP,
+	/**
+	 * Token representing LOGICEQ: <code>==</code>.
+	 */
+	LOGICEQ,
 	/**
 	 * Pseudo Token representing UNARYMINUS.
 	 */

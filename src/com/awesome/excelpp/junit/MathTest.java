@@ -16,6 +16,7 @@ import com.awesome.excelpp.junit.math.MaxTest;
 import com.awesome.excelpp.junit.math.MedianTest;
 import com.awesome.excelpp.junit.math.MinTest;
 import com.awesome.excelpp.junit.math.ModTest;
+import com.awesome.excelpp.junit.math.NotTest;
 import com.awesome.excelpp.junit.math.PowerTest;
 import com.awesome.excelpp.junit.math.ProductTest;
 import com.awesome.excelpp.junit.math.RounddownTest;
@@ -23,6 +24,7 @@ import com.awesome.excelpp.junit.math.RoundupTest;
 import com.awesome.excelpp.junit.math.SqrtTest;
 import com.awesome.excelpp.junit.math.SubtractTest;
 import com.awesome.excelpp.junit.math.UpperTest;
+import com.awesome.excelpp.math.Count;
 
 @RunWith(Suite.class)
 @SuiteClasses({	AddTest.class,
@@ -43,7 +45,9 @@ import com.awesome.excelpp.junit.math.UpperTest;
 				RoundupTest.class,
 				SqrtTest.class,
 				SubtractTest.class,
-				UpperTest.class })
+				UpperTest.class,
+				NotTest.class,
+				Count.class })
 
 public class MathTest {
 }
