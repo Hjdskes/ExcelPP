@@ -21,6 +21,7 @@ public class Cell {
 	private int fontItalic; // 2 = italic, 0 = niet italic
 	private Color foregroundColor;
 	private Color backgroundColor;
+	private boolean parsing;
 	
 	/**
 	 * Constructs a new <code>Cell</code>.
@@ -38,6 +39,7 @@ public class Cell {
 		this.fontItalic = italic;
 		this.foregroundColor = foregroundColor;
 		this.backgroundColor = backgroundColor;
+		this.parsing = false;
 	}
 
 	/**
@@ -228,7 +230,12 @@ public class Cell {
 				(this.getContent().equals("")));
 	}
 
-	public Object getValue() {
+	public synchronized Object getValue() throws ReferenceException {
+		if(!this.parsing){
+			this.parsing = true;
+		}else{
+			throw new ReferenceException();
+		}
 		try {
 			Parser parse = new Parser(content, sheet);
 			parse.toPostfix();
@@ -245,6 +252,8 @@ public class Cell {
 				return "#REFINV";
 		}
 		
+		this.parsing = false;
+		
 		return content;
 	}
 
@@ -256,9 +265,13 @@ public class Cell {
 	 */
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
-			return getValue().toString();
+			try {
+				return getValue().toString();
+			} catch (ReferenceException e) {
+				return "#INFREF";
+			}
 		}
-
+		
 		return content == null ? "" : content;
 	}
 
