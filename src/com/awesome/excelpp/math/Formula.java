@@ -25,6 +25,14 @@ public abstract class Formula {
 	public double getDouble(Object arg) throws MathException {
 		if (arg instanceof Integer)
 			return ((Integer)arg).doubleValue();
+		if (arg instanceof String) {
+			try {
+				arg = Double.parseDouble((String)arg);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (!(arg instanceof Double))
 			throw new MathException();
 		

@@ -27,7 +27,7 @@ public class XMLWriter implements Writer {
 	@Override
 	public void addCell(Cell cell, int row, int col) {
 			pw.write("<CELL row=\"" + row + "\"" +
-						"column=\"" + col + "\"" +
+						" column=\"" + col + "\"" +
 						" style=\"" +
 							"bold:" + cell.getBold() + ";" +
 							"italic:" + cell.getItalic() + ";" +
