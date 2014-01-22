@@ -256,7 +256,6 @@ public class Cell {
 	 */
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
-//			Parser.cellSet.clear();
 			return getValue().toString();
 		}
 

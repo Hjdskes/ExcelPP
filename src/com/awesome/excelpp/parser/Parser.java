@@ -18,8 +18,6 @@ import static com.awesome.excelpp.parser.TokenType.*;
  * @author Team Awesome
  */
 public class Parser {
-	public static HashSet<Cell> cellSet;
-	
 	/* The following Tokens are operands:
 	 * - NUMBER
 	 * - CELL
