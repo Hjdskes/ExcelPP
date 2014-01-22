@@ -34,18 +34,18 @@ public class BarChart extends JFrame{
 	public BarChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY) throws CellInputException, CellDataException{
 		super("BarChart");
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
-		PieChart.validate(rows);
-		PieChart.validate(columns);
+		Utils.validate(rows);
+		Utils.validate(columns);
 		int startRow = rows[0];
 		int endRow = rows[rows.length-1];
 		if(endRow-startRow>1){
-			ArrayList<String> horizontalNames = getHorizontalNames(sheet, rows, columns);
-			ArrayList<String> verticalNames = getVerticalNames(sheet, rows, columns);
-			ArrayList<Double> values = getValuesXRowsXcolumns(sheet, rows, columns);
+			ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns);
+			ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns);
+			ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns);
 			data = createData(horizontalNames, verticalNames, values);
 		} else{
-			ArrayList<String> names = getNames(sheet, rows, columns);
-			ArrayList<Double> values = getValues(sheet, rows, columns);
+			ArrayList<String> names = Utils.getNames(sheet, rows, columns);
+			ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
 			data = createData(names, values);
 		}
 
@@ -99,70 +99,4 @@ public class BarChart extends JFrame{
 		return chart;
 	}
 
-	/**
-	 * Retrieves the names of each column (for a 2 rows by x columns <code>BarChart</code>).
-	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
-	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
-	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
-	 * @return <code>ArrayList</code> containing all the names
-	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>BarChart</code>
-	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>BarChart</code>
-	 */
-	public static ArrayList<String> getNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
-		ArrayList<String> res= PieChart.getNames(sheet, rows, columns);
-		return res;
-	}
-
-	/**
-	 * Retrieves the values of the cells (for a 2 rows by x columns <code>BarChart</code>).
-	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
-	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
-	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
-	 * @return <code>ArrayList</code> containing all the values
-	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>BarChart</code>
-	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>BarChart</code>
-	 */
-	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
-		ArrayList<Double> res = PieChart.getValues(sheet, rows, columns);
-		return res;
-	}
-
-	/**
-	 * Retrieves the names of each column (for a x rows by x columns <code>BarChart</code>).
-	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
-	 * @param rows rows Array of the selected rows that will be put into the <code>Barchart</code>
-	 * @param columns Array of the selected columns that will be put into the <code>Barchart</code>
-	 * @return <code>ArrayList</code> containing all the names of the columns
-	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>BarChart</code>
-	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>BarChart</code>
-	 */
-	public static ArrayList<String> getHorizontalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
-		return LineChart.getHorizontalNames(sheet, rows, columns);
-	}
-
-	/**
-	 * Retrieves the names of each row (for a x rows by x columns <code>BarChart</code>).
-	 * @param sheet <code>SpreadSheet</code> containing the cells you want to put into a <code>BarChart</code>
-	 * @param rows rows Array of the selected rows that will be put into the <code>BarChart</code>
-	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
-	 * @return <code>ArrayList</code> containing all the names of the columns
-	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>BarChart</code>
-	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>BarChart</code>
-	 */
-	public static ArrayList<String> getVerticalNames(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
-		return LineChart.getVerticalNames(sheet, rows, columns);
-	}
-
-	/**
-	 * Retrieves the values of the </code>Cells</code> (for a x rows by x columns <code>BarChart</code>).
-	 * @param sheet <code>SpreadSheet</code> containing the cells you want to transform into a <code>BarChart</code>
-	 * @param rows Array of the selected rows that will be put into the <code>BarChart</code>
-	 * @param columns Array of the selected columns that will be put into the <code>BarChart</code>
-	 * @return <code>ArrayList</code> containing all the values
-	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>BarChart</code>
-	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>BarChart</code>
-	 */
-	public static ArrayList<Double> getValuesXRowsXcolumns(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
-		return LineChart.getValuesXRowsXColumns(sheet, rows, columns);
-	}
 }

@@ -7,6 +7,8 @@ import java.util.NoSuchElementException;
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
+import com.awesome.excelpp.writers.SysOutWriter;
+
 import static com.awesome.excelpp.parser.TokenType.*;
 
 /**
@@ -118,6 +120,18 @@ public class Parser {
 					lastWasNumber = false;
 				}
 				break;
+			case LOGIC:
+				while(!operators.isEmpty() &&
+						(operators.getFirst().type == PLUSMINUS ||
+						operators.getFirst().type == MULTDIV ||
+						operators.getFirst().type == UNARYMINUS ||
+						operators.getFirst().type == LOGIC ))
+				{
+					output.push(operators.pop());
+				}
+				operators.push(currentToken);
+				lastWasNumber = false;
+				break;
 			case LBRACKET:
 				operators.push(currentToken);
 				lastWasNumber = false;
@@ -125,6 +139,7 @@ public class Parser {
 			case RBRACKET:
 				try {
 					while(!(operators.getFirst().type == LBRACKET)){
+						System.out.println(output);
 						output.push(operators.pop());
 					}
 					operators.pop();
@@ -172,6 +187,8 @@ public class Parser {
 		if (output.isEmpty()) {
 			toPostfix();
 		}
+		
+		System.out.println(output);
 		
 		LinkedList<Object> evalStack = new LinkedList<Object>();
 		
@@ -249,6 +266,7 @@ public class Parser {
 				break;
 			case MULTDIV:
 			case PLUSMINUS:
+			case LOGIC:
 				Object a, b;
 				Token op;
 				try {
@@ -266,8 +284,18 @@ public class Parser {
 						evalStack.push(new Double((Double)a - (Double)b));
 					} else if (op.data.equals("*")) {
 						evalStack.push(new Double((Double)a * (Double)b));
-					} else {
+					} else if (op.data.equals("/")) {
 						evalStack.push(new Double((Double)a / (Double)b));
+					} else if (op.data.equals(">")) {
+						evalStack.push((Double)a > (Double)b);
+					} else if (op.data.equals("<")) {
+						evalStack.push((Double)a < (Double)b);
+					}
+				} else if (a instanceof Boolean && b instanceof Boolean) {
+					if (op.data.equals("==")) {
+						evalStack.push(a == b);
+					} else if (op.data.equals("<")) {
+						evalStack.push((Double)a < (Double)b);
 					}
 				} else {
 					// TODO: Do something with strings...

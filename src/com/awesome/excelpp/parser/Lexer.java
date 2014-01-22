@@ -32,6 +32,11 @@ public class Lexer {
 	    		setState(State.NONE);
 	    		tokens.add(new Token(MULTDIV, Character.toString(ch)));
 	    		break;
+	    	case '<':
+	    	case '>':
+	    		setState(State.NONE);
+	    		tokens.add(new Token(LOGIC, Character.toString(ch)));
+	    		break;
 	    	case '+':
 	    	case '-':
 	    		setState(State.NONE);
@@ -65,6 +70,12 @@ public class Lexer {
 	    		}
 	    		tokens.add(new Token(STRING, token.toString()));
 	    		token = new StringBuilder();
+	    		setState(State.NONE);
+	    		break;
+	    	case '=':
+	    		if (input.charAt(i + 1) == '=') {
+	    			tokens.add(new Token(LOGIC, "=="));
+	    		}
 	    		setState(State.NONE);
 	    		break;
 	    	default:
