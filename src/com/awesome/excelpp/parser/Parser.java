@@ -7,6 +7,8 @@ import java.util.NoSuchElementException;
 import com.awesome.excelpp.math.Formula;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
+import com.awesome.excelpp.writers.SysOutWriter;
+
 import static com.awesome.excelpp.parser.TokenType.*;
 
 /**
@@ -129,6 +131,7 @@ public class Parser {
 				}
 				operators.push(currentToken);
 				lastWasNumber = false;
+				break;
 			case LBRACKET:
 				operators.push(currentToken);
 				lastWasNumber = false;
@@ -266,7 +269,6 @@ public class Parser {
 				try {
 					b = evalStack.pop();
 					a = evalStack.pop();
-					System.out.println(a + "," + b + ",");
 					op = output.removeLast();
 				} catch (NoSuchElementException e) {
 					throw new MissingArgException();
