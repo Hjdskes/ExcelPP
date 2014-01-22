@@ -15,7 +15,7 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class CountIf extends Formula {
 	@Override
-	public String getValue(Object... args) throws MathException {
+	public Object getValue(Object... args) throws MathException {
 		 int count = 0;
 		 	for(int i=1; i < args.length; i++) {
 		 		if(args[i] instanceof Double) {
@@ -44,6 +44,6 @@ public class CountIf extends Formula {
 		 			}
 		 		}
 		}
-		return String.valueOf(count);
+		return count;
 	}
 }

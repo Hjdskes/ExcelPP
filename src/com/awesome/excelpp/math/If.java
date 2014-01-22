@@ -14,10 +14,13 @@ public class If extends Formula {
 
 	@Override
 	public Object getValue(Object... args) throws MathException {
-		String temp = (String) args[0];
-		String[] segs = temp.split("<");
-		 System.out.println(segs[0] + segs[1]);
-		return 1;
+		if((boolean)args[0] == true) {
+			return (String) args[1];
+		}
+		if((boolean)args[0] == false) {
+			return (String)args[2];
+		}
+		return false;
 	}
 
 }
