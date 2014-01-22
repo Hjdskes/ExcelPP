@@ -5,9 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,13 +23,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,8 +35,6 @@ import javax.imageio.ImageIO;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import sun.swing.DefaultLookup;
 
 import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
@@ -243,8 +237,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1."
 				+ "Cell ranges are not yet supported.";
 		final JLabel formulaPanel = new JLabel(formulaText);
-		//formulaPanel.setBackground(UIManager.getColor("Label.background"));
-		//formulaPanel.setOpaque(true);
 
 		final String hotkeyText = "<html><body style='width:300px'>New file <p style='text-align:right'>Control + N"
 				+ "<p style='text-align:left'>Open file <p style='text-align:right'>Control + O"
@@ -259,14 +251,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "<p style='text-align:left'>Cel contents to textfield <p style='text-align:right'>Left mouse button"
 				+ "<p style='text-align:left'>Cel position to textfield <p style='text-align:right'>Alt + right mouse button";
 		final JLabel hotkeyPanel = new JLabel(hotkeyText);
-		hotkeyPanel.setOpaque(true);
 
 		final String aboutText = "<html><body style='width:300px'>Some code in this project is taken from other people."
 				+ " These files were shared in the public domain; see the source files for more information.<br>"
 				+ "The icons used come from the gnome-colors icon theme and are licensed under the GPL-2 license.<br><br>"
 				+ "Excel++ is a TU Delft project.\nCopyright 2013 Team Awesome.";
 		final JLabel aboutPanel = new JLabel(aboutText);
-		aboutPanel.setOpaque(true);
 
 		helpPanel.add(helpTabbedPane);
 		helpTabbedPane.addTab("Formula Help", formulaPanel);
@@ -276,7 +266,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		helpDialog.add(helpPanel);
 		helpDialog.setSize(410, 380);
 		helpDialog.setIconImage(mainImage);
-		//helpDialog.setMinimumSize(new Dimension(292, 450));
 		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
