@@ -1,10 +1,12 @@
 package com.awesome.excelpp.parser;
 
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import com.awesome.excelpp.math.Formula;
+import com.awesome.excelpp.models.Cell;
 import com.awesome.excelpp.models.SpreadSheet;
 import com.awesome.excelpp.parser.exception.*;
 import static com.awesome.excelpp.parser.TokenType.*;
@@ -16,6 +18,8 @@ import static com.awesome.excelpp.parser.TokenType.*;
  * @author Team Awesome
  */
 public class Parser {
+	public static HashSet<Cell> cellSet;
+	
 	/* The following Tokens are operands:
 	 * - NUMBER
 	 * - CELL
@@ -186,8 +190,6 @@ public class Parser {
 			toPostfix();
 		}
 		
-		System.out.println(output);
-		
 		LinkedList<Object> evalStack = new LinkedList<Object>();
 		
 		while(!output.isEmpty()){
@@ -234,13 +236,11 @@ public class Parser {
 					for(int col = startCol; col <= endCol; col++){
 						arity++;
 						
-						Object cellref = sheet.getValueAt(row - 1, col);
-						Object value = 0.0;
-						try {
-							value = Double.parseDouble(cellref.toString());
-						} catch (NumberFormatException e) {
-							//TODO: Do something with strings...
-						}
+						Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
+						Object value = null;
+						
+						value = cellref.getValue();
+						System.out.println(value.toString());
 						evalStack.push(value);
 					}
 				}
@@ -251,15 +251,11 @@ public class Parser {
 				int row = Integer.parseInt(ref.substring(1));
 				int col = (int) ref.charAt(0);
 				col -= 65;
-				
-				Object cellref = sheet.getValueAt(row - 1, col);
-				Object value = 0.0;
-				try {
-					value = Double.parseDouble(cellref.toString());
-				} catch (NumberFormatException e) {
-					value = cellref.toString();
-					//TODO: Do something with strings...
-				}
+
+				Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
+				Object value = null;
+				value = cellref.getValue();
+
 				evalStack.push(value);
 				break;
 			case MULTDIV:
