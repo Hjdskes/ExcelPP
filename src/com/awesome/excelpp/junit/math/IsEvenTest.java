@@ -15,7 +15,7 @@ public class IsEvenTest {
 		assertEquals(expected, result);
 	}
 	
-	@Test
+	@Test(expected = MathException.class)
 	public void IsEvenMultiple() throws MathException {
 		boolean expected = true;
 		boolean result = new IsEven().getValue(10, 20);
