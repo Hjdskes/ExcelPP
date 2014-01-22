@@ -210,7 +210,7 @@ public class ParserTest {
 	
 	@Test
 	public void test_logic() throws ParserException {
-		result = new Parser("=2<3;", null).eval();
+		result = new Parser("=2<=3;", null).eval();
 		assertTrue((Boolean)result);
 	}
 	
@@ -223,6 +223,12 @@ public class ParserTest {
 	@Test
 	public void test_logic_3() throws ParserException {
 		result = new Parser("=1==1;", null).eval();
+		assertTrue((Boolean)result);
+	}
+	
+	@Test
+	public void test_logic_4() throws ParserException {
+		result = new Parser("=2<=3;", null).eval();
 		assertTrue((Boolean)result);
 	}
 	
