@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
@@ -24,7 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
@@ -100,10 +98,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return The <code>JPanel</code> holding all the required buttons
 	 */
 	private final JPanel createButtonPanel() {
-		final FlowLayout layout = new FlowLayout();
-		layout.setAlignment(FlowLayout.CENTER);
-		layout.setAlignOnBaseline(true);
-		final JPanel panel = new JPanel(layout);
+		final FlowLayout layoutFormula = new FlowLayout();
+		layoutFormula.setAlignment(FlowLayout.LEFT);
+		layoutFormula.setAlignOnBaseline(true);
+		final JPanel buttonPanel = new JPanel();
+		final JPanel formulaPanel = new JPanel(layoutFormula);
+		final JPanel panel = new JPanel(new BorderLayout());
 
 		buttonNew = new JButton();
 		buttonNewTab = new JButton();
@@ -112,7 +112,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonSaveAs = new JButton();
 		buttonUndo = new JButton();
 		buttonRedo = new JButton();
-		functionField = new JTextField(40);
+		functionField = new JTextField(100);
 		buttonBold = new JButton();
 		buttonItalic = new JButton();
 		buttonForegroundColor = new JButton();
@@ -171,22 +171,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonGraphs.setToolTipText("Graphs");
 		buttonAbout.setToolTipText("About");
 
-		panel.add(buttonNew);
-		panel.add(buttonNewTab);
-		panel.add(buttonOpen);
-		panel.add(buttonSave);
-		panel.add(buttonSaveAs);
-		panel.add(buttonUndo);
-		panel.add(buttonRedo);
-		panel.add(functions);
-		panel.add(formulaLabel);
-		panel.add(functionField);
-		panel.add(buttonBold);
-		panel.add(buttonItalic);
-		panel.add(buttonForegroundColor);
-		panel.add(buttonBackgroundColor);
-		panel.add(buttonGraphs);
-		panel.add(buttonAbout);
+		buttonPanel.add(buttonNew);
+		buttonPanel.add(buttonNewTab);
+		buttonPanel.add(buttonOpen);
+		buttonPanel.add(buttonSave);
+		buttonPanel.add(buttonSaveAs);
+		buttonPanel.add(buttonUndo);
+		buttonPanel.add(buttonRedo);
+		formulaPanel.add(functions);
+		formulaPanel.add(formulaLabel);
+		formulaPanel.add(functionField);
+		buttonPanel.add(buttonBold);
+		buttonPanel.add(buttonItalic);
+		buttonPanel.add(buttonForegroundColor);
+		buttonPanel.add(buttonBackgroundColor);
+		buttonPanel.add(buttonGraphs);
+		buttonPanel.add(buttonAbout);
 
 		buttonNew.addActionListener(this);
 		buttonNew.registerKeyboardAction (this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -213,6 +213,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonGraphs.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
+		panel.add(buttonPanel, BorderLayout.PAGE_START);
+		panel.add(formulaPanel, BorderLayout.PAGE_END);
 		return panel;
 	}
 	
@@ -224,44 +226,37 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JPanel helpPanel = new JPanel();
 		final JTabbedPane helpTabbedPane = new JTabbedPane();
 
-		final String formulaText = "Implemented are the 25 formules one can see inside the combobox. "
-				+ "We adhere to the intimplementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.\n\n"
+		final String formulaText = "<html><body style='width:300px'>Implemented are the 25 formules one can see inside the combobox."
+				+ " We adhere to the intimplementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.<br><br>"
 				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
-				+ " this, we are very curious to hear about your results!\n\n"
-				+ "The syntax is as follows: =Add(2+2);\n"
-				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox. "
-				+ "Arguments are provided between brackets and are separated by commas. Formulas are ended by a semicolon."
-				+ "Here is a more complicated example: =Add(Average(2,4,6), 5, Power(2,4));\n\n"
-				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1.\n"
+				+ " this, we are very curious to hear about your results!<br><br>"
+				+ "The syntax is as follows: =Add(2+2);<br>"
+				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
+				+ " Arguments are provided between brackets and are separated by commas. Formulas are ended by a semicolon."
+				+ " Here is a more complicated example:<br>=Add(Average(2,4,6), 5, Power(2,4));<br><br>"
+				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1."
 				+ "Cell ranges are not yet supported.";
-		final JTextArea formulaPanel = new JTextArea(formulaText);
-		formulaPanel.setEditable(false);
-		formulaPanel.setLineWrap(true);
-		formulaPanel.setWrapStyleWord(true);
+		final JLabel formulaPanel = new JLabel(formulaText);
 
-		final String hotkeyText = "New file - Control + N\n"
-				+ "Open file - Control + O\n"
-				+ "Save file - Control + S\n"
-				+ "Save file as - Control + Shift + S\n"
-				+ "New tab - Control + T\n"
-				+ "Close tab - Control + W\n"
-				+ "Undo last change - Control + Z\n"
-				+ "Redo last change - Control + Shift + Z\n"
-				+ "Set current Cell's text bold - Control + B\n"
-				+ "Set current Cell's text italic - Control + I\n\n"
-				+ "Cel contents to textfield - Left mouse button\n"
-				+ "Cel position to textfield - Alt + right mouse button";
-		final JTextArea hotkeyPanel = new JTextArea(hotkeyText);
-		hotkeyPanel.setEditable(false);
-		hotkeyPanel.setLineWrap(false);
+		final String hotkeyText = "<html><body style='width:300px'>New file <p style='text-align:right'>Control + N"
+				+ "<p style='text-align:left'>Open file <p style='text-align:right'>Control + O"
+				+ "<p style='text-align:left'>Save file <p style='text-align:right'>Control + S"
+				+ "<p style='text-align:left'>Save file as <p style='text-align:right'>Control + Shift + S"
+				+ "<p style='text-align:left'>New tab <p style='text-align:right'>Control + T"
+				+ "<p style='text-align:left'>Close tab <p style='text-align:right'>Control + W"
+				+ "<p style='text-align:left'>Undo last change <p style='text-align:right'>Control + Z"
+				+ "<p style='text-align:left'>Redo last change <p style='text-align:right'>Control + Shift + Z"
+				+ "<p style='text-align:left'>Set current Cell's text bold <p style='text-align:right'>Control + B"
+				+ "<p style='text-align:left'>Set current Cell's text italic <p style='text-align:right'>Control + I"
+				+ "<p style='text-align:left'>Cel contents to textfield <p style='text-align:right'>Left mouse button"
+				+ "<p style='text-align:left'>Cel position to textfield <p style='text-align:right'>Alt + right mouse button";
+		final JLabel hotkeyPanel = new JLabel(hotkeyText);
 
-		final String aboutText = "Some code in this project is taken from other people.\n"
-				+ "These files were shared in the public domain; see the source files for more information.\n"
-				+ "The icons used come from the gnome-colors icon theme and are licensed under the GPL-2 license.\n"
+		final String aboutText = "<html><body style='width:300px'>Some code in this project is taken from other people."
+				+ " These files were shared in the public domain; see the source files for more information.<br>"
+				+ "The icons used come from the gnome-colors icon theme and are licensed under the GPL-2 license.<br><br>"
 				+ "Excel++ is a TU Delft project.\nCopyright 2013 Team Awesome.";
-		final JTextArea aboutPanel = new JTextArea(aboutText);
-		aboutPanel.setEditable(false);
-		aboutPanel.setLineWrap(false);
+		final JLabel aboutPanel = new JLabel(aboutText);
 
 		helpPanel.add(helpTabbedPane);
 		helpTabbedPane.addTab("Formula Help", formulaPanel);
@@ -269,9 +264,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		helpTabbedPane.addTab("About", aboutPanel);
 
 		helpDialog.add(helpPanel);
+		helpDialog.setSize(410, 380);
 		helpDialog.setIconImage(mainImage);
-		helpDialog.setMinimumSize(new Dimension(292, 450));
-		helpDialog.setResizable(true);
+		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
 		
 		helpDialog.setVisible(true);

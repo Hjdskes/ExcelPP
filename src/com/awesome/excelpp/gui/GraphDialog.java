@@ -74,7 +74,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		actionButton.addActionListener(this);
 
 		final JPanel graphsPanel = new JPanel();
-		graphsPanel.setLayout(new BoxLayout(graphsPanel,BoxLayout.Y_AXIS));
+		graphsPanel.setLayout(new BoxLayout(graphsPanel, BoxLayout.Y_AXIS));
 
 		graphsPanel.add(text);
 		graphsPanel.add(title);
