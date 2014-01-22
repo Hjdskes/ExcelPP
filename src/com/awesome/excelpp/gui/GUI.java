@@ -210,7 +210,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonItalic.addActionListener(this);
 		buttonItalic.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonForegroundColor.addActionListener(this);
+		buttonForegroundColor.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonBackgroundColor.addActionListener(this);
+		buttonBackgroundColor.registerKeyboardAction(this, "pressed", KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		buttonGraphs.addActionListener(this);
 		buttonAbout.addActionListener(this);
 
@@ -248,6 +250,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "<p style='text-align:left'>Close tab <p style='text-align:right'>Control + W"
 				+ "<p style='text-align:left'>Undo last change <p style='text-align:right'>Control + Z"
 				+ "<p style='text-align:left'>Redo last change <p style='text-align:right'>Control + Shift + Z"
+				+ "<p style='text-align:left'>Make Cell's text bold <p style='text-align:right'>Control + B"
+				+ "<p style='text-align:left'>Make Cell's text italic <p style='text-align:right'>Control + I"
+				+ "<p style='text-align:left'>Change Cell's foreground color <p style='text-align:right'>Control + F"
+				+ "<p style='text-align:left'>Change Cell's background color <p style='text-align:right'>Control + A"
 				+ "<p style='text-align:left'>Set current Cell's text bold <p style='text-align:right'>Control + B"
 				+ "<p style='text-align:left'>Set current Cell's text italic <p style='text-align:right'>Control + I"
 				+ "<p style='text-align:left'>Cel contents to textfield <p style='text-align:right'>Left mouse button"
