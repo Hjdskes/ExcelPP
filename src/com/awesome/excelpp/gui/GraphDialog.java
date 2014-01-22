@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -43,6 +44,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	private static JTextField title;
 	private static JTextField titleX;
 	private static JTextField titleY;
+	private static JCheckBox headers;
 	private static JButton actionButton;
 
 	/**
@@ -70,6 +72,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		title = new JTextField("Enter the title of the chart");
 		titleX = new JTextField("Enter the title of the X-axis");
 		titleY = new JTextField("Enter the title of the Y-axis");
+		headers = new JCheckBox("use custom headers");
 		actionButton = new JButton("Draw the chart");
 		actionButton.addActionListener(this);
 
@@ -80,6 +83,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		graphsPanel.add(title);
 		graphsPanel.add(titleX);
 		graphsPanel.add(titleY);
+		graphsPanel.add(headers);
 
 		add(graphs, BorderLayout.PAGE_START);
 		add(graphsPanel, BorderLayout.CENTER);
@@ -93,7 +97,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 */
 	public final void drawBarChart() {
 		try {
-			BarChart bchart = new BarChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText());
+			BarChart bchart = new BarChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText(), headers.isSelected());
 			bchart.pack();
 			bchart.setVisible(true);
 			this.dispose();
@@ -109,7 +113,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 */
 	public final void drawPieChart() {
 		try {
-			PieChart pchart = new PieChart(sheet, rows, columns, title.getText());
+			PieChart pchart = new PieChart(sheet, rows, columns, title.getText(), headers.isSelected());
 			pchart.pack();
 			pchart.setVisible(true);
 			this.dispose();
@@ -125,7 +129,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 */
 	public final void drawLineChart() {
 		try {
-			LineChart lchart = new LineChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText());
+			LineChart lchart = new LineChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText(), headers.isSelected());
 			lchart.pack();
 			lchart.setVisible(true);
 			this.dispose();
