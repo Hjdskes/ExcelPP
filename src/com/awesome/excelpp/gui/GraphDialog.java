@@ -1,16 +1,17 @@
 package com.awesome.excelpp.gui;
 
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.awesome.excelpp.graph.BarChart;
@@ -27,22 +28,22 @@ import com.awesome.excelpp.models.SpreadSheet;
 public class GraphDialog extends JDialog implements ActionListener {
 	static final long serialVersionUID = 1L;
 	private static final String[] graphList = {"Bar chart", "Pie chart", "Line chart"};
-	private static final String pieText = "Make sure you have selected the cells you want to transform"
+	private static final String pieText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
 				+ "into a pie chart and press the button below.";
-	private static final String barText = "Make sure you have selected the cells\nyou want to transform"
-				+ "into a bar chart\nand press the button below.";
-	private static final String lineText = "Make sure you have selected the cells\nyou want to transform"
-				+ "into a linechart\nand press the button below.";
+	private static final String barText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
+				+ "into a bar chart and press the button below.";
+	private static final String lineText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
+				+ "into a linechart and press the button below.";
 	private static int currentGraph = 0; //selected graph in the combobox. 0 = bar, 1 = pie, 2 = line.
 	private SpreadSheet sheet;
 	private int[] rows;
 	private int[] columns;
 	private static JComboBox<String> graphs;
-	private static JTextArea text;
-	private static JButton actionButton;
+	private static JLabel text;
 	private static JTextField title;
 	private static JTextField titleX;
 	private static JTextField titleY;
+	private static JButton actionButton;
 
 	/**
 	 * Constructs the dialog to configure the chart that is to be drawn.
@@ -56,30 +57,33 @@ public class GraphDialog extends JDialog implements ActionListener {
 		this.rows = table.getSelectedRows();
 		this.columns = table.getSelectedColumns();
 
-		final JPanel graphsPanel = new JPanel();
+		setLayout (new BorderLayout());
+		setIconImage(image);
+		setSize(370, 320);
+		setResizable(false);
+		setLocation ((screenWidth / 2) - (this.getWidth() / 2), (screenHeight / 2) - (this.getWidth() / 2)); //center in het midden
+
 		graphs = new JComboBox<String>(graphList);
 		graphs.addActionListener(this);
-
+		//ToDo: all of this inside a thin border?
+		text = new JLabel(barText);
 		title = new JTextField("Enter the title of the chart");
 		titleX = new JTextField("Enter the title of the X-axis");
 		titleY = new JTextField("Enter the title of the Y-axis");
 		actionButton = new JButton("Draw the chart");
 		actionButton.addActionListener(this);
-		text = new JTextArea(barText);
-		text.setEditable(false);
 
-		graphsPanel.add(graphs);
+		final JPanel graphsPanel = new JPanel();
+		graphsPanel.setLayout(new BoxLayout(graphsPanel,BoxLayout.Y_AXIS));
+
 		graphsPanel.add(text);
 		graphsPanel.add(title);
 		graphsPanel.add(titleX);
 		graphsPanel.add(titleY);
-		graphsPanel.add(actionButton);
-	
-		add(graphsPanel);
-		setIconImage(image);
-		setMinimumSize(new Dimension(370, 350));
-		setResizable(true);
-		setLocation ((screenWidth / 2) - (graphsPanel.getPreferredSize().width / 2), (screenHeight / 2) - (graphsPanel.getPreferredSize().height / 2)); //center in het midden
+
+		add(graphs, BorderLayout.PAGE_START);
+		add(graphsPanel, BorderLayout.CENTER);
+		add(actionButton, BorderLayout.PAGE_END);
 
 		setVisible(true);
 	}
@@ -88,9 +92,8 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 * Draws a bar chart.
 	 */
 	public final void drawBarChart() {
-		BarChart bchart;
 		try {
-			bchart = new BarChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText());
+			BarChart bchart = new BarChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText());
 			bchart.pack();
 			bchart.setVisible(true);
 			this.dispose();
