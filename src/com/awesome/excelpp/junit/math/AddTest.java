@@ -17,6 +17,7 @@ public class AddTest {
 	
 	@Test(expected = MathException.class)
 	public void Add_invalid() throws MathException {
-		new Sum().getValue("twee", 4, 8);
+		assertEquals(new Sum().getValue("twee", 4, 8), false);
 	}
 }
+
