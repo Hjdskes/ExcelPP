@@ -21,7 +21,7 @@ public class Median extends Formula {
 		
 		List<Double> doubles = new ArrayList<Double>();	
 		for(Object o : args) {
-			if (!(o instanceof Double) || !(o instanceof Integer))
+			if (!(o instanceof Double))
 				throw new MathException();
 			
 			doubles.add((Double)o);
