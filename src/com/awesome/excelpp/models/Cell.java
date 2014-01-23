@@ -22,6 +22,7 @@ public class Cell {
 	private int fontItalic; // 2 = italic, 0 = niet italic
 	private Color foregroundColor;
 	private Color backgroundColor;
+	private Color restoreBackground;
 	private boolean parsing;
 	
 	/**
@@ -230,6 +231,16 @@ public class Cell {
 				(getBackgroundColor() == Color.WHITE) && 
 				(this.getContent().equals("")));
 	}
+	
+	private void setError(boolean error) {
+		if (error) {
+			restoreBackground = backgroundColor;
+			setBackgroundColor(Color.RED, false);
+		} else {
+			setBackgroundColor(restoreBackground, false);
+			restoreBackground = null;
+		}
+	}
 
 	public synchronized Object getValue() throws RecursionException {
 		Object result = content;
@@ -239,8 +250,8 @@ public class Cell {
 				Parser parse = new Parser(content, sheet);
 				parse.toPostfix();
 				result = parse.eval();
+				setError(false);
 			} catch (ParserException e) {
-				backgroundColor = Color.red;
 				if (e instanceof MissingRBracketException ||
 						e instanceof MissingLBracketException ||
 						e instanceof MissingArgException)
@@ -249,8 +260,10 @@ public class Cell {
 					result = "#OPINV";
 				else if (e instanceof ReferenceException)
 					result = "#REFINV";
+				setError(true);
 			}
 		} else {
+			setError(true);
 			this.parsing = false;
 			throw new RecursionException();
 		}
