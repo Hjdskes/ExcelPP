@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,7 +72,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * Constructs the main window.
 	 * @throws IOException
 	 */
-	public GUI () throws IOException {
+	public GUI() throws IOException {
 		final JPanel buttonPanel = createButtonPanel();
 		mainImage = ImageIO.read(new File("data/icons/gnumeric.png"));
 
@@ -99,11 +98,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return The <code>JPanel</code> holding all the required buttons
 	 */
 	private final JPanel createButtonPanel() {
-		final FlowLayout layoutFormula = new FlowLayout();
-		layoutFormula.setAlignment(FlowLayout.LEFT);
-		layoutFormula.setAlignOnBaseline(true);
 		final JPanel buttonPanel = new JPanel();
-		final JPanel formulaPanel = new JPanel(layoutFormula);
+		final JPanel formulaPanel = new JPanel();
 		final JPanel panel = new JPanel(new BorderLayout());
 
 		buttonNew = new JButton();
@@ -260,6 +256,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "<p style='text-align:left'>Cel position to textfield <p style='text-align:right'>Alt + right mouse button";
 		final JLabel hotkeyLabel = new JLabel(hotkeyText);
 		hotkeyLabel.setVerticalAlignment(SwingConstants.TOP);
+		int helpDialogHeight = hotkeyLabel.getPreferredSize().height + 40;
+		int helpDialogWidth = hotkeyLabel.getPreferredSize().width + 20;
 
 		final String aboutText = "<html><body style='width:300px'>Some code in this project is taken from other people."
 				+ " These files were shared in the public domain; see the source files for more information.<br>"
@@ -274,7 +272,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		helpTabbedPane.addTab("About", aboutLabel);
 
 		helpDialog.add(helpPanel);
-		helpDialog.setSize(410, 458);
+		helpDialog.setSize(helpDialogWidth, helpDialogHeight);
 		helpDialog.setIconImage(mainImage);
 		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
