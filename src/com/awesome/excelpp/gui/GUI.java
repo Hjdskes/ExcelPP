@@ -504,10 +504,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	@Override
 	public final void windowClosing(WindowEvent e) {
 		for(int i = 0; i < mainTabs.getTabCount(); i++) {
-			if(closeFile(i) == 1) {
-				JOptionPane.showMessageDialog(this, "Please save your files and try again.", "Save your files", JOptionPane.INFORMATION_MESSAGE);
+			if(closeFile(i) == 2)
 				return;
-			}
 		}
 		System.exit(0); //ToDo: niet de beste oplossing? Bastiaan zei dat we het zo konden laten.
 	}
@@ -587,29 +585,32 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	/**
 	 * Handles closing of a file. Pops up a dialog for confirmation if changes will be lost.
 	 * @param index	The index of the tab whose <code>File</code> will be closed
-	 * @return 0 for OK, 1 for cancel
+	 * @return 0 for OK, 1 for save, 2 for cancel
 	 */
 	public static final int closeFile(int index) {
 		int close = 0;
+		Object[] options = { "Continue", "Save file", "Cancel" };
 		SpreadSheetScrollPane scrollPane = (SpreadSheetScrollPane)mainTabs.getComponentAt(index);
 		SpreadSheetTable table = scrollPane.getTable();
 		if(getTabTitle(index).equals("New file")) {
 			if(table.getSheet().isEmpty() == false)
-				close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+				close = JOptionPane.showOptionDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[2]);
 		} else {
 			try {
 				Document doc = XML.parse(table.getFile());
 				SpreadSheet fileSheet = XML.print(doc);
 				if(!table.getSheet().equals(fileSheet))
-					close = JOptionPane.showConfirmDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.YES_NO_OPTION);
+					close = JOptionPane.showOptionDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[2]);
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
 		}
 
-		if(close == 1)
+		if(close == 1) {
 			saveFile(true);
+			close = 0;
+		}
 		return close;
 	}
 }

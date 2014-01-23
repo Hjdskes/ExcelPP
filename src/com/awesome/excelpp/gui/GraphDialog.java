@@ -110,7 +110,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		} catch(CellInputException c) {
 			JOptionPane.showMessageDialog(this, "Please make sure your input for the first cell and the last cell is correct");
 		} catch(CellDataException d) {
-			JOptionPane.showMessageDialog(this, "Please make sure the Data entered in the table can be transformed to a piechart");
+			JOptionPane.showMessageDialog(this, "Please make sure the data entered in the table can be transformed to a piechart");
 		}
 	}
 
@@ -126,7 +126,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		} catch(CellInputException c) {
 			JOptionPane.showMessageDialog(this, "Please make sure your input for the first cell and the last cell is correct");
 		} catch(CellDataException d) {
-			JOptionPane.showMessageDialog(this, "Please make sure the Data entered in the table can be transformed to a piechart");
+			JOptionPane.showMessageDialog(this, "Please make sure the data entered in the table can be transformed to a piechart");
 		}
 	}
 
@@ -142,7 +142,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		} catch(CellInputException c) {
 			JOptionPane.showMessageDialog(this, "Please make sure your input for the first cell and the last cell is correct");
 		} catch(CellDataException d) {
-			JOptionPane.showMessageDialog(this, "Please make sure the Data entered in the table can be transformed to a piechart");
+			JOptionPane.showMessageDialog(this, "Please make sure the data entered in the table can be transformed to a piechart");
 		}
 	}
 
