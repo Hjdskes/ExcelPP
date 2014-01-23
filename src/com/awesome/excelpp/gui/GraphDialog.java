@@ -1,10 +1,12 @@
 package com.awesome.excelpp.gui;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,12 +31,12 @@ import com.awesome.excelpp.models.SpreadSheet;
 public class GraphDialog extends JDialog implements ActionListener {
 	static final long serialVersionUID = 1L;
 	private static final String[] graphList = {"Bar chart", "Pie chart", "Line chart"};
-	private static final String pieText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
-				+ "into a pie chart and press the button below.";
-	private static final String barText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
-				+ "into a bar chart and press the button below.";
-	private static final String lineText = "<html><body style='width:200px'>Make sure you have selected the cells you want to transform "
-				+ "into a line chart and press the button below.";
+	private static final String pieText = "<html><body style='width:240px'>Make sure you have selected the cells<br>you want to transform "
+				+ "into a pie chart<br> and press the button below.</body></html>";
+	private static final String barText = "<html><body style='width:240px'>Make sure you have selected the cells you want to transform "
+				+ "into a bar chart and press the button below.</body></html>";
+	private static final String lineText = "<html><body style='width:240px'>Make sure you have selected the cells you want to transform "
+				+ "into a line chart and press the button below.</body></html>";
 	private int currentGraph = 0; //selected graph in the combobox. 0 = bar, 1 = pie, 2 = line.
 	private SpreadSheet sheet;
 	private int[] rows;
@@ -59,36 +61,40 @@ public class GraphDialog extends JDialog implements ActionListener {
 		this.rows = table.getSelectedRows();
 		this.columns = table.getSelectedColumns();
 
-		setLayout (new BorderLayout());
+		final JPanel testPanel = new JPanel();
+		testPanel.setLayout (new BoxLayout(testPanel, BoxLayout.Y_AXIS));
+		testPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+		setModal(true); //Cell selectie mag alleen voor het openen en niet als de dialog al open is
 		setIconImage(image);
-		setSize(370, 320);
 		setResizable(false);
 		setLocation ((screenWidth / 2) - (this.getWidth() / 2), (screenHeight / 2) - (this.getWidth() / 2)); //center in het midden
 
 		graphs = new JComboBox<String>(graphList);
 		graphs.addActionListener(this);
-		//ToDo: all of this inside a thin border?
 		text = new JLabel(barText);
 		title = new JTextField("Enter the title of the chart");
 		titleX = new JTextField("Enter the title of the X-axis");
 		titleY = new JTextField("Enter the title of the Y-axis");
-		headers = new JCheckBox("Use custom headers (this will be the first row)");
+		headers = new JCheckBox("<html><body style='width:224px'>Use custom headers (this will be the selected first row)</body></html>");
 		actionButton = new JButton("Draw the chart");
 		actionButton.addActionListener(this);
 
-		final JPanel graphsPanel = new JPanel();
-		graphsPanel.setLayout(new BoxLayout(graphsPanel, BoxLayout.Y_AXIS));
+		this.add(testPanel);
+		testPanel.add(graphs);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		testPanel.add(text);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+		testPanel.add(title);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+		testPanel.add(titleX);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+		testPanel.add(titleY);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+		testPanel.add(headers);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+		testPanel.add(actionButton);
 
-		graphsPanel.add(text);
-		graphsPanel.add(title);
-		graphsPanel.add(titleX);
-		graphsPanel.add(titleY);
-		graphsPanel.add(headers);
-
-		add(graphs, BorderLayout.PAGE_START);
-		add(graphsPanel, BorderLayout.CENTER);
-		add(actionButton, BorderLayout.PAGE_END);
-
+		setSize(testPanel.getPreferredSize());
 		setVisible(true);
 	}
 

@@ -257,7 +257,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JLabel hotkeyLabel = new JLabel(hotkeyText);
 		hotkeyLabel.setVerticalAlignment(SwingConstants.TOP);
 		int helpDialogHeight = hotkeyLabel.getPreferredSize().height + 40;
-		int helpDialogWidth = hotkeyLabel.getPreferredSize().width + 20;
+		int helpDialogWidth = hotkeyLabel.getPreferredSize().width + 18;
 
 		final String aboutText = "<html><body style='width:300px'>Some code in this project is taken from other people."
 				+ " These files were shared in the public domain; see the source files for more information.<br>"
