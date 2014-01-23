@@ -255,9 +255,7 @@ public class Parser {
 						arity++;
 						
 						Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
-						Object value = null;
-						
-						value = cellref.getValue();
+						Object value = cellref.getValue();
 						evalStack.push(value);
 					}
 				}
@@ -270,9 +268,7 @@ public class Parser {
 				col -= 65;
 
 				Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
-				Object value = null;
-				value = cellref.getValue();
-
+				Object value = cellref.getValue();
 				evalStack.push(value);
 				break;
 			case MULTDIV:
