@@ -275,8 +275,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 
 		helpPanel.add(helpTabbedPane);
 		helpTabbedPane.addTab("Formula Help", formulaLabel);
+		helpTabbedPane.setIconAt(0, new ImageIcon("data/icons/formulaHelp.png"));
 		helpTabbedPane.addTab("Hotkeys", hotkeyLabel);
+		helpTabbedPane.setIconAt(1, new ImageIcon("data/icons/keyboard.png"));
 		helpTabbedPane.addTab("About", aboutLabel);
+		helpTabbedPane.setIconAt(2, new ImageIcon("data/icons/gtk-about_16.png"));
 
 		helpDialog.add(helpPanel);
 		helpDialog.setSize(helpDialogWidth, helpDialogHeight);
