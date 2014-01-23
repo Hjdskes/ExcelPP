@@ -240,7 +240,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "The syntax is as follows: =Sum(2+2)<br>"
 				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
 				+ " Arguments are provided between brackets and are separated by commas. Cell ranges are also supported."
-				+ " Here is a more complicated example, including cell ranges:<br>=Sum(Average(A1:A5), 5, Power(2,4))<br><br>"
+				+ " Here is a more complicated example, including Cell ranges:<br>=Sum(Average(A1:A5), 5, Power(2,4))<br><br>"
 				+ "Regular math notation, such as =(2+2)*3, is also supported. One can also make Cell references from other Cells: =A1.";
 		final JLabel formulaLabel = new JLabel(formulaText);
 		formulaLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -260,7 +260,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "<p style='text-align:left'>Set current Cell's text bold <p style='text-align:right'>Control + B"
 				+ "<p style='text-align:left'>Set current Cell's text italic <p style='text-align:right'>Control + I"
 				+ "<p style='text-align:left'>Cel contents to textfield <p style='text-align:right'>Left mouse button"
-				+ "<p style='text-align:left'>Cel position to textfield <p style='text-align:right'>Alt + right mouse button";
+				+ "<p style='text-align:left'>Cel position to textfield (also works for a selection of Cells) <p style='text-align:right'>Alt + right mouse button";
 		final JLabel hotkeyLabel = new JLabel(hotkeyText);
 		hotkeyLabel.setVerticalAlignment(SwingConstants.TOP);
 		int helpDialogHeight = hotkeyLabel.getPreferredSize().height + 40;

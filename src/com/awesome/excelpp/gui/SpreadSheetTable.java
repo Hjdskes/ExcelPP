@@ -99,63 +99,28 @@ public class SpreadSheetTable extends JTable implements MouseListener, UndoableE
 			cellSelected = true;
 			int[] selectedColumns = this.getSelectedColumns();
 			int[] selectedRows = this.getSelectedRows();
-
-			String text = "";
 			int button = e.getButton();
 			boolean alt = e.isAltDown();
-			boolean formule = false; //of er al een (nog niet afgeronde) formule in het tekstvak staat
-			String currentText = GUI.functionFieldGetText();
-
-			if (currentText != null && currentText.length() > 0) {
-				if (currentText.charAt(0) == '=' && currentText.charAt(currentText.length() - 1) != ';')
-					formule = true;
-			}
+			String text = "";
 
 			Cell activeCell = null;
 			String content = null;
 			if(button == MouseEvent.BUTTON1) {
-				if(alt == false) {
-					activeCell = (Cell)this.getValueAt(selectedRows[0], selectedColumns[0]);
-					content = activeCell.getContent();
-					if (formule && content != null && content != "")
-						text += "(" + content + "),";
-					else
-						text += content;
-				} else {
-					for (int i = 0; i < selectedColumns.length; i++) {
-						for (int j = 0; j < selectedRows.length; j++) {
-							activeCell = (Cell)this.getValueAt(selectedRows[j], selectedColumns[i]);
-							content = activeCell.getContent();
-							if (formule && content != null && content != "")
-								text += "(" + content + "),";
-							else
-								text += content;
-						}
-					}
-				}
+				activeCell = (Cell)this.getValueAt(selectedRows[0], selectedColumns[0]);
+				content = activeCell.getContent();
+				text = content;
 			} else if(button == MouseEvent.BUTTON3) {
 				if(alt == false) {
-					if (formule)
-						text += "(" + this.getColumnName(selectedColumns[0]) + ((selectedRows[0]) + 1) + "),";
-					else
-						text += this.getColumnName(selectedColumns[0]) + ((selectedRows[0]) + 1);
+					text = this.getColumnName(selectedColumns[0]) + ((selectedRows[0]) + 1);
 				} else {
-					for (int i = 0; i < selectedColumns.length; i++) {
-						for (int j = 0; j < selectedRows.length; j++) {
-							if (formule)
-								text += "(" + this.getColumnName(selectedColumns[i]) + ((selectedRows[j]) + 1) + "),";
-							else
-								text += this.getColumnName(selectedColumns[i]) + ((selectedRows[j]) + 1);
-						}
-					}
+					String smallest = this.getColumnName(selectedColumns[0]) + ((selectedRows[0]) + 1);
+					String biggest = this.getColumnName(selectedColumns[selectedColumns.length-1]) + ((selectedRows[selectedRows.length-1]) + 1);
+					text = smallest + ":" + biggest;
 				}
 			}
 
-			if (formule) {
-				text = currentText + text;
-				text = (text == null || text.length() == 0) ? "" : text.substring(0, text.length()-1) + ")"; //laatste komma vervangen door een afsluitend haakje
-			}
-			GUI.functionFieldSetText(text);
+			if (text != null)
+				GUI.functionFieldSetText(text);
 		}
 	}
 
