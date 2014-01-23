@@ -233,7 +233,6 @@ public class Cell {
 
 	public synchronized Object getValue() throws RecursionException {
 		Object result = content;
-		System.out.println(this.parsing);
 		if (!this.parsing) {
 			this.parsing = true;
 			try {

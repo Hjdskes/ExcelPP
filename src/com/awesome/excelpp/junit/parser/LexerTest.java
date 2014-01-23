@@ -136,7 +136,7 @@ public class LexerTest {
 		assertEquals(NUMBER, next.type);
 		assertTrue(next.data.equals("4"));
 		next = lex.next();
-		assertEquals(EOLDELIM, next.type);
+		assertEquals(EOL, next.type);
 	}
 	
 	@Test

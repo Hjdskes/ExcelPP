@@ -1,13 +1,14 @@
 package com.awesome.excelpp.parser;
 
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.RecursionException;
 
 /**
  * This class is a benchmark for the @{link Parser}.
  * @author Team Awesome
  */
 public class ParserTest {
-	public static void main(String[] args) throws ParserException {
+	public static void main(String[] args) throws ParserException, RecursionException {
 		double totalFirst = 0, totalSecond = 0, totalLexer = 0;
 		double startTime, endTime;
 		

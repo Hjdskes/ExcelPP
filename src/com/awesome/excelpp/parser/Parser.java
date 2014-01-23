@@ -1,7 +1,6 @@
 package com.awesome.excelpp.parser;
 
 import java.lang.reflect.Constructor;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -180,20 +179,12 @@ public class Parser {
 				operators.push(currentToken);
 				lastWasNumber = false;
 				break;
-			case EOLDELIM:
+			case EOL:
 				while(!operators.isEmpty()){
 					output.push(operators.pop());
 				}
-				output.push(currentToken);
 				break;
 			}
-		}
-		try {
-			if (output.pop().type != EOLDELIM) {
-				throw new MissingArgException();
-			}
-		} catch (NoSuchElementException e) {
-			throw new MissingArgException();
 		}
 	}
 	
@@ -255,9 +246,7 @@ public class Parser {
 						arity++;
 						
 						Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
-						Object value = null;
-						
-						value = cellref.getValue();
+						Object value = cellref.getValue();
 						evalStack.push(value);
 					}
 				}
@@ -270,9 +259,7 @@ public class Parser {
 				col -= 65;
 
 				Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
-				Object value = null;
-				value = cellref.getValue();
-
+				Object value = cellref.getValue();
 				evalStack.push(value);
 				break;
 			case MULTDIV:
