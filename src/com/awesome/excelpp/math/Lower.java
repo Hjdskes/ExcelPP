@@ -10,7 +10,7 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Lower extends Formula {
 	@Override
 	public String getValue(Object... args) throws MathException {
-		if (args.length != 1)
+		if (args.length != 1 || !(args[0] instanceof String))
 			throw new MathException();
 
 		return getString(args[0]).toLowerCase();

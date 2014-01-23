@@ -6,6 +6,7 @@ import com.awesome.excelpp.parser.exception.MissingArgException;
 import com.awesome.excelpp.parser.exception.MissingLBracketException;
 import com.awesome.excelpp.parser.exception.MissingRBracketException;
 import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.RecursionException;
 import com.awesome.excelpp.parser.exception.ReferenceException;
 
 import java.awt.Color;
@@ -21,6 +22,7 @@ public class Cell {
 	private int fontItalic; // 2 = italic, 0 = niet italic
 	private Color foregroundColor;
 	private Color backgroundColor;
+	private boolean parsing;
 	
 	/**
 	 * Constructs a new <code>Cell</code>.
@@ -38,6 +40,7 @@ public class Cell {
 		this.fontItalic = italic;
 		this.foregroundColor = foregroundColor;
 		this.backgroundColor = backgroundColor;
+		this.parsing = false;
 	}
 
 	/**
@@ -228,24 +231,33 @@ public class Cell {
 				(this.getContent().equals("")));
 	}
 
-	public Object getValue() {
-		try {
-			Parser parse = new Parser(content, sheet);
-			parse.toPostfix();
-			return parse.eval();
-		} catch (ParserException e) {
-			backgroundColor = Color.red;
-			if (e instanceof MissingRBracketException ||
-					e instanceof MissingLBracketException ||
-					e instanceof MissingArgException)
-				return "#ARGINV";
-			else if (e instanceof FormulaException)
-				return "#OPINV";
-			else if (e instanceof ReferenceException)
-				return "#REFINV";
+	public synchronized Object getValue() throws RecursionException {
+		Object result = content;
+		System.out.println(this.parsing);
+		if (!this.parsing) {
+			this.parsing = true;
+			try {
+				Parser parse = new Parser(content, sheet);
+				parse.toPostfix();
+				result = parse.eval();
+			} catch (ParserException e) {
+				backgroundColor = Color.red;
+				if (e instanceof MissingRBracketException ||
+						e instanceof MissingLBracketException ||
+						e instanceof MissingArgException)
+					result = "#ARGINV";
+				else if (e instanceof FormulaException)
+					result = "#OPINV";
+				else if (e instanceof ReferenceException)
+					result = "#REFINV";
+			}
+		} else {
+			this.parsing = false;
+			throw new RecursionException();
 		}
 		
-		return content;
+		this.parsing = false;
+		return result;
 	}
 
 	/**
@@ -256,10 +268,13 @@ public class Cell {
 	 */
 	public String toString() {
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
-//			Parser.cellSet.clear();
-			return getValue().toString();
+			try {
+				return getValue().toString();
+			} catch (RecursionException e) {
+				return "#INFREF";
+			}
 		}
-
+		
 		return content == null ? "" : content;
 	}
 

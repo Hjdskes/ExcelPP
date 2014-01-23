@@ -18,11 +18,11 @@ public class CountIf extends Formula {
 	public Object getValue(Object... args) throws MathException {
 		 int count = 0;
 		 	for(int i=1; i < args.length; i++) {
+		 		
 		 		if(args[i] instanceof Double) {
 		 			if((double) args[i] !=  0.0) {
-		 				if(args[0] == args[i]){
+		 				if(args[0].equals(args[i])){
 			 				count += 1;
-			 				System.out.println(args[i]);
 		 				}
 		 			}
 		 		}
@@ -30,7 +30,6 @@ public class CountIf extends Formula {
 		 			if((String) args[i] !=  "") {
 		 				if(args[0].equals(args[i])){
 			 				count += 1;
-			 				System.out.println(args[i]);
 		 				}
 		 			}
 		 		}
@@ -39,7 +38,15 @@ public class CountIf extends Formula {
 		 			if((int) args[i] !=  0) {
 		 				if(args[0] == args[i]){
 		 				count += 1;
-		 				System.out.println(args[i]);
+		 		
+		 				}
+		 			}
+		 		}
+		 		
+		 		else if(args[i] instanceof Boolean) {
+		 			if((boolean) args[i] == true || (boolean) args[i] == false) {
+		 				if(args[0] == args[i]) {
+		 				count += 1;
 		 				}
 		 			}
 		 		}

@@ -17,6 +17,9 @@ public class Or extends Formula {
 					return true;
 				}
 			}
+			if (!(args[i] instanceof Boolean)) {
+				throw new MathException();
+			}
 			
 		}
 		return false;

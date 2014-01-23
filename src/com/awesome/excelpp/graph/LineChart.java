@@ -39,17 +39,30 @@ public class LineChart extends JFrame{
 
 		int startRow = rows[0];
 		int endRow = rows[rows.length-1];
-		if(endRow-startRow>1){
-			ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
-			ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
-			ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
-			data = createData(horizontalNames, verticalNames, values);
-		} else {
-			ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
-			ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
-			data = createData(names, values);
+		if(headers){
+			if(endRow-startRow>1){
+				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
+				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
+				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
+				data = createData(horizontalNames, verticalNames, values);
+			} else {
+				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
+				ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+				data = createData(names, values);
+			}
+				
+		} else{
+			if(endRow-startRow>0){
+				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
+				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
+				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
+				data = createData(horizontalNames, verticalNames, values);
+			} else {
+				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
+				ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+				data = createData(names, values);
+			}
 		}
-
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
