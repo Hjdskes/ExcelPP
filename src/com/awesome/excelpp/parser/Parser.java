@@ -26,15 +26,17 @@ public class Parser {
 	
 	private Lexer lex;
 	private SpreadSheet sheet;
+	private Cell cell;
 
 	/**
 	 * Creates a new expression Parser.
 	 * @param lex The {@link Lexer} containing the expression 
 	 * @param sheet The referenced {@link SpreadSheet}
 	 */
-	public Parser(Lexer lex, SpreadSheet sheet){
+	public Parser(Lexer lex, SpreadSheet sheet, Cell cell){
 		this.lex = lex;
 		this.sheet = sheet;
+		this.cell = cell;
 		output = new LinkedList<Token>();
 		arityStack = new LinkedList<Integer>();
 	}
@@ -44,16 +46,26 @@ public class Parser {
 	 * @param expr The String containing the expression
 	 * @param sheet	The referenced {@link SpreadSheet}
 	 */
-	public Parser(String expr, SpreadSheet sheet){
-		this(new Lexer(expr), sheet);
+	public Parser(String expr, SpreadSheet sheet, Cell cell){
+		this(new Lexer(expr), sheet, cell);
 	}
+	
+	/**
+	 * Creates a new expression Parser.
+	 * @param expr The String containing the expression
+	 * @param sheet	The referenced {@link SpreadSheet}
+	 */
+	public Parser(String expr, SpreadSheet sheet){
+		this(new Lexer(expr), sheet, null);
+	}
+	
 	
 	/**
 	 * Creates a new expression Parser.
 	 * @param expr The String containing the expression
 	 */
 	public Parser(String expr){
-		this(new Lexer(expr), null);
+		this(new Lexer(expr), null, null);
 	}
 	
 	/**
@@ -248,6 +260,8 @@ public class Parser {
 						
 						Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
 						Object value = cellref.getValue();
+						if (cell != null)
+							cell.Observe(cellref);
 						evalStack.push(value);
 					}
 				}
@@ -261,6 +275,8 @@ public class Parser {
 
 				Cell cellref = (Cell) sheet.getValueAt(row - 1, col);
 				Object value = cellref.getValue();
+				if (cell != null)
+					cell.Observe(cellref);
 				evalStack.push(value);
 				break;
 			case MULTDIV:

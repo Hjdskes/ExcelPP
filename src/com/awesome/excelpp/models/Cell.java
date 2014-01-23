@@ -74,10 +74,10 @@ public class Cell extends Observable implements Observer {
 		if (obj instanceof Cell) {
 			Cell other = (Cell)obj;
 			if (	this.getContent().equals(other.getContent()) &&
-					(this.fontBold == other.getBold()) &&
-					(this.fontItalic == other.getItalic()) &&
-					(this.foregroundColor.equals(other.getForegroundColor())) &&
-					(this.backgroundColor.equals(other.getBackgroundColor())))
+					(this.getBold() == other.getBold()) &&
+					(this.getItalic() == other.getItalic()) &&
+					(this.getForegroundColor().equals(other.getForegroundColor())) &&
+					(this.getBackgroundColor().equals(other.getBackgroundColor())))
 			{
 				equals = true;
 			}
@@ -276,7 +276,7 @@ public class Cell extends Observable implements Observer {
 		if (!this.parsing) {
 			this.parsing = true;
 			try {
-				Parser parse = new Parser(content, sheet);
+				Parser parse = new Parser(content, sheet, this);
 				parse.toPostfix();
 				result = parse.eval();
 				setError(false);
@@ -362,6 +362,8 @@ public class Cell extends Observable implements Observer {
 		}
 		observing.add(other);
 		other.addObserver(this);
+		System.out.println(observing);
+		System.out.println(observers);
 	}
 
 	@Override

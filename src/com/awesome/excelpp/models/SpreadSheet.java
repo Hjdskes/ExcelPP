@@ -113,7 +113,6 @@ public class SpreadSheet extends AbstractTableModel implements Observer {
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
 		cells.put(getNumCell(row, col), (Cell)aValue);
-		fireTableDataChanged();
 	}
 	
 	/* LISTENERS */
