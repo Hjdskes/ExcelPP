@@ -234,15 +234,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JTabbedPane helpTabbedPane = new JTabbedPane();
 
 		final String formulaText = "<html><body style='width:300px'>Implemented are the 25 formules one can see inside the combobox."
-				+ " We adhere to the intimplementation made by Microsoft Excel, so if any formula's use is unclear, please see their documentation.<br><br>"
-				+ "Our parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
+				+ " Excel++ adheres to the syntax for Microsoft Excel, so if any formula's use is unclear, please see their documentation.<br><br>"
+				+ "The parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
 				+ " this, we are very curious to hear about your results!<br><br>"
-				+ "The syntax is as follows: =Add(2+2);<br>"
+				+ "The syntax is as follows: =Sum(2+2)<br>"
 				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
-				+ " Arguments are provided between brackets and are separated by commas. Formulas are ended by a semicolon."
-				+ " Here is a more complicated example:<br>=Add(Average(2,4,6), 5, Power(2,4));<br><br>"
-				+ "Regular math notation, such as =(2+2)*3;, is also supported. One can also make Cell references from other Cells: =A1."
-				+ "Cell ranges are not yet supported.";
+				+ " Arguments are provided between brackets and are separated by commas. Cell ranges are also supported."
+				+ " Here is a more complicated example, including cell ranges:<br>=Sum(Average(A1:A5), 5, Power(2,4))<br><br>"
+				+ "Regular math notation, such as =(2+2)*3, is also supported. One can also make Cell references from other Cells: =A1.";
 		final JLabel formulaLabel = new JLabel(formulaText);
 		formulaLabel.setVerticalAlignment(SwingConstants.TOP);
 
