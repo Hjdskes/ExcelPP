@@ -264,7 +264,7 @@ public class Cell extends Observable implements Observer {
 	private void setError(boolean error) {
 		if (error) {
 			restoreBackground = backgroundColor;
-			setBackgroundColor(Color.RED, false);
+			setBackgroundColor(new Color(255, 65, 70), false);
 		} else {
 			setBackgroundColor(restoreBackground, false);
 			restoreBackground = null;

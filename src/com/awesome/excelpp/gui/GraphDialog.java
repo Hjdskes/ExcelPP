@@ -67,7 +67,6 @@ public class GraphDialog extends JDialog implements ActionListener {
 		setModal(true); //Cell selectie mag alleen voor het openen en niet als de dialog al open is
 		setIconImage(image);
 		setResizable(false);
-		setLocation ((screenWidth / 2) - (this.getWidth() / 2), (screenHeight / 2) - (this.getWidth() / 2)); //center in het midden
 
 		graphs = new JComboBox<String>(graphList);
 		graphs.addActionListener(this);
@@ -95,6 +94,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		testPanel.add(actionButton);
 
 		setSize(testPanel.getPreferredSize());
+		setLocation ((screenWidth / 2) - (this.getWidth() / 2), (screenHeight / 2) - (this.getWidth() / 2)); //center in het midden
 		setVisible(true);
 	}
 
