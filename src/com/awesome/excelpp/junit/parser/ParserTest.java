@@ -33,15 +33,15 @@ public class ParserTest {
 	@Test
 	public void test_number() throws ParserException, RecursionException {
 		expected = 2.0;
-		result = new Parser("=2;").eval();
+		result = new Parser("=2").eval();
 		assertEquals(expected, (Double)result, .001);
 		
 		expected = 450.257;
-		result = new Parser("=450.257;").eval();
+		result = new Parser("=450.257").eval();
 		assertEquals(expected, (Double)result, .001);		
 
 		expected = 4.0;
-		result = new Parser("=2.+2;").eval();
+		result = new Parser("=2.+2").eval();
 		assertEquals(expected, (Double)result, .001);
 	}
 	
