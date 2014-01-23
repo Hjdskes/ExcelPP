@@ -1,6 +1,8 @@
 package com.awesome.excelpp.models;
 
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.event.UndoableEditListener;
 import javax.swing.table.AbstractTableModel;
@@ -16,7 +18,7 @@ import com.awesome.excelpp.writers.Writer;
  * It is also used by <code>SpreadSheetTable</code> to query for values to display on screen.</p>
  * @author Team Awesome
  */
-public class SpreadSheet extends AbstractTableModel {
+public class SpreadSheet extends AbstractTableModel implements Observer {
 	private static final long serialVersionUID = 1L;
 	protected final short numberOfRows = 75;
 	protected final short numberOfCols = 26;
@@ -74,6 +76,7 @@ public class SpreadSheet extends AbstractTableModel {
 			cell = new Cell(this, null);
 			cells.put(getNumCell(row, col), cell);
 		}
+		cell.addObserver(this);
 		return cell;
 	}
 
@@ -168,5 +171,15 @@ public class SpreadSheet extends AbstractTableModel {
 			}
 		}
 		writer.close();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		for (Integer cellnr : cells.keySet()) {
+			if (cells.get(cellnr) == o) {
+				int[] xy = getXYCell(cellnr);
+				fireTableCellUpdated(xy[1], xy[0]);
+			}
+		}
 	}
 }

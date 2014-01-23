@@ -37,7 +37,6 @@ public class TableCellEdit extends AbstractUndoableEdit{
 		edited.setItalic(oldValue.getItalic(), false);
 		edited.setForegroundColor(oldValue.getForegroundColor(), false);
 		edited.setBackgroundColor(oldValue.getBackgroundColor(), false);
-		edited.getSheet().fireTableDataChanged();
 	}
 
 	/**
@@ -51,6 +50,5 @@ public class TableCellEdit extends AbstractUndoableEdit{
 		edited.setItalic(newValue.getItalic(), false);
 		edited.setForegroundColor(newValue.getForegroundColor(), false);
 		edited.setBackgroundColor(newValue.getBackgroundColor(), false);
-		edited.getSheet().fireTableDataChanged();
 	}
 }

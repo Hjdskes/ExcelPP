@@ -234,6 +234,7 @@ public class Parser {
 				} catch (NoSuchElementException e) {
 					throw new ReferenceException();
 				}
+				
 				int startRow = Integer.parseInt(range[0].substring(1));
 				int startCol = (int) range[0].charAt(0);
 				startCol -= 65;
