@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -98,9 +102,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 * @return The <code>JPanel</code> holding all the required buttons
 	 */
 	private final JPanel createButtonPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
 		final JPanel buttonPanel = new JPanel();
 		final JPanel formulaPanel = new JPanel();
-		final JPanel panel = new JPanel(new BorderLayout());
+		formulaPanel.setLayout(new BoxLayout(formulaPanel, BoxLayout.X_AXIS));
+		formulaPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 6, 3));
 
 		buttonNew = new JButton();
 		buttonNewTab = new JButton();
@@ -176,7 +182,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonPanel.add(buttonUndo);
 		buttonPanel.add(buttonRedo);
 		formulaPanel.add(functions);
+		formulaPanel.add(Box.createRigidArea(new Dimension(3, 0)));
 		formulaPanel.add(formulaLabel);
+		formulaPanel.add(Box.createRigidArea(new Dimension(3, 0)));
 		formulaPanel.add(functionField);
 		buttonPanel.add(buttonBold);
 		buttonPanel.add(buttonItalic);
