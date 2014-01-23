@@ -132,6 +132,9 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -156,6 +159,9 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -179,6 +185,9 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -211,6 +220,9 @@ public class Cell extends Observable implements Observer {
 		if(undoable) {
 			postEdit(oldValue, newValue);
 		}
+		
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
