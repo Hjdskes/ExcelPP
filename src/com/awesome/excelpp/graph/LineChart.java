@@ -39,27 +39,27 @@ public class LineChart extends JFrame{
 
 		int startRow = rows[0];
 		int endRow = rows[rows.length-1];
-		if(headers){
-			if(endRow-startRow>1){
-				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
-				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
+		if(headers){ //if user made headers have to be used
+			if(endRow-startRow>1){ //check the size of the selection to know which kind of chart has to be made
+				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers); //get column headers
+				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers); //get row headers
+				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers); //get the values of the cells
 				data = createData(horizontalNames, verticalNames, values);
 			} else {
-				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers); //get column headers
+				ArrayList<Double> values = Utils.getValues(sheet, rows, columns); //get the values of the selected cells
 				data = createData(names, values);
 			}
 				
-		} else{
-			if(endRow-startRow>0){
-				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
-				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
+		} else{ 
+			if(endRow-startRow>0){ //check the size of the selection to know which kind of chart has to be made
+				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers); //get column headers
+				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers); //get row headers
+				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers); //get the values of the cells
 				data = createData(horizontalNames, verticalNames, values);
 			} else {
-				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers); //get column headers
+				ArrayList<Double> values = Utils.getValues(sheet, rows, columns); //get the values of the cells
 				data = createData(names, values);
 			}
 		}
@@ -79,8 +79,8 @@ public class LineChart extends JFrame{
 	static DefaultCategoryDataset createData(ArrayList<String> horizontalNames, ArrayList<String> verticalNames, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(horizontalNames.size() * verticalNames.size() == values.size()){
-			for(int i = 0; i<verticalNames.size(); i++){
-				for(int i2 = 0; i2<horizontalNames.size(); i2++){
+			for(int i = 0; i<verticalNames.size(); i++){ //for each row
+				for(int i2 = 0; i2<horizontalNames.size(); i2++){ //add the value and column header of the cell to the dataset
 				res.setValue(values.get(i*horizontalNames.size() + i2), verticalNames.get(i) , horizontalNames.get(i2));
 				}
 			}
@@ -99,7 +99,7 @@ public class LineChart extends JFrame{
 	public static DefaultCategoryDataset createData(ArrayList<String> names, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(names.size() == values.size()){
-			for(int i = 0; i<names.size(); i++){
+			for(int i = 0; i<names.size(); i++){ //add each name/value to the dataset
 				res.setValue(values.get(i),"f(x)", names.get(i));
 			}
 		} else {

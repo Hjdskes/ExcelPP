@@ -36,9 +36,10 @@ public class PieChart extends JFrame{
 		super("PieChart");
 		Utils.validate(rows);
 		Utils.validate(columns);
-		ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
-		ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+		ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers); //get column headers
+		ArrayList<Double> values = Utils.getValues(sheet, rows, columns); //get the values of the cells
 		PieDataset data = createData(names, values);
+		
 		JFreeChart  chart= createChart(data, title, dimensions);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,8 +55,8 @@ public class PieChart extends JFrame{
 	 */
 	private PieDataset createData(ArrayList<String> names, ArrayList<Double> values){
 		DefaultPieDataset res = new DefaultPieDataset();
-		if(names.size() == values.size()){
-			for(int i = 0; i<names.size(); i++){
+		if(names.size() == values.size()){ 
+			for(int i = 0; i<names.size(); i++){ //add each name/value to the dataset
 				res.setValue(names.get(i), values.get(i));
 			}
 		} else {
@@ -73,9 +74,9 @@ public class PieChart extends JFrame{
 	private JFreeChart createChart(PieDataset data, String title, boolean dimensions){
 		JFreeChart chart;
 		if(dimensions){
-			chart = ChartFactory.createPieChart3D(title, data, true, true, false);
+			chart = ChartFactory.createPieChart3D(title, data, true, true, false); //create 3D chart
 		} else{
-			chart = ChartFactory.createPieChart(title, data, true, true, false);
+			chart = ChartFactory.createPieChart(title, data, true, true, false); //create 2D chart
 		}
 		return chart;
 	}

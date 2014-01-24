@@ -34,34 +34,34 @@ public class BarChart extends JFrame{
 	public BarChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY, boolean headers, boolean dimensions) throws CellInputException, CellDataException{
 		super("BarChart");
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
-		Utils.validate(rows);
+		Utils.validate(rows); //Check if the arrays arrays rows and columns are suited for a chart
 		Utils.validate(columns);
 		int startRow = rows[0];
 		int endRow = rows[rows.length-1];
-		if(headers){
-			if(endRow-startRow>1){
-				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
-				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
+		if(headers){ //if user made headers have to be used
+			if(endRow-startRow>1){ //check the size of the selection to know which kind of chart has to be made
+				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers); //get the column headers
+				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers); //get the row headers
+				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers); //get the values of the cells
 				data = createData(horizontalNames, verticalNames, values);
 			} else{
-				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers); //get column headers
+				ArrayList<Double> values = Utils.getValues(sheet, rows, columns); //get values of the cells
 				data = createData(names, values);
 			}
 		} else{
-			if(endRow-startRow>0){
-				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers);
-				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers);
+			if(endRow-startRow>0){ //check the size of the selection to know which kind of chart has to be made
+				ArrayList<String> horizontalNames = Utils.getHorizontalNames(sheet, rows, columns, headers); //get the column headers
+				ArrayList<String> verticalNames = Utils.getVerticalNames(sheet, rows, columns, headers); //get the row headers
+				ArrayList<Double> values = Utils.getValuesXRowsXColumns(sheet, rows, columns, headers); //get the values of the cells
 				data = createData(horizontalNames, verticalNames, values);
 			} else{
-				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
-				ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
+				ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers); //get column headers
+				ArrayList<Double> values = Utils.getValues(sheet, rows, columns); //get the values in the cells
 				data = createData(names, values);
 			}
 		}
-
+		
 		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY, dimensions);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,7 +77,7 @@ public class BarChart extends JFrame{
 	public static DefaultCategoryDataset createData(ArrayList<String> names, ArrayList<Double> values){
 		DefaultCategoryDataset res = new DefaultCategoryDataset();
 		if(names.size() == values.size()){
-			for(int i = 0; i<names.size(); i++){
+			for(int i = 0; i<names.size(); i++){ //add each name/value to the dataset
 				res.setValue(values.get(i),names.get(i) , "");
 			}
 		}
@@ -110,9 +110,9 @@ public class BarChart extends JFrame{
 	private JFreeChart createChart(DefaultCategoryDataset data, String mainTitle, String titleX, String titleY, boolean dimensions){
 		JFreeChart chart;
 		if(dimensions){
-		chart = ChartFactory.createBarChart3D(mainTitle,titleX, titleY, data);
+		chart = ChartFactory.createBarChart3D(mainTitle,titleX, titleY, data); //create 3D chart
 		} else{
-			chart = ChartFactory.createBarChart(mainTitle,titleX, titleY, data);
+			chart = ChartFactory.createBarChart(mainTitle,titleX, titleY, data); //create 2D chart
 		}
 		return chart;
 	}
