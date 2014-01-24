@@ -1,5 +1,7 @@
 package com.awesome.excelpp.math;
 
+import com.awesome.excelpp.math.exception.MathException;
+
 /**
  * You use the SumIf function to sum the values in a range that meet criteria that you specify.
  * <p>For example, suppose that in a column that contains numbers,
@@ -11,6 +13,11 @@ package com.awesome.excelpp.math;
  * </br>Syntax: =SumIf(range, criteria, [sum_range])</p>
  * @author Team Awesome
  */
-public class SumIf {
+public class SumIf extends Formula {
+	@Override
+	public Double getValue(Object... args) throws MathException {
+		Double sum = 0.0;
 
+		return sum;
+	}
 }
