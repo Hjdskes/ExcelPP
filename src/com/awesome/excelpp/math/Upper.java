@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Converts text to uppercase.
- * <p>Syntax: =Upper(text);</p>
+ * <p>Syntax: =Upper(text)</p>
  * @author Team Awesome
  */
 public class Upper extends Formula {

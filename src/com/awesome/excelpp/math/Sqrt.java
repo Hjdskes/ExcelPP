@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns a positive square root.
- * <p>Syntax: =Sqrt(number);</p>
+ * <p>Syntax: =Sqrt(number)</p>
  * @author Team Awesome
  */
 public class Sqrt extends Formula {

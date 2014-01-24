@@ -11,7 +11,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * <p>The median is the number in the middle of a set of numbers;
  * that is, half the numbers have values that are greater than the median,
  * and half have values that are less.
- * </br>Syntax: =Median(value1, [value2], ...);</p>
+ * </br>Syntax: =Median(value1, [value2], ...)</p>
  * @author Team Awesome
  */
 public class Median extends Formula {

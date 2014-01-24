@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns the smallest number in a set of values.
- * <p>Syntax: =Min(value1, [value2], ...);</p>
+ * <p>Syntax: =Min(value1, [value2], ...)</p>
  * @author Team Awesome
  */
 public class Min extends Formula {
