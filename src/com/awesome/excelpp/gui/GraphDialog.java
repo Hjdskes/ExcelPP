@@ -171,23 +171,19 @@ public class GraphDialog extends JDialog implements ActionListener {
 				text.setText(barText);
 				titleX.setEnabled(true);
 				titleY.setEnabled(true);
-				dimensions.setVisible(true);
-				this.pack();
+				dimensions.setEnabled(true);
 			} else if (selected.equals("Pie chart")) {
 				currentGraph = 1;
 				text.setText(pieText);
 				titleX.setEnabled(false);
 				titleY.setEnabled(false);
-				dimensions.setVisible(true);
-				this.pack();
+				dimensions.setEnabled(true);
 			} else if (selected.equals("Line chart")) {
 				currentGraph = 2;
 				text.setText(lineText);
 				titleX.setEnabled(true);
 				titleY.setEnabled(true);
 				dimensions.setEnabled(false);
-				this.pack();
-				
 			}
 		}
 	}
