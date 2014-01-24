@@ -63,7 +63,7 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 		if (table == null)
 			return this;
 
-		Cell current = (Cell)table.getValueAt(row, column);
+		Cell current = (Cell)value;
 		Color fg = null;
 		Color bg = null;
 
@@ -123,7 +123,7 @@ public class AwesomeCellRenderer extends DefaultTableCellRenderer {
 		} else
 			setBorder(getNoFocusBorder());
 
-		setValue(value);
+		setValue(current);
 
 		return this;
 	}
