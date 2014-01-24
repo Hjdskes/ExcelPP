@@ -17,7 +17,7 @@ public class ParserTest {
 		endTime = System.currentTimeMillis();
 		totalLexer = endTime - startTime;
 
-		Parser firstTest = new Parser(lex, null);
+		Parser firstTest = new Parser(lex, null, null);
 		
 		startTime = System.currentTimeMillis();
 		firstTest.toPostfix();
