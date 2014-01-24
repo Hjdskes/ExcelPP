@@ -263,8 +263,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ "<p style='text-align:left'>Cel position to textfield (also works for a selection of Cells) <p style='text-align:right'>Alt + right mouse button";
 		final JLabel hotkeyLabel = new JLabel(hotkeyText);
 		hotkeyLabel.setVerticalAlignment(SwingConstants.TOP);
-		int helpDialogHeight = hotkeyLabel.getPreferredSize().height + 40;
-		int helpDialogWidth = hotkeyLabel.getPreferredSize().width + 18;
 
 		final String aboutText = "<html><body style='width:300px'>Some code in this project is taken from other people."
 				+ " These files were shared in the public domain; see the source files for more information.<br>"
@@ -282,7 +280,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		helpTabbedPane.setIconAt(2, new ImageIcon("data/icons/gtk-about_16.png"));
 
 		helpDialog.add(helpPanel);
-		helpDialog.setSize(helpDialogWidth, helpDialogHeight);
+		helpDialog.pack();
 		helpDialog.setIconImage(mainImage);
 		helpDialog.setResizable(false);
 		helpDialog.setLocation ((screenWidth / 2) - (helpPanel.getPreferredSize().width / 2), (screenHeight / 2) - (helpPanel.getPreferredSize().height / 2)); //center in het midden
