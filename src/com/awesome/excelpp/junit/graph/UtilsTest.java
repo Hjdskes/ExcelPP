@@ -199,5 +199,73 @@ public class UtilsTest {
 		}
 		
 	}
+	
+	@Test
+	public void testGetValuesXRowsXColumns() throws CellInputException, CellDataException{
+		
+		SpreadSheet sheet = new SpreadSheet();
+		((Cell) sheet.getValueAt(6, 7)).setContent("2", false);
+		((Cell) sheet.getValueAt(6, 8)).setContent("3", false);
+		((Cell) sheet.getValueAt(6, 9)).setContent("5", false);
+		
+		((Cell) sheet.getValueAt(6, 7)).setContent("2", false);
+		((Cell) sheet.getValueAt(6, 8)).setContent("3", false);
+		((Cell) sheet.getValueAt(6, 9)).setContent("5", false);
+		((Cell) sheet.getValueAt(7, 7)).setContent("6", false);
+		((Cell) sheet.getValueAt(7, 8)).setContent("10", false);
+		((Cell) sheet.getValueAt(7, 9)).setContent("15", false);
+		
+		((Cell) sheet.getValueAt(6, 11)).setContent("2", false);
+		((Cell) sheet.getValueAt(6, 12)).setContent("C", false);
+		
+		((Cell) sheet.getValueAt(7, 11)).setContent("2", false);
+		((Cell) sheet.getValueAt(7, 13)).setContent("3", false);
+		
+		
+		int[] rows1 = {5,6};
+		int[] rows2 = {6, 7};
+		int[] rows3 = {5, 6};
+		int[] rows4 = {7};
+ 		
+		int[] columns1 = {6, 7, 8, 9};
+		int[] columns2 = {7, 8, 9};
+		int[] columns3 = {10, 11, 12};
+		int[] columns4 = {11, 12, 13};
+		
+		ArrayList<Double> test1 = Utils.getValuesXRowsXColumns(sheet, rows1, columns1, true);
+		ArrayList<Double> check1 = new ArrayList<Double>();
+		check1.add(2.0);
+		check1.add(3.0);
+		check1.add(5.0);
+		assertEquals(check1, test1);
+		
+		ArrayList<Double> test2 = Utils.getValuesXRowsXColumns(sheet, rows2, columns2, false);
+		ArrayList<Double> check2 = new ArrayList<Double>();
+		check2.add(2.0);
+		check2.add(3.0);
+		check2.add(5.0);
+		check2.add(6.0);
+		check2.add(10.0);
+		check2.add(15.0);
+		assertEquals(check2, test2);
+		
+		try{
+			Utils.getValuesXRowsXColumns(sheet, rows3, columns3, true);
+			assertTrue(false);
+		} catch(CellDataException e){
+			assertTrue(true);
+		}
+		
+
+		try{
+			Utils.getValuesXRowsXColumns(sheet, rows4, columns4, false);
+			assertTrue(false);
+		} catch(CellDataException e){
+			assertTrue(true);
+		}
+		
+		}
+		
+	
 
 }
