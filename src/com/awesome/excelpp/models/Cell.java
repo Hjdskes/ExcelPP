@@ -114,8 +114,10 @@ public class Cell extends Observable implements Observer {
 		}
 		observing.clear();
 		
-		setChanged();
-		notifyObservers();
+		if (this.content != content) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
 	/**
@@ -133,8 +135,10 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		setChanged();
-		notifyObservers();
+		if (this.fontBold != bold) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	/**
@@ -160,8 +164,10 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		setChanged();
-		notifyObservers();
+		if (this.fontItalic != italic) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	/**
@@ -186,8 +192,10 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		setChanged();
-		notifyObservers();
+		if (this.foregroundColor != newForegroundColor) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	/**
@@ -221,8 +229,10 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		setChanged();
-		notifyObservers();
+		if (this.backgroundColor != newBackgroundColor) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	/**
@@ -289,6 +299,7 @@ public class Cell extends Observable implements Observer {
 					result = "#OPINV";
 				else if (e instanceof ReferenceException)
 					result = "#REFINV";
+				e.printStackTrace();
 				setError(true);
 			}
 		} else {
