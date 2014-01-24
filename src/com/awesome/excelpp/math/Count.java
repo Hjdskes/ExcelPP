@@ -8,7 +8,17 @@ package com.awesome.excelpp.math;
  */
 public class Count extends Formula {
 	@Override
-	public Integer getValue(Object... args) {
-		return args.length;
+	public Double getValue(Object... args) {
+		double res = 0.0;
+		for(Object o : args) {
+			if(o instanceof Double) {
+				if((double) o !=  0.0)
+	 				res++;
+			} else if (o instanceof Integer) {
+				if((int) o != 0)
+					res++;
+			}
+		}
+		return res;
 	}
 }

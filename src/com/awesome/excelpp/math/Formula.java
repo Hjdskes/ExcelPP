@@ -64,7 +64,7 @@ public abstract class Formula {
 	 * Tries to convert the argument to a String. 
 	 * @param arg The argument
 	 * @return The String value of the argument
-	 * @throws MathException If the argument could not be converted.
+	 * @throws MathException If the argument could not be converted
 	 */
 	public String getString(Object arg) throws MathException {
 		if (arg instanceof Integer)
@@ -74,5 +74,26 @@ public abstract class Formula {
 		if (!(arg instanceof String))
 			throw new MathException();
 		return (String)arg;
+	}
+
+	/**
+	 * Tries to convert the argument to a Boolean.
+	 * @param arg The argument
+	 * @return The Boolean value of the argument
+	 * @throws MathException If the argument could not be converted
+	 */
+	public Boolean getBoolean(Object arg) throws MathException {
+		if (arg instanceof Double)
+			return (Double)arg == 0.0 ? false : true;
+		if (arg instanceof Integer)
+			return (Integer)arg == 0 ? false : true;
+		if (arg instanceof String) {
+			String res = (String)arg;
+			res = res.toLowerCase();
+			return res.equals("true");
+		}
+		if (!(arg instanceof Boolean))
+			throw new MathException();
+		return (Boolean)arg;
 	}
 }

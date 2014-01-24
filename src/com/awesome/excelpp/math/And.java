@@ -10,8 +10,11 @@ import com.awesome.excelpp.math.exception.MathException;
 public class And extends Formula {
 	@Override
 	public Object getValue(Object... args) throws MathException {
+		if (args.length < 1)
+			throw new MathException();
+
 		for (Object o : args) {
-			if ((boolean)o == false)
+			if (getBoolean(o) == false)
 				return false;
 		}
 		return true;

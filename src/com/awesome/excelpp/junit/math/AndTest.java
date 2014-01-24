@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.awesome.excelpp.math.Sum;
 import com.awesome.excelpp.math.And;
 import com.awesome.excelpp.math.exception.MathException;
 

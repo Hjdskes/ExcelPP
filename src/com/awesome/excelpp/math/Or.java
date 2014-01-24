@@ -8,19 +8,11 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class Or extends Formula {
-
 	@Override
 	public Object getValue(Object... args) throws MathException {
-		for(int i = 0; i<args.length; i++) {
-			if(args[i] instanceof Boolean) {
-				if((boolean) args[i] == true) {
-					return true;
-				}
-			}
-			if (!(args[i] instanceof Boolean)) {
-				throw new MathException();
-			}
-			
+		for(Object o : args) {
+			if(getBoolean(o) == true);
+				return true;
 		}
 		return false;
 	}

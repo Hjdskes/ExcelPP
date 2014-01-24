@@ -12,7 +12,7 @@ public class Subtract extends Formula {
 	public Object getValue(Object ... args) throws MathException {
 		if (args.length < 1)
 			throw new MathException();
-		
+
 		double res = getDouble(args[0]);
 		for (int i = 1; i < args.length; i++) {
 			res -= getDouble(args[i]);

@@ -16,40 +16,29 @@ import com.awesome.excelpp.math.exception.MathException;
 public class CountIf extends Formula {
 	@Override
 	public Object getValue(Object... args) throws MathException {
-		 int count = 0;
-		 	for(int i=1; i < args.length; i++) {
-		 		
-		 		if(args[i] instanceof Double) {
-		 			if((double) args[i] !=  0.0) {
-		 				if(args[0].equals(args[i])){
-			 				count += 1;
-		 				}
-		 			}
-		 		}
-		 		else if(args[i] instanceof String) {
-		 			if((String) args[i] !=  "") {
-		 				if(args[0].equals(args[i])){
-			 				count += 1;
-		 				}
-		 			}
-		 		}
-		 		
-		 		else if(args[i] instanceof Integer) {
-		 			if((int) args[i] !=  0) {
-		 				if(args[0] == args[i]){
-		 				count += 1;
-		 		
-		 				}
-		 			}
-		 		}
-		 		
-		 		else if(args[i] instanceof Boolean) {
-		 			if((boolean) args[i] == true || (boolean) args[i] == false) {
-		 				if(args[0] == args[i]) {
-		 				count += 1;
-		 				}
-		 			}
-		 		}
+		int count = 0;
+		for(int i = 1; i < args.length; i++) {
+			if(args[i] instanceof Double) {
+				if((double) args[i] !=  0.0) {
+					if(args[0].equals(args[i]))
+						count++;
+				}
+			} else if(args[i] instanceof String) {
+				if((String) args[i] !=  "") {
+					if(args[0].equals(args[i]))
+						count++;
+				}
+			} else if(args[i] instanceof Integer) {
+				if((int) args[i] !=  0) {
+					if(args[0] == args[i])
+						count++;
+				}
+			} else if(args[i] instanceof Boolean) {
+				if((boolean) args[i] == true || (boolean) args[i] == false) {
+					if(args[0] == args[i])
+						count++;
+				}
+			}
 		}
 		return count;
 	}

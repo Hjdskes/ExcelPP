@@ -13,10 +13,6 @@ public class IsEven extends Formula {
 		if (args.length != 1)
 			throw new MathException();
 
-		boolean res = false;
-		if (getDouble(args[0]) % 2 == 0.0)
-			res = true;
-
-		return res;
+		return getDouble(args[0]) % 2.0 == 0.0 ? true : false;
 	}
 }

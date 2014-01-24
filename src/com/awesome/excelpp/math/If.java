@@ -11,16 +11,16 @@ import com.awesome.excelpp.math.exception.MathException;
  * @author Team Awesome
  */
 public class If extends Formula {
-
 	@Override
 	public Object getValue(Object... args) throws MathException {
-		if((boolean)args[0] == true) {
+		if(args.length != 3)
+			throw new MathException();
+
+		boolean condition = getBoolean(args[0]);
+		if(condition == true)
 			return (String) args[1];
-		}
-		if((boolean)args[0] == false) {
+		else if(condition == false)
 			return (String)args[2];
-		}
 		return false;
 	}
-
 }

@@ -10,20 +10,20 @@ import com.awesome.excelpp.math.exception.MathException;
 public class IsNumber extends Formula {
 	@Override
 	public Boolean getValue(Object ... args) throws MathException {
-		boolean res = true;
-
 		if (args.length != 1)
 			throw new MathException();
-		else {
-			if(args[0] instanceof String) {
-				try {
-					Double.parseDouble((String)args[0]);
-				} catch(Exception e) {
-					res = false;
-				}
-			} else if (!(args[0] instanceof Double) && !(args[0] instanceof Integer))
+
+		boolean res = true;
+
+		if(args[0] instanceof String) {
+			try {
+				Double.parseDouble((String)args[0]);
+			} catch(Exception e) {
 				res = false;
-		}
+			}
+		} else if (!(args[0] instanceof Double) && !(args[0] instanceof Integer))
+			res = false;
+
 		return res;
 	}
 }
