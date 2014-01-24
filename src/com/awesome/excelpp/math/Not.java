@@ -6,7 +6,7 @@ import com.awesome.excelpp.math.exception.MathException;
 /**
  * Reverses the value of its argument.
  * <p>Use Not when you want to make sure a value is not equal to one particular value.
- * </br>Syntax: =Not(logical);</p>
+ * </br>Syntax: =Not(logical)</p>
  * @author Team Awesome
  */
 public class Not extends Formula {

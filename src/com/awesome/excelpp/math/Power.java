@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns the result of the first argument raised to the second argument.
- * <p>Syntax: =Power(base, exponent);</p>
+ * <p>Syntax: =Power(base, exponent)</p>
  * @author Team Awesome
  */
 public class Power extends Formula {

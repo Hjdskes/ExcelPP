@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * The CountA function counts the number of cells that are not empty in a range.
- * <p>Syntax: =CountA(value1, [value2], ...);</p>
+ * <p>Syntax: =CountA(value1, [value2], ...)</p>
  * @author Team Awesome
  */
 public class CountA extends Formula {

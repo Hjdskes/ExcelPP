@@ -6,7 +6,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * Returns the average (arithmetic mean) of the arguments.
  * <p>For example, if the range A1:A20 contains numbers, the formula =Average(A1:A20)
  * returns the average of those numbers.
- * </br>Syntax: =Average(number1, [number2], ...);</p>
+ * </br>Syntax: =Average(number1, [number2], ...)</p>
  * @author Team Awesome
  */
 public class Average extends Formula {

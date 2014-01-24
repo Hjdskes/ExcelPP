@@ -152,10 +152,11 @@ Omdat het AbstractTableModel SpreadSheet de data representatie van onze spreadsh
 		\begin{description}
 			\item[+] Heel veel verschillende functionaliteiten (en dus ook al degene die wij nodig hebben);
 			\item[+] Intuïtief en duidelijk.
+			\item[+] Een standaard chart heeft al veel basis functionaliteiten.
 		\end{description}
 \end{description}
 
-De beslissing tussen JFreechart en BIRT kwam dus neer op hoe makkelijk de beiden libraries te begrijpen waren. Beide konden alles wat we in onze applicatie nodig hadden maar JFreechart kon veel sneller geïmplementeerd worden omdat de basis van JFreechart makkelijker te begrijpen is.
+Toen we begonnen met de implementatie van grafieken was er niet veel tijd meer over. We hadden dus een library nodig die makkelijk te begrijpen was want dit zorgt voor een snellere implementatie met minder kans op bugs die nadien nog opgelost moeten worden. Zowel JFreechart als BIRT bevatten alle functionaliteiten die Excel++ nodig heeft, maar we vonden dat JFreechart makkelijker te begrijpen was en kozen dus voor JFreechart. Bovendien heeft een standaard chart van JFreechart veel meer functionaliteiten dan die van BIRT (zonder hiervoor code te moeten schrijven heb je al een optie menu, save as PNG, zoom in/out, ...).
 
 \subsection{Het nut van het UML-diagram}
 Een aantal van de genomen beslissingen hebben een grote impact gehad op het ontwerp van het programma. Vooral ook de beslissingen die later genomen waren, nadat er meer kennis opgedaan was, hebben af en toe flinke gevolgen gehad. Twee voorbeelden hiervan zijn het switchen van String naar Cell in het spreadsheet model en het switchen van Doubles naar Objects in de formule parser. Tijdens deze beslissingen heeft de UML geholpen om het overzicht op het ontwerp van het programma te behouden. Dankzij de UML was snel inzichtelijk wat voor impact dit soort wijzigingen op het programma gingen hebben en waar er tegen problemen aangelopen zou worden. Verder is het dankzij de UML ook makkelijk voor een teamlid om uit te leggen aan de groep waar hij precies aan werkt.\\

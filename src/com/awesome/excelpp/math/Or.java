@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns true if any argument is true; returns false if all arguments are false.
- * <p>Syntax: =Or(logical1, [logical2], ...);</p>
+ * <p>Syntax: =Or(logical1, [logical2], ...)</p>
  * @author Team Awesome
  */
 public class Or extends Formula {
