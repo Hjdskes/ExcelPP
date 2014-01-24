@@ -3,7 +3,6 @@ package com.awesome.excelpp.junit.models;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 

@@ -11,46 +11,46 @@ public class NotTest {
 
 	@Test
 	public void NotTrue() throws MathException {
-		assertEquals("false", new Not().getValue(true));
+		assertEquals(false, new Not().getValue(true));
 	}
 	
 	@Test
 	public void NotFalse() throws MathException {
-		assertEquals("true", new Not().getValue(false));
+		assertEquals(true, new Not().getValue(false));
 	}
 	
 	@Test
 	public void NotDoubleFalse() throws MathException {
-		assertEquals("0.0", new Not().getValue(1.0));
+		assertEquals(false, new Not().getValue(1.0));
 	}
 	
 	@Test
 	public void NotDoubleTrue() throws MathException {
-		assertEquals("1.0", new Not().getValue(0.0));
+		assertEquals(true, new Not().getValue(0.0));
 	}
 	
-	@Test(expected = MathException.class)
+	@Test
 	public void NotDoubleError() throws MathException {
-		assertEquals("true", new Not().getValue(2.0));
+		assertEquals(false, new Not().getValue(2.0));
 	}
 	
 	@Test
 	public void NotIntFalse() throws MathException {
-		assertEquals("0", new Not().getValue(1));
+		assertEquals(false, new Not().getValue(1));
 	}
 	
 	@Test
 	public void NotIntTrue() throws MathException {
-		assertEquals("1", new Not().getValue(0));
+		assertEquals(true, new Not().getValue(0));
 	}
 	
-	@Test(expected = MathException.class)
+	@Test
 	public void NotIntError() throws MathException {
-		assertEquals("true", new Not().getValue(2));
+		assertEquals(false, new Not().getValue(2));
 	}
 	
-	@Test(expected = MathException.class)
+	@Test
 	public void NotGeneralException() throws MathException {
-		assertEquals("0.0", new Not().getValue("Hallo"));
+		assertEquals(true, new Not().getValue("Hallo"));
 	}
 }

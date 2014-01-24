@@ -31,6 +31,7 @@ public class IsEvenTest {
 	
 	@Test(expected = MathException.class)
 	public void IsEvenError() throws MathException {
-		boolean result = new IsEven().getValue("twee");
+		@SuppressWarnings("unused")
+		boolean result = new IsEven().getValue("twee");;
 	}
 }
