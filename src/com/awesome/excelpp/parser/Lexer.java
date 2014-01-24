@@ -23,6 +23,12 @@ public class Lexer {
 		if (input == null)
 			return;
 		
+		if (input.length() > 0 && input.charAt(0) != '=') {
+			tokens.add(new Token(STRING, input));
+			return;
+		}
+			
+		
 	    for (int i = 0; i < input.length(); i++) {
 	    	char ch = input.charAt(i);
 	    	

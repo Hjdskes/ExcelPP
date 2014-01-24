@@ -299,7 +299,6 @@ public class Cell extends Observable implements Observer {
 					result = "#OPINV";
 				else if (e instanceof ReferenceException)
 					result = "#REFINV";
-				e.printStackTrace();
 				setError(true);
 			}
 		} else {

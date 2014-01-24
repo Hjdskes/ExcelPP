@@ -4,7 +4,7 @@ import com.awesome.excelpp.math.exception.MathException;
 
 /**
  * Returns the largest value in a set of values.
- * <p>Syntax: =Maz(value1, [value2], ...)</p>
+ * <p>Syntax: =Max(value1, [value2], ...)</p>
  * @author Team Awesome
  */
 public class Max extends Formula {
