@@ -279,6 +279,9 @@ public class Cell extends Observable implements Observer {
 			setBackgroundColor(restoreBackground, false);
 			restoreBackground = null;
 		}
+
+		setChanged();
+		notifyObservers();
 	}
 
 	public synchronized Object getValue() throws RecursionException {
