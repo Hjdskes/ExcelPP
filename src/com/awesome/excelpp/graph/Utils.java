@@ -79,9 +79,9 @@ public class Utils {
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>Chart</code>
 	 */
 	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
-		int firstRow; int secondRow; int startInt; int endInt; Double add;
+		int secondRow; int startInt; int endInt; Double add;
 		try {
-			firstRow = rows[0];
+			
 			secondRow = rows[rows.length-1];
 			startInt = columns[0];
 			endInt = columns[columns.length-1];

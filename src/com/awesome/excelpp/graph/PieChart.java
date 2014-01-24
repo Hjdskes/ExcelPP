@@ -53,8 +53,6 @@ public class PieChart extends JFrame{
 	 * @return <code>DefaultCategoryDataset</code> containing the data taken from names and values
 	 */
 	private PieDataset createData(ArrayList<String> names, ArrayList<Double> values){
-		System.out.println(names.toString());
-		System.out.println(values.toString());
 		DefaultPieDataset res = new DefaultPieDataset();
 		if(names.size() == values.size()){
 			for(int i = 0; i<names.size(); i++){

@@ -39,6 +39,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 				+ "into a line chart and press the button below.</body></html>";
 	private int currentGraph = 0; //selected graph in the combobox. 0 = bar, 1 = pie, 2 = line.
 	private SpreadSheet sheet;
+	private SpreadSheetTable table;
 	private int[] rows;
 	private int[] columns;
 	private static JComboBox<String> graphs;
@@ -57,14 +58,10 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 * @param height The height of the screen, in pixels, used to calculate the position of the dialog.
 	 */
 	public GraphDialog(SpreadSheetTable table, BufferedImage image, int screenWidth, int screenHeight) {
-		this.sheet = table.getSheet();
-		this.rows = table.getSelectedRows();
-		this.columns = table.getSelectedColumns();
-
+		this.table = table;
 		final JPanel testPanel = new JPanel();
 		testPanel.setLayout (new BoxLayout(testPanel, BoxLayout.Y_AXIS));
 		testPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
-		setModal(true); //Cell selectie mag alleen voor het openen en niet als de dialog al open is
 		setIconImage(image);
 		setResizable(false);
 
@@ -93,7 +90,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
 		testPanel.add(actionButton);
 
-		setSize(testPanel.getPreferredSize());
+		this.pack(); //zorgt dat het de juiste grootte heeft
 		setLocation ((screenWidth / 2) - (this.getWidth() / 2), (screenHeight / 2) - (this.getWidth() / 2)); //center in het midden
 		setVisible(true);
 	}
@@ -151,6 +148,9 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 */
 	public final void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(actionButton)) {
+			this.sheet = table.getSheet();
+			this.rows = table.getSelectedRows();
+			this.columns = table.getSelectedColumns();
 			switch(currentGraph) {
 				case 0: drawBarChart();
 						break;
