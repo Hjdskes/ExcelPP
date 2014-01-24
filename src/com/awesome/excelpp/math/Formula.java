@@ -29,7 +29,6 @@ public abstract class Formula {
 			try {
 				arg = Double.parseDouble((String)arg);
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 			}
 		}
 		
@@ -48,6 +47,13 @@ public abstract class Formula {
 	public int getInteger(Object arg) throws MathException {
 		if (arg instanceof Double)
 			return ((Double)arg).intValue();
+		if (arg instanceof String) {
+			try {
+				arg = Integer.parseInt((String)arg);
+			} catch (NumberFormatException e) {
+			}
+		}
+		
 		if (!(arg instanceof Integer))
 			throw new MathException();
 		
