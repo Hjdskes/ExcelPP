@@ -48,6 +48,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	private static JTextField titleX;
 	private static JTextField titleY;
 	private static JCheckBox headers;
+	private static JCheckBox dimensions;
 	private static JButton actionButton;
 
 	/**
@@ -72,6 +73,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 		titleX = new JTextField("Enter the title of the X-axis");
 		titleY = new JTextField("Enter the title of the Y-axis");
 		headers = new JCheckBox("<html><body style='width:224px'>Use custom headers (this will be the selected first row)</body></html>");
+		dimensions = new JCheckBox("<html><body style='width:224px'>3D chart</body></html>");
 		actionButton = new JButton("Draw the chart");
 		actionButton.addActionListener(this);
 
@@ -85,6 +87,8 @@ public class GraphDialog extends JDialog implements ActionListener {
 		testPanel.add(titleX);
 		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
 		testPanel.add(titleY);
+		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+		testPanel.add(dimensions);
 		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
 		testPanel.add(headers);
 		testPanel.add(Box.createRigidArea(new Dimension(0, 6)));
@@ -100,7 +104,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 */
 	public final void drawBarChart() {
 		try {
-			BarChart bchart = new BarChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText(), headers.isSelected());
+			BarChart bchart = new BarChart(sheet, rows, columns, title.getText(), titleX.getText(), titleY.getText(), headers.isSelected(), dimensions.isSelected());
 			bchart.pack();
 			bchart.setVisible(true);
 			this.dispose();
@@ -116,7 +120,7 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 */
 	public final void drawPieChart() {
 		try {
-			PieChart pchart = new PieChart(sheet, rows, columns, title.getText(), headers.isSelected());
+			PieChart pchart = new PieChart(sheet, rows, columns, title.getText(), headers.isSelected(), dimensions.isSelected());
 			pchart.pack();
 			pchart.setVisible(true);
 			this.dispose();
@@ -167,16 +171,23 @@ public class GraphDialog extends JDialog implements ActionListener {
 				text.setText(barText);
 				titleX.setEnabled(true);
 				titleY.setEnabled(true);
+				dimensions.setVisible(true);
+				this.pack();
 			} else if (selected.equals("Pie chart")) {
 				currentGraph = 1;
 				text.setText(pieText);
 				titleX.setEnabled(false);
 				titleY.setEnabled(false);
+				dimensions.setVisible(true);
+				this.pack();
 			} else if (selected.equals("Line chart")) {
 				currentGraph = 2;
 				text.setText(lineText);
 				titleX.setEnabled(true);
 				titleY.setEnabled(true);
+				dimensions.setEnabled(false);
+				this.pack();
+				
 			}
 		}
 	}

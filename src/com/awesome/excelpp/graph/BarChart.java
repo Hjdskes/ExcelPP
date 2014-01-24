@@ -31,7 +31,7 @@ public class BarChart extends JFrame{
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>BarChart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>BarChart</code>
 	 */
-	public BarChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY, boolean headers) throws CellInputException, CellDataException{
+	public BarChart(SpreadSheet sheet, int[] rows, int[] columns, String mainTitle, String titleX, String titleY, boolean headers, boolean dimensions) throws CellInputException, CellDataException{
 		super("BarChart");
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		Utils.validate(rows);
@@ -62,7 +62,7 @@ public class BarChart extends JFrame{
 			}
 		}
 
-		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY);
+		JFreeChart  chart= createChart(data, mainTitle, titleX, titleY, dimensions);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setContentPane(panel);
@@ -107,8 +107,13 @@ public class BarChart extends JFrame{
 	 * @param titleY Title of the y-axis of the chart
 	 * @return <code>JFreeChart</code> chart created from the specified data
 	 */
-	private JFreeChart createChart(DefaultCategoryDataset data, String mainTitle, String titleX, String titleY){
-		JFreeChart chart = ChartFactory.createBarChart3D(mainTitle,titleX, titleY, data);
+	private JFreeChart createChart(DefaultCategoryDataset data, String mainTitle, String titleX, String titleY, boolean dimensions){
+		JFreeChart chart;
+		if(dimensions){
+		chart = ChartFactory.createBarChart3D(mainTitle,titleX, titleY, data);
+		} else{
+			chart = ChartFactory.createBarChart(mainTitle,titleX, titleY, data);
+		}
 		return chart;
 	}
 

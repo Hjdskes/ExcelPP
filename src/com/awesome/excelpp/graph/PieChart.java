@@ -32,14 +32,14 @@ public class PieChart extends JFrame{
 	 * @throws CellInputException Thrown when the rows or columns is not suited for a <code>LineChart</code>
 	 * @throws CellDataException Thrown when the content of the cells is not suited for a <code>LineChart</code>
 	 */
-	public PieChart(SpreadSheet sheet, int[] rows, int[] columns, String title, boolean headers) throws CellInputException, CellDataException{
+	public PieChart(SpreadSheet sheet, int[] rows, int[] columns, String title, boolean headers, boolean dimensions) throws CellInputException, CellDataException{
 		super("PieChart");
 		Utils.validate(rows);
 		Utils.validate(columns);
 		ArrayList<String> names = Utils.getNames(sheet, rows, columns, headers);
 		ArrayList<Double> values = Utils.getValues(sheet, rows, columns);
 		PieDataset data = createData(names, values);
-		JFreeChart  chart= createChart(data, title);
+		JFreeChart  chart= createChart(data, title, dimensions);
 		ChartPanel panel = new ChartPanel(chart);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setContentPane(panel);
@@ -70,8 +70,13 @@ public class PieChart extends JFrame{
 	 * @param title The title of the chart
 	 * @return The chart created from the specified data
 	 */
-	private JFreeChart createChart(PieDataset data, String title){
-		JFreeChart chart = ChartFactory.createPieChart3D(title, data, true, true, false);
+	private JFreeChart createChart(PieDataset data, String title, boolean dimensions){
+		JFreeChart chart;
+		if(dimensions){
+			chart = ChartFactory.createPieChart3D(title, data, true, true, false);
+		} else{
+			chart = ChartFactory.createPieChart(title, data, true, true, false);
+		}
 		return chart;
 	}
 	
