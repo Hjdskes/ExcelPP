@@ -20,7 +20,7 @@ public class Utils {
 	 */
 	public static void validate(int[] array) throws CellInputException{
 		for(int i = 0; i<array.length-1; i++){
-			if(!(array[i] + 1 == array[i+1])){
+			if(!(array[i] + 1 == array[i+1])){ //check if the array is continuous (e.g. 1,2,3 and not 1,3)
 				throw new CellInputException();
 			}
 		}
@@ -49,11 +49,11 @@ public class Utils {
 
 		ArrayList<String> res = new ArrayList<String>();
 
-		if(headers){
-			if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0  && endInt >= 0){
-				for(int i = 0; i<=endInt-startInt; i++){
+		if(headers){ //if user made headers have to be used
+			if(endInt-startInt>0 && secondRow-firstRow == 1 && startInt >= 0  && endInt >= 0){ //for safety check if the provided values are possible
+				for(int i = 0; i<=endInt-startInt; i++){ 
 					if(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != null 
-							&& ((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != ""){
+							&& ((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent() != ""){ //check if the content of cell can be used as header
 						res.add(((Cell) sheet.getValueAt(firstRow, startInt + i)).getContent());
 					} else {
 						throw new CellDataException();
@@ -63,7 +63,7 @@ public class Utils {
 				throw new CellInputException();
 			}
 		} else{
-			res = getColumnHeaders(startInt, endInt);
+			res = getColumnHeaders(startInt, endInt); //if no user made headers have to be used then the headers of the columns will be used (A, B, C, ...)
 		}
 
 		return res;
@@ -81,7 +81,6 @@ public class Utils {
 	public static ArrayList<Double> getValues(SpreadSheet sheet, int[] rows, int[] columns) throws CellInputException, CellDataException{
 		int secondRow; int startInt; int endInt; Double add;
 		try {
-			
 			secondRow = rows[rows.length-1];
 			startInt = columns[0];
 			endInt = columns[columns.length-1];
@@ -91,8 +90,8 @@ public class Utils {
 
 		ArrayList<Double> res = new ArrayList<Double>();
 
-		if(endInt-startInt>0 && startInt>=0 && endInt >= 0){
-		for(int i = 0; i<=endInt-startInt; i++){
+		if(endInt-startInt>0 && startInt>=0 && endInt >= 0){ //for safety check if the provided values are possible
+		for(int i = 0; i<=endInt-startInt; i++){ //add each value
 				try {
 					add = Double.parseDouble(((Cell) sheet.getValueAt(secondRow, startInt + i)).toString());
 					res.add(add);
@@ -127,11 +126,11 @@ public class Utils {
 		}
 
 		ArrayList<String> res = new ArrayList<String>();
-		if(headers){
-			if(endInt-startInt>0 && startInt >= 0 && endInt >= 0) {
-				for(int i = 0; i<endInt-startInt; i++){
+		if(headers){ //if user made headers have to be used
+			if(endInt-startInt>0 && startInt >= 0 && endInt >= 0) { //for safety check if the provided values are possible
+				for(int i = 0; i<endInt-startInt; i++){ 
 					if(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != null
-							&& ((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != "") {
+							&& ((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent() != "") { //check if content of cell is suited as a header
 						res.add(((Cell) sheet.getValueAt(firstRow, startInt + 1 + i)).getContent());
 					} else {
 						throw new CellDataException();
@@ -141,7 +140,7 @@ public class Utils {
 				throw new CellInputException();
 			}
 		} else{
-			res = getColumnHeaders(startInt, endInt);
+			res = getColumnHeaders(startInt, endInt); //if no user made headers have to be used then use column headers (A, B, C, ...)
 		}
 		return res;
 	}
@@ -167,11 +166,11 @@ public class Utils {
 		}
 
 		ArrayList<String> res = new ArrayList<String>();
-		if(headers){
+		if(headers){ //if user made headers have to be used
 			if(startInt >= 0){
-				for(int i = 0; i<secondRow-firstRow; i++){
+				for(int i = 0; i<secondRow-firstRow; i++){ //for safety check if the provided values are possible
 					if(((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != null
-							&& ((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != ""){
+							&& ((Cell) sheet.getValueAt(firstRow+1+i, startInt)).getContent() != ""){ //check if content of Cell is suited as a header
 						res.add(((Cell) sheet.getValueAt(firstRow + 1 + i, startInt)).getContent());
 					} else{
 						throw new CellDataException();
@@ -181,7 +180,7 @@ public class Utils {
 				throw new CellInputException();
 			}
 		} else{
-			res = getRowHeaders(firstRow, secondRow);
+			res = getRowHeaders(firstRow, secondRow); //if no user made headers have to be used then use row headers (1, 2, 3, ...)
 		}
 		return res;
 	}
@@ -210,10 +209,10 @@ public class Utils {
 
 		ArrayList<Double> res = new ArrayList<Double>();
 
-		if(headers){
-		 if(endInt-startInt>0 && startInt>=0 && endInt >= 0){
-		  for(int i = 0; i<verticalLength; i++){
-			  for(int i2 = 0; i2<horizontalLength; i2++){
+		if(headers){ //if user made headers have to be used
+		 if(endInt-startInt>0 && startInt>=0 && endInt >= 0){ //for safety check if the provided values are possible
+		  for(int i = 0; i<verticalLength; i++){ //for each row
+			  for(int i2 = 0; i2<horizontalLength; i2++){ //add the content of each cell in that row
 				try{
 					add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow+ 1 +i, startInt + 1 + i2)).toString());
 					res.add(add);
@@ -225,9 +224,9 @@ public class Utils {
 		 } else{
 			 throw new CellInputException();
 		 }
-		} else{
-			for(int i = 0; i<=verticalLength; i++){
-				  for(int i2 = 0; i2<=horizontalLength; i2++){
+		} else{ //if no user made headers have to be used
+			for(int i = 0; i<=verticalLength; i++){ //for each row
+				  for(int i2 = 0; i2<=horizontalLength; i2++){ //add the content of each cell in that row
 					try{
 						add = Double.parseDouble(((Cell) sheet.getValueAt(firstRow +i, startInt + i2)).toString());
 						res.add(add);
@@ -241,6 +240,12 @@ public class Utils {
 		return res;
 	}
 	
+	/**
+	 * returns an <code>arrayList</code> with the column headers of a selection
+	 * @param startInt first selected column
+	 * @param endInt last selected column
+	 * @return <code>arrayList</code> with the column headers
+	 */
 	public static ArrayList<String> getColumnHeaders(int startInt, int endInt){
 		ArrayList<String> res = new ArrayList<String>();
 		for(int i = 0; i<=endInt-startInt; i++){
@@ -249,6 +254,12 @@ public class Utils {
 		return res;
 	}
 	
+	/**
+	 * returns an <code>arrayList</code> with the row headers of a selection
+	 * @param startInt first selected row
+	 * @param endInt last selected row
+	 * @return <code>arrayList</code> with the column headers
+	 */
 	public static ArrayList<String> getRowHeaders(int startInt, int endInt){
 		ArrayList<String> res = new ArrayList<String>();
 		for(int i = 0; i<=endInt-startInt; i++){
