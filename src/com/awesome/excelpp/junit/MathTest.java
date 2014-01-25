@@ -24,7 +24,6 @@ import com.awesome.excelpp.junit.math.RoundupTest;
 import com.awesome.excelpp.junit.math.SqrtTest;
 import com.awesome.excelpp.junit.math.SubtractTest;
 import com.awesome.excelpp.junit.math.UpperTest;
-import com.awesome.excelpp.math.Count;
 
 @RunWith(Suite.class)
 @SuiteClasses({	AddTest.class,
@@ -47,7 +46,7 @@ import com.awesome.excelpp.math.Count;
 				SubtractTest.class,
 				UpperTest.class,
 				NotTest.class,
-				Count.class })
+				CountTest.class })
 
 public class MathTest {
 }
