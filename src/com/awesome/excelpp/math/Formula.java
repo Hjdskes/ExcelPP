@@ -71,6 +71,8 @@ public abstract class Formula {
 			return ((Integer)arg).toString();
 		if (arg instanceof Double)
 			return ((Double)arg).toString();
+		if (arg instanceof Boolean)
+			return ((Boolean)arg).toString();
 		if (!(arg instanceof String))
 			throw new MathException();
 		return (String)arg;

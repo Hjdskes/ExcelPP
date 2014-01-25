@@ -12,15 +12,16 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class If extends Formula {
 	@Override
-	public Object getValue(Object... args) throws MathException {
+	public String getValue(Object... args) throws MathException {
 		if(args.length != 3)
 			throw new MathException();
 
 		boolean condition = getBoolean(args[0]);
 		if(condition == true)
-			return (String) args[1];
+			return getString(args[1]);
 		else if(condition == false)
-			return (String)args[2];
-		return false;
+			return getString(args[2]);
+
+		return ""; //never reached
 	}
 }
