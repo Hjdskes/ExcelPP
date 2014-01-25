@@ -123,10 +123,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		buttonAbout = new JButton();
 		buttonGraphs = new JButton();
 		
-		String[] functionList = {"Average", "Count", "CountA", "CountIf", "If", "Int", "IsLogical",
-								 "IsEven", "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not",
-								 "Or", "Power", "Product", "Proper", "RoundDown", "RoundUp", "Sign",
-								 "SQRT", "Sum", "SumIf"};
+		String[] functionList = {"And", "Average", "Count", "CountA", "CountIf", "If", "Int", "IsEven", "IsLogical",
+								 "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product",
+								 "Proper", "Quotient", "RoundDown", "RoundUp", "Sign", "SQRT", "Subtract", "Sum", "SumIf",
+								 "Upper"};
 		functions = new JComboBox<String>(functionList);
 
 		final ImageIcon newIcon = new ImageIcon("data/icons/window-new.png");
