@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.awesome.excelpp.junit.math.AddTest;
+import com.awesome.excelpp.junit.math.SumTest;
 import com.awesome.excelpp.junit.math.AndTest;
 import com.awesome.excelpp.junit.math.AverageTest;
 import com.awesome.excelpp.junit.math.CountTest;
@@ -26,7 +26,7 @@ import com.awesome.excelpp.junit.math.SubtractTest;
 import com.awesome.excelpp.junit.math.UpperTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({	AddTest.class,
+@SuiteClasses({	SumTest.class,
 				AndTest.class,
 				AverageTest.class,
 				CountTest.class,

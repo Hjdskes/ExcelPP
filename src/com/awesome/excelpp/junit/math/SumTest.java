@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.awesome.excelpp.math.Sum;
 import com.awesome.excelpp.math.exception.MathException;
 
-public class AddTest {
+public class SumTest {
 	@Test
 	public void Add() throws MathException {
 		Double expected = 14.0;
