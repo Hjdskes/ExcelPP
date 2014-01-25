@@ -10,6 +10,7 @@ import com.awesome.excelpp.junit.math.SumTest;
 import com.awesome.excelpp.junit.math.AndTest;
 import com.awesome.excelpp.junit.math.AverageTest;
 import com.awesome.excelpp.junit.math.CountTest;
+import com.awesome.excelpp.junit.math.IfTest;
 import com.awesome.excelpp.junit.math.IntTest;
 import com.awesome.excelpp.junit.math.IsEvenTest;
 import com.awesome.excelpp.junit.math.IsNumberTest;
@@ -33,6 +34,7 @@ import com.awesome.excelpp.junit.math.UpperTest;
 @SuiteClasses({	AndTest.class,
 				AverageTest.class,
 				CountTest.class,
+				IfTest.class,
 				IntTest.class,
 				IsEvenTest.class,
 				IsNumberTest.class,
