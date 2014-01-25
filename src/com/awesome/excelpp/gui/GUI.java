@@ -239,8 +239,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 				+ " this, we are very curious to hear about your results!<br><br>"
 				+ "The syntax is as follows: =And(2+2&lt;=8, \"true\", \"false\")<br>"
 				+ "The '=' character indicates the start of a new formula. Hereafter follows the name of the formula, as seen in the combobox."
-				+ " Arguments are provided between brackets and are separated by commas. Logical operators are always two characters:<br>"
-				+ "'==', '&lt;=', '>=' and '!='. Strings and boolean values should be put between quotation marks. Cell ranges are also supported."
+				+ " Arguments are provided between brackets and are separated by commas. The following logical operators are supported:<br>"
+				+ "'==', '&lt;', '&lt;=', '>', '>=' and '!='. Strings and boolean values should be put between quotation marks. Cell ranges are also supported."
 				+ " Here is a more complicated example, including Cell ranges:<br>=Sum(Average(A1:A5), 5, Power(2,4))<br><br>"
 				+ "Regular math notation, such as =(2+2)*3, is also supported. One can also make Cell references from other Cells: =A1.";
 		final JLabel formulaLabel = new JLabel(formulaText);

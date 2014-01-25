@@ -10,8 +10,7 @@ import com.awesome.excelpp.junit.parser.LexerTest;
 import com.awesome.excelpp.junit.parser.ParserTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MainTest.class,
-				CellTest.class,
+@SuiteClasses({ CellTest.class,
 				SpreadSheetTest.class,
 				LexerTest.class,
 				ParserTest.class,
