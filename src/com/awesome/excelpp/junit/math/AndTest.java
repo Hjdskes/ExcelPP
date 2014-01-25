@@ -12,10 +12,9 @@ public class AndTest {
 	public void And() throws MathException {
 		assertEquals(true, new And().getValue(2<5));
 	}
-	
+
 	@Test
 	public void And_false() throws MathException {
 		assertEquals(false, new And().getValue(18<2));
-	}
-	
+	}	
 }

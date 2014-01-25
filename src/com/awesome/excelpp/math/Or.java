@@ -9,9 +9,9 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class Or extends Formula {
 	@Override
-	public Object getValue(Object... args) throws MathException {
+	public Boolean getValue(Object... args) throws MathException {
 		for(Object o : args) {
-			if(getBoolean(o) == true);
+			if(getBoolean(o) == true)
 				return true;
 		}
 		return false;
