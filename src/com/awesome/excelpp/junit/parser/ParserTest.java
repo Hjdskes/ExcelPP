@@ -219,25 +219,47 @@ public class ParserTest {
 	}
 	
 	@Test
+	public void test_function_string3() throws ParserException, RecursionException {
+		result = new Parser("=\"Hello\" + \" world!\"").eval();
+		assertTrue(result.equals("Hello world!"));
+	}
+	
+	@Test
+	public void test_function_string4() throws ParserException, RecursionException {
+		exception.expect(MissingArgException.class);
+		result = new Parser("=\"Hello\" - \" world!\"").eval();
+	}
+	
+	@Test
 	public void test_logic() throws ParserException, RecursionException {
+		result = new Parser("=2<3;", null).eval();
+		assertTrue((Boolean)result);
+		result = new Parser("=3<2;", null).eval();
+		assertFalse((Boolean)result);
+		
+		result = new Parser("=3>2;", null).eval();
+		assertTrue((Boolean)result);
+		result = new Parser("=2>3;", null).eval();
+		assertFalse((Boolean)result);
+		
 		result = new Parser("=2<=3;", null).eval();
 		assertTrue((Boolean)result);
-	}
-	
-	@Test
-	public void test_logic_2() throws ParserException, RecursionException {
-		result = new Parser("=2<3==2<4;", null).eval();
+		result = new Parser("=3<=2;", null).eval();
+		assertFalse((Boolean)result);
+		
+		result = new Parser("=3>=2;", null).eval();
 		assertTrue((Boolean)result);
-	}
-	
-	@Test
-	public void test_logic_3() throws ParserException, RecursionException, RecursionException {
+		result = new Parser("=2>=3;", null).eval();
+		assertFalse((Boolean)result);
+		
 		result = new Parser("=1==1;", null).eval();
 		assertTrue((Boolean)result);
-	}
-	
-	@Test
-	public void test_logic_4() throws ParserException, RecursionException {
+		result = new Parser("=1==2;", null).eval();
+		assertFalse((Boolean)result);
+		
+		result = new Parser("=2<3==2<4;", null).eval();
+		assertTrue((Boolean)result);
+		
 		result = new Parser("=2<=3;", null).eval();
 		assertTrue((Boolean)result);
 	}
@@ -282,6 +304,12 @@ public class ParserTest {
 	public void test_invalid_function7() throws ParserException, RecursionException {
 		exception.expect(MissingArgException.class);
 		result = new Parser("=2-;").eval();
+	}
+	
+	@Test
+	public void test_invalid_function8() throws ParserException, RecursionException {
+		exception.expect(MissingArgException.class);
+		result = new Parser("=-\"twee\"").eval();
 	}
 	
 	//TODO: reference exception testen
