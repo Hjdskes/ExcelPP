@@ -4,11 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.awesome.excelpp.math.And;
 import com.awesome.excelpp.math.IsLogical;
 import com.awesome.excelpp.math.exception.MathException;
 
-public class isLogicalTest {
+public class IsLogicalTest {
 
 	@Test
 	public void isLogical_int() throws MathException {

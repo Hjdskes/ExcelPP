@@ -14,6 +14,7 @@ import com.awesome.excelpp.junit.math.IfTest;
 import com.awesome.excelpp.junit.math.IntTest;
 import com.awesome.excelpp.junit.math.IsEvenTest;
 import com.awesome.excelpp.junit.math.IsNumberTest;
+import com.awesome.excelpp.junit.math.IsLogicalTest;
 import com.awesome.excelpp.junit.math.LowerTest;
 import com.awesome.excelpp.junit.math.MaxTest;
 import com.awesome.excelpp.junit.math.MedianTest;
@@ -37,6 +38,7 @@ import com.awesome.excelpp.junit.math.UpperTest;
 				IfTest.class,
 				IntTest.class,
 				IsEvenTest.class,
+				IsLogicalTest.class,
 				IsNumberTest.class,
 				LowerTest.class,
 				MaxTest.class,
