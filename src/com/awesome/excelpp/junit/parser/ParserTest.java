@@ -26,7 +26,7 @@ public class ParserTest {
 	@Test
 	public void test_empty() throws ParserException, RecursionException {
 		expected = 0.0;
-		result = new Parser(";").eval();
+		result = new Parser("").eval();
 		assertEquals(expected, (Double)result, .001);
 	}
 	
@@ -145,7 +145,7 @@ public class ParserTest {
 	@Test
 	public void test_cell_2() throws ParserException, RecursionException {
 		SpreadSheet testSheet = new SpreadSheet();
-		testSheet.setValueAt(new Cell(testSheet, "5;"), 0, 2);
+		testSheet.setValueAt(new Cell(testSheet, "5"), 0, 2);
 		expected = 3.0;
 		result = new Parser("=Subtract(C1,2);", testSheet).eval();
 		assertEquals(expected, (Double)result, .001);

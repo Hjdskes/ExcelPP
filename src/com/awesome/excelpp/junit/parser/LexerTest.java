@@ -141,7 +141,7 @@ public class LexerTest {
 	
 	@Test
 	public void test_Constructor_String_1() {
-		lex = new Lexer("\"test\"");
+		lex = new Lexer("=\"test\"");
 		
 		Token next;
 		next = lex.next();
