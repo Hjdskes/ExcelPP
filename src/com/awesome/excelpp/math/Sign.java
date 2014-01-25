@@ -6,7 +6,7 @@ import com.awesome.excelpp.math.exception.MathException;
  * Determines the sign of a number.
  * <p>Returns 1 if the number is positive, zero (0) if the number is 0, and -1 if the number is negative.
  * </br>Syntax: =Sign(number)</p> 
- * @author Team Awesome
+ * @author Strilanc, first answer: http://stackoverflow.com/questions/3994531/how-to-determine-if-a-number-is-positive-or-negative-in-java
  */
 public class Sign extends Formula {
 	@Override
