@@ -56,7 +56,7 @@ public class ProperTest {
 		assertEquals(expected, result);
 	}
 
-	@Test(expected = MathException.class)
+	@Test
 	public void properBool() throws MathException {
 		@SuppressWarnings("unused")
 		String result = new Proper().getValue(true);
