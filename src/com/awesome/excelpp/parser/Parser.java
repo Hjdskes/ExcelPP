@@ -316,8 +316,6 @@ public class Parser {
 				} else if (a instanceof Boolean && b instanceof Boolean) {
 					if (op.data.equals("==")) {
 						evalStack.push(a == b);
-					} else if (op.data.equals("<")) {
-						evalStack.push((Double)a < (Double)b);
 					}
 				} else {
 					// TODO: Do something with strings...
