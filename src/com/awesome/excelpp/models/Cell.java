@@ -20,6 +20,7 @@ import java.util.Observer;
  * @author Team Awesome
  */
 public class Cell extends Observable implements Observer {
+	static int count = 0;
 	private String content; // =2+2
 	private SpreadSheet sheet;
 	private int fontBold; // 1 = bold, 0 = niet bold
@@ -114,10 +115,8 @@ public class Cell extends Observable implements Observer {
 		}
 		observing.clear();
 		
-		if (this.content != content) {
-			setChanged();
-			notifyObservers();
-		}
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -135,10 +134,8 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		if (this.fontBold != bold) {
-			setChanged();
-			notifyObservers();
-		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -164,10 +161,8 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		if (this.fontItalic != italic) {
-			setChanged();
-			notifyObservers();
-		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -192,10 +187,8 @@ public class Cell extends Observable implements Observer {
 			postEdit(oldValue, newValue);
 		}
 		
-		if (this.foregroundColor != newForegroundColor) {
-			setChanged();
-			notifyObservers();
-		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -221,17 +214,19 @@ public class Cell extends Observable implements Observer {
 	 * @param undoable If false, edit won't be posted to the undoSupport
 	 */
 	public void setBackgroundColor(Color newBackgroundColor, boolean undoable) {
+		if ((this.backgroundColor != null && !getBackgroundColor().equals(newBackgroundColor))
+				|| (this.backgroundColor == null && newBackgroundColor != null)) {
+			setChanged();
+			notifyObservers();
+			System.out.println("changed" + backgroundColor + newBackgroundColor);
+		}
+		
 		Cell oldValue = cloneThis();
 		this.backgroundColor = newBackgroundColor;
 		Cell newValue = cloneThis();
 		
 		if(undoable) {
 			postEdit(oldValue, newValue);
-		}
-		
-		if (this.backgroundColor != newBackgroundColor) {
-			setChanged();
-			notifyObservers();
 		}
 	}
 
@@ -318,6 +313,7 @@ public class Cell extends Observable implements Observer {
 	 * @return The evaluated expression
 	 */
 	public String toString() {
+		System.out.println("tostring... " + ++count);
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				return getValue().toString();
@@ -325,7 +321,7 @@ public class Cell extends Observable implements Observer {
 				return "#INFREF";
 			}
 		}
-
+		
 		return content == null ? "" : content;
 	}
 
