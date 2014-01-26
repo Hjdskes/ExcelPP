@@ -3,6 +3,8 @@ package com.awesome.excelpp.writers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 
 import com.awesome.excelpp.models.Cell;
 
@@ -26,15 +28,33 @@ public class XMLWriter implements Writer {
 	
 	@Override
 	public void addCell(Cell cell, int row, int col) {
+		String content = forXML(cell.getContent());
+		String bold = "";
+		String italic = "";
+		String fontColor = "";
+		String bgColor = "";
+		if(cell.getBold() != 0) {
+			bold = "bold:" + cell.getBold() + ";";
+		}
+		if(cell.getItalic() != 0) {
+			italic = "italic:" + cell.getItalic() + ";";
+		}
+		if(!cell.getBackgroundColorHex().equals("#FFFFFF")) {
+			fontColor = "fontColor:" + cell.getForegroundColorHex() + ";";
+		}
+		if(!cell.getForegroundColorHex().equals("#000000")) {
+			bgColor = "bgColor:" + cell.getBackgroundColorHex();
+		}
+		
 			pw.write("<CELL row=\"" + row + "\"" +
 						" column=\"" + col + "\"" +
 						" style=\"" +
-							"bold:" + cell.getBold() + ";" +
-							"italic:" + cell.getItalic() + ";" +
-							"fontColor:" + cell.getForegroundColorHex() + ";" +
-							"bgColor:" + cell.getBackgroundColorHex() +
+							bold +
+							italic +
+							fontColor +
+							bgColor +
 						"\"" +
-						">" + cell.getContent() + "</CELL>\n");
+						">" + content + "</CELL>\n");
 		}
 
 	@Override
@@ -43,4 +63,34 @@ public class XMLWriter implements Writer {
 		pw.flush();
 		pw.close();
 	}
+	
+	 public static String forXML(String Text){
+		    final StringBuilder result = new StringBuilder();
+		    final StringCharacterIterator iterator = new StringCharacterIterator(Text);
+		    char character =  iterator.current();
+		    while (character != CharacterIterator.DONE ){
+		      if (character == '<') {
+		        result.append("&lt;");
+		      }
+		      else if (character == '>') {
+		        result.append("&gt;");
+		      }
+		      else if (character == '\"') {
+		        result.append("&quot;");
+		      }
+		      else if (character == '\'') {
+		        result.append("&#039;");
+		      }
+		      else if (character == '&') {
+		         result.append("&amp;");
+		      }
+		      else {
+		        //the char is not a special one
+		        //add it to the result as is
+		        result.append(character);
+		      }
+		      character = iterator.next();
+		    }
+		    return result.toString();
+		  }
 }
