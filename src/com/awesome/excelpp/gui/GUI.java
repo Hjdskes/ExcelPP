@@ -125,7 +125,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		
 		String[] functionList = {"And", "Average", "Count", "CountA", "CountIf", "If", "Int", "IsEven", "IsLogical",
 								 "IsNumber", "Lower", "Max", "Median", "Min", "Mod", "Not", "Or", "Power", "Product",
-								 "Proper", "Quotient", "RoundDown", "RoundUp", "Sign", "SQRT", "Subtract", "Sum", "SumIf",
+								 "Proper", "Quotient", "RoundDown", "RoundUp", "Sign", "SqrtT", "Subtract", "Sum", "SumIf",
 								 "Upper"};
 		functions = new JComboBox<String>(functionList);
 
@@ -233,7 +233,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		final JPanel helpPanel = new JPanel();
 		final JTabbedPane helpTabbedPane = new JTabbedPane();
 
-		final String formulaText = "<html><body style='width:300px'>Implemented are the 25 formules one can see inside the combobox."
+		final String formulaText = "<html><body style='width:300px'>Implemented are the 29 formules one can see inside the combobox."
 				+ " Excel++ adheres to the syntax for Microsoft Excel, so if any formula's use is unclear, please see their documentation.<br><br>"
 				+ "The parser supports nested formulas and is tested up until a formula with a length of 30751 characters. Should your formula exceed"
 				+ " this, we are very curious to hear about your results!<br><br>"

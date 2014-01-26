@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.awesome.excelpp.junit.math.QuotientTest;
 import com.awesome.excelpp.junit.math.SignTest;
+import com.awesome.excelpp.junit.math.SumIfTest;
 import com.awesome.excelpp.junit.math.SumTest;
 import com.awesome.excelpp.junit.math.AndTest;
 import com.awesome.excelpp.junit.math.AverageTest;
@@ -57,6 +58,7 @@ import com.awesome.excelpp.junit.math.UpperTest;
 				SqrtTest.class,
 				SubtractTest.class,
 				SumTest.class,
+				SumIfTest.class,
 				UpperTest.class })
 
 public class MathTest {

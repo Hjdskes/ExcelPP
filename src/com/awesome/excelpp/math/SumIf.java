@@ -20,7 +20,6 @@ public class SumIf extends Formula {
 	@Override
 	public Double getValue(Object... args) throws MathException, ParserException, RecursionException {
 		Double sum = 0.0;
-		IsLogical form = new IsLogical();
 		String cond = null;
 		int index = 0; //The start index of sum_range
 		
