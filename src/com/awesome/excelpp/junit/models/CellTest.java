@@ -130,7 +130,7 @@ public class CellTest {
 	public void test_Constructor_FormuleInvalid9() {
 		Cell cell = new Cell(new SpreadSheet(), "=A1;");
 		assertTrue(cell.getContent().equals("=A1;"));
-		assertTrue(cell.toString().equals("0.0"));
+		assertTrue(cell.toString().equals(""));
 		assertFalse(cell.isEmpty());
 	}
 	
