@@ -1,5 +1,14 @@
 package com.awesome.excelpp.junit.math;
 
+<<<<<<< HEAD
+import org.junit.Test;
+
+public class SumIfTest {
+	
+	@Test
+	public void SumTest() {
+		System.out.println("error");
+=======
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -58,5 +67,6 @@ public class SumIfTest {
 		Double expected = 7.0;
 		Double result = new SumIf().getValue(4.0, 3.0, 2.0, 1.0, "\">2.0\"");
 		assertEquals(expected, result);
+>>>>>>> ea49f0f11a0bf3c406b69a4b7feb8c296d656993
 	}
 }
