@@ -243,14 +243,7 @@ public class Cell extends Observable implements Observer {
 	 * @return This <code>Cell's</code> background <code>Color</code> as hex
 	 */
 	public String getBackgroundColorHex() {
-		String hex = "#FFFFFF";
-		if(backgroundColor == null) {
-			return hex;
-		}
-		else {
-			hex = "#"+Integer.toHexString(backgroundColor.getRGB()).substring(2);
-		}
-		return hex;
+		return "#"+Integer.toHexString(getBackgroundColor().getRGB()).substring(2);
 	}
 	
 	/**
