@@ -13,12 +13,9 @@ public class Max extends Formula {
 		double maximum = Double.MIN_VALUE;
 
 		for(Object o : args) {
-			try {
 				if (maximum < getDouble(o))
 					maximum = getDouble(o);
-			} catch (MathException e) {
-			}
 		}
-		return maximum == Double.MIN_VALUE ? 0 : maximum;	
+		return maximum;	
 	}
 }
