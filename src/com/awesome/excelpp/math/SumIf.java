@@ -20,7 +20,6 @@ public class SumIf extends Formula {
 	@Override
 	public Double getValue(Object... args) throws MathException, ParserException, RecursionException {
 		Double sum = 0.0;
-		IsLogical form = new IsLogical();
 		String cond = null;
 		int index = 0; //The start index of sum_range
 		
@@ -31,6 +30,7 @@ public class SumIf extends Formula {
 			}
 		}
 		
+		//Is dit nodig? De Lexer haalt quotes volgens mij weg
 		String condition = ((cond.charAt(0) == '"') ? cond.substring(1, cond.length()-1) : cond ); //Trim quotation marks
 		
 		if((condition.charAt(0) == '<') || (condition.charAt(0) == '>')){
@@ -43,7 +43,6 @@ public class SumIf extends Formula {
 			}
 		}else{
 			for(int i = 0; i < index - 1; i++){
-				System.out.println(args[i] + "?=" + condition + " ---> " + args[i + index]);
 				if(args[i].toString().equals(condition)){
 					sum += (Double) args[i + index];
 				}
