@@ -34,7 +34,7 @@ public class SumIf extends Formula {
 			}
 		}
 
-		if(index*2 != args.length - 1){
+		if(((index-1)*2 != args.length - 1) && sumRange){
 			throw new MathException();
 		}
 
