@@ -33,7 +33,11 @@ public class SumIf extends Formula {
 				}
 			}
 		}
-		
+
+		if(index*2 != args.length - 1){
+			throw new MathException();
+		}
+
 		//Is dit nodig? De Lexer haalt quotes volgens mij weg
 		String condition = ((cond.charAt(0) == '"') ? cond.substring(1, cond.length()-1) : cond ); //Trim quotation marks
 		
