@@ -293,6 +293,11 @@ public class Parser {
 					throw new MissingArgException();
 				}
 				
+				if (a instanceof String && ((String) a).length() == 0)
+					a = 0.0;
+				if (a instanceof String && ((String) a).length() == 0)
+					b = 0.0;
+				
 				if (a instanceof Double && b instanceof Double) {
 					if (op.data.equals("+")) {
 						evalStack.push(new Double((Double)a + (Double)b));
@@ -351,7 +356,7 @@ public class Parser {
 			}
 		}
 		
-		Object retvalue = 0.0;
+		Object retvalue = "";
 		try {
 			retvalue = evalStack.pop();
 		} catch (NoSuchElementException e) {
