@@ -85,8 +85,6 @@ public class XMLWriter implements Writer {
 		         result.append("&amp;");
 		      }
 		      else {
-		        //the char is not a special one
-		        //add it to the result as is
 		        result.append(character);
 		      }
 		      character = iterator.next();
