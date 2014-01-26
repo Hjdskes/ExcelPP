@@ -1,5 +1,11 @@
 package com.awesome.excelpp.junit.math;
 
-public class SumIfTest {
+import org.junit.Test;
 
+public class SumIfTest {
+	
+	@Test
+	public void SumTest() {
+		System.out.println("error");
+	}
 }

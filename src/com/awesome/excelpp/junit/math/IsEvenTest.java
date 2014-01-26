@@ -15,6 +15,13 @@ public class IsEvenTest {
 		assertEquals(expected, result);
 	}
 	
+	@Test
+	public void IsEvenDouble() throws MathException {
+		boolean expected = true;
+		boolean result = new IsEven().getValue(10.48);
+		assertEquals(expected, result);
+	}
+	
 	@Test(expected = MathException.class)
 	public void IsEvenMultiple() throws MathException {
 		boolean expected = true;
@@ -34,4 +41,7 @@ public class IsEvenTest {
 		@SuppressWarnings("unused")
 		boolean result = new IsEven().getValue("twee");;
 	}
+	
+
+	
 }
