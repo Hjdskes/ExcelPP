@@ -29,6 +29,8 @@ public abstract class Formula {
 	public double getDouble(Object arg) throws MathException {
 		if (arg instanceof Integer)
 			return ((Integer)arg).doubleValue();
+		if (arg instanceof String && ((String) arg).length() == 0)
+			return 0.0;
 		if (arg instanceof String) {
 			try {
 				arg = Double.parseDouble((String)arg);

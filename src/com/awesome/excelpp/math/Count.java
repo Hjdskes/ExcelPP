@@ -1,5 +1,7 @@
 package com.awesome.excelpp.math;
 
+import com.awesome.excelpp.math.exception.MathException;
+
 /**
  * The Count function counts the number of cells that contain numbers and counts numbers within the list of arguments.
  * <p>Use the Count function to get the number of entries in a number field that is in a range or array of numbers.
@@ -11,10 +13,13 @@ public class Count extends Formula {
 	public Integer getValue(Object... args) {
 		int res = 0;
 		for(Object o : args) {
-			if(o instanceof Double)
-				res++;
-			else if (o instanceof Integer)
-				res++;
+			if (!(o instanceof String && ((String) o).length() == 0)) {
+				try {
+					getDouble(o);
+					res++;
+				} catch (MathException e) {
+				}
+			}
 		}
 		return res;
 	}

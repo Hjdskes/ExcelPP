@@ -25,9 +25,8 @@ public class ParserTest {
 	
 	@Test
 	public void test_empty() throws ParserException, RecursionException {
-		expected = 0.0;
 		result = new Parser("").eval();
-		assertEquals(expected, (Double)result, .001);
+		assertTrue(result.equals(""));
 	}
 	
 	@Test
