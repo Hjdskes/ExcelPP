@@ -22,11 +22,15 @@ public class SumIf extends Formula {
 		Double sum = 0.0;
 		String cond = null;
 		int index = 0; //The start index of sum_range
+		boolean sumRange = true;//Indicates whether we have a sum_range specified or not.
 		
 		for(int i = 0; i < args.length; i++){
 			if(args[i] instanceof String){
 				cond = (String) args[i]; // in the end. only the last String will be assigned to "cond"
 				index = i + 1;
+				if(i == args.length - 1){
+					sumRange = false;
+				}
 			}
 		}
 		
@@ -38,17 +42,27 @@ public class SumIf extends Formula {
 				Parser parse = new Parser("=" + args[i].toString() + condition);
 				parse.toPostfix();
 				if(((Boolean)parse.eval()) == true){
-					sum += (Double) args[i + index];
+					if(sumRange){						
+						sum += (Double) args[i + index];
+					} else {
+						sum += (Double) args[i];
+					}
 				}
+
 			}
+			return sum;
 		}else{
 			for(int i = 0; i < index - 1; i++){
 				if(args[i].toString().equals(condition)){
-					sum += (Double) args[i + index];
+					if(sumRange){						
+						sum += (Double) args[i + index];
+					} else {
+						throw new MathException();
+					}
 				}
 			}
+			return sum;
 		}
 		
-		return sum;
 	}
 }
