@@ -39,10 +39,10 @@ public class XMLWriter implements Writer {
 		if(cell.getItalic() != 0) {
 			italic = "italic:" + cell.getItalic() + ";";
 		}
-		if(!cell.getBackgroundColorHex().equals("#FFFFFF")) {
+		if(!cell.getForegroundColorHex().equals("#000000")) {
 			fontColor = "fontColor:" + cell.getForegroundColorHex() + ";";
 		}
-		if(!cell.getForegroundColorHex().equals("#000000")) {
+		if(!cell.getBackgroundColorHex().equals("#ffffff")) {
 			bgColor = "bgColor:" + cell.getBackgroundColorHex();
 		}
 		

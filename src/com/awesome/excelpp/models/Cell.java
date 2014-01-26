@@ -227,6 +227,7 @@ public class Cell extends Observable implements Observer {
 		
 		if(undoable) {
 			postEdit(oldValue, newValue);
+			restoreBackground = backgroundColor;
 		}
 	}
 
@@ -243,14 +244,7 @@ public class Cell extends Observable implements Observer {
 	 * @return This <code>Cell's</code> background <code>Color</code> as hex
 	 */
 	public String getBackgroundColorHex() {
-		String hex = "#FFFFFF";
-		if(backgroundColor == null) {
-			return hex;
-		}
-		else {
-			hex = "#"+Integer.toHexString(backgroundColor.getRGB()).substring(2);
-		}
-		return hex;
+		return "#"+Integer.toHexString(getBackgroundColor().getRGB()).substring(2);
 	}
 	
 	/**
@@ -274,11 +268,9 @@ public class Cell extends Observable implements Observer {
 	
 	private void setError(boolean error) {
 		if (error) {
-			restoreBackground = backgroundColor;
 			setBackgroundColor(new Color(255, 65, 70), false);
 		} else {
 			setBackgroundColor(restoreBackground, false);
-			restoreBackground = null;
 		}
 	}
 
