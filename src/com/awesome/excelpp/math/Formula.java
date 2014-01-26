@@ -1,6 +1,8 @@
 package com.awesome.excelpp.math;
 
 import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.ParserException;
+import com.awesome.excelpp.parser.exception.RecursionException;
 
 /**
  * Generic base class for all Formulas.
@@ -13,8 +15,10 @@ public abstract class Formula {
 	 * @param args The arguments passed to the function
 	 * @return The result of the evaluation
 	 * @throws MathException If the expression was invalid
+	 * @throws RecursionException 
+	 * @throws ParserException 
 	 */
-	public abstract Object getValue(Object ... args) throws MathException;
+	public abstract Object getValue(Object ... args) throws MathException, ParserException, RecursionException;
 	
 	/**
 	 * Tries to convert the argument to a double. 
