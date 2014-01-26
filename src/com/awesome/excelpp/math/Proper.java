@@ -11,17 +11,18 @@ import com.awesome.excelpp.math.exception.MathException;
 public class Proper extends Formula {
 	@Override
 	public String getValue(Object... args) throws MathException {
-		//if(args.length != 1)
-		//	throw new MathException();
+		if(args.length != 1)
+			throw new MathException();
 
 		String res = "";
 		String arg = getString(args[0]);
 		if(arg.length() == 0)
 			return res;
 
-		String[] words = arg.split("\\s");
-		for (String s : words) {
-			res += s.substring(0, 1).toUpperCase() + res.substring(1).toLowerCase() + "\\s";
+		String[] words = arg.split("(?<=[^a-zA-Z])");
+		for (int i = 0; i < words.length; i++) {
+			if(words[i].length() != 0)
+				res += words[i].substring(0, 1).toUpperCase() + words[i].substring(1).toLowerCase();
 		}
 
 		return res;

@@ -15,31 +15,46 @@ import com.awesome.excelpp.math.exception.MathException;
  */
 public class CountIf extends Formula {
 	@Override
-	public Object getValue(Object... args) throws MathException {
+	public Integer getValue(Object... args) throws MathException {
+		if(args.length < 2)
+			throw new MathException();
+
 		int count = 0;
-		for(int i = 1; i < args.length; i++) {
-			if(args[i] instanceof Double) {
-				if((double) args[i] !=  0.0) {
-					if(args[0].equals(args[i]))
+		Object lastArg = args[args.length - 1];
+		if(lastArg instanceof String) {
+			String arg = (String)lastArg;
+			int length = arg.length();
+			if(length == 1) { //alleen de eerste letter vergelijken
+				for(int i = 0; i < args.length - 1; i++) {
+					if(getString(args[i]).startsWith(arg))
 						count++;
 				}
-			} else if(args[i] instanceof String) {
-				if((String) args[i] !=  "") {
-					if(args[0].equals(args[i]))
-						count++;
-				}
-			} else if(args[i] instanceof Integer) {
-				if((int) args[i] !=  0) {
-					if(args[0] == args[i])
-						count++;
-				}
-			} else if(args[i] instanceof Boolean) {
-				if((boolean) args[i] == true || (boolean) args[i] == false) {
-					if(args[0] == args[i])
+			} else { //de hele string vergelijken
+				for(int i = 0; i < args.length - 1; i++) {
+					if(getString(args[i]).equals(arg))
 						count++;
 				}
 			}
+		} else if (lastArg instanceof Boolean) {
+			Boolean arg = (Boolean)lastArg;
+			for(int i = 0; i < args.length - 1; i++) {
+				if(getBoolean(args[i]) == arg)
+					count++;
+			}
+		} else if (lastArg instanceof Integer) {
+			Integer arg = (Integer)lastArg;
+			for(int i = 0; i < args.length - 1; i++) {
+				if(getInteger(args[i]) == arg)
+					count++;
+			}
+		} else if (lastArg instanceof Double) {
+			Double arg = (Double)lastArg;
+			for(int i = 0; i < args.length - 1; i++) {
+				if(getDouble(args[i]) == arg)
+					count++;
+			}
 		}
+
 		return count;
 	}
 }

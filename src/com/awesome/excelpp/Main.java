@@ -14,7 +14,7 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		SwingUtilities.invokeLater(new Runnable() { //thread save zijn
 			public void run() {
 				try {
