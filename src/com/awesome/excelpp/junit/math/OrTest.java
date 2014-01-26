@@ -23,9 +23,9 @@ public class OrTest {
 		assertEquals(true, new Or().getValue(1<3, 4<5, "error", 1));
 	}
 
-	@Test(expected = MathException.class)
-	public void OrError() throws MathException {
-		assertEquals(true, new Or().getValue("error", 1<3, 4<5, 1));
+	@Test
+	public void Or3() throws MathException {
+		assertEquals(false, new Or().getValue("false", 1>3, 4>5, 0));
 	}
 
 	@Test
