@@ -2,58 +2,61 @@
 <SPREADSHEET>
 <CELL row="1" column="1" style="">1</CELL>
 <CELL row="1" column="2" style="">0.1</CELL>
-<CELL row="1" column="4" style="bold:1;fontColor:#000000;">Formules</CELL>
-<CELL row="1" column="5" style="bold:1;fontColor:#000000;">Logic</CELL>
-<CELL row="1" column="6" style="bold:1;fontColor:#000000;">Simpele Condities</CELL>
+<CELL row="1" column="4" style="bold:1;">Formules</CELL>
+<CELL row="1" column="5" style="bold:1;">Logic</CELL>
+<CELL row="1" column="6" style="bold:1;">Simpele Condities</CELL>
 <CELL row="2" column="2" style="">0.2</CELL>
 <CELL row="2" column="1" style="">2</CELL>
 <CELL row="2" column="4" style="">=Sum(1,2);</CELL>
 <CELL row="3" column="4" style="">=Sum(A1:A10);</CELL>
 <CELL row="3" column="2" style="">0.3</CELL>
 <CELL row="3" column="1" style="">3</CELL>
-<CELL row="3" column="5" style="fontColor:#cc0000;bgColor:#ffffff">IsEven</CELL>
+<CELL row="3" column="6" style="fontColor:#cc0000;">Upper</CELL>
+<CELL row="3" column="5" style="fontColor:#cc0000;">IsEven</CELL>
 <CELL row="4" column="1" style="">4</CELL>
 <CELL row="4" column="2" style="">0.4</CELL>
 <CELL row="4" column="4" style="">=Sum(A1:A20);</CELL>
-<CELL row="4" column="6" style="">=(1&gt;2);</CELL>
+<CELL row="4" column="6" style="">=Upper(&quot;Test&quot;);</CELL>
 <CELL row="4" column="5" style="">=IsEven(A1);</CELL>
 <CELL row="5" column="5" style="">=IsEven(A2);</CELL>
-<CELL row="5" column="6" style="">=(1&lt;2);</CELL>
+<CELL row="5" column="6" style="">=Upper(&quot;upper&quot;);</CELL>
 <CELL row="5" column="4" style="">=Sum(B1:B10);</CELL>
 <CELL row="5" column="1" style="">5</CELL>
 <CELL row="5" column="2" style="">0.5</CELL>
 <CELL row="6" column="2" style="">0.6</CELL>
 <CELL row="6" column="1" style="">6</CELL>
 <CELL row="6" column="4" style="">=Sum(A1:B10);</CELL>
-<CELL row="6" column="6" style="">=1+1</CELL>
 <CELL row="7" column="1" style="">7</CELL>
 <CELL row="7" column="2" style="">0.7</CELL>
-<CELL row="7" column="4" style="fontColor:#000000;"></CELL>
-<CELL row="7" column="6" style="">=1/1</CELL>
-<CELL row="7" column="5" style="fontColor:#cc0000;bgColor:#ffffff">Count</CELL>
+<CELL row="7" column="4" style=""></CELL>
+<CELL row="7" column="6" style="fontColor:#cc0000;">Lower</CELL>
+<CELL row="7" column="5" style="fontColor:#cc0000;">Count</CELL>
 <CELL row="8" column="5" style="">=Count(A1:A10);</CELL>
-<CELL row="8" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Average</CELL>
+<CELL row="8" column="6" style="">=Lower(&quot;LoWeR&quot;);</CELL>
+<CELL row="8" column="4" style="fontColor:#cc0000;">Average</CELL>
 <CELL row="8" column="1" style="">8</CELL>
 <CELL row="8" column="2" style="">0.8</CELL>
 <CELL row="9" column="1" style="">9</CELL>
 <CELL row="9" column="2" style="">0.9</CELL>
 <CELL row="9" column="4" style="">=Average(A1:A20);</CELL>
-<CELL row="10" column="5" style="fontColor:#cc0000;bgColor:#ffffff">CountA</CELL>
+<CELL row="10" column="6" style="fontColor:#cc0000;">Int</CELL>
+<CELL row="10" column="5" style="fontColor:#cc0000;">CountA</CELL>
 <CELL row="10" column="4" style="">=Average(B1:B10);</CELL>
 <CELL row="10" column="2" style="">1.0</CELL>
 <CELL row="10" column="1" style="">10</CELL>
 <CELL row="12" column="2" style="">Dit</CELL>
 <CELL row="12" column="1" style="">30</CELL>
-<CELL row="11" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Min</CELL>
+<CELL row="11" column="4" style="fontColor:#cc0000;">Min</CELL>
 <CELL row="11" column="1" style="">20</CELL>
 <CELL row="11" column="5" style="">=CountA(A1:A10)</CELL>
+<CELL row="11" column="6" style="">=Int(1.23);</CELL>
 <CELL row="13" column="2" style="">is</CELL>
 <CELL row="13" column="1" style="">40</CELL>
 <CELL row="13" column="4" style="">=Min(A1:B10);</CELL>
 <CELL row="12" column="4" style="">=Min(A1:A20);</CELL>
 <CELL row="12" column="5" style="">=CountA(B1:B20)</CELL>
-<CELL row="14" column="5" style="fontColor:#cc0000;bgColor:#ffffff">CountIf</CELL>
-<CELL row="14" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">max</CELL>
+<CELL row="14" column="5" style="fontColor:#cc0000;">CountIf</CELL>
+<CELL row="14" column="4" style="fontColor:#cc0000;">Max</CELL>
 <CELL row="14" column="2" style="">een</CELL>
 <CELL row="14" column="1" style="">50</CELL>
 <CELL row="15" column="5" style="">=CountIf(A1:A10, 1);</CELL>
@@ -65,20 +68,20 @@
 <CELL row="16" column="1" style="">200</CELL>
 <CELL row="18" column="1" style="">400</CELL>
 <CELL row="18" column="2" style="">Dit</CELL>
-<CELL row="18" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Median</CELL>
-<CELL row="18" column="5" style="fontColor:#cc0000;bgColor:#ffffff">If</CELL>
+<CELL row="18" column="4" style="fontColor:#cc0000;">Median</CELL>
+<CELL row="18" column="5" style="fontColor:#cc0000;">If</CELL>
 <CELL row="17" column="2" style="">Dit is een demo tekst</CELL>
 <CELL row="17" column="1" style="">300</CELL>
 <CELL row="17" column="4" style="">=Max(B1:B10);</CELL>
 <CELL row="19" column="5" style="">=If(1&lt;2,  &quot;Dit is waar&quot;, &quot;Dit is NIET waar&quot;);</CELL>
-<CELL row="19" column="4" style="fontColor:#000000;"></CELL>
+<CELL row="19" column="4" style="bgColor:#ff4146">=Median(A1:A10);</CELL>
 <CELL row="19" column="1" style="">500</CELL>
-<CELL row="20" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Power</CELL>
+<CELL row="20" column="4" style="fontColor:#cc0000;">Power</CELL>
 <CELL row="20" column="5" style="">=If(1&gt;2,  &quot;Dit is waar&quot;, &quot;Dit is NIET waar&quot;);</CELL>
 <CELL row="20" column="1" style="">1000</CELL>
-<CELL row="22" column="5" style="fontColor:#cc0000;bgColor:#ffffff">IsLogical</CELL>
+<CELL row="22" column="5" style="fontColor:#cc0000;">IsLogical</CELL>
 <CELL row="22" column="4" style="">=Power(A3:A4);</CELL>
-<CELL row="23" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Product</CELL>
+<CELL row="23" column="4" style="fontColor:#cc0000;">Product</CELL>
 <CELL row="21" column="4" style="">=Power(A2:A3);</CELL>
 <CELL row="25" column="4" style="">=Product(A1:A10)</CELL>
 <CELL row="25" column="5" style="">=IsLogical(12);</CELL>
@@ -86,12 +89,12 @@
 <CELL row="24" column="4" style="">=Product(A1:A3)</CELL>
 <CELL row="24" column="5" style="">=IsLogical(2);</CELL>
 <CELL row="27" column="4" style="">=Proper(B17);</CELL>
-<CELL row="26" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Proper</CELL>
+<CELL row="26" column="4" style="fontColor:#cc0000;">Proper</CELL>
 <CELL row="26" column="5" style="">=IsLogical(&quot;false&quot;);</CELL>
 <CELL row="30" column="5" style="">=IsNumber(0.0);</CELL>
-<CELL row="30" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Round Up/ Down</CELL>
-<CELL row="28" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Quotient</CELL>
-<CELL row="28" column="5" style="fontColor:#cc0000;bgColor:#ffffff">IsNumber</CELL>
+<CELL row="30" column="4" style="fontColor:#cc0000;">Round Up/ Down</CELL>
+<CELL row="28" column="4" style="fontColor:#cc0000;">Quotient</CELL>
+<CELL row="28" column="5" style="fontColor:#cc0000;">IsNumber</CELL>
 <CELL row="29" column="4" style="">=Quotient(A2:A3);</CELL>
 <CELL row="29" column="5" style="">=IsNumber(1);</CELL>
 <CELL row="32" column="4" style="">=Roundup(B9)</CELL>
@@ -100,21 +103,24 @@
 <CELL row="31" column="4" style="">=Rounddown(B9);</CELL>
 <CELL row="35" column="4" style="">=Sign(-10);</CELL>
 <CELL row="35" column="5" style="">=Not(&quot;true&quot;);</CELL>
-<CELL row="34" column="5" style="fontColor:#cc0000;bgColor:#ffffff">Not</CELL>
+<CELL row="34" column="5" style="fontColor:#cc0000;">Not</CELL>
 <CELL row="34" column="4" style="">=Sign(10);</CELL>
-<CELL row="33" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Sign</CELL>
+<CELL row="33" column="4" style="fontColor:#cc0000;">Sign</CELL>
 <CELL row="37" column="5" style="">=Not(0);</CELL>
 <CELL row="37" column="4" style="">=Sqrt(A10);</CELL>
 <CELL row="36" column="5" style="">=Not(1);</CELL>
-<CELL row="36" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Square root</CELL>
+<CELL row="36" column="4" style="fontColor:#cc0000;">Square root</CELL>
 <CELL row="40" column="4" style="">=Subtract(A1:A2);</CELL>
-<CELL row="40" column="5" style="fontColor:#cc0000;bgColor:#ffffff">Or</CELL>
-<CELL row="39" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Substracct</CELL>
+<CELL row="40" column="5" style="fontColor:#cc0000;">Or</CELL>
+<CELL row="39" column="4" style="fontColor:#cc0000;">Substract</CELL>
 <CELL row="38" column="5" style="">=Not(&quot;true&quot;);</CELL>
 <CELL row="38" column="4" style="">=Sqrt(A2);</CELL>
 <CELL row="43" column="4" style="">=SumIf(A1:A3);</CELL>
+<CELL row="44" column="5" style="fontColor:#cc0000;">And</CELL>
+<CELL row="45" column="5" style="">=And(1&lt;2);</CELL>
 <CELL row="41" column="4" style="">=Subtract(A10, A2);</CELL>
 <CELL row="41" column="5" style="">=Or(1&gt;2, 2&lt;4);</CELL>
 <CELL row="42" column="5" style="">=Or(1&gt;2, 2&gt;4);</CELL>
-<CELL row="42" column="4" style="italic:2;fontColor:#cc0000;bgColor:#ffffff">Sumif</CELL>
+<CELL row="42" column="4" style="fontColor:#cc0000;">Sumif</CELL>
+<CELL row="46" column="5" style="">=And(1&gt;2, 2&lt;4);</CELL>
 </SPREADSHEET>
