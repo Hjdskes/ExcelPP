@@ -1,16 +1,5 @@
 package com.awesome.excelpp.junit.math;
 
-<<<<<<< HEAD
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class SignTest {
-
-	@Test
-	public void test() {
-		fail("Not yet implemented"); // TODO
-=======
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -70,6 +59,5 @@ public class SignTest {
 	public void signBool() throws MathException {
 		@SuppressWarnings("unused")
 		double result = new Sign().getValue(false);
->>>>>>> ea49f0f11a0bf3c406b69a4b7feb8c296d656993
 	}
 }

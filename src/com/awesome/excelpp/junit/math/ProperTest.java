@@ -1,18 +1,5 @@
 package com.awesome.excelpp.junit.math;
 
-<<<<<<< HEAD
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class ProperTest {
-
-	@Test
-	public void test() {
-		fail("Not yet implemented"); // TODO
-	}
-
-=======
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -74,5 +61,4 @@ public class ProperTest {
 		@SuppressWarnings("unused")
 		String result = new Proper().getValue(true);
 	}
->>>>>>> ea49f0f11a0bf3c406b69a4b7feb8c296d656993
 }
