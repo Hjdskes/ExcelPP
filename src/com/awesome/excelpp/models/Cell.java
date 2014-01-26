@@ -227,6 +227,7 @@ public class Cell extends Observable implements Observer {
 		
 		if(undoable) {
 			postEdit(oldValue, newValue);
+			restoreBackground = backgroundColor;
 		}
 	}
 
@@ -274,11 +275,9 @@ public class Cell extends Observable implements Observer {
 	
 	private void setError(boolean error) {
 		if (error) {
-			restoreBackground = backgroundColor;
 			setBackgroundColor(new Color(255, 65, 70), false);
 		} else {
 			setBackgroundColor(restoreBackground, false);
-			restoreBackground = null;
 		}
 	}
 
