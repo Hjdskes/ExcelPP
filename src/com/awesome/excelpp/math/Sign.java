@@ -23,7 +23,7 @@ public class Sign extends Formula {
 			return 1;
 		} else if(args[0] instanceof Double) {
 			Double res = (Double)args[0];
-			if (res == 0)
+			if (res == 0.0)
 				return 0;
 			res *= Double.POSITIVE_INFINITY;
 			if (res == Double.POSITIVE_INFINITY)
