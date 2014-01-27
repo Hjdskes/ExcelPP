@@ -7,8 +7,8 @@
 <CELL row="1" column="6" style="bold:1;">Simpele Formules</CELL>
 <CELL row="2" column="2" style="">0.2</CELL>
 <CELL row="2" column="1" style="">2</CELL>
-<CELL row="2" column="4" style="">=Sum(1,2);</CELL>
-<CELL row="3" column="4" style="">=Sum(A1:A10);</CELL>
+<CELL row="2" column="4" style="fontColor:#ff3300;">Add</CELL>
+<CELL row="3" column="4" style="">=Sum(1,2);</CELL>
 <CELL row="3" column="2" style="">0.3</CELL>
 <CELL row="3" column="1" style="">3</CELL>
 <CELL row="3" column="6" style="fontColor:#cc0000;">Upper</CELL>
@@ -111,7 +111,7 @@
 <CELL row="36" column="4" style="fontColor:#cc0000;">Square root</CELL>
 <CELL row="40" column="4" style="">=Subtract(A1:A2);</CELL>
 <CELL row="40" column="5" style="fontColor:#cc0000;">Or</CELL>
-<CELL row="39" column="4" style="fontColor:#cc0000;">Substract</CELL>
+<CELL row="39" column="4" style="fontColor:#cc0000;">Subtract</CELL>
 <CELL row="38" column="5" style="">=Not(&quot;true&quot;);</CELL>
 <CELL row="38" column="4" style="">=Sqrt(A2);</CELL>
 <CELL row="43" column="4" style="">=SumIf(A1:A3, &quot;&gt;=2&quot;, B1:B3);</CELL>
