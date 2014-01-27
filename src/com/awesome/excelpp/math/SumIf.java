@@ -13,7 +13,7 @@ import com.awesome.excelpp.parser.exception.RecursionException;
  * If you want, you can apply the criteria to one range and sum the corresponding values in a different range.
  * For example, the formula =SumIf(B2:B5, "John", C2:C5) sums only the values in the range C2:C5,
  * where the corresponding cells in the range B2:B5 equal "John".
- * </br>Syntax: =SumIf(range, criteria, [sum_range])</p>
+ * </br>Syntax: =SumIf(range, "criteria", [sum_range])</p>
  * @author Team Awesome
  */
 public class SumIf extends Formula {
@@ -29,7 +29,6 @@ public class SumIf extends Formula {
 				args[i] = getDouble(args[i]);
 			} catch (MathException e) {
 				cond = (String) args[i];
-				System.out.println(cond);
 				index = i + 1;
 				if(index == args.length){
 					sumRange = false;
@@ -41,7 +40,10 @@ public class SumIf extends Formula {
 			throw new MathException();
 		}
 		
-		if((cond.charAt(0) == '<') || (cond.charAt(0) == '>')){
+		if((cond.charAt(0) == '<') || (cond.charAt(0) == '>') || (cond.charAt(0) == '=')){
+			if(cond.charAt(0) == '=' && cond.charAt(1) != '='){
+				cond = "=" + cond;
+			}
 			for(int i = 0; i < index - 1; i++){
 				Parser parse = new Parser("=" + args[i].toString() + cond);
 				parse.toPostfix();

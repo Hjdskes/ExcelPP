@@ -42,7 +42,7 @@ public class SumIfTest {
 	@Test
 	public void test_eqCondition() throws MathException, ParserException, RecursionException {
 		Double expected = 1.5;
-		Double result = new SumIf().getValue(4.0, 3.0, 2.0, 1.0, "2.0", 1.0, 1.0, 1.5, 1.0);
+		Double result = new SumIf().getValue(4.0, 3.0, 2.0, 1.0, "=2.0", 1.0, 1.0, 1.5, 1.0);
 		assertEquals(expected, result);
 	}
 	
