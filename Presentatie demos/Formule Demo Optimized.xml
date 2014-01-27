@@ -4,7 +4,7 @@
 <CELL row="1" column="2" style="">0.1</CELL>
 <CELL row="1" column="4" style="bold:1;">Formules</CELL>
 <CELL row="1" column="5" style="bold:1;">Logic</CELL>
-<CELL row="1" column="6" style="bold:1;">Simpele Condities</CELL>
+<CELL row="1" column="6" style="bold:1;">Simpele Formules</CELL>
 <CELL row="2" column="2" style="">0.2</CELL>
 <CELL row="2" column="1" style="">2</CELL>
 <CELL row="2" column="4" style="">=Sum(1,2);</CELL>
