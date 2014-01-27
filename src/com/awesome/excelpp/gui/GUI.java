@@ -90,7 +90,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 		mainFrame.addWindowListener(this);
 
 		mainTabs = new JTabbedPane();
-		createNewTab(null); //open altijd één tab
+		createNewTab(null); //open altijd een tab
 
 		mainFrame.add (buttonPanel, BorderLayout.PAGE_START);
 		mainFrame.add (mainTabs, BorderLayout.CENTER);
@@ -311,7 +311,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 	 */
 	public static final void removeTab(int index) {
 		int tabCount = mainTabs.getTabCount();
-		if(tabCount > 1) { //er moet ten minste één tab open blijven
+		if(tabCount > 1) { //er moet ten minste een tab open blijven
 			if (closeFile(index) == 0) {
 				CloseableTabComponent[] tabComponents = new CloseableTabComponent[tabCount];
 				for (int i = index; i < tabCount; i++) {

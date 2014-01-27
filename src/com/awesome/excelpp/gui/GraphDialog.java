@@ -55,8 +55,8 @@ public class GraphDialog extends JDialog implements ActionListener {
 	 * Constructs the dialog to configure the chart that is to be drawn.
 	 * @param table The <code>SpreadSheetTable</code> that contains the data
 	 * @param image The image to set in the taskbar of the Desktop Environment
-	 * @param width The width of the screen, in pixels, used to calculate the position of the dialog.
-	 * @param height The height of the screen, in pixels, used to calculate the position of the dialog.
+	 * @param screenWidth The width of the screen, in pixels, used to calculate the position of the dialog.
+	 * @param screenHeight The height of the screen, in pixels, used to calculate the position of the dialog.
 	 */
 	public GraphDialog(SpreadSheetTable table, BufferedImage image, int screenWidth, int screenHeight) {
 		this.table = table;
