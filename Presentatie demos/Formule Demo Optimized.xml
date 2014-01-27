@@ -114,8 +114,9 @@
 <CELL row="39" column="4" style="fontColor:#cc0000;">Substract</CELL>
 <CELL row="38" column="5" style="">=Not(&quot;true&quot;);</CELL>
 <CELL row="38" column="4" style="">=Sqrt(A2);</CELL>
-<CELL row="43" column="4" style="">=SumIf(A1:A3);</CELL>
+<CELL row="43" column="4" style="">=SumIf(A1:A3, &quot;&gt;=2&quot;, B1:B3);</CELL>
 <CELL row="44" column="5" style="fontColor:#cc0000;">And</CELL>
+<CELL row="44" column="4" style="">=SumIf(A1:A3, &quot;&gt;=2&quot;);</CELL>
 <CELL row="45" column="5" style="">=And(1&lt;2);</CELL>
 <CELL row="41" column="4" style="">=Subtract(A10, A2);</CELL>
 <CELL row="41" column="5" style="">=Or(1&gt;2, 2&lt;4);</CELL>
