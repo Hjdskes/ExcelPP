@@ -120,7 +120,7 @@ Ook van al deze toolkits zijn de voor- en nadelen onderzocht, die hier onder kor
 Om deze redenen is de conclusie getrokken dat geen van de alternatieven ons tijdens het ontwikkelen van Excel++ genoeg voordelen biedt om af te wijken van de standaard: Swing. Deze toolkit biedt gegarandeerd de mogelijkheid om te voldoen aan de Model View Controller: de Cellen kunnen in een TableModel worden gestopt, om vervolgens ingelezen te worden in de JTable van de GUI. Hoe deze TableModel geconstrueerd is, komt in de volgende paragraaf aan bod.\\
 
 \subsection{De SpreadSheet TableModel}
-Java biedt een standaard interface voor het modelleren van data voor tabellen. Er is besloten om van deze mogelijkheid gebruik te maken door het SpreadSheet model te baseren op de Java klasse AbstractTableModel. Op deze manier wordt het dynamisch updaten van de GUI automatisch geregeld door Java. Hierdoor hoeft er enkel rekening te worden gehouden met de manier waarop de data wordt opgeslagen en teruggegeven aan de JTable. In de SpreadSheet klasse wordt de data opgeslagen in een één-dimensionale HashMap. Dit is geïmplementeerd door een (x, y) coordinaat als volgt te vertalen naar een integer:
+Java biedt een standaard interface voor het modelleren van data voor tabellen. Er is besloten om van deze mogelijkheid gebruik te maken door het SpreadSheet model te baseren op de Java klasse AbstractTableModel. Op deze manier wordt het dynamisch updaten van de GUI automatisch geregeldD door Java. Hierdoor hoeft er enkel rekening te worden gehouden met de manier waarop de data wordt opgeslagen en teruggegeven aan de JTable. In de SpreadSheet klasse wordt de data opgeslagen in een één-dimensionale HashMap. Dit is geïmplementeerd door een (x, y) coordinaat als volgt te vertalen naar een integer:
 \begin{verbatim}
 int index = x * totalRows + y;
 \end{verbatim}
@@ -128,11 +128,18 @@ int index = x * totalRows + y;
 Door het gebruik van een HashMap is het ophalen van Cellen, dankzij hun index, zeer snel. Verder is het bij een HashMap mogelijk om bijvoorbeeld indices twee en vijf te vullen en indices één, drie en vier over te slaan. Hierdoor kan de HashMap minder Cellen bevatten dan dat er in de GUI getoond worden. Dit kan bij Arrays bijvoorbeeld niet. Dit komt de efficiëntie en het geheugengebruik ten goede.
 
 \newpage\subsection{De plugin architectuur van de formules}
-Een harde eis van het project is dat Excel++ op zijn minst vijfentwintig verschillende formules dient te ondersteunen. Bij het ontwikkelen van Excel++ is gestreefd naar een modulair programma en daarom is het wenselijk dat dit ook in de formules terug te vinden is: zij moeten op zichzelf staand toe kunnen worden gevoegd aan het programma. Andy Zaidman heeft tijdens één van de colleges geopperd om dit te doen middels een "plugin architectuur".\\
+Een harde eis van het project is dat Excel++ op zijn minst vijfentwintig verschillende formules dient te ondersteunen. Bij het ontwikkelen van Excel++ is gestreefd naar een modulair programma en daarom is het wenselijk dat dit ook in de formules terug te vinden is: zij moeten op zichzelf staand toe kunnen worden gevoegd aan het programma. Andy Zaidman heeft tijdens één van de colleges geopperd om dit te doen middels een "plugin architectuur". De enige andere mogelijkheid om dit te implementeren is om de lijst van formules van te voren vast te stellen. Dit betekent dat er ergens een lange lijst van formules bijbehouden moet worden die elke keer na het toevoegen van een formule bijgewerkt moet worden. Wij vinden dit geen mooie oplossing en hebben er daarom voor gekozen een soort plugin architectuur te implementeren.\\
 
-\textbf{ToDo Bastiaan:} Behalve dat Andy dit voorgesteld heeft zijn er nog andere voordelen van deze architecture? Zou het ook anders kunnen? Wat zijn mogelijke problemen van dynamische formules? Denk bevoordeeld aan security, als de formule “System.exit(0);” bevat dan sluit je programma ineens als je de formule probeert uit te voeren.
+Wij hebben dit in Excel++ geimplementeerd door op basis van input van de gebruiker dynamisch een formule-klasse in te laden uit het package com.awesome.excelpp.math. Op deze manier hoeft er bij het toevoegen van een nieuwe formule enkel een nieuwe klasse aangemaakt te worden in het juiste package. Zo'n nieuwe klasse moet dan de abstracte klasse Formula \textit{extenden} en heeft zodanig naast een vaste structuur, met ook een paar hulp-methodes tot zijn beschikking. Verder dient de naam van de klasse exact overeen te komen met de naam van de formule. Na het toevoegen van de nieuwe klasse is de formule automatisch beschikbaar in Excel++.\\
 
-Er is gekozen om dit in Excel++ te implementeren door op basis van input van de gebruiker dynamisch een formule-klasse in te laden. Op deze manier hoeft er bij het toevoegen van een nieuwe formule enkel een nieuwe klasse aangemaakt te worden in de juiste package. Zo'n nieuwe klasse moet dan de abstracte klasse Formula \textit{extenden} en heeft zodanig naast een vaste structuur, ook een paar hulp-methodes tot zijn beschikking. Na het toevoegen van de nieuwe klasse zal de formule automatisch beschikbaar zijn in Excel++.\\
+Het implementeren van deze structuur brengt een aantal problemen met zich mee:
+\begin{itemize}
+ \item het package com.awesome.excelpp.math mag geen subpackages bevatten
+ \item formules moeten allen dezelfde (lege) constructor bevatten
+ \item formules mogen geen output teruggeven of excepties throwen die de parser niet verwacht
+ \item formules mogen geen System.exit(0) of ander onverwacht gedrag implementeren
+\end{itemize}
+Omdat het grooste deel van deze problemen alleen speelt wanneer formules uit packages van derden toegevoegd worden hebben we ervoor gekozen om met deze problemen geen rekening te houden en onze formule klassen hier op aan te passen.
 
 \subsection{De overstap van de infix parser naar de shunting-yard parser}
 De eerste versie van de formule parser evalueerde direct vanuit de gegeven wiskundige expressie. Deze expressie is gegeven in infix notatie: de notatie die de meeste mensen gewend zijn.\\
