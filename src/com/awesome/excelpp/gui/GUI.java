@@ -600,8 +600,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener, WindowLi
 			try {
 				Document doc = XML.parse(table.getFile());
 				SpreadSheet fileSheet = XML.print(doc);
-				if(!table.getSheet().equals(fileSheet))
-					close = JOptionPane.showOptionDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[2]);
+				Cell fileCell = null;
+				breakpoint:
+				for(int i = 0; i < fileSheet.getColumnCount(); i++) { //fileSheet of table.getSheet maakt niet uit; zelfde aantal cellen
+					for(int j = 0; j < fileSheet.getRowCount(); j++) { //fileSheet of table.getSheet maakt niet uit; zelfde aantal cellen
+						fileCell = (Cell)fileSheet.getValueAt(j, i);
+						if(!fileCell.equals(table.getSheet().getValueAt(j, i))) {
+							close = JOptionPane.showOptionDialog(mainFrame, "Changes made to the current spreadsheet will be lost. Continue?", "Continue?", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[2]);
+							break breakpoint;
+						}
+					}
+				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(mainFrame, "Something went wrong: " + ex.toString(), "Error!", JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
