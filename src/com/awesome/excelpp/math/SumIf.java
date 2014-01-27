@@ -25,10 +25,6 @@ public class SumIf extends Formula {
 		boolean sumRange = true;//Indicates whether we have a sum_range specified or not.
 		
 		for(int i = 0; i < args.length; i++){
-			try {
-				args[i] = getDouble(args[i]);
-			} catch (MathException e) {
-			}
 			if(args[i] instanceof String){
 				cond = (String) args[i]; // in the end. only the last String will be assigned to "cond"
 				index = i + 1;
@@ -41,10 +37,13 @@ public class SumIf extends Formula {
 		if(((index-1)*2 != args.length - 1) && sumRange){
 			throw new MathException();
 		}
+
+		//Is dit nodig? De Lexer haalt quotes volgens mij weg
+		String condition = ((cond.charAt(0) == '"') ? cond.substring(1, cond.length()-1) : cond ); //Trim quotation marks
 		
-		if((cond.charAt(0) == '<') || (cond.charAt(0) == '>')){
+		if((condition.charAt(0) == '<') || (condition.charAt(0) == '>')){
 			for(int i = 0; i < index - 1; i++){
-				Parser parse = new Parser("=" + args[i].toString() + cond);
+				Parser parse = new Parser("=" + args[i].toString() + condition);
 				parse.toPostfix();
 				if(((Boolean)parse.eval()) == true){
 					if(sumRange){						
