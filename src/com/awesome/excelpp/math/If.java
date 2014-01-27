@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.MathException;
 
 /**
  * The If function checks to see if a condition you specify is true or false.

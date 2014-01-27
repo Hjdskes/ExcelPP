@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.MathException;
 
 /**
  * Returns the largest value in a set of values.

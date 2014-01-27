@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.MathException;
 
 /**
  * The CountA function counts the number of cells that are not empty in a range.

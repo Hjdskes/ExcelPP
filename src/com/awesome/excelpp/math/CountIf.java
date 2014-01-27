@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.MathException;
 
 /**
  * The CountIf function counts the number of cells within a range that meet a single criterion that you specify.

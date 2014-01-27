@@ -1,6 +1,6 @@
 package com.awesome.excelpp.math;
 
-import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.MathException;
 
 /**
  * The subtract function returns the value of the first argument, minus all the other arguments.

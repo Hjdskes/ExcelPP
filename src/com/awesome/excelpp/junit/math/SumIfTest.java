@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.awesome.excelpp.math.SumIf;
-import com.awesome.excelpp.math.exception.MathException;
+import com.awesome.excelpp.parser.exception.MathException;
 import com.awesome.excelpp.parser.exception.ParserException;
 import com.awesome.excelpp.parser.exception.RecursionException;
 
