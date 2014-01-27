@@ -218,7 +218,6 @@ public class Cell extends Observable implements Observer {
 				|| (this.backgroundColor == null && newBackgroundColor != null)) {
 			setChanged();
 			notifyObservers();
-			System.out.println("changed" + backgroundColor + newBackgroundColor);
 		}
 		
 		Cell oldValue = cloneThis();
@@ -311,7 +310,6 @@ public class Cell extends Observable implements Observer {
 	 * @return The evaluated expression
 	 */
 	public String toString() {
-		System.out.println("tostring... " + ++count);
 		if (content != null && content.length() > 0 && content.charAt(0) == '=') {
 			try {
 				return getValue().toString();
@@ -366,8 +364,6 @@ public class Cell extends Observable implements Observer {
 		}
 		observing.add(other);
 		other.addObserver(this);
-		System.out.println(observing);
-		System.out.println(observers);
 	}
 
 	@Override
