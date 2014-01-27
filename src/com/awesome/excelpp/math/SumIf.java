@@ -28,11 +28,10 @@ public class SumIf extends Formula {
 			try {
 				args[i] = getDouble(args[i]);
 			} catch (MathException e) {
-			}
-			if(args[i] instanceof String){
-				cond = (String) args[i]; // in the end. only the last String will be assigned to "cond"
+				cond = (String) args[i];
+				System.out.println(cond);
 				index = i + 1;
-				if(i == args.length - 1){
+				if(index == args.length){
 					sumRange = false;
 				}
 			}
@@ -58,7 +57,7 @@ public class SumIf extends Formula {
 			return sum;
 		}else{
 			for(int i = 0; i < index - 1; i++){
-				if(args[i].toString().equals(condition)){
+				if(args[i].toString().equals(cond)){
 					if(sumRange){						
 						sum += (Double) args[i + index];
 					} else {
