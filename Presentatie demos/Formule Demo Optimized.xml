@@ -7,7 +7,7 @@
 <CELL row="1" column="6" style="bold:1;">Simpele Formules</CELL>
 <CELL row="2" column="2" style="">0.2</CELL>
 <CELL row="2" column="1" style="">2</CELL>
-<CELL row="2" column="4" style="fontColor:#ff3300;">Add</CELL>
+<CELL row="2" column="4" style="fontColor:#cc0000;">Add</CELL>
 <CELL row="3" column="4" style="">=Sum(1,2);</CELL>
 <CELL row="3" column="2" style="">0.3</CELL>
 <CELL row="3" column="1" style="">3</CELL>
